@@ -21,6 +21,8 @@ Skill pra revisar Pull Requests e publicar o review com comentarios **inline**
 - Um comentario por achado.
 - Por padrao posta so 🔴 (bloqueador) e 🟡 (ajuste recomendado). Pula 🟢 nitpick,
   salvo se o usuario pedir.
+- No preview da conversa, usa os emojis de severidade normalmente.
+- **Nos comentarios postados no PR (body do comentario inline), sem emojis.** Texto limpo.
 - Da sugestao de codigo (bloco `suggestion`) quando for simples e couber.
 
 ## Processo
@@ -32,7 +34,7 @@ Skill pra revisar Pull Requests e publicar o review com comentarios **inline**
 3. **Mapeia achado -> linha**: cada achado vira um comentario ancorado em arquivo +
    linha(s) do head do PR. Confirma o working tree limpo e pega o SHA do head pra os
    numeros baterem.
-4. **Severidade**: classifica 🔴 / 🟡 / 🟢. Posta so 🔴 e 🟡.
+4. **Severidade**: classifica 🔴 / 🟡 / 🟢 no preview. Posta so 🔴 e 🟡 — sem emoji no body do comentario GitHub.
 5. **Preview**: mostra o review pro usuario antes de postar. So posta apos o ok dele.
 6. **Posta**: um review unico via API, com todos os comentarios inline. Sem comentario
    solto no corpo.
