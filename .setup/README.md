@@ -1,5 +1,23 @@
 # Setup Notes
 
+## Nemo sidebar / XDG folders
+
+Applied by `.setup/nemo.sh` (run from `.install.sh`).
+
+Two gotchas on a minimal Hyprland setup:
+
+1. **`~/.config/user-dirs.dirs` is never generated.** There is no XDG autostart
+   processor, so `xdg-user-dirs-update` never runs and every `XDG_*_DIR`
+   resolves to `$HOME`. Fixed by running it once in `nemo.sh` and via
+   `exec-once = xdg-user-dirs-update` in `hyprland.conf`.
+2. **Nemo does not auto-list the XDG folders.** Unlike Nautilus, it only shows
+   Home/Desktop/Filesystem/Trash plus whatever is in
+   `~/.config/gtk-3.0/bookmarks`. So the standard folders must be seeded there.
+   `sidebar-bookmark-breakpoint` (dconf) sets where the "My Computer" section
+   ends and "Bookmarks" begins. Custom folder icons live in GIO metadata
+   (`gio set … metadata::custom-icon-name`), which is per-machine, not a file
+   that can be stowed.
+
 ## Wake from Suspend via Keyboard (ThinkPad)
 
 By default, the ThinkPad only wakes from `systemctl suspend` via the power button.

@@ -36,6 +36,10 @@ if confirm_step \
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/desktop.sh"
   run
+
+  # ── Nemo sidebar (XDG folders, bookmarks, icons) ────────────────────────
+  source "$SETUP_DIR/nemo.sh"
+  run
 fi
 
 # ── GRUB ──────────────────────────────────────────────────────────────────
