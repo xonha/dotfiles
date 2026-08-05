@@ -2,6 +2,10 @@ return {
   "nvim-neo-tree/neo-tree.nvim",
   opts = {
     window = { position = "right" },
+    filesystem = {
+      -- dotfiles visiveis (em cinza) por padrao; H alterna
+      filtered_items = { visible = true },
+    },
     sort_function = function(a, b)
       if a.type ~= b.type then
         return a.type < b.type
