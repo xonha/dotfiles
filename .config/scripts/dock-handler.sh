@@ -15,7 +15,7 @@ apply_dock() {
   hyprctl keyword monitor "eDP-1, disable"
   hyprctl keyword monitor "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000,1920x1080@60,0x0,1.00000000,transform,0,vrr,0"
   hyprctl keyword monitor "desc:SUE SFP2412FHD 000000000000,1920x1080@60,1920x0,1.00000000,transform,0,vrr,0"
-  systemctl disable --now "$KEYD_SERVICE"
+  systemctl stop "$KEYD_SERVICE"
   echo "docked" >"$STATE_FILE"
 }
 
@@ -24,7 +24,7 @@ apply_travel() {
   notify-send "Dock" "Applying travel configuration" -u low
   hyprctl keyword monitor "eDP-1,1920x1080@60.02,192x2160,1.0"
   hyprctl keyword monitor "desc:Invalid Vendor Codename - RTK 0x1920 demoset-1,1920x1080@60.0,192x1080,1.0"
-  systemctl enable --now "$KEYD_SERVICE"
+  systemctl start "$KEYD_SERVICE"
   echo "undocked" >"$STATE_FILE"
 }
 
@@ -32,7 +32,7 @@ apply_default() {
   echo "Applying default configuration..."
   notify-send "Dock" "Applying default configuration" -u low
   hyprctl keyword monitor "eDP-1,1920x1080@60.02000,0x0,1.00000000,transform,0,vrr,0"
-  systemctl enable --now "$KEYD_SERVICE"
+  systemctl start "$KEYD_SERVICE"
   echo "default" >"$STATE_FILE"
 }
 
