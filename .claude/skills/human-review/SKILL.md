@@ -19,11 +19,17 @@ Skill pra revisar Pull Requests e publicar o review com comentarios **inline**
 - Abreviacoes naturais: "vc", "pra", "tb", "ta".
 - Informal, mas **sem girias**. Direto e tecnico.
 - Um comentario por achado.
+- **Tom de duvida, nao de veredito**: nao afirma que ta errado, pergunta se ta certo.
+  Fala como quem leu rapido e quer confirmar com o autor, nao como quem ja decidiu.
+  Usa "acho que", "sera que", "nao sei se", "confere?", "faz sentido isso?" em vez de
+  "isso ta errado" / "precisa mudar". O autor sabe mais do contexto que a gente.
 - Por padrao posta so 🔴 (bloqueador) e 🟡 (ajuste recomendado). Pula 🟢 nitpick,
   salvo se o usuario pedir.
 - No preview da conversa, usa os emojis de severidade normalmente.
 - **Nos comentarios postados no PR (body do comentario inline), sem emojis.** Texto limpo.
-- Da sugestao de codigo (bloco `suggestion`) quando for simples e couber.
+- Sempre que der, manda sugestao de codigo (bloco `suggestion`) junto — mesmo no tom
+  de duvida ("algo assim talvez?"). So pula quando o fix nao for trivial (precisa de
+  mudanca em varios arquivos/camadas) — nao vale se esforcar muito pra forcar uma.
 
 ## Processo
 
