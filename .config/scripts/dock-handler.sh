@@ -9,12 +9,19 @@ KEYD_SERVICE="keyd.service"
 DOCK_ID="0bda:8152"
 STATE_FILE="/tmp/dock-handler-state"
 
+# Hyprland >= 0.55 com config em lua: `hyprctl keyword` nao existe mais
+# ("keyword can't work with non-legacy parsers. Use eval."). O equivalente e
+# rodar hl.monitor() via `hyprctl eval`.
+set_monitor() {
+  hyprctl eval "hl.monitor({ $1 })" >/dev/null
+}
+
 apply_dock() {
   echo "Applying docked configuration..."
   notify-send "Dock" "Applying docked configuration" -u low
-  hyprctl keyword monitor "eDP-1, disable"
-  hyprctl keyword monitor "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000,1920x1080@60,0x0,1.00000000,transform,0,vrr,0"
-  hyprctl keyword monitor "desc:SUE SFP2412FHD 000000000000,1920x1080@60,1920x0,1.00000000,transform,0,vrr,0"
+  set_monitor 'output = "eDP-1", disabled = true'
+  set_monitor 'output = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000", mode = "1920x1080@60", position = "0x0", scale = 1.0, transform = 0, vrr = 0'
+  set_monitor 'output = "desc:SUE SFP2412FHD 000000000000", mode = "1920x1080@60", position = "1920x0", scale = 1.0, transform = 0, vrr = 0'
   systemctl stop "$KEYD_SERVICE"
   echo "docked" >"$STATE_FILE"
 }
@@ -22,8 +29,8 @@ apply_dock() {
 apply_travel() {
   echo "Applying travel configuration..."
   notify-send "Dock" "Applying travel configuration" -u low
-  hyprctl keyword monitor "eDP-1,1920x1080@60.02,192x2160,1.0"
-  hyprctl keyword monitor "desc:Invalid Vendor Codename - RTK 0x1920 demoset-1,1920x1080@60.0,192x1080,1.0"
+  set_monitor 'output = "eDP-1", mode = "1920x1080@60.02", position = "192x2160", scale = 1.0'
+  set_monitor 'output = "desc:Invalid Vendor Codename - RTK 0x1920 demoset-1", mode = "1920x1080@60.0", position = "192x1080", scale = 1.0'
   systemctl start "$KEYD_SERVICE"
   echo "undocked" >"$STATE_FILE"
 }
@@ -31,7 +38,7 @@ apply_travel() {
 apply_default() {
   echo "Applying default configuration..."
   notify-send "Dock" "Applying default configuration" -u low
-  hyprctl keyword monitor "eDP-1,1920x1080@60.02000,0x0,1.00000000,transform,0,vrr,0"
+  set_monitor 'output = "eDP-1", mode = "1920x1080@60.02", position = "0x0", scale = 1.0, transform = 0, vrr = 0'
   systemctl start "$KEYD_SERVICE"
   echo "default" >"$STATE_FILE"
 }

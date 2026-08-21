@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Affinity Suite
+Comment=A powerful creative suite.
+Icon=/home/henrique/.local/share/icons/Affinity.svg
+Path=/home/henrique/.AffinityLinux
+Exec=env WINEPREFIX=/home/henrique/.AffinityLinux DXVK_ASYNC=0 DXVK_CONFIG="d3d9.deferSurfaceCreation = True; d3d9.shaderModel = 1" /home/henrique/.AffinityLinux/ElementalWarriorWine/bin/wine "/home/henrique/.AffinityLinux/drive_c/Program Files/Affinity/Affinity/AffinityHook.exe"
+Terminal=false
+Type=Application
+Categories=Graphics;
+StartupNotify=true
+StartupWMClass=affinity.exe

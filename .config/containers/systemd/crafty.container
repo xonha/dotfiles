@@ -1,0 +1,32 @@
+[Unit]
+Description=Crafty Controller — Minecraft Server Manager
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=registry.gitlab.com/crafty-controller/crafty-4:latest
+ContainerName=crafty
+
+# Crafty runs as uid 1000 (crafty), gid 0 — host dirs must be chowned to 1000:0
+# via `podman unshare` so the rootless user namespace maps them correctly.
+Volume=%h/.local/share/crafty/config:/crafty/app/config:z
+Volume=%h/.local/share/crafty/servers:/crafty/servers:z
+Volume=%h/.local/share/crafty/backups:/crafty/backups:z
+Volume=%h/.local/share/crafty/logs:/crafty/logs:z
+Volume=%h/.local/share/crafty/import:/crafty/import:z
+
+# 8443 = web panel (HTTPS). 25565 = the Minecraft server itself.
+# Crafty allocates new servers in the 25500-25600 range; publish additional
+# ports here as servers are added.
+PublishPort=8443:8443
+PublishPort=25565:25565
+
+Environment=TZ=America/Sao_Paulo
+
+[Service]
+Restart=on-failure
+# First boot generates the SQLite DB and a self-signed cert — slow.
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

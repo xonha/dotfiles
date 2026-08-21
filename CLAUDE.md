@@ -10,6 +10,7 @@ Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy
 - [devbox](docs/devbox.md) — Arch Linux dev container on Bazzite (Podman + systemd)
 - [Paperclip](docs/paperclip.md) — AI agent orchestrator on console (Podman + Quadlet)
 - [n8n](docs/n8n-bazzite.md) — n8n self-hosted on Bazzite (Podman + Quadlet)
+- [Minecraft](docs/minecraft.md) — Crafty Controller on console; Tailscale-only access for friends
 - [Setup notes](.setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Stow layout](#stow-layout) — directory map for this repo
 
@@ -17,7 +18,7 @@ Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy
 
 | Path                          | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
-| `.config/hypr/`               | Hyprland WM (`monitors.conf` gitignored — machine-specific) |
+| `.config/hypr/`               | Hyprland WM — Lua config (`hyprland.lua` + modules; `monitors.lua` gitignored — machine-specific). `hypridle`/`hyprlock`/`hyprpaper`/`hyprsunset`/`hyprtoolkit` stay in `.conf` |
 | `.config/kitty/`              | Kitty terminal                                              |
 | `.config/nvim/`               | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
 | `.config/waybar/`             | Waybar status bar                                           |
@@ -29,7 +30,7 @@ Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.docker/Dockerfile`          | devbox container image                                      |
-| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Paperclip)     |
+| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Paperclip, Crafty) |
 | `.setup/`                     | Setup scripts sourced by `.install.sh`                      |
 
 ## Adding Dotfiles

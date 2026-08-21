@@ -23,7 +23,8 @@ if [ -n "$FOCUS_CLASS" ]; then
         | head -n1)
 
     if [ -n "$WINDOW_ADDR" ]; then
-        hyprctl dispatch focuswindow "address:${WINDOW_ADDR}"
+        # Hyprland >= 0.55 com config em lua: dispatch recebe lua.
+        hyprctl dispatch "hl.dsp.focus({ window = \"address:${WINDOW_ADDR}\" })"
     fi
 fi
 

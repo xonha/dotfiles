@@ -76,6 +76,7 @@ the Windows system tray (not just in the WSL2 environment).
 | `devbox` | 2222 | — | Arch Linux dev environment (see [devbox.md](devbox.md)) |
 | `n8n` | — | 5678 | Workflow automation |
 | `paperclip` | — | 3100 | AI agent orchestrator (see [paperclip.md](paperclip.md)) |
+| `crafty` | — | 8443, 25565 | Minecraft server manager (see [minecraft.md](minecraft.md)) |
 
 Manage services on `console`:
 

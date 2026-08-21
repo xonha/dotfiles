@@ -27,17 +27,19 @@ FORCE_LAUNCH=${4:-0}
 # Check if a window with this class exists
 WINDOW_ADDR=$(hyprctl clients -j | jq -r ".[] | select(.class==\"$FOCUS_CLASS\") | .address" | head -n1)
 
+# Hyprland >= 0.55 com config em lua: `hyprctl dispatch` recebe lua
+# (`hl.dispatch(...)`), os nomes antigos de dispatcher nao valem mais.
 if [ -n "$WINDOW_ADDR" ] && [ "$FORCE_LAUNCH" != "1" ]; then
   # Focus the existing window
-  hyprctl dispatch focuswindow address:$WINDOW_ADDR
+  hyprctl dispatch "hl.dsp.focus({ window = \"address:$WINDOW_ADDR\" })"
 else
   # No window found (or force launch) -> launch the application in the desired workspace.
   if [ "$LAUNCH_MODE" = "emptyn" ]; then
-    hyprctl dispatch exec "[workspace emptyn] $APP_NAME"
+    hyprctl dispatch "hl.dsp.exec_cmd([[$APP_NAME]], { workspace = \"emptyn\" })"
   elif [[ "$LAUNCH_MODE" == workspace:* ]]; then
     WS_NUM="${LAUNCH_MODE#workspace:}"
-    hyprctl dispatch exec "[workspace $WS_NUM] $APP_NAME"
+    hyprctl dispatch "hl.dsp.exec_cmd([[$APP_NAME]], { workspace = \"$WS_NUM\" })"
   else
-    hyprctl dispatch exec "$APP_NAME"
+    hyprctl dispatch "hl.dsp.exec_cmd([[$APP_NAME]])"
   fi
 fi
