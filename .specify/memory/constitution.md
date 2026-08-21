@@ -60,7 +60,7 @@ per-machine.
 
 ### V. Machine-Specific Stays Untracked
 Host-specific and generated files are gitignored, never committed:
-`monitors.conf`, `lazy-lock.json`, and anything that differs per machine or is
+`monitors.lua`, `lazy-lock.json`, and anything that differs per machine or is
 produced by a tool. The repo holds the portable configuration; the machine
 supplies its own specifics.
 

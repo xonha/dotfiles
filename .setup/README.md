@@ -9,7 +9,7 @@ Two gotchas on a minimal Hyprland setup:
 1. **`~/.config/user-dirs.dirs` is never generated.** There is no XDG autostart
    processor, so `xdg-user-dirs-update` never runs and every `XDG_*_DIR`
    resolves to `$HOME`. Fixed by running it once in `nemo.sh` and via
-   `exec-once = xdg-user-dirs-update` in `hyprland.conf`.
+   `hl.exec_cmd("xdg-user-dirs-update")` in `hyprland.lua`.
 2. **Nemo does not auto-list the XDG folders.** Unlike Nautilus, it only shows
    Home/Desktop/Filesystem/Trash plus whatever is in
    `~/.config/gtk-3.0/bookmarks`. So the standard folders must be seeded there.
