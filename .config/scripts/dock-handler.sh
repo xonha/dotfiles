@@ -20,8 +20,8 @@ apply_dock() {
   echo "Applying docked configuration..."
   notify-send "Dock" "Applying docked configuration" -u low
   set_monitor 'output = "eDP-1", disabled = true'
-  set_monitor 'output = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000", mode = "1920x1080@60", position = "0x0", scale = 1.0, transform = 0, vrr = 0'
-  set_monitor 'output = "desc:SUE SFP2412FHD 000000000000", mode = "1920x1080@60", position = "1920x0", scale = 1.0, transform = 0, vrr = 0'
+  set_monitor 'output = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000", mode = "1920x1080@120", position = "0x0", scale = 1.0, transform = 0, vrr = 0'
+  set_monitor 'output = "desc:SUE SFP2412FHD 000000000000", mode = "1920x1080@120", position = "1920x0", scale = 1.0, transform = 0, vrr = 0'
   systemctl stop "$KEYD_SERVICE"
   echo "docked" >"$STATE_FILE"
 }
