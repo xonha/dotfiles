@@ -18,3 +18,6 @@ mimeinfo.cache
 .config/nextjs-nodejs/config.json
 .config/opencode/opencode/node_modules/
 .config/opencode/opencode/
+
+# --- valores machine/empresa-specific lidos pelas skills (ver local.example.json) ---
+.agents/local.json

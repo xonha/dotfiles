@@ -1,0 +1,8 @@
+{
+  "jira": {
+    "base_url": "https://SEU-TENANT.atlassian.net"
+  },
+  "slack": {
+    "daily_channel": "ID_DO_CANAL_OU_DM"
+  }
+}

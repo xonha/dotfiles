@@ -10,6 +10,24 @@ Skill pra escrever a **daily async** que vai pro canal do Slack do time.
 O trabalho aqui não é redigir bonito — é **relatar com precisão de estado**. O texto vai
 para pessoas que planejam sprint com ele. Report otimista atrasa gente.
 
+## Config local (ler primeiro)
+
+Os valores específicos do ambiente **não estão nesta skill** — o repo é público e a
+constitution proíbe hostname interno e ID de canal em git. Eles ficam em
+`~/.agents/local.json`, que está no `.gitignore`:
+
+```json
+{
+  "jira":  { "base_url": "https://SEU-TENANT.atlassian.net" },
+  "slack": { "daily_channel": "ID_DO_CANAL_OU_DM" }
+}
+```
+
+**Antes de montar a daily, lê esse arquivo** (`cat ~/.agents/local.json`) e resolve os
+placeholders `{jira.base_url}` e `{slack.daily_channel}` que aparecem abaixo. Se o arquivo
+não existir, copia de `~/.agents/local.example.json` e pede os valores ao usuário — não
+adivinhe, e não escreva os valores de volta em nenhum arquivo versionado.
+
 ## Quando usar
 
 - "Escreve a daily", "monta meu report do dia", "async standup".
@@ -33,9 +51,10 @@ Bloqueios:
 
 Regras de forma, todas aprendidas de correção real no texto postado:
 
-- **Texto puro. Sem markdown.** Nada de `**negrito**`, nada de tabela, nada de
-  `[link](url)`. O canal renderiza pouco e o negrito no meio de bullet técnico vira ruído.
-- **Card é texto puro:** `CNT-3319 — o quê`. Sem link. Quem quer abrir, cola o ID.
+- **Sem markdown de ênfase.** Nada de `**negrito**`, nada de tabela, nada de header. O canal
+  renderiza pouco e o negrito no meio de bullet técnico vira ruído. **A única exceção é o
+  link de card**, ver o item seguinte.
+- **Card vai linkado para o board:** `[CNT-3319]({jira.base_url}/browse/CNT-3319) — o quê`. ✏️ **Mudou em 24/08/2026**, a pedido dele: antes era texto puro. Todo ID citado vira link, inclusive repetido no mesmo bullet. **Link de PR continua fora** — o número do PR só aparece se o repo estiver dito na frase.
 - **Português normal, com acentos.** (Diferente da `human-review`, que é sem acento
   porque vai pra comentário de PR.)
 - Primeira pessoa no **Ontem** (`fechei`, `achei`, `emendei`, `abri`), **infinitivo** no
@@ -212,13 +231,27 @@ faria algo diferente hoje?* Se não, não é bloqueio da daily.
 3. **Classifica cada item nos três estados** (desenho / ratificado / entregue) **antes**
    de escrever o bullet. É aqui que o exagero morre.
 4. **Escreve as três seções** no formato do canal.
-5. **Mostra pro usuário e espera o ok.** Nunca posta sozinho — a daily sai no nome dele.
+5. **Envia no canal fixo `{slack.daily_channel}`** com `slack_send_message`, e **devolve o link da
+   mensagem junto com o texto postado**. ✏️ **Mudou em 24/08/2026:** antes esta skill
+   esperava o ok antes de postar; ele autorizou o envio direto sempre que a skill roda, e
+   o destino é sempre esse canal — não perguntar qual.
+
+   🔴 **Esse canal é pessoal dele, não é o canal do time.** É a área de conferência: a daily
+   cai lá, ele lê, ajusta e só então repassa. Por isso o envio direto **não é publicação** e
+   não conflita com a regra antiga de "nunca posta sozinho" — a revisão humana continua
+   inteira, só mudou de momento. **Não propor o canal do time como destino, e não tratar
+   este envio como se a daily já tivesse saído.**
+   - **`unfurl_app_links` fica desligado.** Uma daily tem ~20 links de Jira; com preview do
+     app o texto some embaixo dos cards.
+   - Se ele pedir revisão antes ("me mostra antes de mandar"), aí sim `slack_send_message_draft`.
+   - Se algum dia o destino for um canal de time de verdade, a regra antiga volta a valer:
+     mostrar e esperar o ok.
 6. Se o usuário editar o texto antes de postar, **lê a edição como spec**: o que ele
    cortou é o que não pertence, e isso volta pra esta skill como regra.
 
 ## Checklist antes de entregar
 
-- [ ] Zero markdown, zero link, card como texto puro.
+- [ ] Zero markdown de ênfase; todo `CNT-XXXX` linkado para o board; nenhum link que não seja de card.
 - [ ] Zero nome de pessoa.
 - [ ] Nenhum "fechei/pronto/resolvido" que na verdade seja desenho ou decisão provisória.
 - [ ] **Nenhuma frase que explique o que o verbo de estado já disse** ("fechei o desenho…
@@ -231,6 +264,7 @@ faria algo diferente hoje?* Se não, não é bloqueio da daily.
 - [ ] Todo número citado foi medido, não estimado de cabeça.
 - [ ] Todo item do Hoje interessa a mais alguém.
 - [ ] Bloqueios em uma linha, com data quando existir, ou `N/A`.
+- [ ] Enviado em `{slack.daily_channel}` com `unfurl_app_links` desligado, e o link da mensagem devolvido.
 - [ ] Uma linha por bullet, sem wrap manual — o canal reflui.
 - [ ] Nenhuma frase truncada. (Já foi postado um bloqueio pela metade: *"Contrato
       comercial da CAF — sem cal..."*. Reler o texto inteiro antes de entregar,
