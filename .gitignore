@@ -3,3 +3,18 @@
 .config/nvim/lazy-lock.json
 mimeinfo.cache
 .config/containers/systemd/paperclip.env
+
+# --- secrets / credentials (public repo: never commit) ---
+.config/gh/hosts.yml
+.config/github-copilot/
+.config/configstore/
+.config/.jira/
+
+# --- machine state, caches, telemetry ---
+.config/chromium/
+.config/go/
+.config/Code/agent-host/
+.config/n8n-as-code/telemetry.json
+.config/nextjs-nodejs/config.json
+.config/opencode/opencode/node_modules/
+.config/opencode/opencode/
