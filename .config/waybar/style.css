@@ -84,8 +84,12 @@ window#waybar.hidden {
   color: @Blue;
 }
 
-#clock {
+#custom-ycal {
   color: @Mauve;
+}
+
+#custom-ycal.has-events {
+  color: @Sky;
 }
 
 #cpu {
@@ -184,7 +188,6 @@ window#waybar.hidden {
 #backlight,
 #battery,
 #bluetooth,
-#clock,
 #cpu,
 #custom-browser,
 #custom-capslock,
@@ -192,6 +195,7 @@ window#waybar.hidden {
 #custom-mako,
 #custom-menu,
 #custom-power,
+#custom-ycal,
 #disk,
 #idle_inhibitor,
 #memory,

@@ -9,8 +9,10 @@ mimeinfo.cache
 .config/github-copilot/
 .config/configstore/
 .config/.jira/
+.config/waybar-ycal/
 
 # --- machine state, caches, telemetry ---
+__pycache__/
 .config/chromium/
 .config/go/
 .config/Code/agent-host/
