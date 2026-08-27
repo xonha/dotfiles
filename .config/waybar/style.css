@@ -163,6 +163,16 @@ window#waybar.hidden {
   -gtk-icon-effect: dim;
 }
 
+#custom-browser.maistodos,
+#custom-browser.devbot,
+#custom-browser.pessoal {
+  color: @Rosewater;
+}
+
+#custom-browser.unknown {
+  color: @Red;
+}
+
 #custom-capslock.on {
   color: @Teal;
 }
@@ -176,6 +186,7 @@ window#waybar.hidden {
 #bluetooth,
 #clock,
 #cpu,
+#custom-browser,
 #custom-capslock,
 #custom-keyd,
 #custom-mako,

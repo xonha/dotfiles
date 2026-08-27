@@ -5,6 +5,7 @@
     "~/.config/waybar/bluetooth.jsonc",
     "~/.config/waybar/clock.jsonc",
     "~/.config/waybar/cpu.jsonc",
+    "~/.config/waybar/custom-browser.jsonc",
     "~/.config/waybar/custom-capslock.jsonc",
     "~/.config/waybar/custom-keyd.jsonc",
     "~/.config/waybar/custom-mako.jsonc",
@@ -47,5 +48,12 @@
     "clock",
   ],
   "modules-center": ["wlr/taskbar", "tray"],
-  "modules-left": ["temperature", "cpu", "memory", "disk", "custom/keyd"],
+  "modules-left": [
+    "temperature",
+    "cpu",
+    "memory",
+    "disk",
+    "custom/keyd",
+    "custom/browser",
+  ],
 }
