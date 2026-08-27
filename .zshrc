@@ -54,7 +54,7 @@ setopt appendhistory
 # Path to your oh-my-zsh installation.
 export ZSH=/usr/share/oh-my-zsh/
 export ZSH_PLUGINS="/usr/share/zsh/plugins"
-export BROWSER=/usr/bin/zen-browser
+# BROWSER intencionalmente nao definido: o handler vem do mimeapps.list (brave-maistodos)
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
