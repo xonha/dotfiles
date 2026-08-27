@@ -1,0 +1,10 @@
+# Lido por /usr/share/waybar-ycal/popup.py (THEME_FILE). Sem esse arquivo o
+# popup usa os defaults dele -- laranja #ffcead sobre azul #060B1E -- que nao
+# tem nada a ver com o resto do desktop.
+#
+# Valores espelham a paleta do waybar (.config/waybar/style.css):
+#   background = @Base, foreground = @Text, accent = @Mauve (a cor que o
+#   modulo do calendario ja usa na barra).
+background = "#151515"
+foreground = "#ffffff"
+accent = "#cba6f7"
