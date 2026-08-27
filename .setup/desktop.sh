@@ -84,6 +84,10 @@ PKG_DESKTOP_AUR=(
 
   # Spec Kit — spec-driven development CLI (uses uv from server step)
   aur/specify-cli-bin
+
+  # Google Calendar/Tasks popup for Waybar. Needs a one-time manual OAuth
+  # setup afterwards — see .setup/README.md.
+  aur/waybar-ycal
 )
 
 run() {

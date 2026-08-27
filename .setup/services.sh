@@ -15,6 +15,12 @@ SERVICES_OPTIONAL=(
   docker.service
 )
 
+# User services (systemctl --user, no sudo). These ship with desktop packages,
+# so they are skipped silently on a headless machine where the unit is absent.
+SERVICES_USER=(
+  waybar-ycal.service
+)
+
 enable_service() {
   local svc="$1"
   info "Enabling $svc..."
@@ -22,6 +28,20 @@ enable_service() {
     success "$svc enabled and started."
   else
     warn "Failed to enable $svc (may not be installed or already active)."
+  fi
+}
+
+enable_user_service() {
+  local svc="$1"
+  if ! systemctl --user cat "$svc" &>/dev/null; then
+    info "$svc not installed, skipping."
+    return
+  fi
+  info "Enabling $svc (user)..."
+  if systemctl --user enable --now "$svc"; then
+    success "$svc enabled and started."
+  else
+    warn "Failed to enable $svc (needs a running user session — retry after login)."
   fi
 }
 
@@ -36,6 +56,10 @@ run() {
     if confirm_step "Enable $svc" ""; then
       enable_service "$svc"
     fi
+  done
+
+  for svc in "${SERVICES_USER[@]}"; do
+    enable_user_service "$svc"
   done
 }
 
