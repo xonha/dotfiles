@@ -11,7 +11,66 @@ When reinstalling the system, the intended setup is:
 
 Noctalia should preferably handle the desktop-shell responsibilities such as the bar, launcher, control center, notifications, lock screen, wallpaper, audio/brightness controls and session UI. The greeter can also be replaced by the Noctalia greeter if desired.
 
-## Monitor plan
+## Display profiles
+
+Keep all monitor arrangements reproducible in the dotfiles instead of configuring them manually after switching setups. The Hyprland configuration should detect or select a display profile based on the connected outputs/monitor descriptions.
+
+Maintain three main profiles:
+
+### Home / current desk
+
+Two Full HD monitors side by side, both in landscape orientation.
+
+```text
+┌───────────────────┐ ┌───────────────────┐
+│                   │ │                   │
+│     1920×1080     │ │     1920×1080     │
+│                   │ │                   │
+└───────────────────┘ └───────────────────┘
+```
+
+### Travel / remote
+
+Laptop Full HD display on the bottom and external Full HD monitor above it. Both remain in landscape orientation; the desktop arrangement is vertical/stacked.
+
+```text
+        external
+┌───────────────────┐
+│     1920×1080     │
+└───────────────────┘
+
+          laptop
+┌───────────────────┐
+│     1920×1080     │
+└───────────────────┘
+```
+
+### Future home / 4K
+
+One 32-inch 4K (3840×2160) display, preferably at 100% scaling. This becomes the main home profile after the monitor upgrade.
+
+The application-focused workflow, keybindings and `focus.sh` behavior should remain as consistent as possible across all profiles. Monitor geometry should be a profile concern rather than being embedded into application-specific behavior.
+
+Prefer identifying known monitors by stable `desc:` descriptions rather than connector names such as `DP-1` or `HDMI-A-1`, since connector names may change between machines/docks. Keep a fallback rule for unknown displays so plugging into an unexpected monitor still produces a usable desktop.
+
+The eventual structure can conceptually look like:
+
+```text
+Hyprland
+├── shared configuration
+│   ├── keybindings
+│   ├── application focus
+│   ├── window rules
+│   └── Noctalia integration
+└── display profiles
+    ├── home-dual-fhd
+    ├── travel-stacked-fhd
+    └── home-4k
+```
+
+Do not over-engineer profile switching initially. Automatic selection based on connected monitor descriptions is preferable once the three configurations are known and stable; explicit profile selection is an acceptable fallback.
+
+## 4K monitor plan
 
 The intended future monitor is a **32-inch 4K (3840×2160)** display, preferably used at **100% scaling** if the physical viewing distance makes that comfortable.
 
@@ -108,5 +167,7 @@ Screen sharing on Wayland should use PipeWire/WirePlumber with `xdg-desktop-port
 ## General principle
 
 The target setup should preserve the parts of Hyprland that are valuable — tiling, keybindings, window rules, scripting and the application-focused workflow — while delegating generic desktop-shell functionality to Noctalia.
+
+Display topology should be treated as a swappable profile so the same dotfiles remain useful at the current dual-FHD desk, while traveling with stacked displays, and eventually on the single 4K display.
 
 For the 4K display, prefer **one large flexible canvas with logical zones** over permanently emulating multiple monitors.
