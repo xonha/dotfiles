@@ -20,6 +20,9 @@ Two gotchas on a minimal Hyprland setup:
 
 ## waybar-ycal (Google Calendar popup)
 
+> Legacy: esta seção só se aplica à configuração antiga da branch `main`.
+> Na branch `noctalia`, Waybar e waybar-ycal não são instalados nem ativados.
+
 Installed by `.setup/desktop.sh` (`aur/waybar-ycal`); the user service is
 enabled by `.setup/services.sh`. Three things the scripts cannot do for you.
 

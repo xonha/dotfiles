@@ -8,26 +8,14 @@ source "$SETUP_DIR/lib.sh"
 PKG_DESKTOP=(
   # Hyprland ecosystem
   hyprland
-  hyprpaper
-  hyprlock
   hyprtoolkit
-  hyprlauncher
-  hyprshutdown
-  hypridle
   hyprpicker
-  hyprsunset
-  xdg-desktop-portal-wlr
+  xdg-desktop-portal-hyprland
+  noctalia
 
   # Display & hardware
-  brightnessctl
-  light
-  nwg-displays
+  brightnessctl # usado pelo Noctalia
   nwg-look
-  mate-polkit
-
-  # Status bar & notifications
-  waybar
-  mako
 
   # Audio
   pipewire
@@ -35,9 +23,7 @@ PKG_DESKTOP=(
   noise-suppression-for-voice # RNNoise LADSPA plugin for mic denoising
 
   # Screenshot & screen capture
-  grim
-  slurp
-  swappy
+  satty
   kooha
 
   # File manager
@@ -76,7 +62,6 @@ PKG_DESKTOP=(
 
 PKG_DESKTOP_AUR=(
   aur/brave-bin
-  aur/hyprdynamicmonitors-bin
   aur/visual-studio-code-bin
   aur/wlctl-bin
   aur/pinta
@@ -85,9 +70,6 @@ PKG_DESKTOP_AUR=(
   # Spec Kit — spec-driven development CLI (uses uv from server step)
   aur/specify-cli-bin
 
-  # Google Calendar/Tasks popup for Waybar. Needs a one-time manual OAuth
-  # setup afterwards — see .setup/README.md.
-  aur/waybar-ycal
 )
 
 run() {

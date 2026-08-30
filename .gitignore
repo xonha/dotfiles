@@ -1,5 +1,4 @@
 .config/hypr/monitors.conf
-.config/hypr/monitors.lua
 .config/nvim/lazy-lock.json
 mimeinfo.cache
 .config/containers/systemd/paperclip.env

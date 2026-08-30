@@ -5,8 +5,9 @@
 -- Docs: https://wiki.hypr.land/Configuring/Start/
 -- Stubs pro LSP: /usr/share/hypr/stubs/hl.meta.lua
 --
--- Continuam em .conf (sao outros programas, nao o Hyprland):
---   hypridle.conf  hyprlock.conf  hyprpaper.conf  hyprsunset.conf  hyprtoolkit.conf
+-- Noctalia fornece bar, launcher, notificacoes, lock screen, wallpaper,
+-- controles de hardware e UI de sessao. Os .conf legados ficam no repositorio
+-- apenas como referencia e sao ignorados pelo Stow na branch noctalia.
 
 require("monitors")
 require("workspaces")

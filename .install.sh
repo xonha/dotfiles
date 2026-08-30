@@ -50,10 +50,6 @@ run
 source "$SETUP_DIR/services.sh"
 run
 
-# ── Uninstall legacy packages ─────────────────────────────────────────────
-source "$SETUP_DIR/uninstall.sh"
-run
-
 # ── keyd ──────────────────────────────────────────────────────────────────
 source "$SETUP_DIR/keyd.sh"
 run
