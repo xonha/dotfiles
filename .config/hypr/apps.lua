@@ -72,7 +72,7 @@ M.apps = {
         class = "brave-dlgohinmglaoopaiplliaecdpmnepmga-Default",
     },
 
-    explorer = { cmd = "dolphin ~/Downloads", class = "org.kde.dolphin" },
+    explorer = { cmd = "nemo ~/Downloads", class = "nemo" },
 
     devbox = {
         cmd   = "kitty --class kitty-devbox -e ssh devbox -t 'tmux new-session -A -s main'",

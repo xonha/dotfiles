@@ -7,7 +7,7 @@ set -Eeuo pipefail
 
 KEYD_SERVICE="keyd.service"
 DOCK_ID="0bda:8152"
-STATE_FILE="/tmp/dock-handler-state"
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/dock-handler-state"
 
 # Hyprland >= 0.55 com config em lua: `hyprctl keyword` nao existe mais
 # ("keyword can't work with non-legacy parsers. Use eval."). O equivalente e
@@ -72,6 +72,9 @@ case "${1:-}" in
 --travel) apply_travel ;;
 --default) apply_default ;;
 --loop)
+  # O estado do compositor pode ter mudado enquanto o servico estava parado.
+  # Force a reaplicacao do perfil no primeiro ciclo de cada execucao.
+  rm -f "$STATE_FILE"
   echo "Starting dock handler loop (polling every 3s)..."
   while true; do
     apply

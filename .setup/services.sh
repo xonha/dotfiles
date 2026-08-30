@@ -15,6 +15,12 @@ SERVICES_OPTIONAL=(
   docker.service
 )
 
+# User services used by the desktop session. Missing units are skipped by
+# enable_user_service, so this remains safe on headless machines.
+SERVICES_USER=(
+  dock-handler.service
+)
+
 enable_service() {
   local svc="$1"
   info "Enabling $svc..."
@@ -50,6 +56,10 @@ run() {
     if confirm_step "Enable $svc" ""; then
       enable_service "$svc"
     fi
+  done
+
+  for svc in "${SERVICES_USER[@]}"; do
+    enable_user_service "$svc"
   done
 
 }

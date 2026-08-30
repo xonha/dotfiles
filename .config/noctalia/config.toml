@@ -2,26 +2,22 @@
 ui_scale = 1.20
 
 [bar.default]
-center = [ "workspaces", "spacer_1", "active_window" ]
-concave_edge_corners = true
-end = [ "media", "spacer_1", "tray", "notifications", "network", "volume", "session" ]
-margin_edge = 0
-margin_ends = 0
-radius_bottom_left = 12
-radius_bottom_right = 12
-radius_top_left = 0
-radius_top_right = 0
-scale = 1.10
-start = [ "launcher", "clock", "spacer_1", "group:g1" ]
-thickness = 35
-
-    [[bar.default.capsule_group]]
-    border = ""
-    fill = "on_secondary"
-    id = "g1"
-    members = [ "temp", "sysmon_2", "sysmon_3" ]
-    opacity = 1.0
-    padding = 6.0
+background_opacity = 1.0
+capsule = false
+center = [ "taskbar", "tray" ]
+concave_edge_corners = false
+end = [ "battery", "lock_keys", "brightness", "input_volume", "output_volume", "bluetooth", "network", "clock" ]
+font_scale = 1.0
+font_weight = 700
+margin_edge = 5
+margin_ends = 10
+padding = 8
+radius = 4
+scale = 1.0
+shadow = false
+start = [ "temp", "cpu", "ram", "disk" ]
+thickness = 27
+widget_spacing = 6
 
 [shell]
 clipboard_image_action_command = "satty -f -"
@@ -79,22 +75,101 @@ settings_show_advanced = true
     variant = "destructive"
 
 [system.monitor]
+cpu_poll_seconds = 3
+disk_poll_seconds = 30
 gpu_poll_seconds = 2
+memory_poll_seconds = 10
 
 [theme]
+builtin = "Catppuccin"
 mode = "dark"
-source = "wallpaper"
-wallpaper_scheme = "m3-tonal-spot"
+source = "builtin"
 
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
 
 [widget.clock]
-color = "secondary"
+color = "#cba6f7"
 format = "{:%H:%M %A %m/%d/%y}"
+
+[widget.battery]
+color = "#a6e3a1"
+show_label = true
+
+[widget.bluetooth]
+color = "#89b4fa"
+show_label = true
+
+[widget.brightness]
+color = "#89dceb"
+show_label = true
+
+[widget.cpu]
+color = "#eba0ac"
+show_value = true
+stat = "cpu_usage"
+type = "sysmon"
+visualization = "none"
+
+[widget.disk]
+color = "#f9e2af"
+highlight_color = "#f9e2af"
+path = "/"
+show_value = true
+stat = "disk_free"
+type = "sysmon"
+visualization = "none"
+
+[widget.input_volume]
+color = "#74c7ec"
+device = "input"
+hide_when_inactive = false
+show_label = true
+type = "volume"
 
 [widget.launcher]
 color = "secondary"
 
+[widget.lock_keys]
+color = "#94e2d5"
+display = "short"
+hide_when_off = true
+show_caps_lock = true
+show_num_lock = false
+show_scroll_lock = false
+type = "lock_keys"
+
 [widget.media]
 hide_when_no_media = true
+
+[widget.network]
+color = "#b4befe"
+show_label = false
+
+[widget.output_volume]
+color = "#74c7ec"
+device = "output"
+show_label = true
+type = "volume"
+
+[widget.ram]
+color = "#fab387"
+show_value = true
+stat = "ram_used"
+type = "sysmon"
+visualization = "none"
+
+[widget.taskbar]
+active_opacity = 1.0
+group_by_workspace = false
+inactive_opacity = 1.0
+item_spacing = 4
+show_active_indicator = true
+show_all_outputs = true
+
+[widget.temp]
+color = "#f38ba8"
+show_value = true
+stat = "cpu_temp"
+type = "sysmon"
+visualization = "none"
