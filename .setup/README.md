@@ -1,5 +1,14 @@
 # Setup Notes
 
+## Login shell safety
+
+`.setup/shell.sh` runs immediately after the server packages are installed. It
+configures Zsh as the login shell only after confirming that `command -v zsh`
+returns an executable and that the exact path is present in `/etc/shells`.
+The step then verifies the resulting passwd entry. This prevents PAM's
+`pam_shells.so` from rejecting login if a distribution-provided shell (such as
+Fish) is later removed.
+
 ## Nemo sidebar / XDG folders
 
 Applied by `.setup/nemo.sh` (run from `.install.sh`).

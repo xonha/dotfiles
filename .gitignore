@@ -25,4 +25,5 @@ __pycache__/
 .agents/local.json
 
 # .ssh
-.ssh
+.ssh/*
+!.ssh/config

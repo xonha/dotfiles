@@ -7,6 +7,7 @@ source "$SETUP_DIR/lib.sh"
 
 PKG_SERVER=(
   # Shell & terminal tooling
+  zsh
   zsh-completions
   zsh-autosuggestions
   zsh-syntax-highlighting
