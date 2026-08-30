@@ -24,9 +24,6 @@ hl.bind("SUPER+R", hl.dsp.exec_cmd(focus(A.ytmusic)))
 hl.bind("SUPER+S", hl.dsp.exec_cmd(focus(A.devbot)))
 hl.bind("SUPER+D", hl.dsp.exec_cmd(focus(A.maistodos)))
 
-hl.bind("SUPER+I", hl.dsp.exec_cmd(focus(A.wlctl)))
-hl.bind("SUPER+U", hl.dsp.exec_cmd(focus(A.bluetui)))
-
 hl.bind("SUPER+X",       hl.dsp.exec_cmd(focus(A.devbox, "emptyn")))
 hl.bind("SUPER+SHIFT+X", hl.dsp.exec_cmd(focus(A.devbox, "current", true)))
 hl.bind("SUPER+C",       hl.dsp.exec_cmd(focus(A.maistodos_ssh, "emptyn")))

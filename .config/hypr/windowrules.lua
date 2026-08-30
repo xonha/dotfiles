@@ -13,17 +13,3 @@ for _, name in ipairs({ "devbot", "maistodos", "ytmusic", "todoist", "whatsapp" 
         monitor   = apps.monitors.secondary,
     })
 end
-
-hl.window_rule({
-    name  = "float-wlctl",
-    match = { class = "wlctl" },
-    float = true,
-    size  = "900 800",
-})
-
-hl.window_rule({
-    name  = "float-bluetui",
-    match = { class = "bluetui" },
-    float = true,
-    size  = "700 500",
-})

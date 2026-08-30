@@ -15,7 +15,6 @@ PKG_DESKTOP=(
 
   # Display & hardware
   brightnessctl # usado pelo Noctalia
-  nwg-look
 
   # Audio
   pipewire
@@ -39,11 +38,6 @@ PKG_DESKTOP=(
 
   # Productivity
   libreoffice-still
-  qalculate-gtk
-
-  # Bluetooth & networking
-  bluetui
-  impala
 
   # Keyboard
   keyd
@@ -64,7 +58,6 @@ PKG_DESKTOP=(
 PKG_DESKTOP_AUR=(
   aur/brave-bin
   aur/visual-studio-code-bin
-  aur/wlctl-bin
   aur/pinta
   aur/valent
 

@@ -73,8 +73,6 @@ M.apps = {
     },
 
     explorer = { cmd = "dolphin ~/Downloads", class = "org.kde.dolphin" },
-    wlctl    = { cmd = "kitty --class wlctl -e wlctl", class = "wlctl" },
-    bluetui  = { cmd = "kitty --class bluetui -e bluetui", class = "bluetui" },
 
     devbox = {
         cmd   = "kitty --class kitty-devbox -e ssh devbox -t 'tmux new-session -A -s main'",
