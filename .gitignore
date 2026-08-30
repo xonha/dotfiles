@@ -22,3 +22,7 @@ __pycache__/
 
 # --- valores machine/empresa-specific lidos pelas skills (ver local.example.json) ---
 .agents/local.json
+
+# .ssh
+.ssh/id_ed25519
+.ssh/id_ed25519.pub
