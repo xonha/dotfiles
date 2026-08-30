@@ -198,6 +198,7 @@ alias lg='ls -l --group-directories-first'
 # git
 alias g='git'
 alias gc='git checkout'
+alias gcp='git cherry-pick'
 
 alias update='yay --noconfirm --removemake && sudo pacman -Rns $(pacman -Qdtq) --noconfirm'
 alias up='update'
