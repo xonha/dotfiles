@@ -8,7 +8,7 @@
 set -Eeuo pipefail
 
 WAYBAR_SIGNAL=8
-ICON=$'\uf0ac' # nf-fa-globe, escapado: glifo literal nao sobrevive a edicao
+FALLBACK_ICON=$'\uf0ac' # nf-fa-globe, escapado: glifo literal nao sobrevive a edicao
 
 # perfil|arquivo .desktop|rotulo   -- a ordem aqui e a ordem do ciclo
 PROFILES=(
@@ -69,13 +69,13 @@ set_profile() {
 emit_json() {
   local i tip
   if ! i=$(current_index); then
-    printf '{"text":"%s  ?","class":"unknown","tooltip":"Navegador padrao fora do ciclo: %s"}\n' "$ICON" \
+    printf '{"text":"%s  ?","class":"unknown","tooltip":"Navegador padrao fora do ciclo: %s"}\n' "$FALLBACK_ICON" \
       "$(xdg-mime query default x-scheme-handler/https)"
     return
   fi
-  tip="Navegador padrao: ${ICONS[$i]} $(field "$i" 3)\rClique para ciclar"
+  tip="Navegador padrao: $(field "$i" 3)\rClique para ciclar"
   printf '{"text":"%s  %s","alt":"%s","class":"%s","tooltip":"%s"}\n' \
-    "$ICON" "$(field "$i" 3)" "$(field "$i" 1)" "$(field "$i" 1)" "$tip"
+    "${ICONS[$i]}" "$(field "$i" 3)" "$(field "$i" 1)" "$(field "$i" 1)" "$tip"
 }
 
 case "${1:-}" in
