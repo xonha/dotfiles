@@ -25,5 +25,4 @@ __pycache__/
 .agents/local.json
 
 # .ssh
-.ssh/id_ed25519
-.ssh/id_ed25519.pub
+.ssh
