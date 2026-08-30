@@ -1,0 +1,47 @@
+[Unit]
+Description=Samba — HD de 1TB exposto no tailnet
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=ghcr.io/servercontainers/samba:latest
+ContainerName=samba
+
+# O HD (/dev/sdb1, label "hd") é montado em /run/media/system/hd pelo
+# ublue-os-media-automount.service, que é um mount unit de *sistema*. Este
+# quadlet é rootless, e unit de usuário não consegue ordenar contra unit de
+# sistema. Por isso montamos o diretório PAI com rslave: /run é `shared`, então
+# o mount do disco propaga pra dentro do container quando o automount subir,
+# mesmo que seja depois do container. Só o share declarado abaixo é exposto.
+Volume=/run/media/system:/shares:rslave
+
+# Sem :z/:Z de propósito. O disco tem arquivos unlabeled_t (hydra, SteamLibrary)
+# e um relabel recursivo trocaria rótulos que a Steam já usa. label=disable
+# isenta apenas este container, sem escrever nada no disco.
+SecurityLabelDisable=true
+
+# Escuta só no IP do tailnet — nunca na LAN nem na internet.
+# 445 é porta privilegiada: exige net.ipv4.ip_unprivileged_port_start <= 445,
+# ver /etc/sysctl.d/99-unprivileged-smb.conf.
+PublishPort=100.120.120.72:445:445
+
+# force user = root: em podman rootless o uid 0 do container mapeia pro henrique
+# (uid 1000) no host, que é o dono do disco. Sem isso o smbd escreveria como uid
+# 1000 *do container*, que mapeia pra um subuid e quebraria a posse dos arquivos.
+Environment="SAMBA_VOLUME_CONFIG_storage=[Storage]; path=/shares/hd; valid users = henrique; guest ok = no; read only = no; browseable = yes; force user = root; force group = root"
+Environment=SAMBA_CONF_SERVER_STRING=console
+Environment=SAMBA_CONF_MAP_TO_GUEST=Never
+# Descoberta por broadcast não serve no tailnet — MagicDNS já resolve "console".
+Environment=WSDD2_DISABLE=1
+Environment=AVAHI_DISABLE=1
+Environment=TZ=America/Sao_Paulo
+
+# ACCOUNT_henrique=<senha>. Fora do git, modo 600 — igual paperclip.env.
+EnvironmentFile=%h/.config/containers/systemd/samba.env
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=120
+
+[Install]
+WantedBy=default.target

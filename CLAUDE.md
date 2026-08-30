@@ -11,6 +11,7 @@ Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy
 - [Paperclip](docs/paperclip.md) — AI agent orchestrator on console (Podman + Quadlet)
 - [n8n](docs/n8n-bazzite.md) — n8n self-hosted on Bazzite (Podman + Quadlet)
 - [Minecraft](docs/minecraft.md) — Crafty Controller on console; Tailscale-only access for friends
+- [Storage](docs/storage.md) — 1 TB HDD on console shared over Tailscale via Samba (rootless Podman + Quadlet)
 - [Setup notes](.setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Stow layout](#stow-layout) — directory map for this repo
 
@@ -30,7 +31,7 @@ Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.docker/Dockerfile`          | devbox container image                                      |
-| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Paperclip, Crafty) |
+| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Paperclip, Crafty, Samba) |
 | `.setup/`                     | Setup scripts sourced by `.install.sh`                      |
 
 ## Adding Dotfiles
