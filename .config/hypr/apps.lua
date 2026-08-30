@@ -72,7 +72,7 @@ M.apps = {
         class = "brave-dlgohinmglaoopaiplliaecdpmnepmga-Default",
     },
 
-    explorer = { cmd = "nemo ~/Downloads", class = "nemo" },
+    explorer = { cmd = "dolphin ~/Downloads", class = "org.kde.dolphin" },
     wlctl    = { cmd = "kitty --class wlctl -e wlctl", class = "wlctl" },
     bluetui  = { cmd = "kitty --class bluetui -e bluetui", class = "bluetui" },
 

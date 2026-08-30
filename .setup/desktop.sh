@@ -35,6 +35,7 @@ PKG_DESKTOP=(
 
   # Media
   mpv
+  playerctl
 
   # Productivity
   libreoffice-still
