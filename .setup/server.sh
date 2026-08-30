@@ -11,6 +11,7 @@ PKG_SERVER=(
   zsh-autosuggestions
   zsh-syntax-highlighting
   zsh-history-substring-search
+  zsh-theme-powerlevel10k
 
   # Editors & language runtimes
   neovim
@@ -39,8 +40,6 @@ PKG_SERVER=(
 )
 
 PKG_SERVER_AUR=(
-  aur/zsh-theme-powerlevel10k-bin-git
-  aur/zsh-auto-venv-git
 )
 
 run() {

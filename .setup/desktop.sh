@@ -29,7 +29,6 @@ PKG_DESKTOP=(
   nemo
   nemo-audio-tab
   nemo-fileroller
-  nemo-preview
   nemo-python
 
   # Media
