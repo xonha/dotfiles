@@ -13,7 +13,9 @@ PKG_DESKTOP=(
   xdg-desktop-portal-hyprland
   noctalia
   kitty
+
   kdeconnect
+  srcrpy
 
   # Display & hardware
   brightnessctl # usado pelo Noctalia
