@@ -22,6 +22,10 @@ __pycache__/
 # --- valores machine/empresa-specific lidos pelas skills (ver local.example.json) ---
 .agents/local.json
 
+# --- claude code local state (mantem apenas .claude/skills versionado) ---
+.claude/*
+!.claude/skills
+
 # .ssh
 .ssh/*
 !.ssh/config
