@@ -7,6 +7,7 @@ local A     = apps.apps
 local S     = apps.scripts
 local K     = apps.keys
 local focus = apps.focus
+local noct  = "noctalia msg "
 
 -- -- Playerctl --------------------------------------------------------------
 
@@ -23,9 +24,6 @@ hl.bind("SUPER+R", hl.dsp.exec_cmd(focus(A.ytmusic)))
 hl.bind("SUPER+S", hl.dsp.exec_cmd(focus(A.devbot)))
 hl.bind("SUPER+D", hl.dsp.exec_cmd(focus(A.maistodos)))
 
-hl.bind("SUPER+I", hl.dsp.exec_cmd(focus(A.wlctl)))
-hl.bind("SUPER+U", hl.dsp.exec_cmd(focus(A.bluetui)))
-
 hl.bind("SUPER+X",       hl.dsp.exec_cmd(focus(A.devbox, "emptyn")))
 hl.bind("SUPER+SHIFT+X", hl.dsp.exec_cmd(focus(A.devbox, "current", true)))
 hl.bind("SUPER+C",       hl.dsp.exec_cmd(focus(A.maistodos_ssh, "emptyn")))
@@ -41,30 +39,32 @@ hl.bind("SUPER+SHIFT+A", hl.dsp.exec_cmd(focus(A.code_new, "current", true)))
 
 -- -- Misc -------------------------------------------------------------------
 
-hl.bind("SUPER+Backspace", hl.dsp.exec_cmd(S.powermenu))
-hl.bind("SUPER+Space",     hl.dsp.exec_cmd("hyprlauncher"))
-hl.bind("SUPER+Delete",    hl.dsp.exec_cmd("hyprlauncher"))
-hl.bind("SUPER+" .. K.C1,  hl.dsp.exec_cmd("hyprlock"))
+hl.bind("SUPER+Backspace", hl.dsp.exec_cmd(noct .. "panel-toggle session"))
+hl.bind("SUPER+Space",     hl.dsp.exec_cmd(noct .. "panel-toggle launcher"))
+hl.bind("SUPER+Delete",    hl.dsp.exec_cmd(noct .. "panel-toggle launcher"))
+hl.bind("SUPER+" .. K.C1,  hl.dsp.exec_cmd(noct .. "session lock"))
 hl.bind("SUPER+P",         hl.dsp.exec_cmd("hyprpicker --autocopy --notify"))
-hl.bind("SUPER+T",         hl.dsp.exec_cmd(S.volume .. " --toggle-mic"))
+hl.bind("SUPER+T",         hl.dsp.exec_cmd(noct .. "mic-mute"))
 hl.bind("SUPER+K",         hl.dsp.exec_cmd(S.keyd .. " --toggle"))
 hl.bind("SUPER+N",         hl.dsp.exec_cmd(S.denoise .. " toggle"))
 hl.bind("SUPER+J",         hl.dsp.exec_cmd("hyprctl kill"))
-hl.bind("SUPER+Z",         hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
+hl.bind("SUPER+Z",         hl.dsp.exec_cmd(noct .. "screenshot-region"))
+hl.bind("SUPER+ALT+C",     hl.dsp.exec_cmd(noct .. "panel-toggle control-center"))
+hl.bind("SUPER+ALT+Z",     hl.dsp.exec_cmd(noct .. "settings-toggle"))
 
 -- -- Teclas de funcao -------------------------------------------------------
 
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(S.backlight .. " --inc"))
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(S.backlight .. " --dec"))
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(S.volume .. " --inc"))
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(S.volume .. " --dec"))
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(S.volume .. " --toggle"))
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(S.volume .. " --toggle-mic"))
-hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("playerctl next"))
-hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd("playerctl previous"))
-hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd(S.volume .. " --toggle-mic"))
-hl.bind("XF86AudioPause",        hl.dsp.exec_cmd(S.volume .. " --toggle-mic"))
-hl.bind("XF86AudioStop",         hl.dsp.exec_cmd("playerctl stop"))
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(noct .. "brightness-up"),   { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noct .. "brightness-down"), { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(noct .. "volume-up"),       { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(noct .. "volume-down"),     { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(noct .. "volume-mute"),     { locked = true })
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(noct .. "mic-mute"),        { locked = true })
+hl.bind("XF86AudioNext",         hl.dsp.exec_cmd(noct .. "media next"),      { locked = true })
+hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd(noct .. "media previous"),  { locked = true })
+hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd(noct .. "media toggle"),    { locked = true })
+hl.bind("XF86AudioPause",        hl.dsp.exec_cmd(noct .. "media toggle"),    { locked = true })
+hl.bind("XF86AudioStop",         hl.dsp.exec_cmd("playerctl stop"),          { locked = true })
 
 -- -- Hyprland ---------------------------------------------------------------
 
@@ -124,7 +124,7 @@ end
 
 -- -- Tampa, pin, swap -------------------------------------------------------
 
-hl.bind("switch:Lid Switch", hl.dsp.exec_cmd("hyprlock"), { locked = true })
+hl.bind("switch:Lid Switch", hl.dsp.exec_cmd(noct .. "session lock"), { locked = true })
 
 hl.bind("SUPER+ALT+P", hl.dsp.window.pin())
 hl.bind("SUPER+ALT+P", hl.dsp.exec_cmd(apps.notify .. " 'Toggled Pin'"))

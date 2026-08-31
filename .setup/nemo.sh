@@ -18,7 +18,16 @@ declare -A ICONS=(
 run() {
   header "Configure Nemo sidebar"
 
-  # 1. Map the XDG special folders ($HOME/Documents, ...) instead of $HOME.
+  # 1. Apply the Papirus icon theme to Nemo/Cinnamon and GTK applications.
+  if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.cinnamon.desktop.interface icon-theme 'Papirus-Dark'
+    gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+    success "Papirus-Dark icon theme applied."
+  else
+    warn "gsettings not found; icon theme not applied."
+  fi
+
+  # 2. Map the XDG special folders ($HOME/Documents, ...) instead of $HOME.
   #    Also wired into hyprland exec-once so it re-runs on every login.
   if command -v xdg-user-dirs-update >/dev/null 2>&1; then
     LC_ALL=C.UTF-8 xdg-user-dirs-update --force
@@ -27,7 +36,7 @@ run() {
     warn "xdg-user-dirs not installed; skipping."
   fi
 
-  # 2. Seed the sidebar. First 5 entries are the XDG folders, the rest are
+  # 3. Seed the sidebar. First 5 entries are the XDG folders, the rest are
   #    the personal ones (kept in sync with ICONS and the breakpoint below).
   local bookmarks="$HOME/.config/gtk-3.0/bookmarks"
   mkdir -p "$(dirname "$bookmarks")"
@@ -43,7 +52,7 @@ file://$HOME/Android Android
 EOF
   success "Sidebar bookmarks seeded."
 
-  # 3. Split point: the first 5 bookmarks group under "My Computer", the
+  # 4. Split point: the first 5 bookmarks group under "My Computer", the
   #    personal ones under "Bookmarks".
   if command -v dconf >/dev/null 2>&1; then
     dconf write /org/nemo/window-state/sidebar-bookmark-breakpoint 5
@@ -52,7 +61,7 @@ EOF
     warn "dconf not found; sidebar grouping not applied."
   fi
 
-  # 4. Custom Papirus folder icons (stored in GIO metadata, per-machine).
+  # 5. Custom Papirus folder icons (stored in GIO metadata, per-machine).
   if command -v gio >/dev/null 2>&1; then
     for dir in "${!ICONS[@]}"; do
       mkdir -p "$HOME/$dir"

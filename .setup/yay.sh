@@ -7,6 +7,11 @@ source "$SETUP_DIR/lib.sh"
 run() {
   header "Bootstrap yay"
 
+  if command -v yay >/dev/null 2>&1; then
+    success "yay already installed; skipping bootstrap."
+    return 0
+  fi
+
   info "Updating keyring..."
   sudo pacman -Sy --needed --noconfirm archlinux-keyring
 

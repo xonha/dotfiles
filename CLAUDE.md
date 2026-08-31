@@ -1,6 +1,8 @@
 # Dotfiles
 
-Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy.
+CachyOS + Hyprland + Noctalia dotfiles managed with GNU Stow. Run `stow .`
+from the repo root to deploy. The previous Archcraft-oriented setup remains on
+the `main` branch; the Noctalia migration lives on `noctalia`.
 
 ## Index
 
@@ -19,11 +21,10 @@ Arch Linux dotfiles managed with GNU Stow. Run `stow .` from repo root to deploy
 
 | Path                          | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
-| `.config/hypr/`               | Hyprland WM — Lua config (`hyprland.lua` + modules; `monitors.lua` gitignored — machine-specific). `hypridle`/`hyprlock`/`hyprpaper`/`hyprsunset`/`hyprtoolkit` stay in `.conf` |
+| `.config/hypr/`               | Hyprland WM — Lua config, custom bindings, focus workflow, window rules and monitor profiles |
+| `.config/noctalia/`           | Noctalia shell — bar, launcher, control center, notifications, lock, wallpaper and session UI |
 | `.config/kitty/`              | Kitty terminal                                              |
 | `.config/nvim/`               | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
-| `.config/waybar/`             | Waybar status bar                                           |
-| `.config/mako/`               | Mako notifications                                          |
 | `.config/opencode/`           | OpenCode                                                    |
 | `.config/scripts/`            | Custom shell scripts                                        |
 | `.tmux.conf`                  | Tmux                                                        |

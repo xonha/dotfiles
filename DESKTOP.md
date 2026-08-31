@@ -1,5 +1,9 @@
 # Future desktop setup
 
+> Implementado inicialmente na branch `noctalia`: o shell Noctalia substitui
+> os componentes genéricos, enquanto os atalhos, regras e o `focus.sh`
+> específicos continuam sob controle destes dotfiles.
+
 ## Base setup
 
 When reinstalling the system, the intended setup is:

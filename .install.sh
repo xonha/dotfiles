@@ -29,6 +29,11 @@ run
 source "$SETUP_DIR/server.sh"
 run
 
+# Configure the login shell only after Zsh has been installed. This must also
+# precede any future cleanup of the shell inherited from the base system.
+source "$SETUP_DIR/shell.sh"
+run
+
 # ── Desktop packages (optional) ───────────────────────────────────────────
 if confirm_step \
     "Install desktop packages" \
@@ -48,10 +53,6 @@ run
 
 # ── Services ──────────────────────────────────────────────────────────────
 source "$SETUP_DIR/services.sh"
-run
-
-# ── Uninstall legacy packages ─────────────────────────────────────────────
-source "$SETUP_DIR/uninstall.sh"
 run
 
 # ── keyd ──────────────────────────────────────────────────────────────────

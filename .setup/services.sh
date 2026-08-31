@@ -15,10 +15,10 @@ SERVICES_OPTIONAL=(
   docker.service
 )
 
-# User services (systemctl --user, no sudo). These ship with desktop packages,
-# so they are skipped silently on a headless machine where the unit is absent.
+# User services used by the desktop session. Missing units are skipped by
+# enable_user_service, so this remains safe on headless machines.
 SERVICES_USER=(
-  waybar-ycal.service
+  dock-handler.service
 )
 
 enable_service() {
@@ -61,6 +61,7 @@ run() {
   for svc in "${SERVICES_USER[@]}"; do
     enable_user_service "$svc"
   done
+
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

@@ -3,7 +3,7 @@
 systemctl --user enable --now hypridle.service
 systemctl --user enable --now hyprpaper.service
 systemctl --user enable --now hyprsunset.service
-systemctl --user enable --now hyprdynamicmonitors-prepare.service
+systemctl --user enable --now dock-handler.service
 
 sudo systemctl enable --now tailscaled.service
 sudo systemctl enable --now earlyoom.service
