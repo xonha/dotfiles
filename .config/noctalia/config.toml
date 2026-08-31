@@ -90,7 +90,7 @@ mode = "dark"
 source = "custom"
 
     [theme.templates]
-    builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
+    builtin_ids = [ "btop", "kcolorscheme", "kitty", "qt", "alacritty" ]
 
 [widget.clock]
 color = "#cba6f7"
