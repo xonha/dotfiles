@@ -32,10 +32,6 @@ done
 
 if ((target)); then
   [[ -f "$MIC_OFF_SOUND" ]] && pw-play "$MIC_OFF_SOUND" >/dev/null 2>&1 &
-  notify-send -h string:x-canonical-private-synchronous:mic-mute -u low \
-    "Microfones mutados" 2>/dev/null || true
 else
   [[ -f "$MIC_ON_SOUND" ]] && pw-play "$MIC_ON_SOUND" >/dev/null 2>&1 &
-  notify-send -h string:x-canonical-private-synchronous:mic-mute -u normal \
-    "Microfones ativos" 2>/dev/null || true
 fi
