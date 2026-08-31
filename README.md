@@ -25,30 +25,32 @@ Para habilitar wake por teclado e tampa nesta máquina:
 Os IDs de hardware e o diagnóstico estão documentados em
 [`.setup/README.md`](.setup/README.md).
 
-## Devbox no Bazzite
+## Devbot no Bazzite
 
-A imagem Arch usada pelo devbox está definida apenas em
-[`.setup/devbox/Dockerfile`](.setup/devbox/Dockerfile). Para construí-la:
+A imagem Arch usada pelo devbot está definida apenas em
+[`.setup/devbot/Dockerfile`](.setup/devbot/Dockerfile). O guia operacional
+completo está em [`.setup/docs/devbot.md`](.setup/docs/devbot.md). Para
+construí-la:
 
 ```bash
-mkdir -p "$HOME/devbox/workspace"
-podman build -t devbox:latest .setup/devbox
+mkdir -p "$HOME/devbot/workspace"
+podman build -t devbot:latest .setup/devbot
 ```
 
 Crie o container com o workspace persistente:
 
 ```bash
 podman create \
-  --name devbox \
-  --hostname devbox \
+  --name devbot \
+  --hostname devbot \
   --memory 14g \
   --memory-swap 14g \
   --pids-limit 4096 \
   -p 2222:22 \
   -v "$HOME/.ssh/id_ed25519.pub:/run/host_ssh_key:ro,Z" \
-  -v "$HOME/devbox/workspace:/workspace:Z" \
+  -v "$HOME/devbot/workspace:/workspace:Z" \
   -w /workspace \
-  devbox:latest
+  devbot:latest
 ```
 
 O SSH aceita somente a chave pública montada acima; não há senha fixa na

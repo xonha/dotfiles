@@ -1,4 +1,4 @@
-# Local Dev Infrastructure
+# Local Development Infrastructure
 
 All machines connected via Tailscale MagicDNS.
 
@@ -8,16 +8,16 @@ All machines connected via Tailscale MagicDNS.
 |-------|-------------|------|-------|
 | `laptop` | `laptop` | 22 | ThinkPad — Arch Linux desktop |
 | `maistodos` | `maistodos` | 22 | Work machine — Arch WSL2 |
-| `devbox` | `console` | 2222 | Arch dev container on `console`; forwards local :3000 |
+| `devbot` | `console` | 2222 | Arch dev container on `console`; forwards local :3000 |
 | `console` | `console` | 22 | Direct — no alias; see [console access](#console--bazzite-host) |
 
 ```bash
 ssh laptop       # ThinkPad
 ssh maistodos    # work machine (Arch WSL2)
-ssh devbox       # Arch devbox container on console (port 2222)
+ssh devbot       # Arch devbot container on console (port 2222)
 ```
 
-> **devbox port forward**: `ssh devbox` automatically binds local port 3000 to
+> **devbot port forward**: `ssh devbot` automatically binds local port 3000 to
 > `localhost:3000` inside the container (for web services running in the dev
 > environment). This is intentional — you may see port 3000 appear open on your
 > connecting machine while the session is active.
@@ -59,7 +59,7 @@ SSH access via the `laptop` alias.
 ### console — Bazzite Host
 
 Home server running rootless Podman containers as systemd user services.
-SSH access via direct connection (`ssh <your-user>@console`) — the `devbox`
+SSH access via direct connection (`ssh <your-user>@console`) — the `devbot`
 alias also lands on this machine (on port 2222, into the container).
 
 ### maistodos — Work Machine (Arch WSL2)
@@ -73,16 +73,16 @@ the Windows system tray (not just in the WSL2 environment).
 
 | Container | SSH Port | Service Port | Purpose |
 |-----------|----------|--------------|---------|
-| `devbox` | 2222 | — | Arch Linux dev environment (see [devbox.md](devbox.md)) |
+| `devbot` | 2222 | — | Arch Linux dev environment (see [devbot.md](devbot.md)) |
 | `n8n` | — | 5678 | Workflow automation |
 | `crafty` | — | 8443, 25565 | Minecraft server manager (see [minecraft.md](minecraft.md)) |
 
 Manage services on `console`:
 
 ```bash
-systemctl --user status devbox.service    # check devbox container
-systemctl --user start  devbox.service    # start if stopped
-systemctl --user stop   devbox.service    # stop
+systemctl --user status devbot.service    # check devbot container
+systemctl --user start  devbot.service    # start if stopped
+systemctl --user stop   devbot.service    # stop
 ```
 
 ## Troubleshooting
@@ -104,22 +104,22 @@ sudo systemctl start tailscaled   # Linux hosts
 
 ---
 
-### `ssh devbox` times out or refuses (container stopped)
+### `ssh devbot` times out or refuses (container stopped)
 
-**Symptom**: `tailscale status` shows `console` as **online**, but `ssh devbox`
+**Symptom**: `tailscale status` shows `console` as **online**, but `ssh devbot`
 hangs or returns "Connection refused".
 
-**Diagnosis**: The `devbox` container on `console` is not running. Verify:
+**Diagnosis**: The `devbot` container on `console` is not running. Verify:
 
 ```bash
 ssh <your-user>@console
-systemctl --user status devbox.service
+systemctl --user status devbot.service
 ```
 
 **Recovery**:
 
 ```bash
-systemctl --user start devbox.service
+systemctl --user start devbot.service
 ```
 
 ---
@@ -138,20 +138,20 @@ reachable.
 
 ---
 
-### `console` is powered off (devbox and console both unreachable)
+### `console` is powered off (devbot and console both unreachable)
 
-**Symptom**: Both `ssh devbox` and `ssh <your-user>@console` fail
+**Symptom**: Both `ssh devbot` and `ssh <your-user>@console` fail
 simultaneously. `tailscale status` shows `console` as offline.
 
 **Diagnosis**: This is distinct from the container-stopped case — the entire
-`console` machine is offline. Both `devbox` and `n8n` are unavailable.
+`console` machine is offline. Both `devbot` and `n8n` are unavailable.
 
-**Recovery**: Power on `console`. All hosted services (`devbox.service`,
+**Recovery**: Power on `console`. All hosted services (`devbot.service`,
 `n8n`) start automatically on boot via their systemd user services. No manual
 intervention is needed once the machine is on and Tailscale reconnects.
 
 ## Typical Workflow
 
-- Code on `laptop` (Arch, local editor) or inside `devbox` (SSH + Neovim).
+- Code on `laptop` (Arch, local editor) or inside `devbot` (SSH + Neovim).
 - Services on `console` accessible from any machine via Tailscale.
 - Work tasks on `maistodos` (WSL2 Arch for dev, Windows for meetings/Office).

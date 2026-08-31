@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
-Name=Kitty Devbox
-GenericName=kitty-devbox
+Name=Kitty Devbot
+GenericName=kitty-devbot
 StartupNotify=true
-StartupWMClass=kitty-devbox
-Exec=kitty --class kitty-devbox
+StartupWMClass=kitty-devbot
+Exec=kitty --class kitty-devbot
 Terminal=false
 Icon=terminus
 Type=Application

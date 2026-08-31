@@ -200,10 +200,8 @@ alias g='git'
 alias gc='git checkout'
 alias gcp='git cherry-pick'
 
-alias update='yay --noconfirm --removemake && sudo pacman -Rns $(pacman -Qdtq) --noconfirm'
-alias up='update'
-alias delete='yay -R --noconfirm'
-alias del='delete'
+alias up='yay --noconfirm --removemake && sudo pacman -Rns $(pacman -Qdtq) --noconfirm'
+alias del='yay -R --noconfirm'
 alias add='yay --noconfirm --removemake'
 
 dot() {
@@ -220,7 +218,7 @@ alias dotfiles='dot'
 alias maistodos='ssh maistodos'
 alias console='ssh console'
 alias laptop='ssh laptop'
-alias devbox='ssh devbox'
+alias devbot='ssh devbot'
 
 export PATH="/home/henrique/.detaspace/bin:$PATH"
 

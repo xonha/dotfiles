@@ -73,9 +73,9 @@ M.apps = {
 
     explorer = { cmd = "nemo ~/Downloads", class = "nemo" },
 
-    devbox = {
-        cmd   = "kitty --class kitty-devbox -e ssh devbox -t 'tmux new-session -A -s main'",
-        class = "kitty-devbox",
+    devbot_ssh = {
+        cmd   = "kitty --class kitty-devbot -e ssh devbot -t 'tmux new-session -A -s main'",
+        class = "kitty-devbot",
     },
     maistodos_ssh = {
         cmd   = "kitty --class kitty-maistodos -e ssh maistodos -t 'tmux new-session -A -s main'",
