@@ -1,0 +1,18 @@
+id = "xonha/desktop-controls"
+name = "Desktop Controls"
+version = "1.0.0"
+plugin_api = 24
+author = "Henrique Oliveira"
+license = "MIT"
+dependencies = ["systemctl", "xdg-mime"]
+tags = ["bar", "browser", "hardware", "utility"]
+icon = "adjustments"
+description = "Bar indicators for Keyd and the default Brave profile."
+
+[[widget]]
+id = "keyd"
+entry = "keyd.luau"
+
+[[widget]]
+id = "brave-profile"
+entry = "brave-profile.luau"

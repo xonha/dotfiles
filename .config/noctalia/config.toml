@@ -6,7 +6,7 @@ background_opacity = 1.0
 capsule = false
 center = [ "taskbar", "tray" ]
 concave_edge_corners = false
-end = [ "battery", "lock_keys", "brightness", "input_volume", "output_volume", "bluetooth", "network", "calendar", "clock" ]
+end = [ "brave_profile", "keyd", "battery", "lock_keys", "brightness", "input_volume", "output_volume", "bluetooth", "network", "calendar", "clock" ]
 font_scale = 1.0
 font_weight = 700
 margin_edge = 5
@@ -116,6 +116,9 @@ show_label = true
 color = "#89dceb"
 show_label = true
 
+[widget.brave_profile]
+type = "xonha/desktop-controls:brave-profile"
+
 [widget.cpu]
 color = "#eba0ac"
 show_value = true
@@ -138,6 +141,9 @@ device = "input"
 hide_when_inactive = false
 show_label = true
 type = "volume"
+
+[widget.keyd]
+type = "xonha/desktop-controls:keyd"
 
 [widget.launcher]
 color = "secondary"
