@@ -6,7 +6,7 @@ background_opacity = 1.0
 capsule = false
 center = [ "taskbar", "tray" ]
 concave_edge_corners = false
-end = [ "battery", "lock_keys", "brightness", "input_volume", "output_volume", "bluetooth", "network", "clock" ]
+end = [ "battery", "lock_keys", "brightness", "input_volume", "output_volume", "bluetooth", "network", "calendar", "clock" ]
 font_scale = 1.0
 font_weight = 700
 margin_edge = 5
@@ -94,7 +94,15 @@ source = "custom"
 
 [widget.clock]
 color = "#cba6f7"
-format = "{:%H:%M %A %m/%d/%y}"
+format = "{:%H:%M}"
+
+    [widget.clock.actions]
+    left = "panel-toggle control-center notifications"
+
+[widget.calendar]
+color = "#cba6f7"
+format = "{:%a %d/%m}"
+type = "clock"
 
 [widget.battery]
 color = "#a6e3a1"
@@ -148,7 +156,7 @@ hide_when_no_media = true
 
 [widget.network]
 color = "#b4befe"
-show_label = false
+show_label = true
 
 [widget.output_volume]
 color = "#74c7ec"
