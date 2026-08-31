@@ -166,7 +166,7 @@ group_by_workspace = false
 inactive_opacity = 1.0
 item_spacing = 4
 show_active_indicator = true
-show_all_outputs = true
+show_all_outputs = false
 
 [widget.temp]
 color = "#f38ba8"
