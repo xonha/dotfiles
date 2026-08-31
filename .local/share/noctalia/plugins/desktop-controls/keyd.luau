@@ -4,10 +4,11 @@ local active = false
 local busy = false
 
 local function render()
+  barWidget.setVisible(active)
   barWidget.setGlyph("keyboard")
-  barWidget.setGlyphColor(if active then "primary" else "error")
+  barWidget.setGlyphColor("primary")
   barWidget.setText(if barWidget.isVertical() then "" else "Keyd")
-  barWidget.setTooltip(if active then "Keyd ativo — clique para desativar" else "Keyd inativo — clique para ativar")
+  barWidget.setTooltip("Keyd ativo — clique para desativar")
 end
 
 local function refresh()

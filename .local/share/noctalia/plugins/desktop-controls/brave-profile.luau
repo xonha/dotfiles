@@ -10,7 +10,6 @@ end
 
 local function render()
   barWidget.setGlyph("brand-brave")
-  barWidget.setGlyphColor(if label == "Outro" then "error" else "primary")
   barWidget.setText(if barWidget.isVertical() then "" else label)
   barWidget.setTooltip(`Navegador padrão: {label} — clique para trocar`)
 end
