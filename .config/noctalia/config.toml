@@ -82,8 +82,9 @@ memory_poll_seconds = 10
 
 [theme]
 builtin = "Catppuccin"
+custom_palette = "Catppuccin-Black"
 mode = "dark"
-source = "builtin"
+source = "custom"
 
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
