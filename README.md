@@ -7,7 +7,7 @@ sudo systemctl enable --now earlyoom.service
 
 ## Bazzite Development Container Setup
 
-This repository includes a `Dockerfile` for creating an Arch Linux development container (`devbox`) on Bazzite with automatic startup.
+This repository includes `.setup/devbox/Dockerfile` for creating an Arch Linux development container (`devbox`) on Bazzite with automatic startup.
 
 Persistence note: with the systemd unit generated without `--new`, container writable-layer data persists across reboot/restart as long as the same container is reused. If you remove and recreate the container, writable-layer data is lost; keep important data in bind mounts/volumes such as `/workspace`.
 

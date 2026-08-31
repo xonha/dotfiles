@@ -8,7 +8,7 @@ Arch Linux container running under rootless Podman on a Bazzite host, auto-start
 |-|-|
 | Container name | `devbox` |
 | Hostname | `devbox` |
-| Image | `devbox:latest` (built from `.docker/Dockerfile`) |
+| Image | `devbox:latest` (built from `.setup/devbox/Dockerfile`) |
 | SSH | host port `2222` → container port `22` |
 | Workspace | `~/devbox/workspace` → `/workspace` (bind mount) |
 | Memory | 14 GB RAM + 14 GB swap |
@@ -36,9 +36,9 @@ journalctl --user -u devbox.service -f
 ## First-Time Setup
 
 ```bash
-mkdir -p ~/devbox-image ~/devbox/workspace
-# Copy Dockerfile content to ~/devbox-image/Dockerfile
-podman build -t devbox:latest ~/devbox-image
+# From the dotfiles repository root:
+mkdir -p ~/devbox/workspace
+podman build -t devbox:latest -f .setup/devbox/Dockerfile .setup/devbox
 podman create --name devbox --hostname devbox \
   --memory 14g --memory-swap 14g --pids-limit 4096 \
   -p 2222:22 -v ~/devbox/workspace:/workspace:Z \
@@ -54,7 +54,8 @@ loginctl enable-linger $USER
 ## Rebuild After Dockerfile Changes
 
 ```bash
-podman build --no-cache -t devbox:latest ~/devbox-image
+# From the dotfiles repository root:
+podman build --no-cache -t devbox:latest -f .setup/devbox/Dockerfile .setup/devbox
 systemctl --user stop devbox.service
 podman rm -f devbox
 # re-run podman create ... (same flags as above)

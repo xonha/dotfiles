@@ -30,9 +30,8 @@ the `main` branch; the Noctalia migration lives on `noctalia`.
 | `.zshrc` / `.zshenv`          | Zsh + Powerlevel10k (`.p10k.zsh`)                           |
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
-| `.docker/Dockerfile`          | devbox container image                                      |
 | `.config/containers/systemd/` | Podman Quadlet units for `console` services (Crafty, Samba) |
-| `.setup/`                     | Setup scripts sourced by `.install.sh`                      |
+| `.setup/`                     | Setup scripts and the `devbox` container image              |
 
 ## Adding Dotfiles
 
