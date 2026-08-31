@@ -9,7 +9,7 @@ local function trim(value)
 end
 
 local function render()
-  barWidget.setGlyph("brand-brave")
+  barWidget.setImage("/usr/share/icons/Papirus/24x24/apps/brave.svg", false, 18, 18)
   barWidget.setText(if barWidget.isVertical() then "" else label)
   barWidget.setTooltip(`Navegador padrão: {label} — clique para trocar`)
 end
