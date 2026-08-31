@@ -6,7 +6,7 @@
 set -Eeuo pipefail
 
 KEYD_SERVICE="keyd.service"
-DOCK_ID="0bda:8152"
+DOCK_USB_ID="${DOCK_USB_ID:-0bda:8152}"
 STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/dock-handler-state"
 
 # Hyprland >= 0.55 com config em lua: `hyprctl keyword` nao existe mais
@@ -44,11 +44,14 @@ apply_default() {
 }
 
 check_dock() {
-  if lsusb | grep -q "$DOCK_ID"; then
-    return 0
-  else
-    return 1
-  fi
+  local device vendor product
+  for device in /sys/bus/usb/devices/*; do
+    [[ -r "$device/idVendor" && -r "$device/idProduct" ]] || continue
+    read -r vendor <"$device/idVendor"
+    read -r product <"$device/idProduct"
+    [[ "$vendor:$product" == "$DOCK_USB_ID" ]] && return 0
+  done
+  return 1
 }
 
 apply() {

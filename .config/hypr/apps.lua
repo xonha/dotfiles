@@ -12,6 +12,7 @@ M.scripts = {
     focus     = "~/.config/scripts/focus.sh",
     keyd      = "~/.config/scripts/keyd.sh",
     denoise   = "~/.config/scripts/denoise.sh",
+    mic_mute  = "~/.config/scripts/mic-mute.sh",
 }
 
 M.notify = "notify-send -h string:x-canonical-private-synchronous:hypr-cfg -u low"
