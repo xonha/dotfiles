@@ -38,8 +38,6 @@ apply_profile() {
   local index=$1 desktop
   desktop=$(field "$index" 2)
   xdg-mime default "$desktop" "${MIMES[@]}"
-  notify-send -h string:x-canonical-private-synchronous:browser-profile -u low \
-    "Navegador padrão: $(field "$index" 3)" 2>/dev/null || true
 }
 
 cycle_profile() {

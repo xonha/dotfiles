@@ -6,7 +6,7 @@ local busy = false
 local function render()
   barWidget.setVisible(active)
   barWidget.setGlyph("keyboard")
-  barWidget.setGlyphColor("primary")
+  barWidget.setGlyphColor("#f5e0dc")
   barWidget.setText(if barWidget.isVertical() then "" else "Keyd")
   barWidget.setTooltip("Keyd ativo — clique para desativar")
 end
