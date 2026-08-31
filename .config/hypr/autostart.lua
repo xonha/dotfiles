@@ -5,6 +5,7 @@ hl.on("hyprland.start", function()
     -- Noctalia substitui Waybar, Mako, hyprlock, hyprpaper, hyprsunset,
     -- launcher, controles de hardware e o agente Polkit.
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+    hl.exec_cmd("systemctl --user restart dock-handler.service")
     hl.exec_cmd("xdg-user-dirs-update")
     hl.exec_cmd("noctalia")
     hl.exec_cmd("xhost +SI:localuser:root")
