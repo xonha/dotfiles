@@ -37,7 +37,7 @@ run
 # ── Desktop packages (optional) ───────────────────────────────────────────
 if confirm_step \
     "Install desktop packages" \
-    "GUI stack: Hyprland, Waybar, Kitty, Brave, VS Code, nemo, pipewire, etc.
+    "GUI stack: Hyprland, Noctalia, Kitty, Brave, VS Code, nemo, pipewire, etc.
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/desktop.sh"
   run

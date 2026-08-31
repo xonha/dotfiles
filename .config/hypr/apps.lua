@@ -9,11 +9,8 @@ M.monitors = {
 }
 
 M.scripts = {
-    backlight = "~/.config/scripts/brightness.sh",
-    volume    = "~/.config/scripts/volume.sh",
     focus     = "~/.config/scripts/focus.sh",
     keyd      = "~/.config/scripts/keyd.sh",
-    powermenu = "~/.config/scripts/powermenu.sh",
     denoise   = "~/.config/scripts/denoise.sh",
 }
 

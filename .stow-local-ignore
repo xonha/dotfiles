@@ -8,20 +8,3 @@ DESKTOP\.md
 \.docs
 \.setup
 \.install\.sh
-
-# Legacy desktop-shell pieces replaced by Noctalia
-\.config/waybar
-\.config/mako
-\.config/omarchy
-\.config/systemd/user/waybar-ycal\.service\.d
-\.config/hypr/hypridle\.conf
-\.config/hypr/hyprlock\.conf
-\.config/hypr/hyprpaper\.conf
-\.config/hypr/hyprsunset\.conf
-\.config/scripts/brightness\.sh
-\.config/scripts/mako-click\.sh
-\.config/scripts/notifications\.sh
-\.config/scripts/powermenu\.sh
-\.config/scripts/theme\.sh
-\.config/scripts/volume\.sh
-\.config/scripts/waybar\.sh

@@ -8795,19 +8795,3 @@ FIXME this is really an API */
 @define-color popover_fg_color #FFFFFF;
 @define-color shade_color rgba(255, 255, 255, 0.12);
 @define-color scrollbar_outline_color rgba(255, 255, 255, 0.12);
-
-/* ---- overrides locais (nao vieram do tema upstream) ---- */
-
-/* waybar-ycal: o ClickShield e uma janela layer-shell fullscreen que so
- * existe pra capturar clique fora do popup. O app pede
- * `.click-shield { background: rgba(0,0,0,0.01) }` via
- * add_provider_for_display() em PRIORITY_APPLICATION (600), mas este arquivo
- * carrega como ~/.config/gtk-4.0/gtk.css em PRIORITY_USER (800) e o
- * `.background` acima (todo GtkWindow ganha essa classe) vence -- pintando
- * #151515 sobre a tela inteira. Mesma especificidade, regra posterior ganha. */
-.click-shield {
-  /* 0.01 e nao `transparent` de proposito: com alpha 0 o compositor deixa de
-   * entregar clique na superficie e o clique-fora-pra-fechar para de funcionar
-   * (o proprio ClickShield documenta isso no docstring). */
-  background-color: rgba(0, 0, 0, 0.01);
-}

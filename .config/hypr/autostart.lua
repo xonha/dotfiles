@@ -2,8 +2,7 @@
 -- que e a semantica do antigo exec-once.
 
 hl.on("hyprland.start", function()
-    -- Noctalia substitui Waybar, Mako, hyprlock, hyprpaper, hyprsunset,
-    -- launcher, controles de hardware e o agente Polkit.
+    -- Noctalia fornece o desktop shell e o agente Polkit.
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd("systemctl --user restart dock-handler.service")
     hl.exec_cmd("xdg-user-dirs-update")

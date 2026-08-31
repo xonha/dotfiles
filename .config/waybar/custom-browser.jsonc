@@ -1,9 +1,0 @@
-{
-  "custom/browser": {
-    "return-type": "json",
-    "exec": "~/.config/scripts/browser.sh --status",
-    "interval": "once",
-    "signal": 8,
-    "on-click": "~/.config/scripts/browser.sh --cycle",
-  },
-}

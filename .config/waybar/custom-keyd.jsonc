@@ -1,9 +1,0 @@
-{
-  "custom/keyd": {
-    "return-type": "json",
-    "exec": "~/.config/scripts/keyd.sh --status",
-    "interval": 1,
-    "hide-empty-text": true,
-    "on-click": "~/.config/scripts/keyd.sh --toggle",
-  },
-}

@@ -1,8 +1,0 @@
-{
-  "disk": {
-    "interval": 30,
-    "format": "󰋊 {specific_free:0.2f}/{specific_total:0.2f}GB",
-    "tooltip-format": "ROM: Using {specific_free:0.2f}GB out of {specific_total:0.2f}GB ({percentage_used}%)",
-    "unit": "GB",
-  },
-}
