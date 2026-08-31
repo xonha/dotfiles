@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Step: Install keyd config
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$SETUP_DIR/lib.sh"
 
 POLKIT_RULE="/etc/polkit-1/rules.d/49-keyd-nopasswd.rules"
@@ -10,6 +10,11 @@ run() {
   header "Configure keyd"
   local dotfiles_dir
   dotfiles_dir="$(cd "$SETUP_DIR/.." && pwd)"
+  info "Adding $USER to the 'input' group (needed for keyd / brightness tools)..."
+  sudo usermod -a -G input "$USER"
+  success "User $USER added to group 'input'."
+  warn "Group changes take effect on next login."
+
   sudo cp "$dotfiles_dir/.keyd.conf" /etc/keyd/default.conf
   success "keyd config installed."
 
@@ -17,7 +22,7 @@ run() {
   # password on every state change.
   info "Installing polkit rule so $USER can start/stop keyd without a password..."
   sudo install -Dm644 /dev/stdin "$POLKIT_RULE" \
-    < <(sed "s/__USER__/$USER/" "$SETUP_DIR/keyd-nopasswd.rules")
+    < <(sed "s/__USER__/$USER/" "$SETUP_DIR/desktop/keyd-nopasswd.rules")
   success "polkit rule installed at $POLKIT_RULE."
 }
 

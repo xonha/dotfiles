@@ -1,15 +1,14 @@
 # Dotfiles
 
 CachyOS + Hyprland + Noctalia dotfiles managed with GNU Stow. Run `stow .`
-from the repo root to deploy. The previous Archcraft-oriented setup remains on
-the `main` branch; the Noctalia migration lives on `noctalia`.
+from the repo root to deploy, or `./.install.sh` for a new machine.
 
 ## Index
 
 - [Overview](docs/overview.md) — what this repo does and covers
 - [Constitution](docs/constitution.md) — purpose, principles, philosophy
 - [Infrastructure](docs/infra.md) — machines, Tailscale network, how to reach each host
-- [devbox](docs/devbox.md) — Arch Linux dev container on Bazzite (Podman + systemd)
+- [devbox](README.md#devbox-no-bazzite) — Arch Linux development container on Bazzite
 - [n8n](docs/n8n-bazzite.md) — n8n self-hosted on Bazzite (Podman + Quadlet)
 - [Minecraft](docs/minecraft.md) — Crafty Controller on console; Tailscale-only access for friends
 - [Storage](docs/storage.md) — 1 TB HDD on console shared over Tailscale via Samba (rootless Podman + Quadlet)

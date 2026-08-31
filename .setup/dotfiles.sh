@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Step: Stow dotfiles, configure user groups, and switch remote to SSH
+# Step: Stow dotfiles and switch remote to SSH
 
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_DIR/lib.sh"
@@ -24,11 +24,6 @@ run() {
   stow .
   popd >/dev/null
   success "Dotfiles stowed."
-
-  info "Adding $USER to the 'input' group (needed for keyd / brightness tools)..."
-  sudo usermod -a -G input "$USER"
-  success "User $USER added to group 'input'."
-  warn "Group changes take effect on next login."
 
   info "Switching git remote to SSH..."
   local current

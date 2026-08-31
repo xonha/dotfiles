@@ -1,4 +1,4 @@
-// Installed to /etc/polkit-1/rules.d/49-keyd-nopasswd.rules by .setup/keyd.sh
+// Installed to /etc/polkit-1/rules.d/49-keyd-nopasswd.rules by .setup/desktop/keyd.sh
 //
 // Lets dock-handler.sh start/stop keyd without a password prompt.
 // Scoped to keyd.service on purpose: manage-units carries a "unit" detail, so

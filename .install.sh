@@ -7,58 +7,41 @@ set -euo pipefail
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.setup"
 source "$SETUP_DIR/lib.sh"
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
 printf "${BOLD}${BLUE}"
-printf "╔══════════════════════════════════════╗\n"
-printf "║         Henrique's Setup Script      ║\n"
-printf "╚══════════════════════════════════════╝\n"
+printf "╭──────────────────────────────────────╮\n"
+printf "│         Henrique's Setup Script      │\n"
+printf "╰──────────────────────────────────────╯\n"
 printf "${RESET}\n"
 
-# ── yay ───────────────────────────────────────────────────────────────────
 source "$SETUP_DIR/yay.sh"
 run
 
-# ── Dotfiles ──────────────────────────────────────────────────────────────
 source "$SETUP_DIR/dotfiles.sh"
 run
 
-# ── Server packages ───────────────────────────────────────────────────────
 source "$SETUP_DIR/server.sh"
 run
 
-# Configure the login shell only after Zsh has been installed. This must also
-# precede any future cleanup of the shell inherited from the base system.
+# Configure the login shell only after Zsh has been installed.
 source "$SETUP_DIR/shell.sh"
 run
 
-# ── Desktop packages (optional) ───────────────────────────────────────────
 if confirm_step \
     "Install desktop packages" \
-    "GUI stack: Hyprland, Noctalia, Kitty, Brave, VS Code, nemo, pipewire, etc.
+    "GUI stack: Hyprland, Noctalia, Kitty, Brave, VS Code, Nemo, PipeWire, etc.
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/desktop.sh"
   run
 
-  # ── Nemo sidebar (XDG folders, bookmarks, icons) ────────────────────────
-  source "$SETUP_DIR/nemo.sh"
+  source "$SETUP_DIR/desktop/nemo.sh"
+  run
+
+  source "$SETUP_DIR/desktop/keyd.sh"
   run
 fi
 
-# ── GRUB ──────────────────────────────────────────────────────────────────
-source "$SETUP_DIR/grub.sh"
-run
-
-# ── Services ──────────────────────────────────────────────────────────────
 source "$SETUP_DIR/services.sh"
 run
 
-# ── keyd ──────────────────────────────────────────────────────────────────
-source "$SETUP_DIR/keyd.sh"
-run
-
-# ── Done ──────────────────────────────────────────────────────────────────
 printf "\n${BOLD}${GREEN}All selected steps completed.${RESET}\n"
 printf "You may need to ${BOLD}log out and back in${RESET} for group changes to take effect.\n\n"

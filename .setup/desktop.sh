@@ -12,6 +12,7 @@ PKG_DESKTOP=(
   hyprpicker
   xdg-desktop-portal-hyprland
   noctalia
+  kitty
 
   # Display & hardware
   brightnessctl # usado pelo Noctalia
@@ -50,8 +51,6 @@ PKG_DESKTOP=(
   # Theming
   papirus-folders-catppuccin-git
 
-  # Container & misc
-  docker
 )
 
 PKG_DESKTOP_AUR=(

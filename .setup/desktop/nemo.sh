@@ -5,7 +5,7 @@
 # It only shows Home/Desktop/Filesystem/Trash plus whatever is bookmarked, so
 # the standard folders have to be seeded into the bookmarks file explicitly.
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$SETUP_DIR/lib.sh"
 
 # Personal folders shown in the "Bookmarks" section, with a Papirus icon each.

@@ -11,7 +11,7 @@ Fish) is later removed.
 
 ## Nemo sidebar / XDG folders
 
-Applied by `.setup/nemo.sh` (run from `.install.sh`).
+Applied by `.setup/desktop/nemo.sh` (run from `.install.sh`).
 
 Two gotchas on a minimal Hyprland setup:
 
@@ -69,6 +69,9 @@ echo enabled | sudo tee /sys/bus/usb/devices/<port>/power/wakeup
 Then test with `systemctl suspend` and wake with a keypress.
 
 ### Make it persistent (udev rules)
+
+O script específico desta máquina está em
+`.setup/machines/thinkpad/wakeup.sh`.
 
 Create `/etc/udev/rules.d/90-wakeup-keyboard.rules`:
 

@@ -36,8 +36,8 @@ ENV LC_ALL=C.UTF-8
 
 # Configure SSH server
 RUN ssh-keygen -A \
-    && sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && sed -i 's/#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    && sed -i 's/#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config \
+    && sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config \
     && echo 'AcceptEnv TERM' >> /etc/ssh/sshd_config \
     && echo 'SetEnv LANG=C.UTF-8' >> /etc/ssh/sshd_config \
     && echo 'SetEnv LC_ALL=C.UTF-8' >> /etc/ssh/sshd_config
@@ -48,12 +48,13 @@ ARG UID=1000
 ARG GID=1000
 RUN groupadd -g ${GID} ${USERNAME} \
     && useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USERNAME} \
-    && echo "${USERNAME}:plambas" | chpasswd \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 440 /etc/sudoers.d/${USERNAME}
 
 # Create startup script to run SSH and keep container alive (as root)
 RUN echo '#!/bin/bash' > /start.sh \
+    && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
+    && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \
     && chmod +x /start.sh

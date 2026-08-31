@@ -40,17 +40,11 @@ PKG_SERVER=(
   lazydocker
 )
 
-PKG_SERVER_AUR=(
-)
-
 run() {
   header "Install server packages"
 
   info "Installing packages from official repos..."
   yay -Syu --needed --noconfirm --removemake "${PKG_SERVER[@]}"
-
-  info "Installing AUR packages..."
-  yay -Syu --needed --noconfirm --removemake "${PKG_SERVER_AUR[@]}"
 
   success "Server packages installed."
 }
