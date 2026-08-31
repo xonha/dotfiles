@@ -13,6 +13,7 @@ PKG_DESKTOP=(
   xdg-desktop-portal-hyprland
   noctalia
   kitty
+  kdeconnect
 
   # Display & hardware
   brightnessctl # usado pelo Noctalia
@@ -56,12 +57,7 @@ PKG_DESKTOP=(
 PKG_DESKTOP_AUR=(
   aur/brave-bin
   aur/visual-studio-code-bin
-  aur/pinta
-  aur/valent
-
-  # Spec Kit — spec-driven development CLI (uses uv from server step)
   aur/specify-cli-bin
-
 )
 
 run() {
