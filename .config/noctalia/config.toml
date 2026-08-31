@@ -80,6 +80,9 @@ disk_poll_seconds = 30
 gpu_poll_seconds = 2
 memory_poll_seconds = 10
 
+[wallpaper.default]
+path = "~/.wallpaper.jpg"
+
 [theme]
 builtin = "Catppuccin"
 custom_palette = "Catppuccin-Black"
