@@ -2,7 +2,6 @@
 .config/systemd/user/graphical-session.target.wants/
 .config/nvim/lazy-lock.json
 mimeinfo.cache
-.config/containers/systemd/paperclip.env
 .config/containers/systemd/samba.env
 
 # --- secrets / credentials (public repo: never commit) ---

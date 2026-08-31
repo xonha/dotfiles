@@ -66,7 +66,7 @@ ls -la ~/.config/containers/systemd/samba.container
 
 ### 2. Create the Credentials File
 
-Never committed to git (gitignored, same as `paperclip.env`).
+Never committed to git (gitignored).
 
 ```bash
 PW=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 24)
@@ -87,7 +87,7 @@ sudo sysctl --system
 Uses a rich rule scoped to the Tailscale CGNAT range instead of moving
 `tailscale0` into a new zone — moving the interface would drop it out of
 `FedoraWorkstation`, which is what currently allows the high ports that Crafty
-(8443/25565) and Paperclip (3100) rely on.
+(8443/25565) relies on.
 
 ```bash
 sudo firewall-cmd --permanent --zone=FedoraWorkstation \
@@ -108,7 +108,7 @@ systemctl --user start samba.service
 Quadlet units are *generated*, so `systemctl --user enable` fails with
 "Unit ... is transient or generated". That is expected — the
 `WantedBy=default.target` inside `samba.container` is what starts it at boot.
-Linger must be on (it already is, for Paperclip/Crafty):
+Linger must be on (it already is for Crafty):
 
 ```bash
 loginctl show-user $USER | grep Linger   # should show Linger=yes

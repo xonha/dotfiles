@@ -36,7 +36,7 @@ Environment=WSDD2_DISABLE=1
 Environment=AVAHI_DISABLE=1
 Environment=TZ=America/Sao_Paulo
 
-# ACCOUNT_henrique=<senha>. Fora do git, modo 600 — igual paperclip.env.
+# ACCOUNT_henrique=<senha>. Fora do git, modo 600.
 EnvironmentFile=%h/.config/containers/systemd/samba.env
 
 [Service]

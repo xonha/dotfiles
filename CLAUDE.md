@@ -10,7 +10,6 @@ the `main` branch; the Noctalia migration lives on `noctalia`.
 - [Constitution](docs/constitution.md) — purpose, principles, philosophy
 - [Infrastructure](docs/infra.md) — machines, Tailscale network, how to reach each host
 - [devbox](docs/devbox.md) — Arch Linux dev container on Bazzite (Podman + systemd)
-- [Paperclip](docs/paperclip.md) — AI agent orchestrator on console (Podman + Quadlet)
 - [n8n](docs/n8n-bazzite.md) — n8n self-hosted on Bazzite (Podman + Quadlet)
 - [Minecraft](docs/minecraft.md) — Crafty Controller on console; Tailscale-only access for friends
 - [Storage](docs/storage.md) — 1 TB HDD on console shared over Tailscale via Samba (rootless Podman + Quadlet)
@@ -32,7 +31,7 @@ the `main` branch; the Noctalia migration lives on `noctalia`.
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.docker/Dockerfile`          | devbox container image                                      |
-| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Paperclip, Crafty, Samba) |
+| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Crafty, Samba) |
 | `.setup/`                     | Setup scripts sourced by `.install.sh`                      |
 
 ## Adding Dotfiles

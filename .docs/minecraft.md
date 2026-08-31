@@ -400,8 +400,8 @@ for the new port and restart the service.
   ```bash
   podman unshare chown -R 1000:0 ~/.local/share/crafty
   ```
-- Volumes use the shared SELinux label (`:z`), consistent with the fix applied
-  to the Paperclip data volume.
+- Volumes use the shared SELinux label (`:z`) so the rootless container can
+  access its data without disabling SELinux isolation.
 - `online-mode=true` is set, so Mojang authentication is enforced. The
   whitelist is **off** — with tailnet-only access that is reasonable, but the
   panel can enable it if you want a second gate.
