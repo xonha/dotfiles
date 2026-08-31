@@ -62,8 +62,8 @@ hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(noct .. "volume-mute"),     { l
 hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(S.mic_mute),                 { locked = true })
 hl.bind("XF86AudioNext",         hl.dsp.exec_cmd(noct .. "media next"),      { locked = true })
 hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd(noct .. "media previous"),  { locked = true })
-hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd(noct .. "media toggle"),    { locked = true })
-hl.bind("XF86AudioPause",        hl.dsp.exec_cmd(noct .. "media toggle"),    { locked = true })
+hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd(S.media),                    { locked = true })
+hl.bind("XF86AudioPause",        hl.dsp.exec_cmd(S.media),                    { locked = true })
 hl.bind("XF86AudioStop",         hl.dsp.exec_cmd("playerctl stop"),          { locked = true })
 
 -- -- Hyprland ---------------------------------------------------------------

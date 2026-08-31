@@ -13,6 +13,7 @@ M.scripts = {
     keyd      = "~/.config/scripts/keyd.sh",
     denoise   = "~/.config/scripts/denoise.sh",
     mic_mute  = "~/.config/scripts/mic-mute.sh",
+    media     = "~/.config/scripts/media-play-pause.sh",
 }
 
 M.notify = "notify-send -h string:x-canonical-private-synchronous:hypr-cfg -u low"
