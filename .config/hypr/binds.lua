@@ -46,7 +46,8 @@ hl.bind(
 	{ description = "Abrir launcher alternativo" }
 )
 hl.bind("SUPER+U", hl.dsp.exec_cmd(noct .. "panel-toggle yuuto/calculator:panel"), { description = "Calculadora" })
-hl.bind("SUPER+I", hl.dsp.exec_cmd(noct .. "panel-toggle noctalia/notes:panel"), { description = "Notas" })
+hl.bind("SUPER+I", hl.dsp.exec_cmd(noct .. "panel-toggle icefish/phone-operate:main"), { description = "Phone Operate" })
+hl.bind("SUPER+Y", hl.dsp.exec_cmd("hyprctl kill"), { description = "Encerrar janela ao clicar" })
 hl.bind("SUPER+" .. K.C1, hl.dsp.exec_cmd(noct .. "session lock"), { description = "Bloquear sessao" })
 hl.bind("SUPER+P", hl.dsp.exec_cmd("hyprpicker " .. "-" .. "-autocopy " .. "-" .. "-notify"), { description = "Selecionar cor da tela" })
 hl.bind("SUPER+T", hl.dsp.exec_cmd(S.mic_mute), { description = "Ativar ou silenciar microfone" })
@@ -59,7 +60,7 @@ hl.bind(
 )
 hl.bind("SUPER+O", hl.dsp.exec_cmd(noct .. "panel-toggle raycursive/github-prs:panel"), { description = "GitHub Pull Requests" })
 hl.bind("SUPER+M", hl.dsp.exec_cmd(noct .. "panel-toggle icefish/phone-operate:main"), { description = "Phone Operate" })
-hl.bind("SUPER+K", hl.dsp.exec_cmd("hyprctl kill"), { description = "Encerrar janela ao clicar" })
+hl.bind("SUPER+K", hl.dsp.exec_cmd(noct .. "panel-toggle noctalia/notes:panel"), { description = "Notas" })
 hl.bind("SUPER+Z", hl.dsp.exec_cmd(noct .. "screenshot-region"), { description = "Capturar regiao da tela" })
 hl.bind("SUPER+ALT+C", hl.dsp.exec_cmd(noct .. "panel-toggle control-center"), { description = "Central de controle" })
 hl.bind("SUPER+ALT+Z", hl.dsp.exec_cmd(noct .. "settings-toggle"), { description = "Configuracoes do Noctalia" })

@@ -349,8 +349,9 @@ color = "secondary"
 [widget.lock_keys]
 color = "#94e2d5"
 display = "full"
-hide_when_off = true
 icon_color = "#94E2D5"
+highlight_color = "#94E2D5"
+hide_when_off = true
 show_caps_lock = true
 show_num_lock = false
 show_scroll_lock = false
