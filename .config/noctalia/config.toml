@@ -308,6 +308,8 @@ type = "xonha/desktop-controls:calendar"
 
 [widget.calendar.actions]
 left = "panel-toggle control-center calendar"
+scroll_up = "volume-up"
+scroll_down = "volume-down"
 
 [widget.clock]
 color = "#cba6f7"
@@ -315,6 +317,8 @@ format = "{:%H:%M}"
 
 [widget.clock.actions]
 left = "panel-toggle control-center notifications"
+scroll_up = "volume-up"
+scroll_down = "volume-down"
 
 [widget.cpu]
 color = "#eba0ac"

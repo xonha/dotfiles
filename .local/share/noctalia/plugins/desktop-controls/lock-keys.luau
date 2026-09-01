@@ -20,7 +20,7 @@ local function render()
   barWidget.setGlyph("capslock")
   barWidget.setGlyphColor(color)
   barWidget.setColor(color)
-  barWidget.setText(if barWidget.isVertical() then "" else "CAPS")
+  barWidget.setText(if barWidget.isVertical() then "" else "Caps")
   barWidget.setTooltip("Caps Lock ativo")
 end
 
