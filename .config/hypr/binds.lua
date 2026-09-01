@@ -60,6 +60,9 @@ hl.bind(
 )
 hl.bind("SUPER+O", hl.dsp.exec_cmd(noct .. "panel-toggle raycursive/github-prs:panel"), { description = "GitHub Pull Requests" })
 hl.bind("SUPER+M", hl.dsp.exec_cmd(noct .. "panel-toggle icefish/phone-operate:main"), { description = "Phone Operate" })
+-- Emergency recovery. Hyprland 0.56 Lua uses eval because the legacy
+-- `keyword` command is unavailable.
+hl.bind("SUPER+SHIFT+M", hl.dsp.exec_cmd([[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']]), { description = "Reativar tela interna" })
 hl.bind("SUPER+K", hl.dsp.exec_cmd(noct .. "panel-toggle noctalia/notes:panel"), { description = "Notas" })
 hl.bind("SUPER+Z", hl.dsp.exec_cmd(noct .. "screenshot-region"), { description = "Capturar regiao da tela" })
 hl.bind("SUPER+ALT+C", hl.dsp.exec_cmd(noct .. "panel-toggle control-center"), { description = "Central de controle" })
