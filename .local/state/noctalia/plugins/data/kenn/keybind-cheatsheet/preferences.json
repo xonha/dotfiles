@@ -1,0 +1,16 @@
+{
+  "colors": {
+    "alt": {
+      "background": "#89B4FA"
+    },
+    "ctrl": {
+      "background": "#CBA6F7"
+    },
+    "shift": {
+      "background": "#A6E3A1"
+    }
+  },
+  "descriptions": {},
+  "hidden": {},
+  "version": 1
+}
