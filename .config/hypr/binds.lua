@@ -50,7 +50,7 @@ hl.bind("SUPER+I", hl.dsp.exec_cmd(noct .. "panel-toggle noctalia/notes:panel"),
 hl.bind("SUPER+" .. K.C1, hl.dsp.exec_cmd(noct .. "session lock"), { description = "Bloquear sessao" })
 hl.bind("SUPER+P", hl.dsp.exec_cmd("hyprpicker " .. "-" .. "-autocopy " .. "-" .. "-notify"), { description = "Selecionar cor da tela" })
 hl.bind("SUPER+T", hl.dsp.exec_cmd(S.mic_mute), { description = "Ativar ou silenciar microfone" })
-hl.bind("SUPER+Y", hl.dsp.exec_cmd(S.keyd .. " " .. "-" .. "-toggle"), { description = "Alternar remapeamento do teclado" })
+hl.bind("SUPER+" .. K.SEMI, hl.dsp.exec_cmd(S.keyd .. " " .. "-" .. "-toggle"), { description = "Alternar remapeamento do teclado" })
 hl.bind("SUPER+N", hl.dsp.exec_cmd(S.denoise .. " toggle"), { description = "Alternar reducao de ruido" })
 hl.bind(
 	"SUPER+J",
