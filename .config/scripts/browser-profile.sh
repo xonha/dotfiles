@@ -7,7 +7,7 @@ set -Eeuo pipefail
 PROFILES=(
   "maistodos|brave-maistodos.desktop|MaisTodos"
   "devbot|brave-devbot.desktop|Devbot"
-  "pessoal|brave-browser.desktop|Pessoal"
+  "pessoal|brave-browser.desktop|Main"
 )
 
 MIMES=(

@@ -9,7 +9,7 @@ local function trim(value)
 end
 
 local function render()
-  barWidget.setGlyph("browser")
+  barWidget.setGlyph("world-www")
   barWidget.setGlyphColor("#f5e0dc")
   barWidget.setText(if barWidget.isVertical() then "" else label)
   barWidget.setTooltip(`Navegador padrão: {label} — clique para trocar`)

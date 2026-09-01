@@ -7,7 +7,7 @@ license = "MIT"
 dependencies = ["systemctl", "xdg-mime"]
 tags = ["bar", "browser", "hardware", "utility"]
 icon = "adjustments"
-description = "Bar indicators for Keyd and the default Brave profile."
+description = "Bar indicators for Keyd, the default Brave profile, and microphone state."
 
 [[widget]]
 id = "keyd"
@@ -16,3 +16,19 @@ entry = "keyd.luau"
 [[widget]]
 id = "brave-profile"
 entry = "brave-profile.luau"
+
+[[widget]]
+id = "input_volume"
+entry = "input-volume.luau"
+
+[[widget]]
+id = "lock_keys"
+entry = "lock-keys.luau"
+
+[[widget]]
+id = "calendar"
+entry = "calendar.luau"
+
+[[widget]]
+id = "network"
+entry = "network.luau"

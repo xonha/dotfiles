@@ -304,9 +304,10 @@ color = "#89dceb"
 show_label = true
 
 [widget.calendar]
-color = "#cba6f7"
-format = "{:%a %d/%m}"
-type = "clock"
+type = "xonha/desktop-controls:calendar"
+
+[widget.calendar.actions]
+left = "panel-toggle control-center calendar"
 
 [widget.clock]
 color = "#cba6f7"
@@ -332,37 +333,28 @@ type = "sysmon"
 visualization = "none"
 
 [widget.input_volume]
-color = "#74c7ec"
-device = "input"
-hide_when_inactive = false
-show_label = true
-type = "volume"
+type = "xonha/desktop-controls:input_volume"
 
 [widget.keyd]
 color = "#94E2D5"
 icon_color = "#94E2D5"
 type = "xonha/desktop-controls:keyd"
 
+[widget.lock_keys]
+type = "xonha/desktop-controls:lock_keys"
+
 [widget.launcher]
 color = "secondary"
-
-[widget.lock_keys]
-color = "#94e2d5"
-display = "full"
-icon_color = "#94E2D5"
-highlight_color = "#94E2D5"
-hide_when_off = true
-show_caps_lock = true
-show_num_lock = false
-show_scroll_lock = false
-type = "lock_keys"
 
 [widget.media]
 hide_when_no_media = true
 
 [widget.network]
-color = "#b4befe"
-show_label = true
+type = "xonha/desktop-controls:network"
+
+[widget.network.actions]
+left = "panel-toggle control-center network"
+right = "network-toggle"
 
 [widget.output_volume]
 color = "#74c7ec"
