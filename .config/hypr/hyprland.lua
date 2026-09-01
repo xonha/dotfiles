@@ -9,13 +9,9 @@
 
 require("monitors")
 require("workspaces")
-
 require("looknfeel")
 require("input")
 require("misc")
-
 require("windowrules")
-
 require("binds")
-
 require("autostart")
