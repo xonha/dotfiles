@@ -1,7 +1,7 @@
 FROM archlinux:latest
 
 # Keep package metadata fresh and install common development tools.
-RUN pacman -Sy --noconfirm \
+RUN pacman -Syu --noconfirm \
     && pacman -S --noconfirm --needed \
         base-devel \
         git \
@@ -55,6 +55,7 @@ RUN groupadd -g ${GID} ${USERNAME} \
 RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
+    && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \
     && chmod +x /start.sh

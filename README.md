@@ -27,34 +27,13 @@ Os IDs de hardware e o diagnóstico estão documentados em
 
 ## Devbot no Bazzite
 
-A imagem Arch usada pelo devbot está definida apenas em
-[`.setup/devbot/Dockerfile`](.setup/devbot/Dockerfile). O guia operacional
-completo está em [`.setup/docs/devbot.md`](.setup/docs/devbot.md). Para
-construí-la:
+A imagem e o Quadlet rootless do Devbot são versionados aqui. No `console`,
+depois de aplicar os dotfiles com Stow, execute:
 
 ```bash
-mkdir -p "$HOME/devbot/workspace"
-podman build -t devbot:latest .setup/devbot
+./.setup/devbot/install.sh
 ```
 
-Crie o container com o workspace persistente:
-
-```bash
-podman create \
-  --name devbot \
-  --hostname devbot \
-  --memory 14g \
-  --memory-swap 14g \
-  --pids-limit 4096 \
-  -p 2222:22 \
-  -v "$HOME/.ssh/id_ed25519.pub:/run/host_ssh_key:ro,Z" \
-  -v "$HOME/devbot/workspace:/workspace:Z" \
-  -w /workspace \
-  devbot:latest
-```
-
-O SSH aceita somente a chave pública montada acima; não há senha fixa na
-imagem. Depois de iniciar o container, acesse com `ssh -p 2222 henrique@HOST`.
-
-O container preserva sua camada gravável enquanto não for removido. Código e
-outros dados importantes devem permanecer no volume `/workspace`.
+Ele constrói a imagem, cria o workspace persistente em `~/devbot/workspace` e
+habilita `devbot.service` para iniciar no boot. O guia operacional está em
+[`.setup/docs/devbot.md`](.setup/docs/devbot.md).

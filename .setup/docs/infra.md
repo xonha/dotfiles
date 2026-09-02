@@ -8,13 +8,13 @@ All machines connected via Tailscale MagicDNS.
 |-------|-------------|------|-------|
 | `laptop` | `laptop` | 22 | ThinkPad — Arch Linux desktop |
 | `maistodos` | `maistodos` | 22 | Work machine — Arch WSL2 |
-| `devbot` | `console` | 2222 | Arch dev container on `console`; forwards local :3000 |
+| `devbot` | `console` | 2223 | Arch dev container on `console`; forwards local :3000 |
 | `console` | `console` | 22 | Direct — no alias; see [console access](#console--bazzite-host) |
 
 ```bash
 ssh laptop       # ThinkPad
 ssh maistodos    # work machine (Arch WSL2)
-ssh devbot       # Arch devbot container on console (port 2222)
+ssh devbot       # Arch devbot container on console (port 2223)
 ```
 
 > **devbot port forward**: `ssh devbot` automatically binds local port 3000 to
@@ -60,7 +60,7 @@ SSH access via the `laptop` alias.
 
 Home server running rootless Podman containers as systemd user services.
 SSH access via direct connection (`ssh <your-user>@console`) — the `devbot`
-alias also lands on this machine (on port 2222, into the container).
+alias also lands on this machine (on port 2223, into the container).
 
 ### maistodos — Work Machine (Arch WSL2)
 
@@ -73,8 +73,7 @@ the Windows system tray (not just in the WSL2 environment).
 
 | Container | SSH Port | Service Port | Purpose |
 |-----------|----------|--------------|---------|
-| `devbot` | 2222 | — | Arch Linux dev environment (see [devbot.md](devbot.md)) |
-| `n8n` | — | 5678 | Workflow automation |
+| `devbot` | 2223 | — | Arch Linux dev environment (see [devbot.md](devbot.md)) |
 | `crafty` | — | 8443, 25565 | Minecraft server manager (see [minecraft.md](minecraft.md)) |
 
 Manage services on `console`:
@@ -144,11 +143,11 @@ reachable.
 simultaneously. `tailscale status` shows `console` as offline.
 
 **Diagnosis**: This is distinct from the container-stopped case — the entire
-`console` machine is offline. Both `devbot` and `n8n` are unavailable.
+`console` machine is offline, including `devbot`.
 
-**Recovery**: Power on `console`. All hosted services (`devbot.service`,
-`n8n`) start automatically on boot via their systemd user services. No manual
-intervention is needed once the machine is on and Tailscale reconnects.
+**Recovery**: Power on `console`. `devbot.service` starts automatically on
+boot via the user service. No manual intervention is needed once the machine
+is on and Tailscale reconnects.
 
 ## Typical Workflow
 

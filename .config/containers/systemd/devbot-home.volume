@@ -1,0 +1,4 @@
+[Volume]
+# Persistent home directory for the development user. The workspace itself is
+# intentionally a host bind mount, so it remains easy to inspect and back up.
+VolumeName=devbot-home

@@ -1,0 +1,37 @@
+[Unit]
+Description=Devbot — Arch Linux development environment
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Built reproducibly by .setup/devbot/install.sh from the versioned Dockerfile.
+Image=localhost/devbot:latest
+ContainerName=devbot
+HostName=devbot
+
+# Map the host user to the development user (UID/GID 1000) so the bind-mounted
+# workspace can be edited from either the host or the container.
+UserNS=keep-id:uid=1000,gid=1000
+# Startup creates the SSH host keys and then sshd accepts only henrique's key.
+User=root
+
+# Keep user configuration separate from the image and source code.
+Volume=devbot-home.volume:/home/henrique:Z
+Volume=%h/devbot/workspace:/workspace:Z
+# The host's authorized keys are copied into the persistent home on each start.
+Volume=%h/.ssh/authorized_keys:/run/host_ssh_key:ro,Z
+
+# 2222 belongs to the preserved devbox container on console.
+PublishPort=2223:22
+WorkingDir=/workspace
+Memory=14g
+PidsLimit=4096
+Environment=LANG=C.UTF-8
+Environment=LC_ALL=C.UTF-8
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

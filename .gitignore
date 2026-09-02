@@ -15,7 +15,6 @@ __pycache__/
 .config/chromium/
 .config/go/
 .config/Code/agent-host/
-.config/n8n-as-code/telemetry.json
 .config/nextjs-nodejs/config.json
 .config/opencode/opencode/node_modules/
 
