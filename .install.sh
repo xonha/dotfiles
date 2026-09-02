@@ -38,6 +38,9 @@ if confirm_step \
 
   source "$SETUP_DIR/desktop/keyd.sh"
   run
+
+  source "$SETUP_DIR/desktop/monitor-profiles.sh"
+  run
 fi
 
 source "$SETUP_DIR/services.sh"

@@ -19,6 +19,16 @@ run() {
     mkdir -p "$HOME/$d"
   done < <(cd "$dotfiles_dir" && find .config/systemd -type d -name '*.d' 2>/dev/null)
 
+  # Migrate a hand-created HyprDynamicMonitors config so Stow can install the
+  # versioned directory without overwriting user files.
+  local dynamic_dir="$HOME/.config/hyprdynamicmonitors"
+  if [[ -d "$dynamic_dir" && ! -L "$dynamic_dir" && -d "$dotfiles_dir/.config/hyprdynamicmonitors" ]]; then
+    local backup_dir="$HOME/.config/dotfiles-backups/hyprdynamicmonitors-$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "$(dirname "$backup_dir")"
+    mv "$dynamic_dir" "$backup_dir"
+    info "Moved existing HyprDynamicMonitors config to $backup_dir"
+  fi
+
   info "Stowing dotfiles from $dotfiles_dir..."
   pushd "$dotfiles_dir" >/dev/null
   stow .

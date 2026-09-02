@@ -1,0 +1,25 @@
+[general]
+destination = "$HOME/.config/hypr/monitors.conf"
+debounce_time_ms = 1500
+post_apply_exec = "hyprctl reload"
+
+[profiles.laptop]
+config_file = "hyprconfigs/laptop.conf"
+config_file_type = "static"
+
+[[profiles.laptop.conditions.required_monitors]]
+name = "eDP-1"
+
+[profiles.docked]
+config_file = "hyprconfigs/docked.conf"
+config_file_type = "static"
+
+[[profiles.docked.conditions.required_monitors]]
+description = "Shenzhen KTC Technology Group SFPCCB24180 000000000000"
+
+[[profiles.docked.conditions.required_monitors]]
+description = "SUE SFP2412FHD 000000000000"
+
+[fallback_profile]
+config_file = "hyprconfigs/fallback.conf"
+config_file_type = "static"

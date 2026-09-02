@@ -60,6 +60,7 @@ PKG_DESKTOP_AUR=(
   aur/brave-bin
   aur/visual-studio-code-bin
   aur/specify-cli-bin
+  aur/hyprdynamicmonitors-bin
 )
 
 run() {
