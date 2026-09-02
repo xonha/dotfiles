@@ -13,6 +13,15 @@ Ambas usam `localhost/toolbox:latest`, construída de
 não compartilha código nem configuração da outra. As chaves autorizadas de
 `~/.ssh/authorized_keys` no `console` são copiadas para cada home ao iniciar.
 
+Durante a construção, o Toolbox executa os mesmos estágios `10-bootstrap-yay`,
+`30-server-packages` e `40-login-shell` usados pelo host. O último valida o
+Zsh e o torna o shell de login de `henrique`. A variante `toolbox` do estágio
+de pacotes mantém as ferramentas comuns, mas exclui os itens exclusivos de
+host (Docker, Tailscale e earlyoom).
+O usuário `henrique` usa a mesma configuração Zsh do repositório (`.zshrc`,
+`.zshenv` e `.p10k.zsh`), copiada apenas na primeira inicialização do home
+persistente.
+
 ## Instalação e atualização
 
 No `console`, após aplicar os dotfiles com Stow:

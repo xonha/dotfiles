@@ -4,6 +4,7 @@
 set -euo pipefail
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DOTFILES_ROOT="$(cd "$SETUP_ROOT/.." && pwd)"
 source "$SETUP_ROOT/stages/_shared.sh"
 
 SERVICES=(devbot lab)
@@ -27,7 +28,10 @@ run() {
   done
 
   info "Building localhost/toolbox:latest..."
-  podman build --tag localhost/toolbox:latest "$SETUP_ROOT/toolbox"
+  podman build \
+    --file "$SETUP_ROOT/toolbox/Dockerfile" \
+    --tag localhost/toolbox:latest \
+    "$DOTFILES_ROOT"
 
   info "Reloading user units and starting development environments..."
   systemctl --user daemon-reload

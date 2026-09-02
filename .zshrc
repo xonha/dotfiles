@@ -101,6 +101,7 @@ alias maistodos='ssh maistodos'
 alias console='ssh console'
 alias laptop='ssh laptop'
 alias devbot='ssh devbot'
+alias lab='ssh lab'
 
 [[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
 

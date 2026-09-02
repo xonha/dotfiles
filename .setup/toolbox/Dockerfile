@@ -1,34 +1,19 @@
 FROM archlinux:latest
 
-# Keep package metadata fresh and install common development tools.
+# The build context is the dotfiles repository. Copy the actual setup stages
+# used by a regular machine so the Toolbox follows the same bootstrap, package
+# and login-shell workflow.
+COPY .setup/stages/_shared.sh .setup/stages/_packages.sh \
+     .setup/stages/10-bootstrap-yay.sh .setup/stages/30-server-packages.sh \
+     .setup/stages/40-login-shell.sh /opt/dotfiles-setup/stages/
+COPY .zshrc .zshenv .p10k.zsh /usr/local/share/toolbox-defaults/
+
+# Install only the container runtime/bootstrap prerequisites. The shared
+# package stage below installs all development packages.
 RUN pacman -Syu --noconfirm \
     && pacman -S --noconfirm --needed \
-        base-devel \
-        git \
-        curl \
-        wget \
-        openssh \
-        sudo \
-        neovim \
-        less \
-        which \
-        unzip \
-        zip \
-        ca-certificates \
-        python \
-        python-pip \
-        nodejs \
-        npm \
-        stow \
-        github-cli \
-        zsh \
-        zsh-syntax-highlighting \
-        zsh-autosuggestions \
-        zsh-history-substring-search \
-        nvm \
-        kitty-terminfo \
-        tmux \
-    && pacman -Scc --noconfirm
+      base-devel git curl openssh sudo less which unzip zip ca-certificates \
+      python python-pip github-cli kitty-terminfo
 
 # Set UTF-8 locale so Neovim renders Unicode/Nerd Font glyphs correctly
 ENV LANG=C.UTF-8
@@ -42,7 +27,8 @@ RUN ssh-keygen -A \
     && echo 'SetEnv LANG=C.UTF-8' >> /etc/ssh/sshd_config \
     && echo 'SetEnv LC_ALL=C.UTF-8' >> /etc/ssh/sshd_config
 
-# Create development user named henrique with sudo privileges.
+# Create the development user. The shared login-shell stage sets its final
+# shell after Zsh has been installed by the shared package stage.
 ARG USERNAME=henrique
 ARG UID=1000
 ARG GID=1000
@@ -51,10 +37,25 @@ RUN groupadd -g ${GID} ${USERNAME} \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 440 /etc/sudoers.d/${USERNAME}
 
+# Run the same user-level stages as a regular installation. Toolbox uses the
+# package-stage target to omit host daemons such as Docker and Tailscale.
+USER ${USERNAME}
+ENV USER=${USERNAME}
+ENV SETUP_TARGET=toolbox
+RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/stages/10-bootstrap-yay.sh && run \
+      && source /opt/dotfiles-setup/stages/30-server-packages.sh && run \
+      && source /opt/dotfiles-setup/stages/40-login-shell.sh && run'
+
+USER root
+RUN pacman -Scc --noconfirm
+
 # Create startup script to run SSH and keep container alive (as root)
 RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
+    && echo "if [[ ! -e /home/${USERNAME}/.zshrc ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.zshrc /home/${USERNAME}/.zshrc; fi" >> /start.sh \
+    && echo "if [[ ! -e /home/${USERNAME}/.zshenv ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.zshenv /home/${USERNAME}/.zshenv; fi" >> /start.sh \
+    && echo "if [[ ! -e /home/${USERNAME}/.p10k.zsh ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.p10k.zsh /home/${USERNAME}/.p10k.zsh; fi" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \
