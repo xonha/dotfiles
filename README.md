@@ -7,7 +7,7 @@ Configuração pessoal para CachyOS/Arch, instalada com GNU Stow.
 ```bash
 git clone https://github.com/henriqueluhm/dotfiles.git "$HOME/dotfiles"
 cd "$HOME/dotfiles"
-./.install.sh
+./.setup/install.sh
 ```
 
 O instalador configura a base de terminal e permite escolher a instalação do

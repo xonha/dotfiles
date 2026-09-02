@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Step: Stow dotfiles and switch remote to SSH
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/lib.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$SETUP_ROOT/lib/ui.sh"
 
 run() {
   header "Dotfiles & user setup"
 
   local dotfiles_dir
-  dotfiles_dir="$(cd "$SETUP_DIR/.." && pwd)"
+  dotfiles_dir="$(cd "$SETUP_ROOT/.." && pwd)"
 
   # stow folds a whole directory into a single symlink when the target does
   # not exist yet. systemd silently ignores a drop-in directory that is a

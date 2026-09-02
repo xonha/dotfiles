@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Step: Configure automatic Hyprland monitor profiles.
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/../lib.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source "$SETUP_ROOT/lib/ui.sh"
 
 run() {
   header "Hyprland monitor profiles"
@@ -13,7 +13,8 @@ run() {
   fi
 
   local logind_file=/etc/systemd/logind.conf.d/90-hyprland-lid-ignore.conf
-  if [[ -f "$logind_file" ]] && ! cmp -s "$SETUP_DIR/90-hyprland-lid-ignore.conf" "$logind_file"; then
+  local policy_file="$SETUP_ROOT/machines/thinkpad/assets/90-hyprland-lid-ignore.conf"
+  if [[ -f "$logind_file" ]] && ! cmp -s "$policy_file" "$logind_file"; then
     local backup_dir="$HOME/.config/dotfiles-backups/logind"
     mkdir -p "$backup_dir"
     cp -a "$logind_file" "$backup_dir/90-hyprland-lid-ignore.conf.$(date +%Y%m%d-%H%M%S)"
@@ -21,7 +22,7 @@ run() {
   fi
 
   info "Installing lid policy..."
-  sudo install -Dm644 "$SETUP_DIR/90-hyprland-lid-ignore.conf" "$logind_file"
+  sudo install -Dm644 "$policy_file" "$logind_file"
   sudo systemctl restart systemd-logind
 
   # The old polling daemon conflicts with HyprDynamicMonitors.

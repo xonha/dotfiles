@@ -2,8 +2,8 @@
 # Step: Install desktop / GUI packages
 # Only makes sense on a machine running a graphical session (Hyprland).
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/lib.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$SETUP_ROOT/lib/ui.sh"
 
 PKG_DESKTOP=(
   # Hyprland ecosystem

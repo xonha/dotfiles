@@ -2,8 +2,8 @@
 # Step: Install server / headless packages
 # Safe to run on both a laptop and an SSH-only cloud server.
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/lib.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$SETUP_ROOT/lib/ui.sh"
 
 PKG_SERVER=(
   # Shell & terminal tooling

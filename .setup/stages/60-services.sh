@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Step: Enable and start systemd services
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/lib.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$SETUP_ROOT/lib/ui.sh"
 
 # Always enabled on every machine
 SERVICES_ALWAYS=(
@@ -15,11 +15,8 @@ SERVICES_OPTIONAL=(
   docker.service
 )
 
-# User services used by the desktop session. Missing units are skipped by
-# enable_user_service, so this remains safe on headless machines.
-SERVICES_USER=(
-  dock-handler.service
-)
+# Desktop user services are configured by their owning desktop modules.
+SERVICES_USER=()
 
 enable_service() {
   local svc="$1"

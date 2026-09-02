@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Step: Bootstrap yay (AUR helper)
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/lib.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$SETUP_ROOT/lib/ui.sh"
 
 run() {
   header "Bootstrap yay"

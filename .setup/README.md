@@ -1,8 +1,23 @@
 # Setup Notes
 
+## Estrutura
+
+O instalador usa etapas numeradas em `stages/` apenas para definir a ordem.
+Módulos com responsabilidades concretas ficam fora delas:
+
+- `desktop/`: pacotes e preferências da sessão gráfica;
+- `system/`: alterações em `/etc`, grupos e serviços do sistema;
+- `machines/`: configurações específicas de hardware;
+- `lib/`: funções reutilizáveis sem efeitos colaterais;
+- `docs/`: documentação operacional.
+
+O perfil de monitores é exclusivo deste ThinkPad e é opcional durante
+`./.setup/install.sh`; outros computadores não recebem regras de tampa, saídas ou
+resoluções deste hardware.
+
 ## Login shell safety
 
-`.setup/shell.sh` runs immediately after the server packages are installed. It
+`.setup/stages/40-login-shell.sh` runs immediately after the server packages are installed. It
 configures Zsh as the login shell only after confirming that `command -v zsh`
 returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's
@@ -11,7 +26,7 @@ Fish) is later removed.
 
 ## Nemo sidebar / XDG folders
 
-Applied by `.setup/desktop/nemo.sh` (run from `.install.sh`).
+Applied by `.setup/desktop/apps/nemo.sh` (run from `.setup/install.sh`).
 
 Two gotchas on a minimal Hyprland setup:
 
