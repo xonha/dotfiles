@@ -19,7 +19,7 @@ principal.
 Para habilitar wake por teclado e tampa nesta máquina:
 
 ```bash
-./.setup/machines/thinkpad/wakeup.sh
+./.setup/desktop/thinkpad_t495/wakeup.sh
 ```
 
 Os IDs de hardware e o diagnóstico estão documentados em

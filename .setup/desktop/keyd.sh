@@ -22,7 +22,7 @@ run() {
   # password on every state change.
   info "Installing polkit rule so $USER can start/stop keyd without a password..."
   sudo install -Dm644 /dev/stdin "$POLKIT_RULE" \
-    < <(sed "s/__USER__/$USER/" "$SETUP_ROOT/system/input/keyd-nopasswd.rules")
+    < <(sed "s/__USER__/$USER/" "$SETUP_ROOT/desktop/keyd-nopasswd.rules")
   success "polkit rule installed at $POLKIT_RULE."
 }
 

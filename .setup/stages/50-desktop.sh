@@ -14,8 +14,8 @@ run() {
   header "Desktop"
 
   run_module "$SETUP_ROOT/desktop/packages.sh"
-  run_module "$SETUP_ROOT/desktop/apps/nemo.sh"
-  run_module "$SETUP_ROOT/system/input/keyd.sh"
+  run_module "$SETUP_ROOT/desktop/nemo.sh"
+  run_module "$SETUP_ROOT/desktop/keyd.sh"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

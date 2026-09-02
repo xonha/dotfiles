@@ -36,7 +36,7 @@ if confirm_step \
   if confirm_step \
       "Configure ThinkPad monitor profile" \
       "HyprDynamicMonitors, lid-closed policy and the USB-C hub layout for this ThinkPad."; then
-    source "$SETUP_DIR/machines/thinkpad/monitors.sh"
+    source "$SETUP_DIR/desktop/thinkpad_t495/monitors.sh"
     run
   fi
 fi

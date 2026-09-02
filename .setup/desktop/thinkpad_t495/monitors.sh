@@ -13,7 +13,7 @@ run() {
   fi
 
   local logind_file=/etc/systemd/logind.conf.d/90-hyprland-lid-ignore.conf
-  local policy_file="$SETUP_ROOT/machines/thinkpad/assets/90-hyprland-lid-ignore.conf"
+  local policy_file="$SETUP_ROOT/desktop/thinkpad_t495/90-hyprland-lid-ignore.conf"
   if [[ -f "$logind_file" ]] && ! cmp -s "$policy_file" "$logind_file"; then
     local backup_dir="$HOME/.config/dotfiles-backups/logind"
     mkdir -p "$backup_dir"

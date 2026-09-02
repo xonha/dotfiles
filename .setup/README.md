@@ -6,8 +6,7 @@ O instalador usa etapas numeradas em `stages/` apenas para definir a ordem.
 Módulos com responsabilidades concretas ficam fora delas:
 
 - `desktop/`: pacotes e preferências da sessão gráfica;
-- `system/`: alterações em `/etc`, grupos e serviços do sistema;
-- `machines/`: configurações específicas de hardware;
+- `desktop/thinkpad_t495/`: configurações específicas deste hardware;
 - `lib/`: funções reutilizáveis sem efeitos colaterais;
 - `docs/`: documentação operacional.
 
@@ -26,7 +25,7 @@ Fish) is later removed.
 
 ## Nemo sidebar / XDG folders
 
-Applied by `.setup/desktop/apps/nemo.sh` (run from `.setup/install.sh`).
+Applied by `.setup/desktop/nemo.sh` (run from `.setup/install.sh`).
 
 Two gotchas on a minimal Hyprland setup:
 
@@ -86,7 +85,7 @@ Then test with `systemctl suspend` and wake with a keypress.
 ### Make it persistent (udev rules)
 
 O script específico desta máquina está em
-`.setup/machines/thinkpad/wakeup.sh`.
+`.setup/desktop/thinkpad_t495/wakeup.sh`.
 
 Create `/etc/udev/rules.d/90-wakeup-keyboard.rules`:
 
