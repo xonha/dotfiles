@@ -35,4 +35,4 @@ aplicar os dotfiles com Stow, execute:
 ./.setup/toolbox/install.sh
 ```
 
-O guia operacional está em [`.setup/docs/toolbox.md`](.setup/docs/toolbox.md).
+O guia operacional está em [`.docs/toolbox.md`](.docs/toolbox.md).

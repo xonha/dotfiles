@@ -7,6 +7,11 @@ export OZONE_PLATFORM_HINT=wayland
 export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
 
+# SSH sessions in the development Toolbox start in the persistent workspace.
+if [[ -d /workspace && -e /run/host_ssh_key && "$PWD" == "$HOME" ]]; then
+  cd /workspace
+fi
+
 typeset -U path PATH
 path=(
   "$HOME/.sst/bin"

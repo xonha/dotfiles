@@ -5,10 +5,10 @@ from the repo root to deploy, or `./.install.sh` for a new machine.
 
 ## Index
 
-- [Infrastructure](.setup/docs/infra.md) — machines, Tailscale network, how to reach each host
-- [devbot](.setup/docs/devbot.md) — Arch Linux development container on Bazzite
-- [Minecraft](.setup/docs/minecraft.md) — Crafty Controller on bazzite; Tailscale-only access for friends
-- [Storage](.setup/docs/storage.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
+- [Infrastructure](.docs/infra.md) — machines, Tailscale network, how to reach each host
+- [Toolbox](.docs/toolbox.md) — Arch Linux development containers on Bazzite
+- [Minecraft](.docs/minecraft.md) — Crafty Controller on bazzite; Tailscale-only access for friends
+- [Storage](.docs/storage.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
 - [Setup notes](.setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Stow layout](#stow-layout) — directory map for this repo
 
