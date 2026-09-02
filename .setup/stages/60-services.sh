@@ -2,7 +2,7 @@
 # Step: Enable and start systemd services
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/lib/ui.sh"
+source "$SETUP_ROOT/stages/_shared.sh"
 
 # Always enabled on every machine
 SERVICES_ALWAYS=(

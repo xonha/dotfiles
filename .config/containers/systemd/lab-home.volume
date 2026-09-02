@@ -1,0 +1,3 @@
+[Volume]
+# Persistent home directory for the personal development environment.
+VolumeName=lab-home

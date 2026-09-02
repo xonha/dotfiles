@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Step: Install keyd config
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "$SETUP_ROOT/lib/ui.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$SETUP_ROOT/stages/_shared.sh"
 
 POLKIT_RULE="/etc/polkit-1/rules.d/49-keyd-nopasswd.rules"
 

@@ -4,8 +4,8 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-# Built reproducibly by .setup/devbot/install.sh from the versioned Dockerfile.
-Image=localhost/devbot:latest
+# Built reproducibly by .setup/toolbox/install.sh from the versioned Dockerfile.
+Image=localhost/toolbox:latest
 ContainerName=devbot
 HostName=devbot
 

@@ -2,7 +2,7 @@
 # Step: Persist suspend wakeup sources (keyboard, lid) via udev rules
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "$SETUP_ROOT/lib/ui.sh"
+source "$SETUP_ROOT/stages/_shared.sh"
 
 RULES_FILE="/etc/udev/rules.d/90-wakeup-keyboard.rules"
 

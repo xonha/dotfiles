@@ -5,7 +5,7 @@
 set -euo pipefail
 
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/lib/ui.sh"
+source "$SETUP_DIR/stages/_shared.sh"
 
 printf "${BOLD}${BLUE}"
 printf "╭──────────────────────────────────────╮\n"

@@ -2,7 +2,7 @@
 # Step: Safely configure Zsh as the user's login shell.
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/lib/ui.sh"
+source "$SETUP_ROOT/stages/_shared.sh"
 
 run() {
   header "Configure login shell"

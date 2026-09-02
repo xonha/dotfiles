@@ -9,18 +9,23 @@ All machines connected via Tailscale MagicDNS.
 | `laptop` | `laptop` | 22 | ThinkPad — Arch Linux desktop |
 | `maistodos` | `maistodos` | 22 | Work machine — Arch WSL2 |
 | `devbot` | `console` | 2223 | Arch dev container on `console`; forwards local :3000 |
+| `lab` | `console` | 2224 | Personal Arch container; forwards local :3001 to its :3000 |
 | `console` | `console` | 22 | Direct — no alias; see [console access](#console--bazzite-host) |
 
 ```bash
 ssh laptop       # ThinkPad
 ssh maistodos    # work machine (Arch WSL2)
 ssh devbot       # Arch devbot container on console (port 2223)
+ssh lab          # personal Arch container on console (port 2224)
 ```
 
 > **devbot port forward**: `ssh devbot` automatically binds local port 3000 to
 > `localhost:3000` inside the container (for web services running in the dev
 > environment). This is intentional — you may see port 3000 appear open on your
 > connecting machine while the session is active.
+
+> **lab port forward**: `ssh lab` binds local port 3001 to port 3000 inside
+> the personal container, so it can coexist with an active `ssh devbot`.
 
 > **console direct access**: No named alias exists for `console` in
 > `~/.ssh/config`. Connect directly via Tailscale MagicDNS:
@@ -73,15 +78,16 @@ the Windows system tray (not just in the WSL2 environment).
 
 | Container | SSH Port | Service Port | Purpose |
 |-----------|----------|--------------|---------|
-| `devbot` | 2223 | — | Arch Linux dev environment (see [devbot.md](devbot.md)) |
+| `devbot` | 2223 | — | Work environment (see [toolbox.md](toolbox.md)) |
+| `lab` | 2224 | — | Personal environment (see [toolbox.md](toolbox.md)) |
 | `crafty` | — | 8443, 25565 | Minecraft server manager (see [minecraft.md](minecraft.md)) |
 
 Manage services on `console`:
 
 ```bash
-systemctl --user status devbot.service    # check devbot container
-systemctl --user start  devbot.service    # start if stopped
-systemctl --user stop   devbot.service    # stop
+systemctl --user status devbot.service lab.service
+systemctl --user start devbot.service     # start work environment
+systemctl --user start lab.service        # start personal environment
 ```
 
 ## Troubleshooting

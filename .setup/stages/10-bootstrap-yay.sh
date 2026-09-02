@@ -2,7 +2,7 @@
 # Step: Bootstrap yay (AUR helper)
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/lib/ui.sh"
+source "$SETUP_ROOT/stages/_shared.sh"
 
 run() {
   header "Bootstrap yay"

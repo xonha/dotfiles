@@ -25,15 +25,14 @@ Para habilitar wake por teclado e tampa nesta máquina:
 Os IDs de hardware e o diagnóstico estão documentados em
 [`.setup/README.md`](.setup/README.md).
 
-## Devbot no Bazzite
+## Ambientes de desenvolvimento no Bazzite
 
-A imagem e o Quadlet rootless do Devbot são versionados aqui. No `console`,
-depois de aplicar os dotfiles com Stow, execute:
+`devbot` (trabalho) e `lab` (projetos pessoais) usam a mesma imagem Toolbox,
+mas têm homes, workspaces e portas SSH independentes. No `console`, depois de
+aplicar os dotfiles com Stow, execute:
 
 ```bash
-./.setup/devbot/install.sh
+./.setup/toolbox/install.sh
 ```
 
-Ele constrói a imagem, cria o workspace persistente em `~/devbot/workspace` e
-habilita `devbot.service` para iniciar no boot. O guia operacional está em
-[`.setup/docs/devbot.md`](.setup/docs/devbot.md).
+O guia operacional está em [`.setup/docs/toolbox.md`](.setup/docs/toolbox.md).
