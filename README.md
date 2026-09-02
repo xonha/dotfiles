@@ -28,7 +28,7 @@ Os IDs de hardware e o diagnóstico estão documentados em
 ## Ambientes de desenvolvimento no Bazzite
 
 `devbot` (trabalho) e `lab` (projetos pessoais) usam a mesma imagem Toolbox,
-mas têm homes, workspaces e portas SSH independentes. No `console`, depois de
+mas têm homes, workspaces e portas SSH independentes. No `bazzite`, depois de
 aplicar os dotfiles com Stow, execute:
 
 ```bash

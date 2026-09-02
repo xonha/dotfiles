@@ -1,7 +1,7 @@
 # Toolbox — ambientes Arch de desenvolvimento no Bazzite
 
 Uma imagem rootless Podman compartilhada sustenta dois ambientes isolados no
-`console`: trabalho no `devbot` e projetos pessoais no `lab`.
+`bazzite`: trabalho no `devbot` e projetos pessoais no `lab`.
 
 | Instância | Finalidade | SSH | Workspace | Home persistente |
 |---|---|---|---|---|
@@ -11,7 +11,7 @@ Uma imagem rootless Podman compartilhada sustenta dois ambientes isolados no
 Ambas usam `localhost/toolbox:latest`, construída de
 `.setup/toolbox/Dockerfile`. Cada uma monta suas próprias pastas e volume; uma
 não compartilha código nem configuração da outra. As chaves autorizadas de
-`~/.ssh/authorized_keys` no `console` são copiadas para cada home ao iniciar.
+`~/.ssh/authorized_keys` no `bazzite` são copiadas para cada home ao iniciar.
 
 Durante a construção, o Toolbox executa os mesmos estágios `10-bootstrap-yay`,
 `30-server-packages` e `40-login-shell` usados pelo host. O último valida o
@@ -24,7 +24,7 @@ persistente.
 
 ## Instalação e atualização
 
-No `console`, após aplicar os dotfiles com Stow:
+No `bazzite`, após aplicar os dotfiles com Stow:
 
 ```bash
 cd ~/Dotfiles
@@ -42,7 +42,7 @@ sem login interativo.
 ssh devbot                 # trabalho; encaminha localhost:3000
 ssh lab                    # pessoal; encaminha localhost:3001 para :3000
 
-# No console
+# No bazzite
 podman exec -it -u henrique devbot bash
 podman exec -it -u henrique lab bash
 ```

@@ -98,7 +98,7 @@ dot() {
 
 alias dotfiles=dot
 alias maistodos='ssh maistodos'
-alias console='ssh console'
+alias bazzite='ssh bazzite'
 alias laptop='ssh laptop'
 alias devbot='ssh devbot'
 alias lab='ssh lab'

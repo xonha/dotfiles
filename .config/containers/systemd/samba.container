@@ -29,9 +29,9 @@ PublishPort=100.120.120.72:445:445
 # (uid 1000) no host, que é o dono do disco. Sem isso o smbd escreveria como uid
 # 1000 *do container*, que mapeia pra um subuid e quebraria a posse dos arquivos.
 Environment="SAMBA_VOLUME_CONFIG_storage=[Storage]; path=/shares/hd; valid users = henrique; guest ok = no; read only = no; browseable = yes; force user = root; force group = root"
-Environment=SAMBA_CONF_SERVER_STRING=console
+Environment=SAMBA_CONF_SERVER_STRING=bazzite
 Environment=SAMBA_CONF_MAP_TO_GUEST=Never
-# Descoberta por broadcast não serve no tailnet — MagicDNS já resolve "console".
+# Descoberta por broadcast não serve no tailnet — MagicDNS já resolve "bazzite".
 Environment=WSDD2_DISABLE=1
 Environment=AVAHI_DISABLE=1
 Environment=TZ=America/Sao_Paulo

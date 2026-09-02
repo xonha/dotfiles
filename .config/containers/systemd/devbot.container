@@ -21,7 +21,7 @@ Volume=%h/devbot/workspace:/workspace:Z
 # The host's authorized keys are copied into the persistent home on each start.
 Volume=%h/.ssh/authorized_keys:/run/host_ssh_key:ro,Z
 
-# 2222 belongs to the preserved devbox container on console.
+# 2222 belongs to the preserved devbox container on bazzite.
 PublishPort=2223:22
 WorkingDir=/workspace
 Memory=14g

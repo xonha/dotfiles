@@ -1,6 +1,6 @@
 # Storage — 1 TB HDD Shared over Tailscale
 
-The 1 TB spinning disk in `console` is exposed to the whole tailnet as an SMB
+The 1 TB spinning disk in `bazzite` is exposed to the whole tailnet as an SMB
 share, so any machine (Nemo, Windows Explorer, phone, TV) can browse it as a
 regular network drive. Samba runs as a **rootless** Podman container managed by
 a systemd user service via Podman Quadlet, listening **only** on the Tailscale
@@ -13,7 +13,7 @@ IP — never on the LAN or the internet.
 | Disk | `/dev/sdb1`, ext4, label `hd`, 931.5 GB (`ST1000DM010-2EP102`) |
 | Host mount | `/run/media/system/hd`, mounted by `ublue-os-media-automount.service` |
 | Container | `ghcr.io/servercontainers/samba:latest`, rootless, user `henrique` |
-| Share name | `Storage` → `smb://console/storage` |
+| Share name | `Storage` → `smb://bazzite/storage` |
 | Listen address | `100.120.120.72:445` (Tailscale IP only) |
 | Quadlet unit | `.config/containers/systemd/samba.container` in this repo |
 | Credentials | `~/.config/containers/systemd/samba.env` (mode 600, gitignored) |
@@ -47,7 +47,7 @@ broken ownership.
 **Port 445 needs a sysctl** — rootless Podman cannot bind a privileged port.
 `/etc/sysctl.d/99-unprivileged-smb.conf` lowers
 `net.ipv4.ip_unprivileged_port_start` to 445. Trade-off: any unprivileged
-process on `console` may then bind ports 445–1023. Acceptable on a
+process on `bazzite` may then bind ports 445–1023. Acceptable on a
 single-user machine; the alternative is a rootful quadlet in
 `/etc/containers/systemd/`, which then needs `UID_henrique=1000` instead of
 `force user = root`.
@@ -57,7 +57,7 @@ single-user machine; the alternative is a rootful quadlet in
 ### 1. Deploy the Quadlet
 
 ```bash
-# From the dotfiles repo root on console:
+# From the dotfiles repo root on bazzite:
 stow .
 
 # Verify the symlink:
@@ -118,21 +118,21 @@ loginctl show-user $USER | grep Linger   # should show Linger=yes
 
 | From | Address |
 |------|---------|
-| Nemo / GNOME Files | `smb://console/storage` |
-| Windows Explorer | `\\console\storage` |
-| CLI | `smbclient //console/storage -U henrique` |
+| Nemo / GNOME Files | `smb://bazzite/storage` |
+| Windows Explorer | `\\bazzite\storage` |
+| CLI | `smbclient //bazzite/storage -U henrique` |
 
 User is `henrique`, password from `samba.env`.
 
 ### Making Nemo Show Just "Storage"
 
 gvfs hardcodes network mount labels as `"<share> on <server>"`, so the entry
-under **Network** always reads `storage on console` and cannot be renamed. To
+under **Network** always reads `storage on bazzite` and cannot be renamed. To
 get a clean name, use a sidebar bookmark with an explicit label — Nemo reads
 `~/.config/gtk-3.0/bookmarks` in `URI Label` format:
 
 ```bash
-echo 'smb://console/storage Storage' >> ~/.config/gtk-3.0/bookmarks
+echo 'smb://bazzite/storage Storage' >> ~/.config/gtk-3.0/bookmarks
 ```
 
 The bookmark then shows exactly `Storage`. Note this file is local to each
@@ -142,7 +142,7 @@ An alternative is mounting it via `/etc/fstab` with cifs, which also survives
 without a graphical session:
 
 ```
-//console/storage /mnt/Storage cifs credentials=/etc/samba/creds-console,uid=1000,gid=1000,_netdev,nofail,x-systemd.automount,x-gvfs-name=Storage 0 0
+//bazzite/storage /mnt/Storage cifs credentials=/etc/samba/creds-bazzite,uid=1000,gid=1000,_netdev,nofail,x-systemd.automount,x-gvfs-name=Storage 0 0
 ```
 
 > **Untested.** `x-gvfs-name` is implemented in
@@ -218,7 +218,7 @@ ss -tln | grep 445        # expect 100.120.120.72:445
 sudo firewall-cmd --list-rich-rules
 ```
 
-If the Tailscale IP of `console` ever changes, update `PublishPort=` in
+If the Tailscale IP of `bazzite` ever changes, update `PublishPort=` in
 `samba.container`.
 
 ### Permission denied writing to the share

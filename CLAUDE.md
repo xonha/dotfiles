@@ -7,8 +7,8 @@ from the repo root to deploy, or `./.install.sh` for a new machine.
 
 - [Infrastructure](.setup/docs/infra.md) — machines, Tailscale network, how to reach each host
 - [devbot](.setup/docs/devbot.md) — Arch Linux development container on Bazzite
-- [Minecraft](.setup/docs/minecraft.md) — Crafty Controller on console; Tailscale-only access for friends
-- [Storage](.setup/docs/storage.md) — 1 TB HDD on console shared over Tailscale via Samba (rootless Podman + Quadlet)
+- [Minecraft](.setup/docs/minecraft.md) — Crafty Controller on bazzite; Tailscale-only access for friends
+- [Storage](.setup/docs/storage.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
 - [Setup notes](.setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Stow layout](#stow-layout) — directory map for this repo
 
@@ -26,7 +26,7 @@ from the repo root to deploy, or `./.install.sh` for a new machine.
 | `.zshrc` / `.zshenv`          | Zsh + Powerlevel10k (`.p10k.zsh`)                           |
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
-| `.config/containers/systemd/` | Podman Quadlet units for `console` services (Crafty, Samba) |
+| `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba) |
 | `.setup/`                     | Setup scripts and the `devbot` container image              |
 
 ## Adding Dotfiles

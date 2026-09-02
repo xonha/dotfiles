@@ -1,6 +1,6 @@
 # Minecraft — Crafty Controller on Bazzite
 
-Minecraft servers on `console`, managed through [Crafty Controller](https://docs.craftycontrol.com/)
+Minecraft servers on `bazzite`, managed through [Crafty Controller](https://docs.craftycontrol.com/)
 — a web panel that creates, runs, backs up and configures servers without
 touching the terminal. Runs as a single rootless Podman container via Quadlet.
 
@@ -18,7 +18,7 @@ The Quadlet unit lives at `.config/containers/systemd/crafty.container` in this
 repo. Crafty runs the Minecraft server as a child process inside its own
 container — there is no separate Minecraft container.
 
-Data lives in `~/.local/share/crafty/` on `console`:
+Data lives in `~/.local/share/crafty/` on `bazzite`:
 
 | Path | Contents |
 |------|----------|
@@ -32,8 +32,8 @@ Data lives in `~/.local/share/crafty/` on `console`:
 
 | What | Address | Who |
 |------|---------|-----|
-| Crafty panel | `https://console:8443` | You (personal tailnet) |
-| Minecraft server | `console:25565` | You + friends (`tag:gamer`) |
+| Crafty panel | `https://bazzite:8443` | You (personal tailnet) |
+| Minecraft server | `bazzite:25565` | You + friends (`tag:gamer`) |
 
 The panel serves a **self-signed certificate** — your browser will warn on
 first visit. That is expected; accept it.
@@ -74,7 +74,7 @@ curl -sk -X PATCH https://localhost:8443/api/v2/users/1 \
 |------|---------|------|--------|------------|------|
 | Aether 1.21.1 | Fabric 1.21.1 (loader 0.19.3) | 25565 | 3–8 GB | hard | `6a39d4a5-7b0c-402a-86a3-f585c940d363` |
 
-Autostart and crash detection are on, so it survives a `console` reboot.
+Autostart and crash detection are on, so it survives a `bazzite` reboot.
 
 **The version is pinned by The Aether**, which caps at 1.21.1 — as does Deeper
 and Darker. Nothing newer is common to both, so this server does not follow
@@ -172,8 +172,8 @@ bundles Accessories and Cumulus itself, so those are not separate downloads.
 The optimization mods are all server-side and do not need to be mirrored on
 clients.
 
-Ready-made Modrinth packs live in `~/Downloads` on `console`:
-`aether-1.21.1-console.mrpack` (plain Fabric, the eleven mods) and
+Ready-made Modrinth packs live in `~/Downloads` on `bazzite`:
+`aether-1.21.1-bazzite.mrpack` (plain Fabric, the eleven mods) and
 `aether-1.21.1-FO.mrpack` (Fabulously Optimized 6.5.0 plus the nine content
 mods — FO already ships Fabric API and Fabric Language Kotlin, and adding a
 second copy of either aborts the launch on a duplicate mod id). Import with
@@ -262,18 +262,18 @@ does not apply to them, and the device count is unlimited.
 > **The tag is not optional.** An auth key without a tag attributes the device
 > to *your* identity, and Tailscale makes all devices sharing an identity
 > mutually visible *even when the policy forbids connecting*. Friends would see
-> `laptop`, `console`, `devbot` and `maistodos` in their device list. With the
+> `laptop`, `bazzite`, `devbot` and `maistodos` in their device list. With the
 > tag, they see only what the ACL permits.
 
 ### 1. Tailnet policy file
 
-In the [admin console](https://login.tailscale.com/admin/acls), replace the
+In the [admin bazzite](https://login.tailscale.com/admin/acls), replace the
 default allow-all policy with:
 
 ```jsonc
 {
   "hosts": {
-    "minecraft": "100.120.120.72"   // console's Tailscale IP
+    "minecraft": "100.120.120.72"   // bazzite's Tailscale IP
   },
 
   "tagOwners": {
@@ -301,7 +301,7 @@ appended to — leaving it in place grants tagged devices full access.
 
 ### 2. Generate a reusable auth key
 
-Admin console → **Settings → Keys → Generate auth key**:
+Admin bazzite → **Settings → Keys → Generate auth key**:
 
 - **Reusable**: **off** — generate one single-use key per guest, on demand
 - **Expiry**: up to 90 days (a hard cap — 1 to 90 inclusive)
@@ -342,12 +342,12 @@ Install Tailscale, then once:
 tailscale up --auth-key=tskey-auth-XXXXXXXX
 ```
 
-Then connect in Minecraft to `console:25565` (or `100.120.120.72:25565` if
+Then connect in Minecraft to `bazzite:25565` (or `100.120.120.72:25565` if
 MagicDNS doesn't resolve for them).
 
 ### Revoking access
 
-Remove the individual device from the admin console's machine list. To cut
+Remove the individual device from the admin bazzite's machine list. To cut
 everyone off at once, revoke the auth key — existing devices keep working, so
 remove them too, or rotate the tag.
 
@@ -374,14 +374,14 @@ file manager handles individual mod `.jar` uploads.
 do not — the format is an archive that needs unpacking first:
 
 ```bash
-# On console, unpack the pack, then zip the result into ~/.local/share/crafty/import/
+# On bazzite, unpack the pack, then zip the result into ~/.local/share/crafty/import/
 mrpack-install <pack-slug> --server-dir /tmp/pack
 ```
 
 Then use the panel's **Zip Import** to create the server from it.
 
 For a modpack, raise the memory ceiling well above the vanilla server's 6 GB —
-kitchen-sink packs want 8–12 GB. `console` has 31 GB total.
+kitchen-sink packs want 8–12 GB. `bazzite` has 31 GB total.
 
 Note that new servers get a port in the 25500–25600 range, which is **not
 published** by the container. Add a `PublishPort=` line to `crafty.container`
@@ -389,7 +389,7 @@ for the new port and restart the service.
 
 ## Notes
 
-- **`stow` is not installed on `console`** (Bazzite is image-based). Quadlet
+- **`stow` is not installed on `bazzite`** (Bazzite is image-based). Quadlet
   symlinks are created by hand, matching the existing pattern:
   ```bash
   ln -sfn ../../../Dotfiles/.config/containers/systemd/crafty.container \
@@ -408,22 +408,22 @@ for the new port and restart the service.
 
 ## Troubleshooting
 
-### Panel unreachable at `https://console:8443`
+### Panel unreachable at `https://bazzite:8443`
 
 ```bash
-ssh console 'systemctl --user status crafty.service'
-ssh console 'journalctl --user -u crafty.service -n 50'
+ssh bazzite 'systemctl --user status crafty.service'
+ssh bazzite 'journalctl --user -u crafty.service -n 50'
 ```
 
 First boot generates the SQLite DB and a self-signed cert and can take a minute.
 
 ### Friend can't connect
 
-1. Confirm their device appears in the admin console tagged `tag:gamer`.
+1. Confirm their device appears in the admin bazzite tagged `tag:gamer`.
 2. Confirm the ACL still has the `tag:gamer → minecraft:25565` rule and that
    the default allow-all was removed rather than left alongside it.
 3. Have them try the raw IP `100.120.120.72:25565` — a working connection there
-   but not on `console:25565` is a MagicDNS problem, not an ACL one.
+   but not on `bazzite:25565` is a MagicDNS problem, not an ACL one.
 
 ### Server won't start after a Crafty update
 
