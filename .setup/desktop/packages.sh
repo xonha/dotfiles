@@ -23,6 +23,8 @@ PKG_DESKTOP=(
   # Audio
   pipewire
   pipewire-pulse
+  libpulse # fornece pactl para o Audio Switcher
+  bluez-utils # fornece bluetoothctl para o Audio Switcher
   noise-suppression-for-voice # RNNoise LADSPA plugin for mic denoising
 
   # Screenshot & screen capture

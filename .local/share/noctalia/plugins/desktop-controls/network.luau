@@ -25,7 +25,7 @@ local function refresh()
       glyph = "network-off"
       label = ""
     elseif kind == "802-3-ethernet" or kind == "ethernet" then
-      glyph = "network"
+      glyph = "ethernet"
       label = "Wired"
     else
       glyph = "wifi"

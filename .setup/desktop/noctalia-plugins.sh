@@ -14,16 +14,19 @@ run() {
     return 1
   fi
 
-  noctalia msg plugins update community
+  if [[ ${1:-} == "--update" ]]; then
+    noctalia msg plugins update community
+  fi
 
   local plugins=(
     "xonha/desktop-controls"
-    "icefish/phone-operate"
+    "icefish/phone-connect"
     "oldirtty/color_picker"
     "noctalia/screen_recorder"
     "nomadcxx/gamer-mode"
     "noctalia/notes"
     "blackbartblues/keymap"
+    "blackbartblues/audio-switcher"
     "raycursive/github-prs"
     "kenn/keybind-cheatsheet"
   )

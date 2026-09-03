@@ -12,8 +12,9 @@ end = [
   "lock_keys",
   "brightness",
   "input_volume",
-  "output_volume",
+  "audio_switcher",
   "bluetooth",
+  "bar_2",
   "network",
   "calendar",
   "clock",
@@ -26,16 +27,7 @@ padding = 8
 radius = 4
 scale = 1.0
 shadow = false
-start = [
-  "temp",
-  "cpu",
-  "ram",
-  "disk",
-  "brave_profile",
-  "status",
-  "bar",
-  "recorder",
-]
+start = ["temp", "cpu", "ram", "disk", "brave_profile", "bar", "recorder"]
 thickness = 27
 widget_spacing = 6
 
@@ -46,6 +38,8 @@ auto_locate = true
 enabled = false
 schema_version = 2
 widget_order = [
+  "lockscreen-login-box@DP-6",
+  "lockscreen-login-box@DP-5",
   "lockscreen-login-box@FALLBACK",
   "lockscreen-login-box@DP-4",
   "lockscreen-login-box@DP-3",
@@ -111,6 +105,60 @@ show_session_buttons = true
 show_unlock_hint = true
 show_weather = true
 
+[lockscreen_widgets.widget."lockscreen-login-box@DP-5"]
+box_height = 196.0
+box_width = 810.0
+cx = 960.0
+cy = 898.0
+output = "DP-5"
+placement_height = 1080.0
+placement_width = 1920.0
+rotation = 0.0
+type = "login_box"
+
+[lockscreen_widgets.widget."lockscreen-login-box@DP-5".settings]
+background_color = "surface_variant"
+background_opacity = 0.88
+background_radius = 12.0
+center_password_text = false
+input_opacity = 1.0
+input_radius = 6.0
+layout = "regular"
+show_caps_lock = true
+show_keyboard_layout = true
+show_login_button = true
+show_media = true
+show_session_buttons = true
+show_unlock_hint = true
+show_weather = true
+
+[lockscreen_widgets.widget."lockscreen-login-box@DP-6"]
+box_height = 196.0
+box_width = 810.0
+cx = 960.0
+cy = 898.0
+output = "DP-6"
+placement_height = 1080.0
+placement_width = 1920.0
+rotation = 0.0
+type = "login_box"
+
+[lockscreen_widgets.widget."lockscreen-login-box@DP-6".settings]
+background_color = "surface_variant"
+background_opacity = 0.88
+background_radius = 12.0
+center_password_text = false
+input_opacity = 1.0
+input_radius = 6.0
+layout = "regular"
+show_caps_lock = true
+show_keyboard_layout = true
+show_login_button = true
+show_media = true
+show_session_buttons = true
+show_unlock_hint = true
+show_weather = true
+
 [lockscreen_widgets.widget."lockscreen-login-box@FALLBACK"]
 box_height = 196.0
 box_width = 810.0
@@ -141,11 +189,11 @@ show_weather = true
 [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
 box_height = 196.0
 box_width = 810.0
-cx = 640.0
-cy = 538.0
+cx = 960.0
+cy = 807.0
 output = "eDP-1"
-placement_height = 720.0
-placement_width = 1280.0
+placement_height = 1080.0
+placement_width = 1920.0
 rotation = 0.0
 type = "login_box"
 
@@ -169,6 +217,15 @@ show_weather = true
 enabled = true
 temperature_night = 4500
 
+[plugin_settings."icefish/phone-connect"]
+battery_display = "hidden"
+show_device_name = true
+
+[plugin_settings."blackbartblues/audio-switcher"]
+show_actions_in_tooltip = true
+show_notification_on_switch = true
+show_percentage = true
+
 [plugin_settings."icefish/phone-operate"]
 battery_display = "hidden"
 show_device_name = true
@@ -184,15 +241,15 @@ panel_position = "top_left"
 [plugins]
 enabled = [
   "xonha/desktop-controls",
-  "icefish/phone-operate",
   "oldirtty/color_picker",
   "yuuto/calculator",
   "noctalia/screen_recorder",
-  "nomadcxx/gamer-mode",
   "noctalia/notes",
   "blackbartblues/keymap",
+  "blackbartblues/audio-switcher",
   "raycursive/github-prs",
   "kenn/keybind-cheatsheet",
+  "icefish/phone-connect",
 ]
 
 [shell]
@@ -283,9 +340,16 @@ path = "/home/henrique/.wallpaper.jpg"
 path = "/home/henrique/.wallpaper.jpg"
 
 [widget.bar]
+color = "#f2cdcd"
+enabled = false
 hide_when_zero = true
 scale = 1.1000000000000001
 type = "raycursive/github-prs:bar"
+
+[widget.bar_2]
+font_scale = 1.1000000000000001
+scale = 1.2000000000000002
+type = "icefish/phone-connect:bar"
 
 [widget.battery]
 color = "#a6e3a1"
@@ -308,8 +372,8 @@ type = "xonha/desktop-controls:calendar"
 
 [widget.calendar.actions]
 left = "panel-toggle control-center calendar"
-scroll_up = "volume-up"
 scroll_down = "volume-down"
+scroll_up = "volume-up"
 
 [widget.clock]
 color = "#cba6f7"
@@ -317,8 +381,8 @@ format = "{:%H:%M}"
 
 [widget.clock.actions]
 left = "panel-toggle control-center notifications"
-scroll_up = "volume-up"
 scroll_down = "volume-down"
+scroll_up = "volume-up"
 
 [widget.cpu]
 color = "#eba0ac"
@@ -344,11 +408,13 @@ color = "#94E2D5"
 icon_color = "#94E2D5"
 type = "xonha/desktop-controls:keyd"
 
-[widget.lock_keys]
-type = "xonha/desktop-controls:lock_keys"
-
 [widget.launcher]
 color = "secondary"
+
+[widget.lock_keys]
+display = "full"
+icon_color = "#94E2D5"
+type = "xonha/desktop-controls:lock_keys"
 
 [widget.media]
 hide_when_no_media = true
@@ -360,11 +426,8 @@ type = "xonha/desktop-controls:network"
 left = "panel-toggle control-center network"
 right = "network-toggle"
 
-[widget.output_volume]
-color = "#74c7ec"
-device = "output"
-show_label = true
-type = "volume"
+[widget.audio_switcher]
+type = "blackbartblues/audio-switcher:widget"
 
 [widget.ram]
 color = "#fab387"
@@ -379,11 +442,9 @@ scale = 1.2000000000000002
 type = "noctalia/screen_recorder:recorder"
 
 [widget.status]
-color = "#94E2D5"
 font_weight = 700
-icon_color = "#94E2D5"
-scale = 1.2000000000000002
-type = "icefish/phone-operate:status"
+scale = 1.0
+type = "icefish/phone-connect:bar"
 
 [widget.taskbar]
 active_opacity = 1.0
