@@ -93,6 +93,86 @@ o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 o.bind("SUPER + code:61", "Toggle key remapping", "~/.config/scripts/keyd.sh --toggle")
 
+-- Restore the old Devbot / SSH shortcuts (workspace vazio), reusing the
+-- legacy focus.sh helper which still supports the "emptyn" launch mode.
+hl.unbind("SUPER + S")
+o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
+
+hl.unbind("SUPER + X")
+o.bind("SUPER + X", "Devbot SSH (workspace vazio)", "~/.config/scripts/focus.sh \"kitty --class kitty-devbot-ssh -e ssh devbot -t 'tmux new-session -A -s main'\" kitty-devbot-ssh emptyn")
+
+hl.unbind("SUPER + C")
+o.bind("SUPER + C", "Mais Todos SSH (workspace vazio)", "~/.config/scripts/focus.sh \"kitty --class kitty-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main'\" kitty-maistodos-ssh emptyn")
+
+-- Move Omarchy's universal clipboard shortcuts off C/V (reused above, and by
+-- the terminal shortcut earlier in this file) onto SUPER+SHIFT+C/V. This
+-- reimplements the logic from default/hypr/bindings/clipboard.lua, since its
+-- helpers are local to that file. Note: overrides the default SUPER+SHIFT+C
+-- "Calendar" webapp shortcut.
+local function send_shortcut_once(mods, key)
+  return function()
+    hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
+
+    hl.timer(function()
+      hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
+    end, { timeout = 50, type = "oneshot" })
+  end
+end
+
+local function active_window_is_terminal()
+  local window = hl.get_active_window()
+  if not window then
+    return false
+  end
+
+  for _, tag in ipairs(window.tags or {}) do
+    if tag:gsub("%*$", "") == "terminal" then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function universal_clipboard_shortcut(default_mods, default_key, terminal_mods, terminal_key)
+  return function()
+    if active_window_is_terminal() then
+      send_shortcut_once(terminal_mods, terminal_key)()
+    else
+      send_shortcut_once(default_mods, default_key)()
+    end
+  end
+end
+
+hl.unbind("SUPER + SHIFT + C")
+o.bind("SUPER + SHIFT + C", "Universal copy", universal_clipboard_shortcut("CTRL", "C", "CTRL", "Insert"))
+o.bind("SUPER + SHIFT + V", "Universal paste", universal_clipboard_shortcut("CTRL", "V", "SHIFT", "Insert"))
+
+-- Old session menu, color picker and mic mute shortcuts.
+hl.unbind("SUPER + BACKSPACE")
+o.bind("SUPER + BACKSPACE", "Menu de sessão", "omarchy-menu toggle system")
+
+hl.unbind("SUPER + P")
+o.bind("SUPER + P", "Selecionar cor da tela", "hyprpicker --autocopy --notify")
+
+hl.unbind("SUPER + T")
+o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mic-mute.sh")
+
+-- Emergency recovery for the internal display, kept from the old setup.
+hl.unbind("SUPER + SHIFT + M")
+o.bind("SUPER + SHIFT + M", "Reativar tela interna", [[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']])
+
+-- Float then center the window on the same keypress, like the old setup.
+hl.unbind("SUPER + SHIFT + B")
+o.bind("SUPER + SHIFT + B", "Toggle window floating", hl.dsp.window.float())
+o.bind("SUPER + SHIFT + B", "Center window", hl.dsp.window.center())
+
+hl.unbind("SUPER + SHIFT + RETURN")
+o.bind("SUPER + SHIFT + RETURN", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+
+hl.unbind("SUPER + L")
+o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
+
 -- Change an existing binding by unbinding it first, then binding the key again.
 -- This example changes SUPER+SPACE from the launcher to the Omarchy root menu.
 -- hl.unbind("SUPER + SPACE")
