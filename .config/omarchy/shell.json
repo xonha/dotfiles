@@ -6,7 +6,7 @@
   },
   "bar": {
     "position": "top",
-    "transparent": true,
+    "transparent": false,
     "centerAnchor": "",
     "layout": {
       "left": [
@@ -17,10 +17,11 @@
           "id": "io.github.heyimhere.hardware-panel"
         },
         {
-          "id": "omarchy-display"
+          "id": "gigasolo.omavoice",
+          "preset": "meeting"
         },
         {
-          "id": "gigasolo.omavoice"
+          "id": "crmne.hyprmoncfg"
         }
       ],
       "center": [
