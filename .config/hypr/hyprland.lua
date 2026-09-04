@@ -27,3 +27,6 @@ require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
+
+-- Disable Omarchy's default window transparency (see default/hypr/windows.lua).
+o.window(".*", { tag = "-default-opacity", opacity = "1 1" })
