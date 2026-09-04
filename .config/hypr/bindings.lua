@@ -26,9 +26,14 @@ hl.unbind("SUPER + SHIFT + F")
 o.bind("SUPER + F", "Brave Origin", { launch = "brave-origin", focus = "^brave-origin$" })
 o.bind("SUPER + SHIFT + F", "Full screen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 
--- Restore the old close-window shortcut; Omarchy's default remains SUPER+W.
+-- Restore the old close-window shortcut.
 hl.unbind("SUPER + Q")
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
+
+-- Replace Omarchy's default SUPER+W (close window, now on SUPER+Q above)
+-- with the old WhatsApp shortcut.
+hl.unbind("SUPER + W")
+o.bind("SUPER + W", "WhatsApp", { webapp = "https://web.whatsapp.com/", focus = true })
 
 -- Other old bindings whose keys are not used by Omarchy. Use its native
 -- launch-or-focus helper instead of the legacy focus.sh wrapper.
