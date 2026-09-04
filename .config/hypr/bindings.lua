@@ -51,8 +51,11 @@ end
 hl.unbind("SUPER + G")
 o.bind("SUPER + G", "Files", { launch = "omarchy-launch-nautilus", focus = "^org\\.gnome\\.Nautilus$" })
 
-o.bind("SUPER + E", "Todoist", { launch = brave_app("dlgohinmglaoopaiplliaecdpmnepmga"), focus = "^brave-origin-dlgohinmglaoopaiplliaecdpmnepmga-Default$" })
-o.bind("SUPER + R", "YouTube Music", { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-origin-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
+-- Note: brave-origin's --app-id mode ignores --class and always reports a
+-- bare "brave-<app-id>-<profile>" window class, even on this brave-origin
+-- binary. Verified by launching each app and checking `hyprctl clients`.
+o.bind("SUPER + E", "Todoist", { launch = brave_app("dlgohinmglaoopaiplliaecdpmnepmga"), focus = "^brave-dlgohinmglaoopaiplliaecdpmnepmga-Default$" })
+o.bind("SUPER + R", "YouTube Music", { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
 o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos"), focus = "^brave-origin-maistodos$" })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
 
