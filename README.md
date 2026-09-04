@@ -1,6 +1,9 @@
 # Dotfiles
 
-Configuração pessoal para CachyOS/Arch, instalada com GNU Stow.
+Configuração pessoal para Arch, instalada com GNU Stow. O instalador detecta
+o Omarchy e preserva os componentes que ele administra (Hyprland, shell,
+Foot, navegador e gerenciador de arquivos), instalando apenas os complementos
+independentes deste repositório.
 
 ## Instalação
 
@@ -11,8 +14,9 @@ cd "$HOME/dotfiles"
 ```
 
 O instalador configura a base de terminal e permite escolher a instalação do
-desktop Hyprland. Os ajustes específicos de hardware ficam fora do fluxo
-principal.
+desktop. No Omarchy, o perfil legado CachyOS/Hyprland/Noctalia/Kitty não é
+aplicado; os dotfiles desse perfil também são excluídos do Stow. Os ajustes
+específicos de hardware ficam fora do fluxo principal.
 
 ## ThinkPad
 

@@ -15,6 +15,17 @@ warn()    { printf "${YELLOW}  [!]${RESET} %s\n" "$*"; }
 error()   { printf "${RED}  [err]${RESET} %s\n" "$*" >&2; }
 header()  { printf "\n${BOLD}${BLUE}=== %s ===${RESET}\n\n" "$*"; }
 
+# Omarchy owns the Hyprland session, shell and terminal configuration.  Keep
+# this check in one place so setup modules can preserve those native defaults.
+is_omarchy() {
+  # The Omarchy binary may not be on PATH in a non-interactive shell (for
+  # example when this script is launched from a terminal wrapper).  The
+  # packaged path and OMARCHY_PATH are stable fallback signals.
+  command -v omarchy >/dev/null 2>&1 \
+    || [[ -x /usr/share/omarchy/bin/omarchy ]] \
+    || [[ -n "${OMARCHY_PATH:-}" && -d "${OMARCHY_PATH}" ]]
+}
+
 # Ask the user to confirm a step before running it.
 # Usage: confirm_step "Step title" "Description"
 # Returns 0 if confirmed, 1 if skipped.

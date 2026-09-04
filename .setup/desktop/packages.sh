@@ -65,8 +65,36 @@ PKG_DESKTOP_AUR=(
   aur/hyprdynamicmonitors-bin
 )
 
+# Omarchy already ships and configures the compositor, portal, shell, terminal,
+# screenshot tooling, file manager and browser.  Keep its choices intact and
+# only add applications that do not replace a native Omarchy component.
+PKG_DESKTOP_OMARCHY=(
+  kdeconnect
+  srcrpy
+  noise-suppression-for-voice
+  mpv
+  playerctl
+  libreoffice-still
+  keyd
+)
+
+PKG_DESKTOP_OMARCHY_AUR=(
+  aur/specify-cli-bin
+)
+
 run() {
   header "Install desktop packages"
+
+  if is_omarchy; then
+    info "Omarchy detected; retaining its native desktop applications."
+    info "Installing optional companion packages from official repos..."
+    yay -Syu --needed --noconfirm --removemake "${PKG_DESKTOP_OMARCHY[@]}"
+
+    info "Installing optional companion packages from the AUR..."
+    yay -Syu --needed --noconfirm --removemake "${PKG_DESKTOP_OMARCHY_AUR[@]}"
+    success "Omarchy companion packages installed."
+    return 0
+  fi
 
   info "Installing packages from official repos..."
   yay -Syu --needed --noconfirm --removemake "${PKG_DESKTOP[@]}"

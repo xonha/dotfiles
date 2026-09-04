@@ -5,18 +5,11 @@
 # development container. yay can install entries from both official repos and
 # the AUR, so this list deliberately does not distinguish their origin.
 PKG_DEV_COMMON=(
-  zsh
-  zsh-completions
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-history-substring-search
-  zsh-theme-powerlevel10k
   neovim
   npm
   nvm
   opencode
   uv
-  debugedit
   fastfetch
   ripgrep
   socat

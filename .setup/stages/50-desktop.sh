@@ -14,7 +14,11 @@ run() {
   header "Desktop"
 
   run_module "$SETUP_ROOT/desktop/packages.sh"
-  run_module "$SETUP_ROOT/desktop/nemo.sh"
+  if is_omarchy; then
+    info "Skipping Nemo setup; Omarchy's native file manager is preserved."
+  else
+    run_module "$SETUP_ROOT/desktop/nemo.sh"
+  fi
   run_module "$SETUP_ROOT/desktop/keyd.sh"
 }
 

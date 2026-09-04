@@ -16,10 +16,11 @@ printf "${RESET}\n"
 source "$SETUP_DIR/stages/10-bootstrap-yay.sh"
 run
 
-source "$SETUP_DIR/stages/20-dotfiles.sh"
+source "$SETUP_DIR/stages/30-server-packages.sh"
 run
 
-source "$SETUP_DIR/stages/30-server-packages.sh"
+# Stow is provided by the server package stage above.
+source "$SETUP_DIR/stages/20-dotfiles.sh"
 run
 
 # Configure the login shell only after Zsh has been installed.
@@ -28,16 +29,19 @@ run
 
 if confirm_step \
     "Install desktop packages" \
-    "GUI stack: Hyprland, Noctalia, Kitty, Brave, VS Code, Nemo, PipeWire, etc.
+    "On Omarchy, preserves its native Hyprland, shell, Foot and browser; installs only optional companion tools.
+  On other Arch desktops, installs the legacy Hyprland/Noctalia profile.
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/stages/50-desktop.sh"
   run
 
-  if confirm_step \
+  if ! is_omarchy && confirm_step \
       "Configure ThinkPad monitor profile" \
       "HyprDynamicMonitors, lid-closed policy and the USB-C hub layout for this ThinkPad."; then
     source "$SETUP_DIR/desktop/thinkpad_t495/monitors.sh"
     run
+  elif is_omarchy; then
+    info "Skipping legacy HyprDynamicMonitors profile; configure monitors through Omarchy/Hyprland instead."
   fi
 fi
 

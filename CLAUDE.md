@@ -1,7 +1,8 @@
 # Dotfiles
 
-CachyOS + Hyprland + Noctalia dotfiles managed with GNU Stow. Run `stow .`
-from the repo root to deploy, or `./.install.sh` for a new machine.
+Arch dotfiles managed with GNU Stow. The installer detects Omarchy and keeps
+its managed Hyprland, shell, Foot and native applications outside Stow. Run
+`./.setup/install.sh` for a new machine.
 
 ## Index
 

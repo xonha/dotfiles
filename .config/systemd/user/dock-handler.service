@@ -1,8 +1,0 @@
-[Unit]
-Description=Apply Hyprland monitor profile when the dock changes
-
-[Service]
-Type=simple
-ExecStart=%h/.config/scripts/dock-handler.sh --loop
-Restart=on-failure
-RestartSec=3
