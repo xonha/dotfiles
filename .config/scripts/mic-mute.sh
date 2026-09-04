@@ -32,6 +32,8 @@ done
 
 if ((target)); then
   [[ -f "$MIC_OFF_SOUND" ]] && pw-play "$MIC_OFF_SOUND" >/dev/null 2>&1 &
+  omarchy-osd -i microphone-muted -m "Microphone muted"
 else
   [[ -f "$MIC_ON_SOUND" ]] && pw-play "$MIC_ON_SOUND" >/dev/null 2>&1 &
+  omarchy-osd -i microphone -m "Microphone on"
 fi
