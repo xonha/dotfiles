@@ -31,15 +31,6 @@ if confirm_step \
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/stages/50-desktop.sh"
   run
-
-  if ! is_omarchy && confirm_step \
-      "Configure ThinkPad monitor profile" \
-      "HyprDynamicMonitors, lid-closed policy and the USB-C hub layout for this ThinkPad."; then
-    source "$SETUP_DIR/desktop/thinkpad_t495/monitors.sh"
-    run
-  elif is_omarchy; then
-    info "Skipping legacy HyprDynamicMonitors profile; configure monitors through Omarchy/Hyprland instead."
-  fi
 fi
 
 source "$SETUP_DIR/stages/60-services.sh"

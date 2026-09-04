@@ -15,7 +15,7 @@ cd "$HOME/dotfiles"
 
 O instalador configura a base de terminal e permite escolher a instalação do
 desktop. O Omarchy já fornece `yay`, então o bootstrap desse helper não é
-executado no host. No Omarchy, os perfis legados Noctalia/Kitty e HyprDynamicMonitors
+executado no host. No Omarchy, os perfis legados Noctalia/Kitty
 não são aplicados; os dotfiles correspondentes também são excluídos do Stow.
 Os ajustes específicos de hardware ficam fora do fluxo principal.
 

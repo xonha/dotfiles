@@ -62,7 +62,6 @@ PKG_DESKTOP_AUR=(
   aur/brave-bin
   aur/visual-studio-code-bin
   aur/specify-cli-bin
-  aur/hyprdynamicmonitors-bin
 )
 
 # Omarchy already ships and configures the compositor, portal, shell, terminal,
