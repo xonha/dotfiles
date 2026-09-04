@@ -4,6 +4,9 @@
 # If not running interactively, don't do anything else (leave this above the rc source)
 [[ $- != *i* ]] && return
 
+# ble.sh must load before everything else that touches the prompt/readline.
+[[ -r /usr/share/blesh/ble.sh ]] && source /usr/share/blesh/ble.sh --noattach
+
 # All the default Omarchy aliases and functions
 # (don't mess with these directly, just overwrite them here!)
 source "$OMARCHY_PATH/default/bash/rc"
@@ -86,3 +89,8 @@ up() {
   orphans=$(pacman -Qdtq 2>/dev/null) || return 0
   [[ -n $orphans ]] && sudo pacman -Rns --noconfirm $orphans
 }
+
+eval "$(starship init bash)"
+
+# ble-attach must come last so ble.sh wraps the final prompt/readline setup.
+[[ ${BLE_VERSION-} ]] && ble-attach

@@ -23,6 +23,7 @@ its managed Hyprland, shell, Foot and native applications outside Stow. Run
 | `.config/nvim/`               | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
 | `.config/opencode/`           | OpenCode                                                    |
 | `.config/scripts/`            | Custom shell scripts                                        |
+| `.config/starship.toml`       | Starship prompt                                             |
 | `.tmux.conf`                  | Tmux                                                        |
 | `.bashrc` / `.bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
