@@ -80,6 +80,7 @@ PKG_DESKTOP_OMARCHY=(
 
 PKG_DESKTOP_OMARCHY_AUR=(
   aur/specify-cli-bin
+  aur/hyprmoncfg-bin # used by the crmne.hyprmoncfg Omarchy shell plugin
 )
 
 run() {

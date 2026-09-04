@@ -16,6 +16,7 @@ run() {
   run_module "$SETUP_ROOT/desktop/packages.sh"
   if is_omarchy; then
     info "Skipping Nemo setup; Omarchy's native file manager is preserved."
+    run_module "$SETUP_ROOT/desktop/omarchy-plugins.sh"
   else
     run_module "$SETUP_ROOT/desktop/nemo.sh"
   fi

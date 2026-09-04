@@ -18,7 +18,8 @@
         },
         {
           "id": "gigasolo.omavoice",
-          "preset": "meeting"
+          "preset": "meeting",
+          "pinnedSource": "alsa_input.usb-SHENZHEN_AONI_ELECTRONIC_CO.__LTD_Full_HD_webcam_AN202011030002-02.mono-fallback"
         },
         {
           "id": "crmne.hyprmoncfg"

@@ -22,6 +22,7 @@ machine.
 | `.config/hypr/`               | Hyprland WM — Lua config, custom bindings, focus workflow, window rules and monitor profiles |
 | `.config/noctalia/`           | Noctalia shell — bar, launcher, control center, notifications, lock, wallpaper and session UI |
 | `.config/omarchy/`            | Omarchy shell overrides — `shell.json` (bar layout, idle/lock), menu extensions, hooks, themes. `branding/`, `defaults/`, `plugins/`, `themed/` stay unstowed (Omarchy-owned) |
+| `.config/hyprmoncfg/`         | hyprmoncfg monitor profiles (used by the `crmne.hyprmoncfg` Omarchy bar plugin, installed via `.setup/desktop/omarchy-plugins.sh`) |
 | `.config/kitty/`              | Kitty terminal                                              |
 | `.config/nvim/`               | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
 | `.config/opencode/`           | OpenCode                                                    |
