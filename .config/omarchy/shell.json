@@ -14,7 +14,24 @@
           "id": "omarchy.menu"
         },
         {
-          "id": "io.github.diegopluna.argus"
+          "id": "io.github.diegopluna.argus",
+          "intervalSec": 3,
+          "homeTiles": [
+            "cpu",
+            "ram",
+            "gpu",
+            "net",
+            "io",
+            "disk"
+          ],
+          "show": [
+            "cpu",
+            "cputemp",
+            "ram",
+            "disk",
+            "net",
+            "io"
+          ]
         },
         {
           "id": "gigasolo.omavoice",
