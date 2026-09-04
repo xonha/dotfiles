@@ -76,11 +76,11 @@ o.bind("SUPER + M", "Phone Operate", "omarchy-menu toggle")
 o.bind("SUPER + Z", "Screenshot region", "omarchy capture screenshot region")
 o.bind("SUPER + ALT + C", "Control center", "omarchy-menu toggle system")
 o.bind("SUPER + ALT + Z", "Settings", "omarchy-menu toggle")
-o.bind("SUPER + DELETE", "Apps menu", "omarchy-menu toggle apps")
+o.bind("SUPER + DELETE", "Omarchy menu", "omarchy-menu toggle root")
 
--- Replace Omarchy's terminal shortcut with the root menu.
+-- Replace Omarchy's terminal shortcut with the apps menu.
 hl.unbind("SUPER + RETURN")
-o.bind("SUPER + RETURN", "Omarchy menu", "omarchy-menu toggle root")
+o.bind("SUPER + RETURN", "Apps menu", "omarchy-menu toggle apps")
 
 -- Move the theme menu from Omarchy's default SUPER+SHIFT+CTRL+SPACE shortcut.
 hl.unbind("SUPER + SHIFT + CTRL + SPACE")
