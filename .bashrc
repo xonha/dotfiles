@@ -85,6 +85,11 @@ alias devbot='ssh devbot'
 alias lab='ssh lab'
 
 up() {
+  if [[ -n ${OMARCHY_PATH:-} ]] && command -v omarchy >/dev/null 2>&1; then
+    omarchy update
+    return
+  fi
+
   yay --noconfirm --removemake || return
   local orphans
   orphans=$(pacman -Qdtq 2>/dev/null) || return 0
