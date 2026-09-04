@@ -15,8 +15,9 @@ warn()    { printf "${YELLOW}  [!]${RESET} %s\n" "$*"; }
 error()   { printf "${RED}  [err]${RESET} %s\n" "$*" >&2; }
 header()  { printf "\n${BOLD}${BLUE}=== %s ===${RESET}\n\n" "$*"; }
 
-# Omarchy owns the Hyprland session, shell and terminal configuration.  Keep
-# this check in one place so setup modules can preserve those native defaults.
+# Omarchy owns the Hyprland session and shell. Keep this check in one place so
+# setup modules can preserve those native defaults while allowing versioned
+# user overrides for Hyprland and Foot.
 is_omarchy() {
   # The Omarchy binary may not be on PATH in a non-interactive shell (for
   # example when this script is launched from a terminal wrapper).  The

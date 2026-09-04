@@ -13,9 +13,6 @@ printf "│         Henrique's Setup Script      │\n"
 printf "╰──────────────────────────────────────╯\n"
 printf "${RESET}\n"
 
-source "$SETUP_DIR/stages/10-bootstrap-yay.sh"
-run
-
 source "$SETUP_DIR/stages/30-server-packages.sh"
 run
 
@@ -29,7 +26,7 @@ run
 
 if confirm_step \
     "Install desktop packages" \
-    "On Omarchy, preserves its native Hyprland, shell, Foot and browser; installs only optional companion tools.
+    "On Omarchy, preserves its native shell and browser while applying versioned Hyprland and Foot overrides; installs only optional companion tools.
   On other Arch desktops, installs the legacy Hyprland/Noctalia profile.
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/stages/50-desktop.sh"
