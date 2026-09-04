@@ -12,6 +12,15 @@
       "left": [
         {
           "id": "omarchy.menu"
+        },
+        {
+          "id": "io.github.heyimhere.hardware-panel"
+        },
+        {
+          "id": "omarchy-display"
+        },
+        {
+          "id": "gigasolo.omavoice"
         }
       ],
       "center": [
