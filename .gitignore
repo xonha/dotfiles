@@ -13,7 +13,7 @@ mimeinfo.cache
 # --- machine state, caches, telemetry ---
 __pycache__/
 .config/chromium/
-.brave-origin-maistodos/
+.brave*
 .config/go/
 .config/Code/agent-host/
 .config/nextjs-nodejs/config.json
