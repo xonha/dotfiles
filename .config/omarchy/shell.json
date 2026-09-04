@@ -12,12 +12,12 @@
       "left": [
         {
           "id": "omarchy.menu"
-        },
-        {
-          "id": "io.github.hogar1977.top-bar-dock"
         }
       ],
       "center": [
+        {
+          "id": "io.github.hogar1977.top-bar-dock"
+        },
         {
           "id": "omarchy.indicators"
         },
