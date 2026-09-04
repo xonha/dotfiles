@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Keep the custom GTK theme in sync after Omarchy's GNOME integration runs.
+[[ ${1:-} == "catppuccin-black" ]] || exit 0
+
+gsettings set org.gnome.desktop.interface gtk-theme "Catppuccin-Black"
+gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"

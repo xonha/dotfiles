@@ -40,15 +40,20 @@ o.bind("SUPER + W", "WhatsApp", { webapp = "https://web.whatsapp.com/", focus = 
 
 local brave_flags = "--max-unused-resource-memory-usage-mb=128 --disk-cache-size=67108864"
 local function brave_app(id)
-  return ("brave --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
+  return ("brave-origin --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
 end
 local function brave_profile(profile)
-  return ("brave --profile-directory=brave-%s --class=brave-%s --user-data-dir=.brave-%s %s"):format(profile, profile, profile, brave_flags)
+  return ("brave-origin --profile-directory=brave-origin-%s --class=brave-origin-%s --user-data-dir=.brave-origin-%s %s"):format(profile, profile, profile, brave_flags)
 end
 
-o.bind("SUPER + E", "Todoist", { launch = brave_app("dlgohinmglaoopaiplliaecdpmnepmga"), focus = "^brave-dlgohinmglaoopaiplliaecdpmnepmga-Default$" })
-o.bind("SUPER + R", "YouTube Music", { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
-o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos"), focus = "^brave-maistodos$" })
+-- Replace Omarchy's default SUPER+G (window grouping) with the old file
+-- explorer shortcut, using Omarchy's native Nautilus launcher.
+hl.unbind("SUPER + G")
+o.bind("SUPER + G", "Files", { launch = "omarchy-launch-nautilus", focus = "^org\\.gnome\\.Nautilus$" })
+
+o.bind("SUPER + E", "Todoist", { launch = brave_app("dlgohinmglaoopaiplliaecdpmnepmga"), focus = "^brave-origin-dlgohinmglaoopaiplliaecdpmnepmga-Default$" })
+o.bind("SUPER + R", "YouTube Music", { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-origin-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
+o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos"), focus = "^brave-origin-maistodos$" })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
 
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
