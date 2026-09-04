@@ -1,8 +1,10 @@
 # Dotfiles
 
 Arch dotfiles managed with GNU Stow. The installer detects Omarchy and keeps
-its managed Hyprland, shell, Foot and native applications outside Stow. Run
-`./.setup/install.sh` for a new machine.
+Foot and other Omarchy-managed native applications outside Stow. Hyprland and
+select Omarchy shell config (bar layout, idle/lock) are tracked here as user
+overrides on top of Omarchy's defaults. Run `./.setup/install.sh` for a new
+machine.
 
 ## Index
 
@@ -19,6 +21,7 @@ its managed Hyprland, shell, Foot and native applications outside Stow. Run
 | ----------------------------- | ----------------------------------------------------------- |
 | `.config/hypr/`               | Hyprland WM — Lua config, custom bindings, focus workflow, window rules and monitor profiles |
 | `.config/noctalia/`           | Noctalia shell — bar, launcher, control center, notifications, lock, wallpaper and session UI |
+| `.config/omarchy/`            | Omarchy shell overrides — `shell.json` (bar layout, idle/lock), menu extensions, hooks, themes. `branding/`, `defaults/`, `plugins/`, `themed/` stay unstowed (Omarchy-owned) |
 | `.config/kitty/`              | Kitty terminal                                              |
 | `.config/nvim/`               | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
 | `.config/opencode/`           | OpenCode                                                    |
