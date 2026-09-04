@@ -24,7 +24,7 @@ its managed Hyprland, shell, Foot and native applications outside Stow. Run
 | `.config/opencode/`           | OpenCode                                                    |
 | `.config/scripts/`            | Custom shell scripts                                        |
 | `.tmux.conf`                  | Tmux                                                        |
-| `.zshrc` / `.zshenv`          | Zsh + Powerlevel10k (`.p10k.zsh`)                           |
+| `.bashrc` / `.bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba) |
