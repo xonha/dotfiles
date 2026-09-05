@@ -15,7 +15,6 @@
         },
         {
           "id": "io.github.diegopluna.argus",
-          "intervalSec": 3,
           "homeTiles": [
             "cpu",
             "ram",
@@ -24,13 +23,13 @@
             "io",
             "disk"
           ],
+          "intervalSec": 3,
           "show": [
             "cpu",
             "cputemp",
             "ram",
             "disk",
-            "net",
-            "io"
+            "load"
           ]
         },
         {
