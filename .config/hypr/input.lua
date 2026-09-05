@@ -3,11 +3,12 @@
 
 -- Keyboard layout and options.
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
--- Omarchy's default makes Caps Lock the compose key; moved to Right Alt so
--- Caps Lock goes back to normal caps-lock behavior.
+-- Omarchy's default makes Caps Lock the compose key (compose:caps). No
+-- compose key at all here: Right Alt is needed as AltGr by the br(abnt2)
+-- layout (e.g. AltGr+W -> "?"), so it can't take over that role either.
 hl.config({
   input = {
-    kb_options = "compose:ralt",
+    kb_options = "",
   },
 })
 
