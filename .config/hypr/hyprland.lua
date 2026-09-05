@@ -28,6 +28,14 @@ require("default.hypr.toggles")
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
 
+-- Brave webapps (bindings.lua: WhatsApp, Todoist, YouTube Music, Mais Todos,
+-- Devbot) always open on an empty workspace on the right monitor. Excludes
+-- the bare Brave Origin browser itself (class "brave-origin").
+o.window("^brave-(origin-.+|.+-Default)$", {
+  monitor = "desc:SUE SFP2412FHD 000000000000",
+  workspace = "emptym",
+})
+
 -- Disable Omarchy's default window transparency (see default/hypr/windows.lua).
 o.window(".*", { tag = "-default-opacity", opacity = "1 1" })
 
