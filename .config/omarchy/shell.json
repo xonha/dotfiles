@@ -57,7 +57,8 @@
         {
           "id": "gigasolo.omavoice",
           "pinnedSource": "alsa_input.pci-0000_06_00.6.analog-stereo",
-          "preset": "meeting"
+          "preset": "meeting",
+          "setDefaultSource": true
         },
         {
           "id": "omarchy.agents"
