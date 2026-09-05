@@ -5,7 +5,7 @@ mimeinfo.cache
 .config/containers/systemd/samba.env
 
 # --- secrets / credentials (public repo: never commit) ---
-.config/gh/hosts.yml
+.config/gh/*
 .config/github-copilot/
 .config/configstore/
 .config/.jira/
