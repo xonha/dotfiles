@@ -1,5 +1,5 @@
 ---
-name: tdd-process
+name: mt-tdd-process
 description: Test-driven development (TDD) process for implementing features — happy-path test first, implementation, edge case tests, unit tests, and full suite run
 ---
 

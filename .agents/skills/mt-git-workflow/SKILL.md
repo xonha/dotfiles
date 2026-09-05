@@ -1,5 +1,5 @@
 ---
-name: git-workflow
+name: mt-git-workflow
 description: Git branching, commit message conventions, and pull request process — branch naming, structured commits, gh CLI PR creation, and post-implementation Jira updates
 ---
 

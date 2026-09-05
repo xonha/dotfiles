@@ -1,5 +1,5 @@
 ---
-name: testing-requirements
+name: mt-test-reqs
 description: Pre-implementation testing checklist — activate virtualenv, start infrastructure with make run-spec-infra, and run full pytest suite before writing any new code
 ---
 

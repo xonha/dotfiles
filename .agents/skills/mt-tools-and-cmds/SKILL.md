@@ -1,5 +1,5 @@
 ---
-name: tools-and-commands
+name: mt-tools-and-cmds
 description: CLI reference for jira, gh, pytest, and make commands used throughout the development workflow
 ---
 

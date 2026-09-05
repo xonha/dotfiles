@@ -1,5 +1,5 @@
 ---
-name: development-workflow
+name: mt-dev-workflow
 description: 5-step development workflow for starting a task from a Jira card — reading the card, branching, analysis, clarification loop, and finalizing the plan
 ---
 
