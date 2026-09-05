@@ -21,14 +21,8 @@ Os ajustes específicos de hardware ficam fora do fluxo principal.
 
 ## ThinkPad
 
-Para habilitar wake por teclado e tampa nesta máquina:
-
-```bash
-./.setup/desktop/thinkpad_t495/wakeup.sh
-```
-
-Os IDs de hardware e o diagnóstico estão documentados em
-[`.setup/README.md`](.setup/README.md).
+Wake por teclado e tampa via udev rules — diagnóstico e configuração manual
+documentados em [`.setup/README.md`](.setup/README.md).
 
 ## Ambientes de desenvolvimento no Bazzite
 

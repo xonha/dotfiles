@@ -6,13 +6,8 @@ O instalador usa etapas numeradas em `stages/` apenas para definir a ordem.
 Módulos com responsabilidades concretas ficam fora delas:
 
 - `desktop/`: pacotes e preferências da sessão gráfica;
-- `desktop/thinkpad_t495/`: configurações específicas deste hardware;
 - `lib/`: funções reutilizáveis sem efeitos colaterais;
 - `docs/`: documentação operacional.
-
-O perfil de monitores é exclusivo deste ThinkPad e é opcional durante
-`./.setup/install.sh`; outros computadores não recebem regras de tampa, saídas ou
-resoluções deste hardware.
 
 ## Login shell safety
 
@@ -22,24 +17,6 @@ returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's
 `pam_shells.so` from rejecting login if a distribution-provided shell (such as
 Fish) is later removed.
-
-## Nemo sidebar / XDG folders
-
-Applied by `.setup/desktop/nemo.sh` (run from `.setup/install.sh`).
-
-Two gotchas on a minimal Hyprland setup:
-
-1. **`~/.config/user-dirs.dirs` is never generated.** There is no XDG autostart
-   processor, so `xdg-user-dirs-update` never runs and every `XDG_*_DIR`
-   resolves to `$HOME`. Fixed by running it once in `nemo.sh` and via
-   `hl.exec_cmd("xdg-user-dirs-update")` in `hyprland.lua`.
-2. **Nemo does not auto-list the XDG folders.** Unlike Nautilus, it only shows
-   Home/Desktop/Filesystem/Trash plus whatever is in
-   `~/.config/gtk-3.0/bookmarks`. So the standard folders must be seeded there.
-   `sidebar-bookmark-breakpoint` (dconf) sets where the "My Computer" section
-   ends and "Bookmarks" begins. Custom folder icons live in GIO metadata
-   (`gio set … metadata::custom-icon-name`), which is per-machine, not a file
-   that can be stowed.
 
 ## Wake from Suspend via Keyboard (ThinkPad)
 
@@ -83,9 +60,6 @@ echo enabled | sudo tee /sys/bus/usb/devices/<port>/power/wakeup
 Then test with `systemctl suspend` and wake with a keypress.
 
 ### Make it persistent (udev rules)
-
-O script específico desta máquina está em
-`.setup/desktop/thinkpad_t495/wakeup.sh`.
 
 Create `/etc/udev/rules.d/90-wakeup-keyboard.rules`:
 
