@@ -6,14 +6,14 @@ All machines connected via Tailscale MagicDNS.
 
 | Alias | Resolves to | Port | Notes |
 |-------|-------------|------|-------|
-| `laptop` | `laptop` | 22 | ThinkPad — Arch Linux desktop |
+| `omarchy` | `omarchy` | 22 | ThinkPad T495 — Omarchy (Arch Linux) desktop |
 | `maistodos` | `maistodos` | 22 | Work machine — Arch WSL2 |
 | `devbot` | `bazzite` | 2223 | Arch dev container on `bazzite`; forwards local :3000 |
 | `lab` | `bazzite` | 2224 | Personal Arch container; forwards local :3001 to its :3000 |
 | `bazzite` | `bazzite` | 22 | Direct — no alias; see [bazzite access](#bazzite--bazzite-host) |
 
 ```bash
-ssh laptop       # ThinkPad
+ssh omarchy      # ThinkPad T495 (Omarchy)
 ssh maistodos    # work machine (Arch WSL2)
 ssh devbot       # Arch devbot container on bazzite (port 2223)
 ssh lab          # personal Arch container on bazzite (port 2224)
@@ -39,14 +39,14 @@ ssh lab          # personal Arch container on bazzite (port 2224)
 
 | Host | Hardware | OS | Role |
 |------|-----------|----|------|
-| `laptop` | ThinkPad | Arch Linux | Primary client — Hyprland desktop |
+| `omarchy` | ThinkPad T495 | Arch Linux (Omarchy) | Primary client — Hyprland desktop |
 | `bazzite` | Desktop PC | Bazzite (Fedora Silverblue) | Home server — runs containers |
 | `maistodos` | Work PC | Windows + Arch WSL2 | Work machine |
 
 ## Tailscale
 
 MagicDNS resolves hostnames across all machines. No IP addresses needed for
-routine work — use the hostname (e.g., `laptop`, `bazzite`) directly in SSH
+routine work — use the hostname (e.g., `omarchy`, `bazzite`) directly in SSH
 and other tools.
 
 ```bash
@@ -56,10 +56,13 @@ tailscale status     # show all peers and their online/offline state
 
 ## Per-Machine Details
 
-### laptop — ThinkPad (Arch Linux)
+### omarchy — ThinkPad T495 (Omarchy, Arch Linux)
 
-Primary development client. Runs Hyprland desktop. No persistent services.
-SSH access via the `laptop` alias.
+Primary development client. Runs Omarchy (Hyprland-based). No persistent
+services. SSH access via the `omarchy` alias. Formerly aliased `laptop`,
+running a hand-rolled CachyOS/Hyprland/Noctalia desktop before migrating to
+Omarchy — see CLAUDE.md's Stow Layout notes for what's still versioned as
+Hyprland overrides on top of Omarchy's defaults.
 
 ### bazzite — Bazzite Host
 
@@ -157,6 +160,6 @@ is on and Tailscale reconnects.
 
 ## Typical Workflow
 
-- Code on `laptop` (Arch, local editor) or inside `devbot` (SSH + Neovim).
+- Code on `omarchy` (Arch, local editor) or inside `devbot` (SSH + Neovim).
 - Services on `bazzite` accessible from any machine via Tailscale.
 - Work tasks on `maistodos` (WSL2 Arch for dev, Windows for meetings/Office).
