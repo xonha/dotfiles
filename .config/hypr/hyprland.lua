@@ -32,7 +32,7 @@ require("default.hypr.toggles")
 -- Devbot) always open on an empty workspace on the right monitor. Excludes
 -- the bare Brave Origin browser itself (class "brave-origin").
 o.window("^brave-(origin-.+|.+-Default)$", {
-  monitor = "desc:SUE SFP2412FHD 000000000000",
+  monitor = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000",
   workspace = "emptym",
 })
 
