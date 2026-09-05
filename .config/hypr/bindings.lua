@@ -85,12 +85,11 @@ o.bind("SUPER + RETURN", "Apps menu", "omarchy-menu toggle apps")
 hl.unbind("SUPER + SHIFT + CTRL + SPACE")
 o.bind("SUPER + SHIFT + K", "Theme menu", "omarchy-menu toggle theme")
 
--- Keyd-generated function keys from the old setup (not used by Omarchy).
+-- Raw media keycodes from the old setup (not used by Omarchy).
 o.bind("code:194", "Previous track", "playerctl previous")
 o.bind("code:195", "Play/pause", "playerctl play-pause")
 o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
-o.bind("SUPER + code:61", "Toggle key remapping", "~/.config/scripts/keyd.sh --toggle")
 
 -- Restore the old Devbot / SSH shortcuts (workspace vazio), reusing the
 -- legacy focus.sh helper which still supports the "emptyn" launch mode.

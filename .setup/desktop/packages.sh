@@ -43,9 +43,6 @@ PKG_DESKTOP=(
   # Productivity
   libreoffice-still
 
-  # Keyboard
-  keyd
-
   # Clipboard
   wl-clipboard
 
@@ -73,7 +70,6 @@ PKG_DESKTOP_OMARCHY=(
   mpv
   playerctl
   libreoffice-still
-  keyd
 )
 
 PKG_DESKTOP_OMARCHY_AUR=(

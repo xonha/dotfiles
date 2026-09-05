@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # ~/.config/scripts/dock-handler.sh
-# Unified dock handler: monitors display + toggles keyd
+# Unified dock handler: applies the right monitor layout for dock state.
 # Uses polling to detect dock state
 
 set -Eeuo pipefail
 
-KEYD_SERVICE="keyd.service"
 DOCK_USB_ID="${DOCK_USB_ID:-0bda:8152}"
 STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/dock-handler-state"
 
@@ -22,7 +21,6 @@ apply_dock() {
   set_monitor 'output = "eDP-1", disabled = true'
   set_monitor 'output = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000", mode = "1920x1080@120", position = "0x0", scale = 1.0, transform = 0, vrr = 0'
   set_monitor 'output = "desc:SUE SFP2412FHD 000000000000", mode = "1920x1080@120", position = "1920x0", scale = 1.0, transform = 0, vrr = 0'
-  systemctl stop "$KEYD_SERVICE"
   echo "docked" >"$STATE_FILE"
 }
 
@@ -31,7 +29,6 @@ apply_travel() {
   notify-send "Dock" "Applying travel configuration" -u low
   set_monitor 'output = "eDP-1", mode = "1920x1080@60.02", position = "192x2160", scale = 1.0'
   set_monitor 'output = "desc:Invalid Vendor Codename - RTK 0x1920 demoset-1", mode = "1920x1080@60.0", position = "192x1080", scale = 1.0'
-  systemctl start "$KEYD_SERVICE"
   echo "undocked" >"$STATE_FILE"
 }
 
@@ -39,7 +36,6 @@ apply_default() {
   echo "Applying default configuration..."
   notify-send "Dock" "Applying default configuration" -u low
   set_monitor 'output = "eDP-1", mode = "1920x1080@60.02", position = "0x0", scale = 1.0, transform = 0, vrr = 0'
-  systemctl start "$KEYD_SERVICE"
   echo "default" >"$STATE_FILE"
 }
 

@@ -29,7 +29,6 @@ machine.
 | `.config/starship.toml`       | Starship prompt                                             |
 | `.tmux.conf`                  | Tmux                                                        |
 | `.bashrc` / `.bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
-| `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba) |
 | `.setup/`                     | Setup scripts and the `devbot` container image              |

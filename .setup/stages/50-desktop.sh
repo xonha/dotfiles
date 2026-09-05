@@ -18,7 +18,6 @@ run() {
     info "Skipping Nemo setup; Omarchy's native file manager is preserved."
     run_module "$SETUP_ROOT/desktop/omarchy-plugins.sh"
   fi
-  run_module "$SETUP_ROOT/desktop/keyd.sh"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
