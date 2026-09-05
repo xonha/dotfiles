@@ -36,7 +36,7 @@ hl.unbind("SUPER + W")
 o.bind("SUPER + W", "WhatsApp", { webapp = "https://web.whatsapp.com/", focus = true })
 
 -- Other old bindings whose keys are not used by Omarchy. Use its native
--- launch-or-focus helper instead of the legacy focus.sh wrapper.
+-- launch-or-focus helper.
 
 local brave_flags = "--max-unused-resource-memory-usage-mb=128 --disk-cache-size=67108864"
 local function brave_app(id)
@@ -91,16 +91,16 @@ o.bind("code:195", "Play/pause", "playerctl play-pause")
 o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 
--- Restore the old Devbot / SSH shortcuts (workspace vazio), reusing the
--- legacy focus.sh helper which still supports the "emptyn" launch mode.
+-- Restore the old Devbot / SSH shortcuts, using Omarchy's native
+-- launch-or-focus (launches on the current workspace; no more "emptyn").
 hl.unbind("SUPER + S")
 o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
 
 hl.unbind("SUPER + X")
-o.bind("SUPER + X", "Devbot SSH (workspace vazio)", "~/.config/scripts/focus.sh \"kitty --class kitty-devbot-ssh -e ssh devbot -t 'tmux new-session -A -s main'\" kitty-devbot-ssh emptyn")
+o.bind("SUPER + X", "Devbot SSH", { launch = "kitty --class kitty-devbot-ssh -e ssh devbot -t 'tmux new-session -A -s main'", focus = "^kitty-devbot-ssh$" })
 
 hl.unbind("SUPER + C")
-o.bind("SUPER + C", "Mais Todos SSH (workspace vazio)", "~/.config/scripts/focus.sh \"kitty --class kitty-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main'\" kitty-maistodos-ssh emptyn")
+o.bind("SUPER + C", "Mais Todos SSH", { launch = "kitty --class kitty-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main'", focus = "^kitty-maistodos-ssh$" })
 
 -- Move Omarchy's universal clipboard shortcuts off C/V (reused above, and by
 -- the terminal shortcut earlier in this file) onto SUPER+SHIFT+C/V. This

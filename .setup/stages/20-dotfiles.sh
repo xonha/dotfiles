@@ -34,7 +34,6 @@ run() {
       '\\.config/brave-flags\\.conf$'
       '\\.local/share/applications/(brave-.*|kitty.*)\\.desktop$'
       '\\.local/share/icons/hicolor/scalable/apps/kitty-.*\\.svg$'
-      '\\.config/systemd/user/dock-handler\\.service$'
     )
     local -a stow_args=()
     local ignore
