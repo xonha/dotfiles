@@ -31,14 +31,6 @@
             "disk",
             "load"
           ]
-        },
-        {
-          "id": "gigasolo.omavoice",
-          "preset": "meeting",
-          "pinnedSource": "alsa_input.usb-SHENZHEN_AONI_ELECTRONIC_CO.__LTD_Full_HD_webcam_AN202011030002-02.mono-fallback"
-        },
-        {
-          "id": "crmne.hyprmoncfg"
         }
       ],
       "center": [
@@ -58,6 +50,14 @@
       "right": [
         {
           "id": "omarchy.tray"
+        },
+        {
+          "id": "crmne.hyprmoncfg"
+        },
+        {
+          "id": "gigasolo.omavoice",
+          "pinnedSource": "alsa_input.pci-0000_06_00.6.analog-stereo",
+          "preset": "meeting"
         },
         {
           "id": "omarchy.agents"
