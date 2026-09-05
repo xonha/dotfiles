@@ -24,16 +24,14 @@ run() {
   if is_omarchy; then
     info "Omarchy detected; preserving native desktop configuration except the versioned Hyprland overrides."
     # These are configuration and launchers for the previous
-    # CachyOS/Hyprland/Noctalia/Kitty desktop. Omarchy owns equivalent
+    # CachyOS/Hyprland/Kitty desktop. Omarchy owns equivalent
     # settings (Quickshell, Foot and the native browser) and updates them over
     # time, so they must remain outside Stow's control. Hyprland is intentionally
     # versioned here as user overrides loaded after Omarchy's defaults.
     local -a omarchy_ignores=(
-      '\\.config/(noctalia|kitty)(/|$)'
+      '\\.config/kitty(/|$)'
       '\\.config/(gh|nvim)(/|$)'
       '\\.config/brave-flags\\.conf$'
-      '\\.local/share/noctalia(/|$)'
-      '\\.local/state/noctalia(/|$)'
       '\\.local/share/applications/(brave-.*|kitty.*)\\.desktop$'
       '\\.local/share/icons/hicolor/scalable/apps/kitty-.*\\.svg$'
       '\\.config/systemd/user/dock-handler\\.service$'

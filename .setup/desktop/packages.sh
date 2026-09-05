@@ -11,14 +11,13 @@ PKG_DESKTOP=(
   hyprtoolkit
   hyprpicker
   xdg-desktop-portal-hyprland
-  noctalia
   kitty
 
   kdeconnect
   srcrpy
 
   # Display & hardware
-  brightnessctl # usado pelo Noctalia
+  brightnessctl
 
   # Audio
   pipewire

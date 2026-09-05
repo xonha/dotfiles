@@ -26,7 +26,7 @@ run_single_click() {
   rm -f "$STATE_FILE"
   flock -u 9
   exec 9>&-
-  exec noctalia msg media toggle
+  exec omarchy-shell media playPause
 }
 
 if [[ "${1:-}" == "--single" ]]; then

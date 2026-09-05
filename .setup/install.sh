@@ -27,7 +27,7 @@ run
 if confirm_step \
     "Install desktop packages" \
     "On Omarchy, preserves its native shell and browser while applying versioned Hyprland and Foot overrides; installs only optional companion tools.
-  On other Arch desktops, installs the legacy Hyprland/Noctalia profile.
+  On other Arch desktops, installs the legacy Hyprland profile.
   Skip this on headless / SSH-only machines."; then
   source "$SETUP_DIR/stages/50-desktop.sh"
   run
