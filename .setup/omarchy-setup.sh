@@ -5,7 +5,7 @@
 set -euo pipefail
 
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/stages/_shared.sh"
+source "$SETUP_DIR/_shared.sh"
 
 printf "${BOLD}${BLUE}"
 printf "╭──────────────────────────────────────╮\n"
@@ -13,15 +13,15 @@ printf "│         Henrique's Setup Script      │\n"
 printf "╰──────────────────────────────────────╯\n"
 printf "${RESET}\n"
 
-source "$SETUP_DIR/stages/30-server-packages.sh"
+source "$SETUP_DIR/10-server-packages.sh"
 run
 
 # Stow is provided by the server package stage above.
-source "$SETUP_DIR/stages/20-dotfiles.sh"
+source "$SETUP_DIR/20-dotfiles.sh"
 run
 
 # Configure the login shell only after Zsh has been installed.
-source "$SETUP_DIR/stages/40-login-shell.sh"
+source "$SETUP_DIR/30-login-shell.sh"
 run
 
 if confirm_step \
@@ -29,11 +29,11 @@ if confirm_step \
     "On Omarchy, preserves its native shell and browser while applying versioned Hyprland and Foot overrides; installs only optional companion tools.
   On other Arch desktops, installs the legacy Hyprland profile.
   Skip this on headless / SSH-only machines."; then
-  source "$SETUP_DIR/stages/50-desktop.sh"
+  source "$SETUP_DIR/40-desktop.sh"
   run
 fi
 
-source "$SETUP_DIR/stages/60-services.sh"
+source "$SETUP_DIR/50-services.sh"
 run
 
 printf "\n${BOLD}${GREEN}All selected steps completed.${RESET}\n"

@@ -2,8 +2,8 @@
 # Step: Bootstrap yay (AUR helper) for the Arch-based Toolbox image.
 # The Omarchy host already provides yay and does not source this stage.
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/stages/_shared.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SETUP_ROOT/_shared.sh"
 
 run() {
   header "Bootstrap yay"

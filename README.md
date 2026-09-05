@@ -10,7 +10,7 @@ versionadas neste repositório e aplicadas após os padrões do Omarchy.
 ```bash
 git clone https://github.com/henriqueluhm/dotfiles.git "$HOME/dotfiles"
 cd "$HOME/dotfiles"
-./.setup/install.sh
+./.setup/omarchy-setup.sh
 ```
 
 O instalador configura a base de terminal e permite escolher a instalação do
@@ -31,7 +31,7 @@ mas têm homes, workspaces e portas SSH independentes. No `bazzite`, depois de
 aplicar os dotfiles com Stow, execute:
 
 ```bash
-./.setup/toolbox/install.sh
+./.setup/toolbox-setup.sh
 ```
 
 O guia operacional está em [`.docs/toolbox.md`](.docs/toolbox.md).

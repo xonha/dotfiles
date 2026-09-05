@@ -3,7 +3,7 @@
 Arch dotfiles managed with GNU Stow. The installer detects Omarchy and keeps
 Foot and other Omarchy-managed native applications outside Stow. Hyprland and
 select Omarchy shell config (bar layout, idle/lock) are tracked here as user
-overrides on top of Omarchy's defaults. Run `./.setup/install.sh` for a new
+overrides on top of Omarchy's defaults. Run `./.setup/omarchy-setup.sh` for a new
 machine.
 
 ## Index
@@ -21,7 +21,7 @@ machine.
 | ----------------------------- | ----------------------------------------------------------- |
 | `.config/hypr/`               | Hyprland WM — Lua config, custom bindings, focus workflow, window rules and monitor profiles |
 | `.config/omarchy/`            | Omarchy shell overrides — `shell.json` (bar layout, idle/lock), menu extensions, hooks, themes. `branding/`, `defaults/`, `plugins/`, `themed/` stay unstowed (Omarchy-owned) |
-| `.config/hyprmoncfg/`         | hyprmoncfg monitor profiles (used by the `crmne.hyprmoncfg` Omarchy bar plugin, installed via `.setup/desktop/omarchy-plugins.sh`) |
+| `.config/hyprmoncfg/`         | hyprmoncfg monitor profiles (used by the `crmne.hyprmoncfg` Omarchy bar plugin, installed via `.setup/omarchy-plugins.sh`) |
 | `.config/kitty/`              | Kitty terminal                                              |
 | `.config/nvim/`               | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
 | `.config/opencode/`           | OpenCode                                                    |

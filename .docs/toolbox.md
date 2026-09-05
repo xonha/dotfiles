@@ -9,7 +9,7 @@ Uma imagem rootless Podman compartilhada sustenta dois ambientes isolados no
 | `lab` | Projetos pessoais | `2224` | `~/lab/workspace` | volume `lab-home` |
 
 Ambas usam `localhost/toolbox:latest`, construída de
-`.setup/toolbox/Dockerfile`. Cada uma monta suas próprias pastas e volume; uma
+`.setup/toolbox.Dockerfile`. Cada uma monta suas próprias pastas e volume; uma
 não compartilha código nem configuração da outra. As chaves autorizadas de
 `~/.ssh/authorized_keys` no `bazzite` são copiadas para cada home ao iniciar.
 
@@ -30,7 +30,7 @@ No `bazzite`, após aplicar os dotfiles com Stow:
 ```bash
 cd ~/Dotfiles
 stow .
-./.setup/toolbox/install.sh
+./.setup/toolbox-setup.sh
 ```
 
 O instalador cria os workspaces, constrói a imagem, reinicia as duas unidades

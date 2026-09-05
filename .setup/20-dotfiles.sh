@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Step: Stow dotfiles and switch remote to SSH
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/stages/_shared.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SETUP_ROOT/_shared.sh"
 
 run() {
   header "Dotfiles & user setup"

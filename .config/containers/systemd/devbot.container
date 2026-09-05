@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-# Built reproducibly by .setup/toolbox/install.sh from the versioned Dockerfile.
+# Built reproducibly by .setup/toolbox-setup.sh from the versioned Dockerfile.
 Image=localhost/toolbox:latest
 ContainerName=devbot
 HostName=devbot

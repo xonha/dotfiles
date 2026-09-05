@@ -2,16 +2,21 @@
 
 ## Estrutura
 
-O instalador usa etapas numeradas em `stages/` apenas para definir a ordem.
-Módulos com responsabilidades concretas ficam fora delas:
+Dois fluxos, cada um com seu proprio entrypoint, soltos na raiz de `.setup/`:
 
-- `desktop/`: pacotes e preferências da sessão gráfica;
-- `lib/`: funções reutilizáveis sem efeitos colaterais;
-- `docs/`: documentação operacional.
+- `omarchy-setup.sh`: roda as etapas numeradas (`10-server-packages.sh` ->
+  `20-dotfiles.sh` -> `30-login-shell.sh` -> `40-desktop.sh` (opcional) ->
+  `50-services.sh`), mais `desktop-packages.sh` e `omarchy-plugins.sh`, usados
+  so por `40-desktop.sh`.
+- `toolbox-setup.sh`: builda `toolbox.Dockerfile` (que roda
+  `toolbox-bootstrap-yay.sh`, `10-server-packages.sh` e `30-login-shell.sh`
+  dentro da imagem) e reinicia os servicos `devbot`/`lab`.
+
+`_shared.sh` e `_packages.sh` sao compartilhados pelos dois fluxos.
 
 ## Login shell safety
 
-`.setup/stages/40-login-shell.sh` runs immediately after the server packages are installed. It
+`.setup/30-login-shell.sh` runs immediately after the server packages are installed. It
 configures Zsh as the login shell only after confirming that `command -v zsh`
 returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's

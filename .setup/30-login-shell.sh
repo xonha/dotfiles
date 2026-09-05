@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Step: Safely configure Zsh as the user's login shell.
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/stages/_shared.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SETUP_ROOT/_shared.sh"
 
 run() {
   header "Configure login shell"

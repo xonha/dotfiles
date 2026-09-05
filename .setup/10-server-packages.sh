@@ -2,9 +2,9 @@
 # Step: Install server / headless packages
 # Safe to run on both a laptop and an SSH-only cloud server.
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/stages/_shared.sh"
-source "$SETUP_ROOT/stages/_packages.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SETUP_ROOT/_shared.sh"
+source "$SETUP_ROOT/_packages.sh"
 
 run() {
   header "Install server packages"

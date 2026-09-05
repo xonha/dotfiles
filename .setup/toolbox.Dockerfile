@@ -3,9 +3,9 @@ FROM archlinux:latest
 # The build context is the dotfiles repository. Copy the actual setup stages
 # used by a regular machine so the Toolbox follows the same bootstrap, package
 # and login-shell workflow.
-COPY .setup/stages/_shared.sh .setup/stages/_packages.sh \
-     .setup/stages/10-bootstrap-yay.sh .setup/stages/30-server-packages.sh \
-     .setup/stages/40-login-shell.sh /opt/dotfiles-setup/stages/
+COPY .setup/_shared.sh .setup/_packages.sh \
+     .setup/toolbox-bootstrap-yay.sh .setup/10-server-packages.sh \
+     .setup/30-login-shell.sh /opt/dotfiles-setup/
 COPY .zshrc .zshenv .p10k.zsh /usr/local/share/toolbox-defaults/
 
 # Install only the container runtime/bootstrap prerequisites. The shared
@@ -42,9 +42,9 @@ RUN groupadd -g ${GID} ${USERNAME} \
 USER ${USERNAME}
 ENV USER=${USERNAME}
 ENV SETUP_TARGET=toolbox
-RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/stages/10-bootstrap-yay.sh && run \
-      && source /opt/dotfiles-setup/stages/30-server-packages.sh && run \
-      && source /opt/dotfiles-setup/stages/40-login-shell.sh && run'
+RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/toolbox-bootstrap-yay.sh && run \
+      && source /opt/dotfiles-setup/10-server-packages.sh && run \
+      && source /opt/dotfiles-setup/30-login-shell.sh && run'
 
 USER root
 RUN pacman -Scc --noconfirm

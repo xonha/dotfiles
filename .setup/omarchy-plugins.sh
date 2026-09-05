@@ -5,8 +5,8 @@
 
 set -euo pipefail
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$SETUP_ROOT/stages/_shared.sh"
+SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SETUP_ROOT/_shared.sh"
 
 run() {
   header "Install Omarchy shell plugins"
