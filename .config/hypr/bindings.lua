@@ -172,6 +172,12 @@ o.bind("SUPER + SHIFT + RETURN", "Toggle fullscreen", hl.dsp.window.fullscreen({
 hl.unbind("SUPER + L")
 o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 
+-- Replace Omarchy's default SUPER+J (toggle window split) with the reload
+-- orchestrator, which recovers session state that can drift or break
+-- silently (see reload-orchestrator.sh).
+hl.unbind("SUPER + J")
+o.bind("SUPER + J", "Reload state", "~/.config/scripts/reload-orchestrator.sh")
+
 -- Change an existing binding by unbinding it first, then binding the key again.
 -- This example changes SUPER+SPACE from the launcher to the Omarchy root menu.
 -- hl.unbind("SUPER + SPACE")
