@@ -29,11 +29,16 @@ require("default.hypr.toggles")
 -- o.window("qemu", { workspace = "5" })
 
 -- Brave webapps (bindings.lua: WhatsApp, Todoist, YouTube Music, Mais Todos,
--- Devbot) always open on an empty workspace on the right monitor. Excludes
--- the bare Brave Origin browser itself (class "brave-origin").
+-- Devbot) always open on an empty workspace on the left monitor. Excludes
+-- the bare Brave Origin browser itself (class "brave-origin"), handled below.
 o.window("^brave-(origin-.+|.+-Default)$", {
   monitor = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000",
   workspace = "emptym",
+})
+
+-- The bare Brave Origin browser (SUPER+F) always opens on the right monitor.
+o.window("^brave-origin$", {
+  monitor = "desc:SUE SFP2412FHD 000000000000",
 })
 
 -- Disable Omarchy's default window transparency (see default/hypr/windows.lua).
