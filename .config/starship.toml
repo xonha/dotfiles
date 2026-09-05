@@ -28,6 +28,7 @@ $conda\
 $time\
 (fg:lavender)\
 $cmd_duration\
+[](bg:crust fg:lavender)\
 $line_break\
 $character"""
 
