@@ -3,6 +3,14 @@
 
 -- Keyboard layout and options.
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
+-- Omarchy's default makes Caps Lock the compose key; moved to Right Alt so
+-- Caps Lock goes back to normal caps-lock behavior.
+hl.config({
+  input = {
+    kb_options = "compose:ralt",
+  },
+})
+
 -- hl.config({
 --   input = {
 --     -- Use multiple keyboard layouts and switch between them with Left Alt + Right Alt.
