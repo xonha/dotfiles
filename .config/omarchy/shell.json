@@ -25,11 +25,11 @@
           ],
           "intervalSec": 3,
           "show": [
-            "cpu",
-            "cputemp",
             "ram",
-            "disk",
-            "load"
+            "cpu",
+            "gputemp",
+            "gpu",
+            "cputemp"
           ]
         }
       ],

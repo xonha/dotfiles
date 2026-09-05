@@ -12,6 +12,39 @@ source "$OMARCHY_PATH/default/bash/rc"
 # bind wrapper does not attempt to parse unsupported stock Readline functions.
 [[ -r /usr/share/blesh/ble.sh ]] && source /usr/share/blesh/ble.sh --noattach
 
+# ble.sh's builtin faces hardcode xterm 256-color indices (16-255), which the
+# Catppuccin Mocha foot theme doesn't retheme (only ANSI 0-15 are remapped).
+# Swap every hardcoded index for its nearest Catppuccin Mocha equivalent.
+if [[ ${BLE_VERSION-} ]]; then
+  ble-color-defface menu_filter_input        fg=233,bg=223
+  ble-color-defface syntax_expr              fg=111
+  ble-color-defface syntax_error             bg=211,fg=189
+  ble-color-defface syntax_varname           fg=216
+  ble-color-defface syntax_history_expansion bg=223,fg=189
+  ble-color-defface syntax_function_name     fg=183,bold
+  ble-color-defface syntax_comment           fg=241
+  ble-color-defface syntax_glob              fg=218,bold
+  ble-color-defface syntax_brace             fg=116,bold
+  ble-color-defface syntax_document          fg=223
+  ble-color-defface syntax_document_begin    fg=223,bold
+  ble-color-defface command_function         fg=183
+  ble-color-defface command_directory        fg=111,underline
+  ble-color-defface filename_directory       underline,fg=111
+  ble-color-defface filename_directory_sticky underline,fg=white,bg=111
+  ble-color-defface filename_orphan          underline,fg=teal,bg=224
+  ble-color-defface filename_setuid          underline,fg=black,bg=223
+  ble-color-defface filename_setgid          underline,fg=black,bg=223
+  ble-color-defface vbell_erase              bg=146
+  ble-color-defface region                   bg=243,fg=white
+  ble-color-defface region_target            bg=111,fg=black
+  ble-color-defface region_match             bg=183,fg=white
+  ble-color-defface disabled                 fg=241
+  ble-color-defface overwrite_mode           fg=black,bg=116
+  ble-color-defface menu_complete            fg=12,bg=146
+  ble-color-defface auto_complete            bg=189,fg=237
+  ble-color-defface cmdinfo_cd_cdpath        fg=111,bg=151
+fi
+
 # Personal environment migrated from the previous Zsh setup.
 export OZONE_PLATFORM_HINT=wayland
 export LANG=C.UTF-8
