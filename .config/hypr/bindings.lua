@@ -154,7 +154,7 @@ hl.unbind("SUPER + P")
 o.bind("SUPER + P", "Selecionar cor da tela", "hyprpicker --autocopy --notify")
 
 hl.unbind("SUPER + T")
-o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mic-mute.sh")
+o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mute-microphone.sh")
 
 -- Emergency recovery for the internal display, kept from the old setup.
 hl.unbind("SUPER + SHIFT + M")
