@@ -28,11 +28,12 @@ run() {
     # settings (Quickshell, Foot and the native browser) and updates them over
     # time, so they must remain outside Stow's control. Hyprland is intentionally
     # versioned here as user overrides loaded after Omarchy's defaults.
+    # Brave webapp .desktop icon fixes ARE tracked (see .local/share/applications/).
     local -a omarchy_ignores=(
       '\\.config/kitty(/|$)'
       '\\.config/(gh|nvim)(/|$)'
       '\\.config/brave-flags\\.conf$'
-      '\\.local/share/applications/(brave-.*|kitty.*)\\.desktop$'
+      '\\.local/share/applications/kitty.*\\.desktop$'
       '\\.local/share/icons/hicolor/scalable/apps/kitty-.*\\.svg$'
     )
     local -a stow_args=()
