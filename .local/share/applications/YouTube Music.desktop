@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=YouTube Music
+Exec=/opt/brave-origin-bin/brave-origin --profile-directory=Default --app-id=cinhimbnkkaeohfgghhklpknlkffjgod
+Icon=youtube-music
+StartupWMClass=brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default
