@@ -12,6 +12,14 @@ hl.config({
   },
 })
 
+-- Swap Esc <-> Caps Lock, but only on the internal ThinkPad keyboard, so it
+-- doesn't affect the Corne (which has its own layers) even when both are
+-- connected at once. Device name from `hyprctl devices`.
+hl.device({
+  name = "at-translated-set-2-keyboard",
+  kb_options = "caps:swapescape",
+})
+
 -- hl.config({
 --   input = {
 --     -- Use multiple keyboard layouts and switch between them with Left Alt + Right Alt.
