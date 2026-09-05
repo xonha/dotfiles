@@ -36,18 +36,15 @@
       "center": [
         {
           "id": "io.github.hogar1977.top-bar-dock"
-        },
+        }
+      ],
+      "right": [
         {
           "id": "omarchy.indicators"
         },
         {
-          "id": "omarchy.keyboard-layout"
-        },
-        {
           "id": "omarchy.system-update"
-        }
-      ],
-      "right": [
+        },
         {
           "id": "omarchy.tray"
         },
@@ -55,10 +52,7 @@
           "id": "crmne.hyprmoncfg"
         },
         {
-          "id": "gigasolo.omavoice",
-          "pinnedSource": "alsa_input.pci-0000_06_00.6.analog-stereo",
-          "preset": "meeting",
-          "setDefaultSource": true
+          "id": "omarchy.keyboard-layout"
         },
         {
           "id": "omarchy.agents"
@@ -71,6 +65,12 @@
         },
         {
           "id": "omarchy.network"
+        },
+        {
+          "id": "gigasolo.omavoice",
+          "pinnedSource": "alsa_input.pci-0000_06_00.6.analog-stereo",
+          "preset": "meeting",
+          "setDefaultSource": true
         },
         {
           "id": "omarchy.audio"
