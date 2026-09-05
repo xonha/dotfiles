@@ -33,6 +33,7 @@ machine.
 | `.keyd.conf`                  | Keyd keyboard remapping                                     |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba) |
+| `.config/systemd/user/`       | User systemd units (e.g. `omarchy-shell-json-guard.service`, which re-links `shell.json` into Stow if an atomic write replaces the symlink with a real file) |
 | `.setup/`                     | Setup scripts and the `devbot` container image              |
 
 ## Adding Dotfiles

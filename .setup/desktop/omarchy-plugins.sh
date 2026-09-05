@@ -36,6 +36,14 @@ run() {
     warn "hyprmoncfgd not found; install aur/hyprmoncfg-bin first."
   fi
 
+  # omarchy-shell (and some bar plugins) write shell.json via an atomic
+  # rename, which replaces its Stow symlink with a real file. This watcher
+  # re-syncs the content back into the repo and restows whenever that
+  # happens, instead of it silently drifting out of version control.
+  info "Enabling shell.json symlink guard..."
+  systemctl --user daemon-reload
+  systemctl --user enable --now omarchy-shell-json-guard.service
+
   success "Omarchy shell plugins installed and enabled."
 }
 

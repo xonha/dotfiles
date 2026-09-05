@@ -1,0 +1,11 @@
+[Unit]
+Description=Auto-relink Omarchy shell.json into the Stow dotfiles repo
+
+[Service]
+Type=simple
+ExecStart=%h/.config/scripts/omarchy-shell-json-guard.sh
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
