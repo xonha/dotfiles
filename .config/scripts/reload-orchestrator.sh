@@ -8,6 +8,10 @@
 
 set -Eeuo pipefail
 
+reload_hyprland() {
+  hyprctl reload
+}
+
 reload_omarchy_shell() {
   local shell_json="$HOME/.config/omarchy/shell.json"
 
@@ -26,6 +30,7 @@ reload_omarchy_shell() {
 }
 
 TARGETS=(
+  hyprland
   omarchy_shell
 )
 
