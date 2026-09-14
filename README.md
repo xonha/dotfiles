@@ -35,3 +35,9 @@ aplicar os dotfiles com Stow, execute:
 ```
 
 O guia operacional está em [`.docs/toolbox.md`](.docs/toolbox.md).
+
+## Immich
+
+O Immich roda no Bazzite com Podman Compose, biblioteca no HD separado e
+acesso LAN/Tailscale/Funnel. O guia operacional está em
+[`.docs/immich.md`](.docs/immich.md).

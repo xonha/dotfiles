@@ -12,6 +12,7 @@ machine.
 - [Toolbox](.docs/toolbox.md) — Arch Linux development containers on Bazzite
 - [Minecraft](.docs/minecraft.md) — Crafty Controller on bazzite; Tailscale-only access for friends
 - [Storage](.docs/storage.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
+- [Immich](.docs/immich.md) — photo/video library on bazzite with Podman Compose and Tailscale Funnel
 - [Setup notes](.setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Stow layout](#stow-layout) — directory map for this repo
 
