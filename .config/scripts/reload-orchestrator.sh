@@ -12,6 +12,13 @@ reload_hyprland() {
   hyprctl reload
 }
 
+reload_cursor() {
+  local theme="${XCURSOR_THEME:-Bibata-Modern-Ice}"
+  local size="${XCURSOR_SIZE:-24}"
+
+  hyprctl setcursor "$theme" "$size"
+}
+
 reload_omarchy_shell() {
   local shell_json="$HOME/.config/omarchy/shell.json"
 
@@ -31,6 +38,7 @@ reload_omarchy_shell() {
 
 TARGETS=(
   hyprland
+  cursor
   omarchy_shell
 )
 
