@@ -25,7 +25,6 @@ $python\
 [](fg:green bg:sapphire)\
 $conda\
 [](fg:sapphire bg:lavender)\
-$time\
 (fg:lavender)\
 $cmd_duration\
 [](bg:crust fg:lavender)\
@@ -147,12 +146,6 @@ symbol = "  "
 style = "fg:crust bg:sapphire"
 format = '[$symbol$environment ]($style)'
 ignore_base = false
-
-[time]
-disabled = false
-time_format = "%R"
-style = "bg:lavender"
-format = '[[  $time ](fg:crust bg:lavender)]($style)'
 
 [line_break]
 disabled = false
