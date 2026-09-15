@@ -1,5 +1,4 @@
 -- App shortcuts
---
 local brave_flags = "--max-unused-resource-memory-usage-mb=128 --disk-cache-size=67108864"
 local function brave_app(id)
   return ("brave-origin --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
@@ -8,14 +7,12 @@ local function brave_profile(profile)
   return ("brave-origin --profile-directory=brave-origin-%s --class=brave-origin-%s --user-data-dir=.brave-origin-%s %s")
       :format(profile, profile, profile, brave_flags)
 end
---
 hl.unbind("SUPER + V")
 hl.unbind("SUPER + F")
 hl.unbind("SUPER + SHIFT + F")
 hl.unbind("SUPER + Q")
 hl.unbind("SUPER + W")
 hl.unbind("SUPER + G")
---
 o.bind("SUPER + V", "Foot + tmux",
   { launch = "foot -e tmux new-session -A -s main", focus = "^(foot|org\\.codeberg\\.dnkl\\.foot)$" })
 o.bind("SUPER + F", "Brave Origin", { launch = "brave-origin", focus = "^brave-origin$" })
@@ -29,9 +26,7 @@ o.bind("SUPER + R", "YouTube Music",
   { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
 o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos"), focus = "^brave-origin-maistodos$" })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
---
 -- Windows
---
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
 o.bind("SUPER + H", "Focus left", hl.dsp.focus({ direction = "l" }))
 o.bind("SUPER + ALT + H", "Move window left", hl.dsp.window.move({ direction = "l" }))
@@ -40,12 +35,9 @@ o.bind("SUPER + SHIFT + H", "Resize left", hl.dsp.window.resize({ x = -20, y = 0
 o.bind("SUPER + SHIFT + L", "Resize right", hl.dsp.window.resize({ x = 20, y = 0, relative = true }))
 o.bind("SUPER + ALT + B", "Toggle simulated fullscreen", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
 o.bind("SUPER + SHIFT + T", "Reload Hyprland", "hyprctl reload")
---
 -- Omarchy menus
---
 hl.unbind("SUPER + RETURN")
 hl.unbind("SUPER + SHIFT + CTRL + SPACE")
---
 o.bind("SUPER + U", "Calculator", "omacalc")
 o.bind("SUPER + I", "Phone Operate", "omarchy-menu toggle")
 o.bind("SUPER + Y", "Close active window", "hyprctl kill")
@@ -56,20 +48,15 @@ o.bind("SUPER + ALT + Z", "Settings", "omarchy-menu toggle")
 o.bind("SUPER + DELETE", "Omarchy menu", "omarchy-menu toggle root")
 o.bind("SUPER + RETURN", "Apps menu", "omarchy-menu toggle apps")
 o.bind("SUPER + SHIFT + K", "Theme menu", "omarchy-menu toggle theme")
---
 -- Media and lock screen
---
 o.bind("code:194", "Previous track", "playerctl previous")
 o.bind("code:195", "Play/pause", "playerctl play-pause")
 o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
---
 -- Remote shortcuts
---
 hl.unbind("SUPER + S")
 hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
---
 o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
 o.bind("SUPER + X", "Devbot SSH",
   {
@@ -83,9 +70,7 @@ o.bind("SUPER + C", "Mais Todos SSH",
     focus =
     "^kitty-maistodos-ssh$"
   })
---
 -- Clipboard
---
 local function send_shortcut_once(mods, key)
   return function()
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
@@ -116,14 +101,10 @@ local function universal_clipboard_shortcut(default_mods, default_key, terminal_
     end
   end
 end
---
 hl.unbind("SUPER + SHIFT + C")
---
 o.bind("SUPER + SHIFT + C", "Universal copy", universal_clipboard_shortcut("CTRL", "C", "CTRL", "Insert"))
 o.bind("SUPER + SHIFT + V", "Universal paste", universal_clipboard_shortcut("CTRL", "V", "SHIFT", "Insert"))
---
 -- System shortcuts
---
 hl.unbind("SUPER + BACKSPACE")
 hl.unbind("SUPER + P")
 hl.unbind("SUPER + T")
@@ -132,7 +113,6 @@ hl.unbind("SUPER + SHIFT + B")
 hl.unbind("SUPER + SHIFT + RETURN")
 hl.unbind("SUPER + L")
 hl.unbind("SUPER + J")
---
 o.bind("SUPER + BACKSPACE", "Menu de sessão", "omarchy-menu toggle system")
 o.bind("SUPER + P", "Selecionar cor da tela", "hyprpicker --autocopy --notify")
 o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mute-microphone.sh")
@@ -143,20 +123,15 @@ o.bind("SUPER + SHIFT + B", "Center window", hl.dsp.window.center())
 o.bind("SUPER + SHIFT + RETURN", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 o.bind("SUPER + J", "Reload state", "~/.config/scripts/reload-orchestrator.sh")
---
 -- Ctrl-free Omarchy remapping.
 -- Applications
---
 hl.unbind("SUPER + CTRL + X")
 hl.unbind("SUPER + CTRL + RETURN")
 hl.unbind("SUPER + CTRL + V")
---
 o.bind("SUPER + ALT + X", "Toggle dictation", "voxtype record toggle")
 o.bind("SUPER + SHIFT + ALT + RETURN", "Herdr", { omarchy = "terminal-herdr" })
 o.bind("SUPER + SHIFT + ALT + V", "Clipboard manager", "omarchy-shell shell toggle omarchy.clipboard")
---
 -- Windows
---
 hl.unbind("SUPER + CTRL + F")
 hl.unbind("SUPER + SHIFT + ALT + F")
 hl.unbind("SUPER + CTRL + TAB")
@@ -172,7 +147,6 @@ hl.unbind("SUPER + ALT + code:20")
 hl.unbind("SUPER + ALT + code:21")
 hl.unbind("SUPER + SHIFT + ALT + code:20")
 hl.unbind("SUPER + SHIFT + ALT + code:21")
---
 o.bind("SUPER + SHIFT + ALT + F", "Tiled full screen", "omarchy-hyprland-window-tiled-fullscreen-toggle")
 o.bind("SUPER + SHIFT + ALT + N", "File manager (cwd)", { omarchy = "nautilus-cwd" })
 o.bind("SUPER + SHIFT + ALT + TAB", "Former workspace", hl.dsp.focus({ workspace = "previous" }))
@@ -184,9 +158,17 @@ o.bind("SUPER + SHIFT + ALT + code:21", "Shrink window left a lot",
   hl.dsp.window.resize({ x = 300, y = 0, relative = true }))
 o.bind("SUPER + ALT + code:20", "Shrink window up a lot", hl.dsp.window.resize({ x = 0, y = -300, relative = true }))
 o.bind("SUPER + ALT + code:21", "Expand window down a lot", hl.dsp.window.resize({ x = 0, y = 300, relative = true }))
---
+-- Global controls
+hl.unbind("CTRL + ALT + DELETE")
+hl.unbind("CTRL + ALT + TAB")
+hl.unbind("CTRL + ALT + SHIFT + TAB")
+hl.unbind("SUPER + CTRL + ALT + Delete")
+
+o.bind("SUPER + SHIFT + ALT + Delete", "Close all windows", "omarchy-hyprland-window-close-all")
+o.bind("SUPER + ALT + TAB", "Focus on next monitor", hl.dsp.focus({ monitor = "+1" }))
+o.bind("SUPER + SHIFT + ALT + PAGE_UP", "Focus on previous monitor", hl.dsp.focus({ monitor = "-1" }))
+
 -- Utilities
---
 hl.unbind("SUPER + CTRL + E")
 hl.unbind("SUPER + CTRL + C")
 hl.unbind("SUPER + CTRL + O")
@@ -201,7 +183,6 @@ hl.unbind("SUPER + CTRL + comma")
 hl.unbind("SUPER + CTRL + I")
 hl.unbind("SUPER + CTRL + N")
 hl.unbind("SUPER + CTRL + Delete")
-hl.unbind("SUPER + CTRL + ALT + Delete")
 hl.unbind("SUPER + CTRL + PRINT")
 hl.unbind("SUPER + CTRL + S")
 hl.unbind("SUPER + CTRL + PERIOD")
@@ -221,7 +202,6 @@ hl.unbind("SUPER + CTRL + ALT + D")
 hl.unbind("SUPER + CTRL + W")
 hl.unbind("SUPER + CTRL + P")
 hl.unbind("SUPER + CTRL + T")
---
 o.bind("SUPER + ALT + E", "Emojis", "omarchy-shell shell toggle omarchy.emojis")
 o.bind("SUPER + SHIFT + ALT + C", "Capture menu", "omarchy-menu toggle capture")
 o.bind("SUPER + ALT + O", "Toggle menu", "omarchy-menu toggle toggle")
@@ -236,7 +216,7 @@ o.bind_toggle("SUPER + ALT + comma", "Toggle silencing notifications", "notifica
 o.bind_toggle("SUPER + ALT + I", "Toggle locking on idle", "idle")
 o.bind_toggle("SUPER + ALT + N", "Toggle nightlight", "nightlight")
 o.bind("SUPER + ALT + Delete", "Toggle laptop display", "omarchy-hyprland-monitor-internal toggle")
-o.bind("SUPER + SHIFT + ALT + Delete", "Toggle laptop display mirroring",
+o.bind("SUPER + ALT + 0", "Toggle laptop display mirroring",
   "omarchy-hyprland-monitor-internal-mirror toggle")
 o.bind("SUPER + ALT + PRINT", "Extract text (OCR) from screenshot", "omarchy-capture-text")
 o.bind("SUPER + SHIFT + ALT + S", "Share", "omarchy-menu toggle share")
@@ -255,9 +235,40 @@ o.bind("SUPER + SHIFT + ALT + D", "Calendar", "omarchy-shell shell toggle omarch
 o.bind("SUPER + ALT + W", "Network", "omarchy-shell shell toggle omarchy.network")
 o.bind("SUPER + ALT + P", "Power", "omarchy-shell shell toggle omarchy.power")
 o.bind("SUPER + ALT + T", "Activity", { tui = "btop" })
---
+
+-- Capture selection
+local capture_selection_layers = 0
+local capture_selection_binds = {}
+
+hl.on("layer.opened", function(layer)
+  if layer.namespace == "selection" then
+    capture_selection_layers = capture_selection_layers + 1
+    if capture_selection_layers == 1 then
+      hl.unbind("CTRL + RETURN")
+      hl.unbind("CTRL + TAB")
+      capture_selection_binds = {
+        hl.bind("SUPER + SHIFT + ALT + RETURN", hl.dsp.exec_cmd("omarchy-capture-region --take-fullscreen"),
+          { description = "Capture entire screen" }),
+        hl.bind("SUPER + SHIFT + ALT + TAB", hl.dsp.exec_cmd("omarchy-capture-region --select-window prev"),
+          { description = "Select previous window to capture" }),
+      }
+    end
+  end
+end)
+
+hl.on("layer.closed", function(layer)
+  if layer.namespace == "selection" and capture_selection_layers > 0 then
+    capture_selection_layers = capture_selection_layers - 1
+    if capture_selection_layers == 0 then
+      for _, keybind in ipairs(capture_selection_binds) do
+        keybind:unbind()
+      end
+      capture_selection_binds = {}
+    end
+  end
+end)
+
 -- Bar panels
---
 for panel = 1, 9 do
   hl.unbind("SUPER + CTRL + code:" .. tostring(panel + 9))
   hl.unbind("SUPER + SHIFT + ALT + code:" .. tostring(panel + 9))
@@ -270,13 +281,10 @@ for panel = 1, 9 do
     "omarchy-shell -q shell togglePanelAt right " .. panel
   )
 end
---
 -- Zoom and lock
---
 hl.unbind("SUPER + CTRL + Z")
 hl.unbind("SUPER + CTRL + ALT + Z")
 hl.unbind("SUPER + CTRL + L")
---
 o.bind("SUPER + SHIFT + ALT + Z", "Zoom in", function()
   local zoom = hl.get_config("cursor.zoom_factor") or 1
   hl.config({ cursor = { zoom_factor = zoom + 1 } })
