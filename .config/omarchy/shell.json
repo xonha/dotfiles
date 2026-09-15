@@ -49,22 +49,10 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "crmne.hyprmoncfg"
-        },
-        {
           "id": "omarchy.keyboard-layout"
         },
         {
           "id": "omarchy.agents"
-        },
-        {
-          "id": "omarchy.power"
-        },
-        {
-          "id": "omarchy.bluetooth"
-        },
-        {
-          "id": "omarchy.network"
         },
         {
           "id": "gigasolo.omavoice",
@@ -76,7 +64,16 @@
           "id": "omarchy.audio"
         },
         {
-          "id": "omarchy.monitor"
+          "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "crmne.hyprmoncfg"
+        },
+        {
+          "id": "omarchy.power"
         },
         {
           "id": "omarchy.clock",
