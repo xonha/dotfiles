@@ -236,38 +236,6 @@ o.bind("SUPER + ALT + W", "Network", "omarchy-shell shell toggle omarchy.network
 o.bind("SUPER + ALT + P", "Power", "omarchy-shell shell toggle omarchy.power")
 o.bind("SUPER + ALT + T", "Activity", { tui = "btop" })
 
--- Capture selection
-local capture_selection_layers = 0
-local capture_selection_binds = {}
-
-hl.on("layer.opened", function(layer)
-  if layer.namespace == "selection" then
-    capture_selection_layers = capture_selection_layers + 1
-    if capture_selection_layers == 1 then
-      hl.unbind("CTRL + RETURN")
-      hl.unbind("CTRL + TAB")
-      capture_selection_binds = {
-        hl.bind("SUPER + SHIFT + ALT + RETURN", hl.dsp.exec_cmd("omarchy-capture-region --take-fullscreen"),
-          { description = "Capture entire screen" }),
-        hl.bind("SUPER + SHIFT + ALT + TAB", hl.dsp.exec_cmd("omarchy-capture-region --select-window prev"),
-          { description = "Select previous window to capture" }),
-      }
-    end
-  end
-end)
-
-hl.on("layer.closed", function(layer)
-  if layer.namespace == "selection" and capture_selection_layers > 0 then
-    capture_selection_layers = capture_selection_layers - 1
-    if capture_selection_layers == 0 then
-      for _, keybind in ipairs(capture_selection_binds) do
-        keybind:unbind()
-      end
-      capture_selection_binds = {}
-    end
-  end
-end)
-
 -- Bar panels
 for panel = 1, 9 do
   hl.unbind("SUPER + CTRL + code:" .. tostring(panel + 9))
