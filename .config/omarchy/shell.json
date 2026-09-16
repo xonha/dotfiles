@@ -1,20 +1,17 @@
 {
-  "version": 1,
-  "idle": {
-    "screensaver": 150,
-    "lock": 300
-  },
   "bar": {
-    "position": "top",
-    "transparent": false,
     "centerAnchor": "",
     "layout": {
+      "center": [
+        {
+          "id": "intelligentwolf.taskbar"
+        }
+      ],
       "left": [
         {
           "id": "omarchy.menu"
         },
         {
-          "id": "io.github.diegopluna.argus",
           "homeTiles": [
             "cpu",
             "ram",
@@ -23,6 +20,7 @@
             "io",
             "disk"
           ],
+          "id": "io.github.diegopluna.argus",
           "intervalSec": 3,
           "show": [
             "ram",
@@ -31,11 +29,6 @@
             "gpu",
             "cputemp"
           ]
-        }
-      ],
-      "center": [
-        {
-          "id": "intelligentwolf.taskbar"
         }
       ],
       "right": [
@@ -67,6 +60,9 @@
           "id": "omarchy.bluetooth"
         },
         {
+          "id": "omarchy.tailscale"
+        },
+        {
           "id": "omarchy.network"
         },
         {
@@ -76,18 +72,26 @@
           "id": "omarchy.power"
         },
         {
-          "id": "omarchy.clock",
-          "birthYear": 1998,
-          "lifeExpectancy": 101,
-          "format": "ddd d MMM HH:mm",
-          "formatAlt": "d MMMM 'W'ww yyyy",
-          "verticalFormat": "HH\n—\nmm"
+          "id": "omarchy.weather"
         },
         {
-          "id": "omarchy.weather"
+          "id": "promaa.clock",
+          "birthYear": 1998,
+          "format": "ddd, MMM dd HH:mm",
+          "formatAlt": "ddd, MMM dd HH:mm",
+          "lifeExpectancy": 101,
+          "showNextEvent": true,
+          "weekStartDay": "monday"
         }
       ]
-    }
+    },
+    "position": "top",
+    "transparent": false
   },
-  "plugins": []
+  "idle": {
+    "lock": 300,
+    "screensaver": 150
+  },
+  "plugins": [],
+  "version": 1
 }
