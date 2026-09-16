@@ -9,9 +9,17 @@
       ],
       "left": [
         {
-          "id": "omarchy.menu"
-        },
-        {
+          "id": "io.github.diegopluna.argus",
+          "intervalSec": 3,
+          "show": [
+            "cpu",
+            "cputemp",
+            "ram",
+            "disk",
+            "gpu",
+            "gputemp",
+            "vram"
+          ],
           "homeTiles": [
             "cpu",
             "ram",
@@ -19,15 +27,6 @@
             "net",
             "io",
             "disk"
-          ],
-          "id": "io.github.diegopluna.argus",
-          "intervalSec": 3,
-          "show": [
-            "ram",
-            "cpu",
-            "gputemp",
-            "gpu",
-            "cputemp"
           ]
         }
       ],
@@ -85,6 +84,9 @@
           "lifeExpectancy": 101,
           "showNextEvent": true,
           "weekStartDay": "monday"
+        },
+        {
+          "id": "omarchy.menu"
         }
       ]
     },
