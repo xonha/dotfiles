@@ -36,6 +36,11 @@ aplicar os dotfiles com Stow, execute:
 
 O guia operacional está em [`.docs/toolbox.md`](.docs/toolbox.md).
 
+## Keeper.sh
+
+O Keeper.sh roda no Bazzite como serviço Quadlet rootless, na porta local
+`8088`. O guia operacional está em [`.docs/keeper.md`](.docs/keeper.md).
+
 ## Immich
 
 O Immich roda no Bazzite com Podman Compose, biblioteca no HD separado e
