@@ -60,6 +60,9 @@
           "id": "omarchy.bluetooth"
         },
         {
+          "id": "omaconnect"
+        },
+        {
           "id": "omarchy.tailscale"
         },
         {
