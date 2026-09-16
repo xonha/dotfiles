@@ -9,6 +9,9 @@
       ],
       "left": [
         {
+          "id": "omarchy.menu"
+        },
+        {
           "id": "io.github.diegopluna.argus",
           "intervalSec": 3,
           "show": [
@@ -84,9 +87,6 @@
           "lifeExpectancy": 101,
           "showNextEvent": true,
           "weekStartDay": "monday"
-        },
-        {
-          "id": "omarchy.menu"
         }
       ]
     },
