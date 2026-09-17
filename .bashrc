@@ -10,9 +10,16 @@ if [[ -n ${OMARCHY_PATH:-} && -r "$OMARCHY_PATH/default/bash/rc" ]]; then
   source "$OMARCHY_PATH/default/bash/rc"
 fi
 
-# Omarchy loads its Readline bindings above.  Load ble.sh afterwards so its
+# Omarchy loads its Readline bindings above. Load ble.sh afterwards so its
 # bind wrapper does not attempt to parse unsupported stock Readline functions.
-[[ -r /usr/share/blesh/ble.sh ]] && source /usr/share/blesh/ble.sh --noattach
+# The AUR package uses /usr/share; the standalone fallback uses /usr/local.
+for blesh_path in /usr/share/blesh/ble.sh /usr/local/share/blesh/ble.sh "$HOME/.local/share/blesh/ble.sh"; do
+  if [[ -r $blesh_path ]]; then
+    source "$blesh_path" --noattach
+    break
+  fi
+done
+unset blesh_path
 
 # ble.sh's builtin faces hardcode xterm 256-color indices (16-255), which the
 # Catppuccin Mocha foot theme doesn't retheme (only ANSI 0-15 are remapped).

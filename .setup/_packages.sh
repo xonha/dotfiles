@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Package catalogs shared by setup stages and the Toolbox image.
+# Package catalogs shared by setup stages and the Lab image.
 
 # Development tools that belong on both a regular Arch host and an Arch
 # development container. yay can install entries from both official repos and
@@ -22,7 +22,7 @@ PKG_DEV_COMMON=(
 )
 
 # Services and host-management tooling. These are intentionally excluded from
-# Toolbox: containers should not run their own Docker daemon, Tailscale or OOM
+# Lab: containers should not run their own Docker daemon, Tailscale or OOM
 # manager.
 PKG_HOST_ONLY=(
   earlyoom

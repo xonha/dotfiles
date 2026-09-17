@@ -4,7 +4,7 @@ description: >
   REQUIRED for changes to this user's Linux dotfiles, setup scripts, desktop
   configuration, systemd services, or development environments. Use when
   editing files under ~/.config/, ~/.setup/, ~/.docs/, shell files, Hyprland,
-  Omarchy, GNU Stow, Podman Toolbox, or personal service configuration.
+  Omarchy, GNU Stow, Podman containers, or personal service configuration.
   Excludes unrelated application source development.
 metadata:
   short-description: Manage Henrique's versioned Linux dotfiles
@@ -20,7 +20,7 @@ to the host with GNU Stow or one of the setup entrypoints.
 
 - Editing files under `.config/`, `.setup/`, or `.docs/`
 - Changing Hyprland, Omarchy, Foot, Neovim, shell, tmux, Starship, or Git config
-- Adding or changing systemd, Quadlet, Podman, Toolbox, Keeper.sh, or Immich setup
+- Adding or changing systemd, Quadlet, Podman, Lab, Keeper.sh, or Immich setup
 - Running or changing the repository bootstrap and setup flows
 - Deciding whether a configuration should be owned by this repository or Omarchy
 
@@ -61,13 +61,18 @@ configuration or Omarchy integration. The main entrypoint is:
 It installs packages, stows the dotfiles, configures the login shell, and
 optionally configures the desktop and services.
 
-### Toolbox environments
+### Lab environment
 
-Read [references/toolbox.md](references/toolbox.md) before changing `lab`,
-Quadlet units, or the Toolbox image.
+Read [references/lab.md](references/lab.md) before changing `lab`, Quadlet
+units, or the Lab image.
+
+Recreating a system such as `lab` is not complete until its applicable
+dotfiles are provisioned and verified inside the recreated environment. At
+minimum, validate Bash, Starship, and tmux; treat host-only desktop config such
+as Foot separately and document that boundary.
 
 ```bash
-./.setup/toolbox-setup.sh
+./.setup/lab-setup.sh
 ```
 
 ### Stow and linking
@@ -87,14 +92,16 @@ ignore rules, or files that may conflict with existing host configuration.
 5. Is it potentially destructive or privileged? Confirm scope, then make the
    smallest reversible change.
 6. Validate with the narrowest useful check: shell syntax, Stow dry-run,
-   service status, or the relevant application reload.
+   service status, or the relevant application reload. For a recreated system,
+   also verify that the expected dotfiles exist in the target and match the
+   repository source.
 
 ## Topic references
 
 - [references/setup.md](references/setup.md) — setup stages and validation
 - [references/stow.md](references/stow.md) — ownership, exclusions, and conflicts
 - [references/omarchy.md](references/omarchy.md) — Omarchy integration boundaries
-- [references/toolbox.md](references/toolbox.md) — `lab`, Podman, and Quadlet
+- [references/lab.md](references/lab.md) — `lab`, Podman, and Quadlet
 - [references/services.md](references/services.md) — system and user services
 
 ## Common requests
@@ -103,5 +110,5 @@ ignore rules, or files that may conflict with existing host configuration.
 - “Change the Omarchy bar” → inspect `.config/omarchy/shell.json` and preserve Omarchy ownership boundaries.
 - “Install a base package” → inspect `.setup/10-server-packages.sh`.
 - “Change desktop package behavior” → inspect `.setup/40-desktop.sh` and its modules.
-- “Rebuild `lab`” → follow [references/toolbox.md](references/toolbox.md).
+- “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
 - “Change Immich or Keeper.sh” → read the matching guide under `.docs/` before editing.

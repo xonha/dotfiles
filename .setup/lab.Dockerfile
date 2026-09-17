@@ -1,13 +1,11 @@
 FROM archlinux:latest
 
 # The build context is the dotfiles repository. Copy the actual setup stages
-# used by a regular machine so the Toolbox follows the same bootstrap, package
+# used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
 COPY .setup/_shared.sh .setup/_packages.sh \
-     .setup/toolbox-bootstrap-yay.sh .setup/10-server-packages.sh \
+     .setup/lab-bootstrap-yay.sh .setup/10-server-packages.sh \
      .setup/30-login-shell.sh /opt/dotfiles-setup/
-COPY .bashrc .bash_profile .config/starship.toml /usr/local/share/toolbox-defaults/
-
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
 RUN pacman -Syu --noconfirm \
@@ -18,6 +16,7 @@ RUN pacman -Syu --noconfirm \
 # Set UTF-8 locale so Neovim renders Unicode/Nerd Font glyphs correctly
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
+ENV DOTFILES_REPO=https://github.com/xonha/dotfiles.git
 
 # Configure SSH server
 RUN ssh-keygen -A \
@@ -37,26 +36,35 @@ RUN groupadd -g ${GID} ${USERNAME} \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 440 /etc/sudoers.d/${USERNAME}
 
-# Run the same user-level stages as a regular installation. Toolbox uses the
+# Run the same user-level stages as a regular installation. Lab uses the
 # package-stage target to omit host daemons such as Docker and Tailscale.
 USER ${USERNAME}
 ENV USER=${USERNAME}
-ENV SETUP_TARGET=toolbox
-RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/toolbox-bootstrap-yay.sh && run \
+ENV SETUP_TARGET=lab
+RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/lab-bootstrap-yay.sh && run \
       && source /opt/dotfiles-setup/10-server-packages.sh && run \
-      && source /opt/dotfiles-setup/30-login-shell.sh && run'
+      && source /opt/dotfiles-setup/30-login-shell.sh && run \
+      && (yay -S --needed --noconfirm blesh || true)'
 
 USER root
+# Prefer the stable AUR package above. Plain Arch mirrors do not provide
+# blesh, so keep an upstream build as a deterministic fallback for image
+# builds where the AUR package is temporarily unavailable.
+RUN if [[ ! -r /usr/share/blesh/ble.sh ]]; then \
+      git clone --recursive --depth 1 --shallow-submodules \
+        https://github.com/akinomyoga/ble.sh.git /tmp/ble.sh \
+      && make -C /tmp/ble.sh install PREFIX=/usr/local \
+      && rm -rf /tmp/ble.sh; \
+    fi
 RUN pacman -Scc --noconfirm
 
 # Create startup script to run SSH and keep container alive (as root)
 RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
-    && echo "if [[ ! -e /home/${USERNAME}/.bashrc ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.bashrc /home/${USERNAME}/.bashrc; fi" >> /start.sh \
-    && echo "if [[ ! -e /home/${USERNAME}/.bash_profile ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.bash_profile /home/${USERNAME}/.bash_profile; fi" >> /start.sh \
     && echo "install -d -m 755 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.config" >> /start.sh \
-    && echo "if [[ ! -e /home/${USERNAME}/.config/starship.toml ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/starship.toml /home/${USERNAME}/.config/starship.toml; fi" >> /start.sh \
+    && echo "if [[ ! -d /home/${USERNAME}/Dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/Dotfiles; fi" >> /start.sh \
+    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f .config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && stow --restow .'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \

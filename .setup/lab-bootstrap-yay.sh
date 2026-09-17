@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Step: Bootstrap yay (AUR helper) for the Arch-based Toolbox image.
+# Step: Bootstrap yay (AUR helper) for the Arch-based Lab image.
 # The Omarchy host already provides yay and does not source this stage.
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

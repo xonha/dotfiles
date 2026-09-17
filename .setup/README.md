@@ -8,8 +8,8 @@ Dois fluxos, cada um com seu proprio entrypoint, soltos na raiz de `.setup/`:
   `20-dotfiles.sh` -> `30-login-shell.sh` -> `40-desktop.sh` (opcional) ->
   `50-services.sh`), mais `desktop-packages.sh` e `omarchy-plugins.sh`, usados
   so por `40-desktop.sh`.
-- `toolbox-setup.sh`: builda `toolbox.Dockerfile` (que roda
-  `toolbox-bootstrap-yay.sh`, `10-server-packages.sh` e `30-login-shell.sh`
+- `lab-setup.sh`: builda `lab.Dockerfile` (que roda
+  `lab-bootstrap-yay.sh`, `10-server-packages.sh` e `30-login-shell.sh`
   dentro da imagem) e reinicia o servico `lab`.
 
 `_shared.sh` e `_packages.sh` sao compartilhados pelos dois fluxos.

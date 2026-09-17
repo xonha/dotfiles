@@ -9,7 +9,7 @@ machine.
 ## Index
 
 - [Infrastructure](.docs/infra.md) — machines, Tailscale network, how to reach each host
-- [Toolbox](.docs/toolbox.md) — Arch Linux development containers on Bazzite
+- [Lab](.docs/lab.md) — Arch Linux development environment on Bazzite
 - [Minecraft](.docs/minecraft.md) — Crafty Controller on bazzite; Tailscale-only access for friends
 - [Storage](.docs/storage.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
 - [Immich](.docs/immich.md) — photo/video library on bazzite with Podman Compose and Tailscale Funnel

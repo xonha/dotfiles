@@ -10,7 +10,7 @@ source "$SETUP_ROOT/_shared.sh"
 SERVICES=(lab)
 
 run() {
-  header "Configure Toolbox development environment"
+  header "Configure Lab development environment"
 
   if ! command -v podman >/dev/null 2>&1; then
     error "Podman is required on the container host."
@@ -27,10 +27,10 @@ run() {
     mkdir -p "$HOME/$service/workspace"
   done
 
-  info "Building localhost/toolbox:latest..."
+  info "Building localhost/lab:latest..."
   podman build \
-    --file "$SETUP_ROOT/toolbox.Dockerfile" \
-    --tag localhost/toolbox:latest \
+    --file "$SETUP_ROOT/lab.Dockerfile" \
+    --tag localhost/lab:latest \
     "$DOTFILES_ROOT"
 
   info "Reloading user units and starting development environment..."

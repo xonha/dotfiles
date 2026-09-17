@@ -26,14 +26,14 @@ documentados em [`.setup/README.md`](.setup/README.md).
 
 ## Ambientes de desenvolvimento no Bazzite
 
-`lab` usa uma imagem Arch Toolbox focada em desenvolvimento no Bazzite. Depois
+`lab` usa uma imagem Arch focada em desenvolvimento no Bazzite. Depois
 de aplicar os dotfiles com Stow, execute:
 
 ```bash
-./.setup/toolbox-setup.sh
+./.setup/lab-setup.sh
 ```
 
-O guia operacional está em [`.docs/toolbox.md`](.docs/toolbox.md).
+O guia operacional está em [`.docs/lab.md`](.docs/lab.md).
 
 ## Keeper.sh
 

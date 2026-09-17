@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-Image=localhost/toolbox:latest
+Image=localhost/lab:latest
 ContainerName=lab
 HostName=lab
 
