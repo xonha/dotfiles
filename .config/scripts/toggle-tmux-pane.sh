@@ -22,9 +22,9 @@ if [ -n "$PANE" ]; then
     tmux break-pane -d -s "$PANE_ID"
   else
     # Pane exists but is hidden — bring it back
-    tmux join-pane -h -l 40% -s "$PANE_ID"
+    tmux join-pane -h -l 50% -s "$PANE_ID"
   fi
 else
   # No pane — create one
-  tmux split-window -h -l 40% -c "$CURRENT_PATH" "$CMD"
+  tmux split-window -h -l 50% -c "$CURRENT_PATH" "$CMD"
 fi
