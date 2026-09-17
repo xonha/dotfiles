@@ -6,7 +6,6 @@ set -Eeuo pipefail
 # id|desktop file|label
 PROFILES=(
   "maistodos|brave-maistodos.desktop|MaisTodos"
-  "devbot|brave-devbot.desktop|Devbot"
   "pessoal|brave-browser.desktop|Main"
 )
 

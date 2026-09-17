@@ -18,6 +18,7 @@ PKG_DEV_COMMON=(
   tmux
   lazygit
   lazydocker
+  starship
 )
 
 # Services and host-management tooling. These are intentionally excluded from

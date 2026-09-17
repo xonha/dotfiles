@@ -56,15 +56,13 @@ o.bind("code:195", "Play/pause", "playerctl play-pause")
 o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 -- Remote shortcuts
-hl.unbind("SUPER + S")
 hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
-o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
-o.bind("SUPER + X", "Devbot SSH",
+o.bind("SUPER + X", "Lab SSH",
   {
-    launch = "foot --app-id=foot-devbot-ssh -e ssh devbot -t 'tmux new-session -A -s main'",
+    launch = "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main'",
     focus =
-    "^foot-devbot-ssh$"
+    "^foot-lab-ssh$"
   })
 o.bind("SUPER + C", "Mais Todos SSH",
   {

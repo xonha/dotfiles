@@ -6,7 +6,7 @@ FROM archlinux:latest
 COPY .setup/_shared.sh .setup/_packages.sh \
      .setup/toolbox-bootstrap-yay.sh .setup/10-server-packages.sh \
      .setup/30-login-shell.sh /opt/dotfiles-setup/
-COPY .zshrc .zshenv .p10k.zsh /usr/local/share/toolbox-defaults/
+COPY .bashrc .bash_profile .config/starship.toml /usr/local/share/toolbox-defaults/
 
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
@@ -28,7 +28,7 @@ RUN ssh-keygen -A \
     && echo 'SetEnv LC_ALL=C.UTF-8' >> /etc/ssh/sshd_config
 
 # Create the development user. The shared login-shell stage sets its final
-# shell after Zsh has been installed by the shared package stage.
+# shell after Bash has been validated by the shared login-shell stage.
 ARG USERNAME=henrique
 ARG UID=1000
 ARG GID=1000
@@ -53,9 +53,10 @@ RUN pacman -Scc --noconfirm
 RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
-    && echo "if [[ ! -e /home/${USERNAME}/.zshrc ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.zshrc /home/${USERNAME}/.zshrc; fi" >> /start.sh \
-    && echo "if [[ ! -e /home/${USERNAME}/.zshenv ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.zshenv /home/${USERNAME}/.zshenv; fi" >> /start.sh \
-    && echo "if [[ ! -e /home/${USERNAME}/.p10k.zsh ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.p10k.zsh /home/${USERNAME}/.p10k.zsh; fi" >> /start.sh \
+    && echo "if [[ ! -e /home/${USERNAME}/.bashrc ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.bashrc /home/${USERNAME}/.bashrc; fi" >> /start.sh \
+    && echo "if [[ ! -e /home/${USERNAME}/.bash_profile ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/.bash_profile /home/${USERNAME}/.bash_profile; fi" >> /start.sh \
+    && echo "install -d -m 755 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.config" >> /start.sh \
+    && echo "if [[ ! -e /home/${USERNAME}/.config/starship.toml ]]; then install -m 644 -o ${USERNAME} -g ${USERNAME} /usr/local/share/toolbox-defaults/starship.toml /home/${USERNAME}/.config/starship.toml; fi" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \

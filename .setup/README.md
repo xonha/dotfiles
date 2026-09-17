@@ -10,14 +10,14 @@ Dois fluxos, cada um com seu proprio entrypoint, soltos na raiz de `.setup/`:
   so por `40-desktop.sh`.
 - `toolbox-setup.sh`: builda `toolbox.Dockerfile` (que roda
   `toolbox-bootstrap-yay.sh`, `10-server-packages.sh` e `30-login-shell.sh`
-  dentro da imagem) e reinicia os servicos `devbot`/`lab`.
+  dentro da imagem) e reinicia o servico `lab`.
 
 `_shared.sh` e `_packages.sh` sao compartilhados pelos dois fluxos.
 
 ## Login shell safety
 
 `.setup/30-login-shell.sh` runs immediately after the server packages are installed. It
-configures Zsh as the login shell only after confirming that `command -v zsh`
+configures Bash as the login shell only after confirming that `command -v bash`
 returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's
 `pam_shells.so` from rejecting login if a distribution-provided shell (such as

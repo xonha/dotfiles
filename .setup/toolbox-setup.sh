@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build and activate the shared rootless Arch development environments.
+# Build and activate the rootless Arch development environment.
 
 set -euo pipefail
 
@@ -7,10 +7,10 @@ SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_ROOT="$(cd "$SETUP_ROOT/.." && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 
-SERVICES=(devbot lab)
+SERVICES=(lab)
 
 run() {
-  header "Configure Toolbox development environments"
+  header "Configure Toolbox development environment"
 
   if ! command -v podman >/dev/null 2>&1; then
     error "Podman is required on the container host."
@@ -33,7 +33,7 @@ run() {
     --tag localhost/toolbox:latest \
     "$DOTFILES_ROOT"
 
-  info "Reloading user units and starting development environments..."
+  info "Reloading user units and starting development environment..."
   systemctl --user daemon-reload
   # Quadlet generators apply [Install] during daemon-reload. Generated units
   # cannot be enabled again through systemctl; restart also applies new images.
@@ -42,7 +42,7 @@ run() {
   done
   loginctl enable-linger "$USER"
 
-  success "Development environments are active. Connect with: ssh devbot / ssh lab"
+  success "Development environment is active. Connect with: ssh lab"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

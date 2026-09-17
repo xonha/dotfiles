@@ -15,8 +15,8 @@ hl.env("HYPRCURSOR_SIZE", "24")
 
 require("default.hypr.toggles")
 
--- Brave webapps (bindings.lua: WhatsApp, Todoist, YouTube Music, Mais Todos,
--- Devbot) always open on an empty workspace on the left monitor. Excludes
+-- Brave webapps (bindings.lua: WhatsApp, Todoist, YouTube Music, Mais Todos)
+-- always open on an empty workspace on the left monitor. Excludes
 -- the bare Brave Origin browser itself (class "brave-origin"), handled below.
 o.window("^brave-(origin-.+|.+-Default)$", {
   monitor = "desc:Shenzhen KTC Technology Group SFPCCB24180 000000000000",

@@ -20,7 +20,7 @@ run
 source "$SETUP_DIR/20-dotfiles.sh"
 run
 
-# Configure the login shell only after Zsh has been installed.
+# Configure the login shell after the shell packages are installed.
 source "$SETUP_DIR/30-login-shell.sh"
 run
 

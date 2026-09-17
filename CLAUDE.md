@@ -32,7 +32,7 @@ machine.
 | `.bashrc` / `.bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
 | `.ssh/config`                 | SSH host aliases                                            |
 | `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba) |
-| `.setup/`                     | Setup scripts and the `devbot` container image              |
+| `.setup/`                     | Setup scripts and the `lab` container image                 |
 
 ## Adding Dotfiles
 

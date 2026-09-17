@@ -8,24 +8,17 @@ All machines connected via Tailscale MagicDNS.
 |-------|-------------|------|-------|
 | `omarchy` | `omarchy` | 22 | ThinkPad T495 — Omarchy (Arch Linux) desktop |
 | `maistodos` | `maistodos` | 22 | Work machine — Arch WSL2 |
-| `devbot` | `bazzite` | 2223 | Arch dev container on `bazzite`; forwards local :3000 |
-| `lab` | `bazzite` | 2224 | Personal Arch container; forwards local :3001 to its :3000 |
+| `lab` | `bazzite` | 2224 | Arch development container; forwards local :3000 |
 | `bazzite` | `bazzite` | 22 | Direct — no alias; see [bazzite access](#bazzite--bazzite-host) |
 
 ```bash
 ssh omarchy      # ThinkPad T495 (Omarchy)
 ssh maistodos    # work machine (Arch WSL2)
-ssh devbot       # Arch devbot container on bazzite (port 2223)
-ssh lab          # personal Arch container on bazzite (port 2224)
+ssh lab          # Arch development container on bazzite (port 2224)
 ```
 
-> **devbot port forward**: `ssh devbot` automatically binds local port 3000 to
-> `localhost:3000` inside the container (for web services running in the dev
-> environment). This is intentional — you may see port 3000 appear open on your
-> connecting machine while the session is active.
-
-> **lab port forward**: `ssh lab` binds local port 3001 to port 3000 inside
-> the personal container, so it can coexist with an active `ssh devbot`.
+> **lab port forward**: `ssh lab` automatically binds local port 3000 to
+> `localhost:3000` inside the development container.
 
 > **bazzite direct access**: No named alias exists for `bazzite` in
 > `~/.ssh/config`. Connect directly via Tailscale MagicDNS:
@@ -67,8 +60,8 @@ Hyprland overrides on top of Omarchy's defaults.
 ### bazzite — Bazzite Host
 
 Home server running rootless Podman containers as systemd user services.
-SSH access via direct connection (`ssh <your-user>@bazzite`) — the `devbot`
-alias also lands on this machine (on port 2223, into the container).
+SSH access via direct connection (`ssh <your-user>@bazzite`). The `lab` alias
+lands on the development container through port 2224.
 
 ### maistodos — Work Machine (Arch WSL2)
 
@@ -81,16 +74,14 @@ the Windows system tray (not just in the WSL2 environment).
 
 | Container | SSH Port | Service Port | Purpose |
 |-----------|----------|--------------|---------|
-| `devbot` | 2223 | — | Work environment (see [toolbox.md](toolbox.md)) |
-| `lab` | 2224 | — | Personal environment (see [toolbox.md](toolbox.md)) |
+| `lab` | 2224 | — | Arch development environment (see [toolbox.md](toolbox.md)) |
 | `crafty` | — | 8443, 25565 | Minecraft server manager (see [minecraft.md](minecraft.md)) |
 
 Manage services on `bazzite`:
 
 ```bash
-systemctl --user status devbot.service lab.service
-systemctl --user start devbot.service     # start work environment
-systemctl --user start lab.service        # start personal environment
+systemctl --user status lab.service
+systemctl --user start lab.service
 ```
 
 ## Troubleshooting
@@ -112,22 +103,22 @@ sudo systemctl start tailscaled   # Linux hosts
 
 ---
 
-### `ssh devbot` times out or refuses (container stopped)
+### `ssh lab` times out or refuses (container stopped)
 
-**Symptom**: `tailscale status` shows `bazzite` as **online**, but `ssh devbot`
+**Symptom**: `tailscale status` shows `bazzite` as **online**, but `ssh lab`
 hangs or returns "Connection refused".
 
-**Diagnosis**: The `devbot` container on `bazzite` is not running. Verify:
+**Diagnosis**: The `lab` container on `bazzite` is not running. Verify:
 
 ```bash
 ssh <your-user>@bazzite
-systemctl --user status devbot.service
+systemctl --user status lab.service
 ```
 
 **Recovery**:
 
 ```bash
-systemctl --user start devbot.service
+systemctl --user start lab.service
 ```
 
 ---
@@ -146,20 +137,20 @@ reachable.
 
 ---
 
-### `bazzite` is powered off (devbot and bazzite both unreachable)
+### `bazzite` is powered off (lab and bazzite both unreachable)
 
-**Symptom**: Both `ssh devbot` and `ssh <your-user>@bazzite` fail
+**Symptom**: Both `ssh lab` and `ssh <your-user>@bazzite` fail
 simultaneously. `tailscale status` shows `bazzite` as offline.
 
 **Diagnosis**: This is distinct from the container-stopped case — the entire
-`bazzite` machine is offline, including `devbot`.
+`bazzite` machine is offline, including `lab`.
 
-**Recovery**: Power on `bazzite`. `devbot.service` starts automatically on
+**Recovery**: Power on `bazzite`. `lab.service` starts automatically on
 boot via the user service. No manual intervention is needed once the machine
 is on and Tailscale reconnects.
 
 ## Typical Workflow
 
-- Code on `omarchy` (Arch, local editor) or inside `devbot` (SSH + Neovim).
+- Code on `omarchy` (Arch, local editor) or inside `lab` (SSH + Neovim).
 - Services on `bazzite` accessible from any machine via Tailscale.
 - Work tasks on `maistodos` (WSL2 Arch for dev, Windows for meetings/Office).

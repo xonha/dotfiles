@@ -4,9 +4,11 @@
 # If not running interactively, don't do anything else (leave this above the rc source)
 [[ $- != *i* ]] && return
 
-# All the default Omarchy aliases and functions
-# (don't mess with these directly, just overwrite them here!)
-source "$OMARCHY_PATH/default/bash/rc"
+# All the default Omarchy aliases and functions. Plain Arch development
+# containers do not have Omarchy, so keep this block optional.
+if [[ -n ${OMARCHY_PATH:-} && -r "$OMARCHY_PATH/default/bash/rc" ]]; then
+  source "$OMARCHY_PATH/default/bash/rc"
+fi
 
 # Omarchy loads its Readline bindings above.  Load ble.sh afterwards so its
 # bind wrapper does not attempt to parse unsupported stock Readline functions.
@@ -114,7 +116,6 @@ alias dotfiles='dot'
 alias maistodos='ssh maistodos'
 alias bazzite='ssh bazzite'
 alias laptop='ssh laptop'
-alias devbot='ssh devbot'
 alias lab='ssh lab'
 
 up() {

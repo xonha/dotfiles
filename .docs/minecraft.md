@@ -262,7 +262,7 @@ does not apply to them, and the device count is unlimited.
 > **The tag is not optional.** An auth key without a tag attributes the device
 > to *your* identity, and Tailscale makes all devices sharing an identity
 > mutually visible *even when the policy forbids connecting*. Friends would see
-> `laptop`, `bazzite`, `devbot` and `maistodos` in their device list. With the
+> `laptop`, `bazzite`, `lab` and `maistodos` in their device list. With the
 > tag, they see only what the ACL permits.
 
 ### 1. Tailnet policy file
