@@ -62,15 +62,15 @@ hl.unbind("SUPER + C")
 o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
 o.bind("SUPER + X", "Devbot SSH",
   {
-    launch = "kitty --class kitty-devbot-ssh -e ssh devbot -t 'tmux new-session -A -s main'",
+    launch = "foot --app-id=foot-devbot-ssh -e ssh devbot -t 'tmux new-session -A -s main'",
     focus =
-    "^kitty-devbot-ssh$"
+    "^foot-devbot-ssh$"
   })
 o.bind("SUPER + C", "Mais Todos SSH",
   {
-    launch = "kitty --class kitty-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main'",
+    launch = "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main'",
     focus =
-    "^kitty-maistodos-ssh$"
+    "^foot-maistodos-ssh$"
   })
 -- Clipboard
 local function send_shortcut_once(mods, key)
