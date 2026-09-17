@@ -3,7 +3,8 @@
 
 set -euo pipefail
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_ROOT="$(cd "$LAB_ROOT/.." && pwd)"
 DOTFILES_ROOT="$(cd "$SETUP_ROOT/.." && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 
@@ -29,7 +30,7 @@ run() {
 
   info "Building localhost/lab:latest..."
   podman build \
-    --file "$SETUP_ROOT/lab.Dockerfile" \
+    --file "$LAB_ROOT/Dockerfile" \
     --tag localhost/lab:latest \
     "$DOTFILES_ROOT"
 

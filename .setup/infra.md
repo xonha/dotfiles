@@ -74,8 +74,8 @@ the Windows system tray (not just in the WSL2 environment).
 
 | Container | SSH Port | Service Port | Purpose |
 |-----------|----------|--------------|---------|
-| `lab` | 2224 | — | Arch development environment (see [lab.md](lab.md)) |
-| `crafty` | — | 8443, 25565 | Minecraft server manager (see [minecraft.md](minecraft.md)) |
+| `lab` | 2224 | — | Arch development environment (see [lab/README.md](lab/README.md)) |
+| `crafty` | — | 8443, 25565 | Minecraft server manager (see [crafty/README.md](crafty/README.md)) |
 
 Manage services on `bazzite`:
 

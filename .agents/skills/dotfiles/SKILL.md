@@ -3,7 +3,7 @@ name: dotfiles
 description: >
   REQUIRED for changes to this user's Linux dotfiles, setup scripts, desktop
   configuration, systemd services, or development environments. Use when
-  editing files under ~/.config/, ~/.setup/, ~/.docs/, shell files, Hyprland,
+  editing files under ~/.config/ or ~/.setup/, shell files, Hyprland,
   Omarchy, GNU Stow, Podman containers, or personal service configuration.
   Excludes unrelated application source development.
 metadata:
@@ -18,7 +18,7 @@ to the host with GNU Stow or one of the setup entrypoints.
 
 ## When this skill must be used
 
-- Editing files under `.config/`, `.setup/`, or `.docs/`
+- Editing files under `.config/` or `.setup/`
 - Changing Hyprland, Omarchy, Foot, Neovim, shell, tmux, Starship, or Git config
 - Adding or changing systemd, Quadlet, Podman, Lab, Keeper.sh, or Immich setup
 - Running or changing the repository bootstrap and setup flows
@@ -42,10 +42,10 @@ questions that do not affect this dotfiles repository.
 | Area | Responsibility | Location |
 |---|---|---|
 | Dotfiles | Versioned user configuration | `.config/`, hidden files |
-| Setup | Installation and bootstrap | `.setup/` |
+| Setup | Installation and bootstrap | `.setup/`, numbered modules |
 | Desktop | Hyprland, Omarchy, Foot | `.config/hypr/`, `.config/omarchy/`, `.config/foot/` |
 | Services | Systemd and containers | `.config/containers/`, `.config/systemd/` |
-| Operations | Service-specific procedures | `.docs/` |
+| Operations | Per-service deploy artifacts and runbooks | `.setup/<service>/` |
 
 ## Main workflows
 
@@ -72,7 +72,7 @@ minimum, validate Bash, Starship, and tmux; treat host-only desktop config such
 as Foot separately and document that boundary.
 
 ```bash
-./.setup/lab-setup.sh
+./.setup/lab/setup.sh
 ```
 
 ### Stow and linking
@@ -87,8 +87,8 @@ ignore rules, or files that may conflict with existing host configuration.
    request explicitly asks for an override.
 3. Is it installation or bootstrap behavior? Put it in the appropriate numbered
    `.setup/` module and reuse `_shared.sh` helpers.
-4. Is it a persistent service? Update the setup code and the matching `.docs/`
-   operational guide.
+4. Is it a persistent service? Update the setup code and the matching
+   `.setup/<service>/README.md` runbook.
 5. Is it potentially destructive or privileged? Confirm scope, then make the
    smallest reversible change.
 6. Validate with the narrowest useful check: shell syntax, Stow dry-run,
@@ -111,4 +111,4 @@ ignore rules, or files that may conflict with existing host configuration.
 - “Install a base package” → inspect `.setup/10-server-packages.sh`.
 - “Change desktop package behavior” → inspect `.setup/40-desktop.sh` and its modules.
 - “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
-- “Change Immich or Keeper.sh” → read the matching guide under `.docs/` before editing.
+- “Change Immich or Keeper.sh” → read `.setup/immich/README.md` or `.setup/keeper/README.md` before editing.

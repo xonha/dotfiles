@@ -8,13 +8,15 @@ machine.
 
 ## Index
 
-- [Infrastructure](.docs/infra.md) — machines, Tailscale network, how to reach each host
-- [Lab](.docs/lab.md) — Arch Linux development environment on Bazzite
-- [Minecraft](.docs/minecraft.md) — Crafty Controller on bazzite; Tailscale-only access for friends
-- [Storage](.docs/storage.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
-- [Immich](.docs/immich.md) — photo/video library on bazzite with Podman Compose and Tailscale Funnel
+- [Infrastructure](.setup/infra.md) — machines, Tailscale network, how to reach each host
+- [Lab](.setup/lab/README.md) — Arch Linux development environment on Bazzite
+- [Crafty / Minecraft](.setup/crafty/README.md) — Crafty Controller on bazzite; Tailscale-only access for friends
+- [Samba / Storage](.setup/samba/README.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
+- [Immich](.setup/immich/README.md) — photo/video library on bazzite with Podman Compose and Tailscale Funnel
+- [Keeper.sh](.setup/keeper/README.md) — calendar sync and MCP server on bazzite, behind Tailscale Serve
 - [Setup notes](.setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Stow layout](#stow-layout) — directory map for this repo
+- [`.config/` vs `.setup/`](#config-vs-setup) — which of the two a new file belongs in
 
 ## Stow Layout
 
@@ -31,8 +33,23 @@ machine.
 | `.tmux.conf`                  | Tmux                                                        |
 | `.bashrc` / `.bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
 | `.ssh/config`                 | SSH host aliases                                            |
-| `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba) |
-| `.setup/`                     | Setup scripts and the `lab` container image                 |
+| `.config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba, Keeper, Lab) |
+| `.setup/`                     | Bootstrap scripts, plus one directory per service holding its deploy artifacts and runbook (`lab/`, `immich/`, `keeper/`, `crafty/`, `samba/`) |
+
+## `.config/` vs `.setup/`
+
+A file belongs in `.config/` only if the program that reads it reads it from
+`$HOME` **on the machine where the repo is stowed** — Quadlet units under
+`.config/containers/systemd/` qualify, since systemd reads that exact path.
+If the file is instead copied, built, or executed somewhere else (another
+host, a container image), it is a deploy artifact and belongs in
+`.setup/<service>/`, together with that service's runbook (`README.md`).
+`.setup/` is excluded from Stow, so nothing there ever lands in `$HOME` as a
+dead symlink.
+
+Immich (`.setup/immich/docker-compose.yml`) and the Keeper env template
+(`.setup/keeper/keeper.env.example`) follow this rule: both are `scp`'d or
+copied into place rather than read from `$HOME`.
 
 ## Adding Dotfiles
 

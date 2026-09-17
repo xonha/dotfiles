@@ -30,18 +30,18 @@ documentados em [`.setup/README.md`](.setup/README.md).
 de aplicar os dotfiles com Stow, execute:
 
 ```bash
-./.setup/lab-setup.sh
+./.setup/lab/setup.sh
 ```
 
-O guia operacional está em [`.docs/lab.md`](.docs/lab.md).
+O guia operacional está em [`.setup/lab/README.md`](.setup/lab/README.md).
 
 ## Keeper.sh
 
 O Keeper.sh roda no Bazzite como serviço Quadlet rootless, na porta local
-`8088`. O guia operacional está em [`.docs/keeper.md`](.docs/keeper.md).
+`8088`. O guia operacional está em [`.setup/keeper/README.md`](.setup/keeper/README.md).
 
 ## Immich
 
 O Immich roda no Bazzite com Podman Compose, biblioteca no HD separado e
 acesso LAN/Tailscale/Funnel. O guia operacional está em
-[`.docs/immich.md`](.docs/immich.md).
+[`.setup/immich/README.md`](.setup/immich/README.md).

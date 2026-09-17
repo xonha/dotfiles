@@ -5,11 +5,11 @@ imagem inclui web, API, cron, worker, PostgreSQL, Redis e MCP.
 
 ## Instalação
 
-Depois de aplicar os dotfiles com Stow:
+Depois de aplicar os dotfiles com Stow, a partir da raiz deste repositório:
 
 ```bash
 mkdir -p ~/.config/containers/systemd ~/.local/share/keeper/data
-cp ~/.config/containers/systemd/keeper.env.example \
+cp .setup/keeper/keeper.env.example \
   ~/.config/containers/systemd/keeper.env
 chmod 600 ~/.config/containers/systemd/keeper.env
 

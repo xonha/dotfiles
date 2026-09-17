@@ -4,7 +4,7 @@ FROM archlinux:latest
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
 COPY .setup/_shared.sh .setup/_packages.sh \
-     .setup/lab-bootstrap-yay.sh .setup/10-server-packages.sh \
+     .setup/lab/bootstrap-yay.sh .setup/10-server-packages.sh \
      .setup/30-login-shell.sh /opt/dotfiles-setup/
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
@@ -41,7 +41,7 @@ RUN groupadd -g ${GID} ${USERNAME} \
 USER ${USERNAME}
 ENV USER=${USERNAME}
 ENV SETUP_TARGET=lab
-RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/lab-bootstrap-yay.sh && run \
+RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/bootstrap-yay.sh && run \
       && source /opt/dotfiles-setup/10-server-packages.sh && run \
       && source /opt/dotfiles-setup/30-login-shell.sh && run \
       && (yay -S --needed --noconfirm blesh || true)'
