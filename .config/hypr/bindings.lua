@@ -66,7 +66,7 @@ o.bind("SUPER + X", "Lab SSH",
   })
 o.bind("SUPER + C", "Mais Todos SSH",
   {
-    launch = "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#a6e3a1\"'",
+    launch = "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#cba6f7\"'",
     focus =
     "^foot-maistodos-ssh$"
   })
