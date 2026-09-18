@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-label="${CALENDAR_FEED_LABEL:-Personal}"
+label="${2:-${CALENDAR_FEED_LABEL:-Personal}}"
+label="${label//[[:space:]]/}"
+label="${label,,}"
 url="${1:-}"
 
 if [[ -z "$url" ]]; then
@@ -10,21 +12,19 @@ if [[ -z "$url" ]]; then
 fi
 
 case "$label" in
-  MaisTodos)
+  maistodos)
     exec brave-origin \
-      --profile-directory=brave-origin-maistodos \
+      --profile-directory="Profile 1" \
       --class=brave-origin-maistodos \
-      --user-data-dir=.brave-origin-maistodos \
       "$url"
     ;;
-  Devbot)
+  devbot)
     exec brave-origin \
-      --profile-directory=brave-origin-devbot \
+      --profile-directory="Profile 2" \
       --class=brave-origin-devbot \
-      --user-data-dir=.brave-origin-devbot \
       "$url"
     ;;
-  Personal|*)
+  personal|*)
     exec brave-origin --profile-directory=Default "$url"
     ;;
 esac

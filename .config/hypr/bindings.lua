@@ -3,9 +3,9 @@ local brave_flags = "--max-unused-resource-memory-usage-mb=128 --disk-cache-size
 local function brave_app(id)
   return ("brave-origin --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
 end
-local function brave_profile(profile)
-  return ("brave-origin --profile-directory=brave-origin-%s --class=brave-origin-%s --user-data-dir=.brave-origin-%s %s")
-      :format(profile, profile, profile, brave_flags)
+local function brave_profile(profile, directory)
+  return ("brave-origin --profile-directory='%s' --class=brave-origin-%s %s")
+      :format(directory, profile, brave_flags)
 end
 hl.unbind("SUPER + V")
 hl.unbind("SUPER + F")
@@ -25,8 +25,8 @@ o.bind("SUPER + E", "Todoist",
   { launch = brave_app("dlgohinmglaoopaiplliaecdpmnepmga"), focus = "^brave-dlgohinmglaoopaiplliaecdpmnepmga-Default$" })
 o.bind("SUPER + R", "YouTube Music",
   { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
-o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos"), focus = "^brave-origin-maistodos$" })
-o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
+o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos", "Profile 1"), focus = "^brave-origin-maistodos$" })
+o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot", "Profile 2"), focus = "^brave-origin-devbot$" })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
 -- Windows
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))

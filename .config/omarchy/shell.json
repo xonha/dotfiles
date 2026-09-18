@@ -34,9 +34,10 @@
         },
         {
           "id": "robzolkos.github",
+          "includeContributions": false,
           "linkBehavior": "Browser tab",
           "repositoryScope": "Owned and organizations",
-          "includeContributions": false
+          "refreshIntervalSec": 1800
         }
       ],
       "right": [
