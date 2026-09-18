@@ -137,9 +137,6 @@ up() {
   [[ -n $orphans ]] && sudo pacman -Rns --noconfirm $orphans
 }
 
-if command -v starship >/dev/null 2>&1 && [[ -x "$HOME/.config/scripts/starship-host-config" ]]; then
-  export STARSHIP_CONFIG="$("$HOME/.config/scripts/starship-host-config")"
-fi
 eval "$(starship init bash)"
 
 # ble-attach must come last so ble.sh wraps the final prompt/readline setup.
