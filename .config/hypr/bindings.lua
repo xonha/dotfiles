@@ -60,7 +60,7 @@ hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
 o.bind("SUPER + X", "Lab SSH",
   {
-    launch = "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#f6e390\"'",
+    launch = "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#a6e3a1\"'",
     focus =
     "^foot-lab-ssh$"
   })
