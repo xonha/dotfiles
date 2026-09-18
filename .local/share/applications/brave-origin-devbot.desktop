@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Devbot
-Exec=brave-origin --profile-directory=brave-origin-devbot --class=brave-origin-devbot --user-data-dir=.brave-origin-devbot %U
+Exec=brave-origin --profile-directory=Default --class=brave-origin-devbot --user-data-dir=/home/henrique/.config/BraveSoftware/Brave-Origin-Devbot %U
 Icon=brave-browser-dev
 StartupWMClass=brave-origin-devbot
 Terminal=false

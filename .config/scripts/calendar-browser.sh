@@ -14,14 +14,16 @@ fi
 case "$label" in
   maistodos)
     exec brave-origin \
-      --profile-directory="Profile 1" \
+      --profile-directory=Default \
       --class=brave-origin-maistodos \
+      --user-data-dir="$HOME/.config/BraveSoftware/Brave-Origin-MaisTodos" \
       "$url"
     ;;
   devbot)
     exec brave-origin \
-      --profile-directory="Profile 2" \
+      --profile-directory=Default \
       --class=brave-origin-devbot \
+      --user-data-dir="$HOME/.config/BraveSoftware/Brave-Origin-Devbot" \
       "$url"
     ;;
   personal|*)
