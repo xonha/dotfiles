@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Devbot
+Exec=brave-origin --profile-directory=brave-origin-devbot --class=brave-origin-devbot --user-data-dir=.brave-origin-devbot %U
+Icon=brave-browser-dev
+StartupWMClass=brave-origin-devbot
+Terminal=false
+NoDisplay=true
+Categories=Network;WebBrowser;
+MimeType=x-scheme-handler/http;x-scheme-handler/https;text/html;

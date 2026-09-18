@@ -13,6 +13,7 @@ hl.unbind("SUPER + SHIFT + F")
 hl.unbind("SUPER + Q")
 hl.unbind("SUPER + W")
 hl.unbind("SUPER + G")
+hl.unbind("SUPER + S")
 o.bind("SUPER + V", "Foot + tmux",
   { launch = "foot --app-id=foot-local -e tmux new-session -A -s main", focus = "^foot-local$" })
 o.bind("SUPER + F", "Brave Origin", { launch = "brave-origin", focus = "^brave-origin$" })
@@ -25,6 +26,7 @@ o.bind("SUPER + E", "Todoist",
 o.bind("SUPER + R", "YouTube Music",
   { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
 o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos"), focus = "^brave-origin-maistodos$" })
+o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot"), focus = "^brave-origin-devbot$" })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
 -- Windows
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
