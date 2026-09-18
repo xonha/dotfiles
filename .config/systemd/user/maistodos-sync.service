@@ -1,0 +1,6 @@
+[Unit]
+Description=Sincronização bidirecional dos calendários MaisTodos
+
+[Service]
+Type=oneshot
+ExecStart=%h/Dotfiles/.config/scripts/sync-google-meet-links.py --days 30 --apply
