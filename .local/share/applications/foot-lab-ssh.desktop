@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Lab SSH
+Comment=SSH para o lab via Foot
+Exec=foot --app-id=foot-lab-ssh -e ssh lab -t "tmux new-session -A -s main"
+Icon=org.gnome.Console
+Terminal=false
+Categories=System;TerminalEmulator;
+StartupWMClass=foot-lab-ssh
