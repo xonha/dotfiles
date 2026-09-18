@@ -14,7 +14,7 @@ hl.unbind("SUPER + Q")
 hl.unbind("SUPER + W")
 hl.unbind("SUPER + G")
 o.bind("SUPER + V", "Foot + tmux",
-  { launch = "foot -e tmux new-session -A -s main", focus = "^(foot|org\\.codeberg\\.dnkl\\.foot)$" })
+  { launch = "foot --app-id=foot-local -e tmux new-session -A -s main", focus = "^foot-local$" })
 o.bind("SUPER + F", "Brave Origin", { launch = "brave-origin", focus = "^brave-origin$" })
 o.bind("SUPER + SHIFT + F", "Full screen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
@@ -60,13 +60,13 @@ hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
 o.bind("SUPER + X", "Lab SSH",
   {
-    launch = "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main'",
+    launch = "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#89b4fa\"'",
     focus =
     "^foot-lab-ssh$"
   })
 o.bind("SUPER + C", "Mais Todos SSH",
   {
-    launch = "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main'",
+    launch = "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#a6e3a1\"'",
     focus =
     "^foot-maistodos-ssh$"
   })
