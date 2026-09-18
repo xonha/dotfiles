@@ -37,18 +37,6 @@
           "linkBehavior": "Browser tab",
           "repositoryScope": "Owned and organizations",
           "includeContributions": false
-        },
-        {
-          "id": "tobiasz-p.next-event",
-          "browserCommand": "",
-          "colorOnBar": true,
-          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
-          "icsUrl": "Personal|#f38ba8|https://calendar.google.com/calendar/ical/henriquecastro1198%40gmail.com/private-f5d87f8b42586f45838e7f1f6e4cff8c/basic.ics,MaisTodos|#cba6f7|https://calendar.google.com/calendar/ical/952ffe900736d752e0ac4e11434087fcd9d6c572aaf8a10e1c32a0089f44d439%40group.calendar.google.com/private-b23d11f0fcd849f584a3830d50b861b1/basic.ics",
-          "showCalendarLabel": true,
-          "showDaysAhead": 5,
-          "showOnlyWithVideoLink": false,
-          "sourceMode": "ics",
-          "timeFormat": "24"
         }
       ],
       "right": [
