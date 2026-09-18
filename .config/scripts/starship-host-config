@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+host="$(hostname -s)"
+color=""
+case "$host" in
+  lab) color="blue" ;;
+  maistodos) color="green" ;;
+esac
+
+if [[ -z "$color" ]]; then
+  printf '%s\n' "$HOME/.config/starship.toml"
+  exit 0
+fi
+
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/starship"
+cache_file="$cache_dir/$host.toml"
+mkdir -p "$cache_dir"
+
+sed "/^\[git_branch\]/,/^\[git_status\]/ { s/bg:yellow/bg:$color/g; }" \
+  "$HOME/.config/starship.toml" > "$cache_file"
+printf '%s\n' "$cache_file"
