@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Bidirectional MaisTodos synchronizer. Dry-run by default; use --apply to write."""
 from __future__ import annotations
-import argparse, json, subprocess, time, urllib.parse, urllib.request
+import argparse, json, re, subprocess, time, urllib.parse, urllib.request
 import urllib.error
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 API = "https://www.googleapis.com/calendar/v3"
-CLIENT_FILE = Path.home() / ".config/gws-omarchy-calendar/client_secret.json"
+PLUGIN_SETTINGS = Path.home() / ".config/omarchy/plugins/io.github.joryeugene.omarchy-calendar/src/omarchy_calendar/settings.py"
 STATE = Path.home() / ".local/state/maistodos-sync/state.json"
 WORK_ACCOUNT = "107159136495973194910"
 PERSONAL_ACCOUNT = "108525994900296126593"
@@ -17,8 +17,12 @@ PERSONAL_CALENDAR = "952ffe900736d752e0ac4e11434087fcd9d6c572aaf8a10e1c32a0089f4
 def token(account):
     raw = subprocess.check_output(["secret-tool", "lookup", "application", "omarchy-calendar", "provider", "google", "account", account], text=True)
     data = json.loads(raw)
-    client = json.loads(CLIENT_FILE.read_text())['installed']
-    form = urllib.parse.urlencode({"client_id": client["client_id"], "client_secret": client["client_secret"], "refresh_token": data["refresh_token"], "grant_type": "refresh_token"}).encode()
+    settings = PLUGIN_SETTINGS.read_text()
+    client_id = re.search(r'"google":\s*"([^"]+\.apps\.googleusercontent\.com)"', settings)
+    client_secret = re.search(r'BUNDLED_GOOGLE_DESKTOP_APP_CREDENTIAL\s*=\s*"([^"]+)"', settings)
+    if not client_id or not client_secret:
+        raise RuntimeError(f"Google OAuth bundled credentials not found: {PLUGIN_SETTINGS}")
+    form = urllib.parse.urlencode({"client_id": client_id.group(1), "client_secret": client_secret.group(1), "refresh_token": data["refresh_token"], "grant_type": "refresh_token"}).encode()
     req = urllib.request.Request("https://oauth2.googleapis.com/token", data=form, method="POST")
     with urllib.request.urlopen(req) as response:
         return json.load(response)["access_token"]
