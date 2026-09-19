@@ -22,6 +22,8 @@ Panel {
   readonly property var voiceService: bar && bar.shell ? bar.shell.serviceFor("xonha.voice-tools") : null
   readonly property var svc: voiceService ? voiceService.speech : null
   readonly property var voice: voiceService ? voiceService.omavoice : null
+  readonly property bool microphoneMuted: voice ? voice.muted : true
+  readonly property bool microphoneOpen: !microphoneMuted
   readonly property var voicePresets: [
     { value: "meeting", label: "Meeting" },
     { value: "podcast", label: "Podcast" },
@@ -147,10 +149,18 @@ Panel {
     anchors.fill: parent
     visible: !root.expanded
     bar: root.bar
-    text: "󰍬"
-    active: root.busy || root.showError
+    text: root.recording || root.transcribing ? "󰐊" : (root.microphoneMuted ? "󰍭" : "󰍬")
+    active: root.recording || root.transcribing || root.microphoneOpen || root.showError
     useActiveColor: true
-    activeColor: root.busy ? root.takeColor : Color.urgent
+    activeColor: root.recording || root.transcribing
+      ? Color.accent
+      : root.microphoneOpen ? root.green : (root.showError ? Color.urgent : root.dim)
+    SequentialAnimation on opacity {
+      running: root.recording || root.transcribing || root.microphoneOpen
+      loops: Animation.Infinite
+      NumberAnimation { to: 0.48; duration: 500; easing.type: Easing.InOutQuad }
+      NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
+    }
     tooltipText: (root.connected ? (root.svc.missing.length ? "Speech to text · click to install " + root.svc.missing.join(", ") : "Speech to text") : "Speech to text · starting")
                  + (root.svc && root.svc.error !== "" ? " · " + root.svc.error : "")
                  + (root.keyFor(root.defaultLang) !== "" ? " · " + root.keyFor(root.defaultLang) + ": dictate " + root.langName(root.defaultLang) : "")
