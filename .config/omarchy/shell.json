@@ -9,9 +9,6 @@
       ],
       "left": [
         {
-          "id": "omarchy.menu"
-        },
-        {
           "id": "io.github.diegopluna.argus",
           "intervalSec": 3,
           "show": [
@@ -41,6 +38,11 @@
         },
         {
           "id": "omarchy.agents"
+        },
+        {
+          "id": "xonha.tray",
+          "pinned": [],
+          "hidden": []
         }
       ],
       "right": [
@@ -49,13 +51,6 @@
         },
         {
           "id": "omarchy.system-update"
-        },
-        {
-          "id": "omarchy.tray",
-          "pinned": [
-            "discord_status_icon_1"
-          ],
-          "hidden": []
         },
         {
           "id": "omarchy.keyboard-layout"
@@ -69,13 +64,13 @@
           "id": "omarchy.audio"
         },
         {
-          "id": "omarchy.bluetooth"
-        },
-        {
           "id": "omaconnect"
         },
         {
           "id": "omarchy.tailscale"
+        },
+        {
+          "id": "omarchy.bluetooth"
         },
         {
           "id": "omarchy.network"
@@ -97,6 +92,9 @@
           "lifeExpectancy": 101,
           "showNextEvent": true,
           "weekStartDay": "monday"
+        },
+        {
+          "id": "omarchy.menu"
         }
       ]
     },
