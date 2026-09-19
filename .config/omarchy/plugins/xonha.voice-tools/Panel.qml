@@ -155,8 +155,8 @@ Panel {
     active: root.recording || root.transcribing || root.microphoneOpen || root.microphoneMuted || root.showError
     useActiveColor: true
     activeColor: root.recording ? "#89b4fa"
-      : root.transcribing ? (root.microphoneMuted ? "#f38ba8" : root.green)
-      : root.microphoneOpen ? root.green : (root.microphoneMuted || root.showError ? Color.urgent : root.dim)
+      : root.transcribing ? (root.microphoneMuted ? root.fg : root.green)
+      : root.microphoneOpen ? root.green : (root.microphoneMuted ? root.fg : (root.showError ? Color.urgent : root.dim))
     SequentialAnimation on opacity {
       running: root.recording || root.transcribing || root.microphoneOpen
       loops: Animation.Infinite
