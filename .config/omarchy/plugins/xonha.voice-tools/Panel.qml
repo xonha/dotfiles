@@ -288,6 +288,8 @@ Panel {
         }
       }
 
+      PanelSeparator { foreground: root.fg }
+
       Text {
         width: parent.width
         text: "Choose how your microphone is cleaned before it reaches calls, recordings, and other apps."
@@ -298,7 +300,7 @@ Panel {
       }
 
       Text {
-        text: "Preset"
+        text: "PRESET"
         color: root.fg
         font.family: root.fontFamily
         font.pixelSize: Style.font.subtitle
@@ -321,13 +323,45 @@ Panel {
         }
       }
 
+      PanelSeparator { foreground: root.fg }
+
       Text {
         width: parent.width
-        text: root.voice ? ("Input: " + (root.voice.targetLabel || "Automatic microphone")) : ""
+        text: "MICROPHONE"
         color: root.dim
         font.family: root.fontFamily
-        font.pixelSize: Style.font.body
-        wrapMode: Text.WordWrap
+        font.pixelSize: Style.font.subtitle
+        font.bold: true
+      }
+
+      Text {
+        text: root.voice ? ("Input: " + (root.voice.targetLabel || "Automatic microphone")) : "MICROPHONE INPUT"
+        color: root.fg
+        font.family: root.fontFamily
+        font.pixelSize: Style.font.caption
+        font.bold: true
+      }
+
+      Button {
+        width: parent.width
+        text: "Automatic microphone"
+        foreground: root.fg
+        fontFamily: root.fontFamily
+        bordered: root.voice && !root.voice.pinnedSource
+        onClicked: if (root.voice) root.voice.pinSource("")
+      }
+
+      Repeater {
+        model: root.voice ? root.voice.sources : []
+        Button {
+          required property var modelData
+          width: parent.width
+          text: modelData.description || modelData.name
+          foreground: root.fg
+          fontFamily: root.fontFamily
+          bordered: root.voice && root.voice.pinnedSource === modelData.name
+          onClicked: if (root.voice) root.voice.pinSource(modelData.name)
+        }
       }
 
       Button {

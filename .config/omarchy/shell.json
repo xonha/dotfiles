@@ -62,8 +62,8 @@
         },
         {
           "id": "xonha.voice-tools",
-          "preset": "meeting",
-          "setDefaultSource": true
+          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
+          "preset": "podcast"
         },
         {
           "id": "omarchy.audio"
