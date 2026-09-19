@@ -22,7 +22,7 @@ Panel {
   readonly property var voiceService: bar && bar.shell ? bar.shell.serviceFor("xonha.voice-tools") : null
   readonly property var svc: voiceService ? voiceService.speech : null
   readonly property var voice: voiceService ? voiceService.omavoice : null
-  readonly property bool microphoneMuted: voice ? voice.muted : true
+  readonly property bool microphoneMuted: voice && voice.defaultSource ? voice.muted : true
   readonly property bool microphoneOpen: !microphoneMuted
   readonly property var voicePresets: [
     { value: "meeting", label: "Meeting" },
@@ -155,7 +155,7 @@ Panel {
     active: root.recording || root.transcribing || root.microphoneOpen || root.microphoneMuted || root.showError
     useActiveColor: true
     activeColor: root.recording ? "#89b4fa"
-      : root.transcribing ? "#cba6f7"
+      : root.transcribing ? (root.microphoneMuted ? "#f38ba8" : root.green)
       : root.microphoneOpen ? root.green : (root.microphoneMuted || root.showError ? Color.urgent : root.dim)
     SequentialAnimation on opacity {
       running: root.recording || root.transcribing || root.microphoneOpen
