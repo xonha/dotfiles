@@ -107,7 +107,19 @@ Panel {
     for (var i = 0; i < langs.length; i++) if (langs[i].code === code) return langs[i].label || code
     return code
   }
-  function keyFor(code) { return langs.length && langs[0].code === code ? String(langs[0].key || "") : "" }   // the default entry's dictate key
+  function keyFor(code) {
+    for (var i = 0; i < langs.length; i++) {
+      var language = langs[i]
+      if (language.code !== code) continue
+      if (language.key) return String(language.key)
+      if (language.code === "pt") return "SUPER J"
+      if (language.code === "en") return "SUPER K"
+    }
+    return ""
+  }
+  function displayKey(language) {
+    return language.key || (language.code === "pt" ? "SUPER J" : language.code === "en" ? "SUPER K" : "")
+  }
   readonly property string defaultLang: langs.length ? langs[0].code : ""
   function t(key, fallback) { var st = svc ? svc.strings : null; return st && st[key] ? st[key] : fallback }
   readonly property string agentName: svc && svc.agentName !== "" ? svc.agentName : "agent"
@@ -1128,10 +1140,10 @@ Panel {
               Button {
                 anchors.verticalCenter: parent.verticalCenter
                 width: langRow.cols.keyW
-                text: langRow.armedKey ? "Press…" : (langRow.modelData.key ? langRow.modelData.key : "Set")
+                text: langRow.armedKey ? "Press…" : (root.displayKey(langRow.modelData) || "Set")
                 selected: langRow.armedKey
                 enabled: root.connected
-                foreground: langRow.modelData.key || langRow.armedKey ? root.fg : root.dim
+                foreground: root.displayKey(langRow.modelData) || langRow.armedKey ? root.fg : root.dim
                 fontFamily: root.fontFamily
                 bordered: true
                 tooltipText: langRow.armedKey ? "Press a key · Backspace clears · Esc cancels" : "Dictate: press to start, again to stop and paste"
