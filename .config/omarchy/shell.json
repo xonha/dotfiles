@@ -2,108 +2,35 @@
   "bar": {
     "centerAnchor": "",
     "layout": {
-      "center": [
-        {
-          "id": "intelligentwolf.taskbar"
-        }
-      ],
+      "center": [{ "id": "intelligentwolf.taskbar" }],
       "left": [
-        {
-          "id": "omarchy.menu"
-        },
-        {
-          "id": "io.github.diegopluna.argus",
-          "intervalSec": 3,
-          "show": [
-            "cpu",
-            "cputemp",
-            "ram",
-            "disk",
-            "gpu",
-            "gputemp",
-            "vram"
-          ],
-          "homeTiles": [
-            "cpu",
-            "ram",
-            "gpu",
-            "net",
-            "io",
-            "disk"
-          ]
-        },
-        {
-          "id": "robzolkos.github",
-          "includeContributions": false,
-          "linkBehavior": "Browser tab",
-          "repositoryScope": "Owned and organizations",
-          "refreshIntervalSec": 1800
-        }
+        { "id": "omarchy.menu" },
+        { "id": "io.github.diegopluna.argus", "intervalSec": 3, "show": ["cpu", "cputemp", "ram", "disk", "gpu", "gputemp", "vram"], "homeTiles": ["cpu", "ram", "gpu", "net", "io", "disk"] },
+        { "id": "robzolkos.github", "includeContributions": false, "linkBehavior": "Browser tab", "repositoryScope": "Owned and organizations", "refreshIntervalSec": 1800 },
+        { "id": "alanfortlink.speech-to-text" }
       ],
       "right": [
-        {
-          "id": "omarchy.indicators"
-        },
-        {
-          "id": "omarchy.system-update"
-        },
-        {
-          "id": "omarchy.tray"
-        },
-        {
-          "id": "omarchy.keyboard-layout"
-        },
-        {
-          "id": "omarchy.agents"
-        },
-        {
-          "id": "gigasolo.omavoice",
-          "pinnedSource": "alsa_input.pci-0000_06_00.6.analog-stereo",
-          "preset": "meeting",
-          "setDefaultSource": true
-        },
-        {
-          "id": "omarchy.audio"
-        },
-        {
-          "id": "omarchy.bluetooth"
-        },
-        {
-          "id": "omaconnect"
-        },
-        {
-          "id": "omarchy.tailscale"
-        },
-        {
-          "id": "omarchy.network"
-        },
-        {
-          "id": "crmne.hyprmoncfg"
-        },
-        {
-          "id": "omarchy.power"
-        },
-        {
-          "id": "omarchy.weather"
-        },
-        {
-          "id": "promaa.clock",
-          "birthYear": 1998,
-          "format": "ddd, MMM dd HH:mm",
-          "formatAlt": "ddd, MMM dd HH:mm",
-          "lifeExpectancy": 101,
-          "showNextEvent": true,
-          "weekStartDay": "monday"
-        }
+        { "id": "omarchy.indicators" },
+        { "id": "omarchy.system-update" },
+        { "id": "omarchy.tray", "pinned": ["discord_status_icon_1"], "hidden": [] },
+        { "id": "omarchy.keyboard-layout" },
+        { "id": "omarchy.agents" },
+        { "id": "xonha.voice-tools", "pinnedSource": "bluez_input.00:02:5B:00:FF:0E", "preset": "podcast", "setDefaultSource": true, "enabled": true },
+        { "id": "omarchy.audio" },
+        { "id": "omarchy.bluetooth" },
+        { "id": "omaconnect" },
+        { "id": "omarchy.tailscale" },
+        { "id": "omarchy.network" },
+        { "id": "crmne.hyprmoncfg" },
+        { "id": "omarchy.power" },
+        { "id": "omarchy.weather" },
+        { "id": "promaa.clock", "birthYear": 1998, "format": "ddd, MMM dd HH:mm", "formatAlt": "ddd, MMM dd HH:mm", "lifeExpectancy": 101, "showNextEvent": true, "weekStartDay": "monday" }
       ]
     },
     "position": "top",
     "transparent": false
   },
-  "idle": {
-    "lock": 300,
-    "screensaver": 150
-  },
+  "idle": { "lock": 300, "screensaver": 150 },
   "plugins": [],
   "version": 1
 }
