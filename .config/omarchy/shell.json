@@ -38,6 +38,9 @@
           "linkBehavior": "Browser tab",
           "repositoryScope": "Owned and organizations",
           "refreshIntervalSec": 1800
+        },
+        {
+          "id": "omarchy.agents"
         }
       ],
       "right": [
@@ -56,9 +59,6 @@
         },
         {
           "id": "omarchy.keyboard-layout"
-        },
-        {
-          "id": "omarchy.agents"
         },
         {
           "id": "xonha.voice-tools",
