@@ -1,0 +1,13 @@
+--- a/spa/plugins/bluez5/backend-native.c
++++ b/spa/plugins/bluez5/backend-native.c
+@@ -2835,6 +2835,11 @@
+ 
+ 	if (td->err != -EINPROGRESS)
+ 		sco_ready(t);
++	else
++		/* A second node can acquire the same transport while connect() is
++		 * pending. Do not let it re-emit an error from the previous attempt.
++		 */
++		spa_bt_transport_set_state(t, SPA_BT_TRANSPORT_STATE_PENDING);
+ 
+ 	return 0;

@@ -6,7 +6,7 @@
   "author": "xonha",
   "license": "MIT",
   "homepage": "https://github.com/gigasolo/omavoice",
-  "description": "A virtual microphone for Zoom, Meet, and podcasts: noise cancellation, echo cancel, and a clean speech chain on USB or any PipeWire source.",
+  "description": "Voice tools in one popup: dictation, local Whisper transcription, noise cancellation, echo cancel, and a clean speech chain.",
   "kinds": [
     "service",
     "bar-widget"

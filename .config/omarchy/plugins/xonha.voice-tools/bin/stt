@@ -1,0 +1,170 @@
+#!/usr/bin/env python3
+"""Command-line client for the speech-to-text daemon (sttd).
+
+  stt toggle [--lang CODE] [--enter] [--agent]   start recording, or stop + transcribe + paste (--agent: hand the text to the default agent)
+  stt start [--lang CODE]
+  stt stop [--enter]
+  stt cancel
+  stt status [--json] [--follow]
+  stt history [-n N] [-q QUERY] [--json]
+  stt copy ID | paste ID [--enter] | play ID | delete ID
+  stt set KEY JSON_VALUE               change one config key (e.g. stt set liveText false)
+  stt rebind                           re-apply the Hyprland key bindings
+  stt quit
+"""
+
+import json
+import os
+import shutil
+import socket
+import subprocess
+import sys
+import time
+
+SOCK = os.path.join(os.environ.get("STT_RUNTIME_DIR") or os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "speech-to-text"), "ctl.sock")
+
+
+def die(msg, notify=True):
+    print(msg, file=sys.stderr)
+    if notify:
+        cmd = "omarchy-notification-send" if shutil.which("omarchy-notification-send") else "notify-send"
+        try:
+            subprocess.Popen([cmd, "Speech to text", msg], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError:
+            pass
+    sys.exit(1)
+
+
+def connect():
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    try:
+        s.connect(SOCK)
+    except OSError:
+        die("The speech-to-text daemon is not running (is the plugin enabled in the bar?)")
+    return s
+
+
+def send(s, obj):
+    s.sendall((json.dumps(obj) + "\n").encode())
+
+
+def lines(s):
+    buf = b""
+    while True:
+        data = s.recv(65536)
+        if not data:
+            return
+        buf += data
+        while b"\n" in buf:
+            line, buf = buf.split(b"\n", 1)
+            if line.strip():
+                yield json.loads(line)
+
+
+def first(s, type_):
+    for msg in lines(s):
+        if msg.get("type") == type_:
+            return msg
+
+
+def flag(args, name):
+    if name in args:
+        args.remove(name)
+        return True
+    return False
+
+
+def opt(args, name, default=None):
+    if name in args:
+        i = args.index(name)
+        if i + 1 < len(args):
+            v = args[i + 1]
+            del args[i:i + 2]
+            return v
+    return default
+
+
+def fmt_state(st):
+    s = st.get("state", "?")
+    if s == "recording":
+        return f"recording ({st.get('langLabel')}) {st.get('elapsed', 0)}s: {st.get('partial', '')}"
+    if s == "transcribing":
+        return "transcribing"
+    last = st.get("last") or {}
+    return "idle" + (f" · last: {last.get('text', '')}" if last else "")
+
+
+def main(argv):
+    args = list(argv)
+    if not args or args[0] in ("-h", "--help", "help"):
+        print(__doc__.strip())
+        return
+    cmd = args.pop(0)
+    s = connect()
+    s.settimeout(None if cmd == "status" and "--follow" in args else 15)  # never leave a key binding's process hanging
+    try:
+        initial = first(s, "state")  # the daemon greets with its state
+    except socket.timeout:
+        die("The speech-to-text daemon is not answering")
+
+    if cmd in ("toggle", "start"):
+        send(s, {"cmd": cmd, "lang": opt(args, "--lang"), "enter": flag(args, "--enter"), "agent": flag(args, "--agent")})
+        try:
+            st = first(s, "state")
+        except socket.timeout:
+            st = None
+        print(fmt_state(st) if st else "ok")
+    elif cmd == "stop":
+        send(s, {"cmd": "stop", "enter": flag(args, "--enter"), "agent": flag(args, "--agent")})
+        print("stopping")
+    elif cmd in ("cancel", "rebind", "quit", "stopPlay", "clearError"):
+        send(s, {"cmd": cmd})
+        print("ok")
+    elif cmd == "status":
+        as_json = flag(args, "--json")
+        follow = flag(args, "--follow")
+        st = initial
+        while True:
+            print(json.dumps(st) if as_json else fmt_state(st), flush=True)
+            if not follow:
+                break
+            st = first(s, "state")
+            if st is None:
+                break
+    elif cmd == "history":
+        n = int(opt(args, "-n", "20"))
+        q = opt(args, "-q", "")
+        as_json = flag(args, "--json")
+        send(s, {"cmd": "history", "limit": n, "query": q})
+        h = first(s, "history")
+        if as_json:
+            print(json.dumps(h, indent=2))
+        else:
+            for t in h.get("items", []):
+                when = time.strftime("%Y-%m-%d %H:%M", time.localtime(t["createdAt"]))
+                print(f"{t['id']:>5}  {when}  {t['lang']:<3} {t['duration']:>5.1f}s  {t['text']}")
+            total = h.get("total", 0)
+            print(f"({total} recording{'' if total == 1 else 's'})")
+    elif cmd in ("copy", "paste", "play", "delete"):
+        if not args:
+            die(f"usage: stt {cmd} ID", notify=False)
+        send(s, {"cmd": cmd, "id": int(args[0]), "enter": flag(args, "--enter")})
+        time.sleep(0.2)
+        print("ok")
+    elif cmd == "set":
+        if len(args) < 2:
+            die("usage: stt set KEY JSON_VALUE", notify=False)
+        try:
+            value = json.loads(args[1])
+        except ValueError:
+            value = args[1]
+        send(s, {"cmd": "set", "config": {args[0]: value}})
+        st = first(s, "state")
+        print(json.dumps(st.get("config", {}).get(args[0])))
+    else:
+        die(f"unknown command: {cmd}", notify=False)
+    s.close()
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

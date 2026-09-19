@@ -15,18 +15,11 @@ import qs.Ui
 // this file renders and forwards.
 Panel {
   id: root
-  moduleName: "xonha.voice-tools"
-  ipcTarget: "xonha.voice-tools"
+  moduleName: "alanfortlink.speech-to-text"
+  ipcTarget: "alanfortlink.speech-to-text"
   manageIpc: false
 
-  readonly property var voiceService: bar && bar.shell ? bar.shell.serviceFor("xonha.voice-tools") : null
-  readonly property var svc: voiceService ? voiceService.speech : null
-  readonly property var voice: voiceService ? voiceService.omavoice : null
-  readonly property var voicePresets: [
-    { value: "meeting", label: "Meeting" },
-    { value: "podcast", label: "Podcast" },
-    { value: "clean", label: "Clean" }
-  ]
+  readonly property var svc: bar && bar.shell ? bar.shell.serviceFor("alanfortlink.speech-to-text") : null
   readonly property bool connected: svc ? svc.connected : false
   readonly property bool recording: svc ? svc.recording : false
   readonly property bool transcribing: svc ? svc.transcribing : false
@@ -221,13 +214,12 @@ Panel {
     function show() { root.open() }
     function hide() { root.close() }
     function toggle() { root.toggle() }
-    // omarchy-shell xonha.voice-tools dictate  (same as `stt toggle`)
+    // omarchy-shell alanfortlink.speech-to-text dictate  (same as `stt toggle`)
     function dictate() { if (root.svc) root.svc.toggle(null, false) }
     function dictateSend() { if (root.svc) root.svc.toggle(null, true) }
     function cancel() { if (root.svc) root.svc.cancel() }
     function history() { root.tab = "history"; root.open() }
     function settings() { root.tab = "settings"; root.open() }
-    function voice() { root.tab = "voice"; root.open() }
     // Arm key capture for the language at `index` (what clicking its key button does).
     function capture(index: int) { root.tab = "settings"; root.open(); root.startCapture(index, "key") }
     function captureAgent(index: int) { root.tab = "settings"; root.open(); root.startCapture(index, "agentKey") }
@@ -237,11 +229,7 @@ Panel {
     endCapture()
     if (opened && svc) { svc.refresh(); svc.loadHistory(""); expandedTake = 0 }
   }
-  onTabChanged: {
-    endCapture()
-    if (tab === "voice" && voiceLoader.item && typeof voiceLoader.item.open === "function")
-      voiceLoader.item.open()
-  }
+  onTabChanged: endCapture()
 
   // Anything that pastes or starts typing must run after the popup has given
   // the keyboard back to the window underneath, or the text lands in here.
@@ -250,95 +238,11 @@ Panel {
   function closeThen(fn) { deferredFn = fn; close(); deferred.restart() }
 
   // ---------- popup ----------
-  readonly property var tabs: [ { key: "history", label: "History" }, { key: "settings", label: "Settings" }, { key: "voice", label: "Voice" } ]
+  readonly property var tabs: [ { key: "history", label: "History" }, { key: "settings", label: "Settings" } ]
   property string tab: "history"
   property bool clearConfirm: false
   property int expandedTake: 0
   property bool advancedOpen: false
-
-  Component {
-    id: voiceView
-    Column {
-      width: body.width
-      spacing: Style.space(12)
-
-      PanelHero {
-        width: parent.width
-        title: "Omavoice"
-        meta: root.voice ? root.voice.statusText : "Voice processing unavailable"
-        detail: root.voice && root.voice.running ? "Running" : "Stopped"
-        foreground: root.fg
-        fontFamily: root.fontFamily
-        iconComponent: Component {
-          Text {
-            text: "󰍬"
-            color: root.voice && root.voice.running ? Color.accent : root.dim
-            font.family: root.fontFamily
-            font.pixelSize: Style.font.display
-          }
-        }
-        trailingControl: Component {
-          Button {
-            text: root.voice && root.voice.enabled ? "Disable" : "Enable"
-            foreground: root.fg
-            fontFamily: root.fontFamily
-            bordered: true
-            onClicked: if (root.voice) root.voice.setEnabled(!root.voice.enabled)
-          }
-        }
-      }
-
-      Text {
-        width: parent.width
-        text: "Choose how your microphone is cleaned before it reaches calls, recordings, and other apps."
-        color: root.dim
-        font.family: root.fontFamily
-        font.pixelSize: Style.font.body
-        wrapMode: Text.WordWrap
-      }
-
-      Text {
-        text: "Preset"
-        color: root.fg
-        font.family: root.fontFamily
-        font.pixelSize: Style.font.subtitle
-        font.bold: true
-      }
-
-      Row {
-        width: parent.width
-        spacing: Style.space(8)
-        Repeater {
-          model: root.voicePresets
-          Button {
-            required property var modelData
-            text: modelData.label
-            foreground: root.fg
-            fontFamily: root.fontFamily
-            bordered: root.voice && root.voice.preset === modelData.value
-            onClicked: if (root.voice) root.voice.setPreset(modelData.value)
-          }
-        }
-      }
-
-      Text {
-        width: parent.width
-        text: root.voice ? ("Input: " + (root.voice.targetLabel || "Automatic microphone")) : ""
-        color: root.dim
-        font.family: root.fontFamily
-        font.pixelSize: Style.font.body
-        wrapMode: Text.WordWrap
-      }
-
-      Button {
-        text: root.voice && root.voice.setDefaultSource ? "Omavoice is the default microphone" : "Make Omavoice the default microphone"
-        foreground: root.fg
-        fontFamily: root.fontFamily
-        bordered: true
-        onClicked: if (root.voice) root.voice.persist({ setDefaultSource: !root.voice.setDefaultSource })
-      }
-    }
-  }
   property int captureIndex: -1        // language row waiting for a key press (-1: none)
   property string captureField: "key"  // "key" (dictate) or "agentKey" (send to the agent)
   property string captureNote: ""
@@ -727,10 +631,9 @@ Panel {
           id: body
           width: scrollArea.availableWidth
           implicitWidth: width
-          implicitHeight: historyLoader.active ? historyLoader.implicitHeight : (settingsLoader.active ? settingsLoader.implicitHeight : voiceLoader.implicitHeight)
+          implicitHeight: historyLoader.active ? historyLoader.implicitHeight : settingsLoader.implicitHeight
           Loader { id: historyLoader; width: body.width; active: root.opened && root.tab === "history"; sourceComponent: historyView; visible: active }
           Loader { id: settingsLoader; width: body.width; active: root.opened && root.tab === "settings"; sourceComponent: settingsView; visible: active }
-          Loader { id: voiceLoader; width: body.width; active: root.opened && root.tab === "voice"; sourceComponent: voiceView; visible: active }
         }
       }
     }

@@ -1,0 +1,72 @@
+From: Alan Silva <alanfortlink@gmail.com>
+Subject: [PATCH] Bluetooth: btusb: switch the isoc interface on every SCO enable notification
+
+hci_conn_num(hdev, SCO_LINK) also counts (e)SCO links that are still being
+set up, since hci_connect_sco() adds them to the connection hash before the
+Synchronous Connection Complete event arrives. btusb_notify() only compares
+that count with data->sco_num and stores whatever event it was called with
+as the air mode. Two things go wrong when an unrelated connection event
+arrives while an (e)SCO link is pending:
+
+ 1. The unrelated event (e.g. HCI_NOTIFY_CONN_DEL from a failed ACL page to
+    another device) changes the count from 0 to 1, so btusb_work() runs
+    with air_mode = HCI_NOTIFY_CONN_DEL, computes new_alts = 0 and submits
+    isochronous URBs on the alternate setting 0 endpoints, whose
+    wMaxPacketSize is 0. usb_submit_urb() fails with -EMSGSIZE:
+      Bluetooth: hci0: urb 00000000d42f828b submission failed (90)
+    and BTUSB_ISOC_RUNNING is cleared again.
+
+ 2. When HCI_NOTIFY_ENABLE_SCO_TRANSP finally arrives for that link, the
+    count already equals data->sco_num, so nothing is scheduled. The
+    interface stays on alternate setting 0, no isochronous URBs are
+    submitted, and the SCO link carries no audio in either direction for
+    its whole lifetime. The user sees a working headset with a dead
+    microphone.
+
+Reproduced on an Intel AX210 (8087:0032) with a Sony WH-1000XM5 and
+PipeWire 1.6.8: PipeWire re-tries ConnectProfile() on absent paired devices
+when it starts, bluetoothd pages them, the page times out (status 0x04)
+while dictation opens the headset microphone, and the mSBC link comes up
+silent. Traced with kprobes on btusb_notify/btusb_work/btusb_submit_isoc_urb.
+
+Program the alternate setting on every ENABLE_SCO_* notification, and on
+other events only react when links went away.
+---
+--- a/drivers/bluetooth/btusb.c	2026-09-09 02:54:49.664029766 +0100
++++ b/drivers/bluetooth/btusb.c	2026-09-09 02:55:52.408391149 +0100
+@@ -2289,13 +2289,33 @@
+ static void btusb_notify(struct hci_dev *hdev, unsigned int evt)
+ {
+ 	struct btusb_data *data = hci_get_drvdata(hdev);
++	int sco_num = hci_conn_num(hdev, SCO_LINK);
+ 
+ 	BT_DBG("%s evt %d", hdev->name, evt);
+ 
+-	if (hci_conn_num(hdev, SCO_LINK) != data->sco_num) {
+-		data->sco_num = hci_conn_num(hdev, SCO_LINK);
++	switch (evt) {
++	case HCI_NOTIFY_ENABLE_SCO_CVSD:
++	case HCI_NOTIFY_ENABLE_SCO_TRANSP:
++		/* A (e)SCO link just came up: program the isochronous
++		 * alternate setting for its air mode, even if the link was
++		 * already counted while it was still being set up.
++		 */
++		data->sco_num = sco_num;
+ 		data->air_mode = evt;
+ 		schedule_work(&data->work);
++		break;
++	default:
++		/* hci_conn_num() also counts (e)SCO links that are still
++		 * being set up, and only the ENABLE_SCO_* notifications
++		 * carry an air mode. Any other event may only tear the
++		 * isochronous interface down or adjust it for fewer links;
++		 * a pending link is handled once it is enabled.
++		 */
++		if (sco_num < data->sco_num) {
++			data->sco_num = sco_num;
++			schedule_work(&data->work);
++		}
++		break;
+ 	}
+ }
+ 
