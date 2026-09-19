@@ -41,6 +41,7 @@
         },
         {
           "id": "xonha.tray",
+          "reverse": true,
           "pinned": [],
           "hidden": []
         }

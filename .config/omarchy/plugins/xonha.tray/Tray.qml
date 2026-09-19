@@ -9,9 +9,10 @@ import "TrayModel.js" as TrayModel
 
 BarWidget {
   id: root
-  moduleName: "omarchy.tray"
+  moduleName: "xonha.tray"
 
   property bool expanded: false
+  readonly property bool reverse: settings.reverse === true
   property bool managePopupOpen: false
   property bool trayMenuOpen: false
   property var activeTrayItem: null
@@ -244,16 +245,19 @@ BarWidget {
           if (point.y < 0 || point.y > horizontalTrayRoot.height) return false
           // Drawer reveals leftward; chevron stays at the right edge.
           // and slides left as it opens. The visible region starts at the chevron.
-          var chevronX = pinnedRow.implicitWidth
-          if (point.x >= chevronX && point.x <= horizontalTrayRoot.implicitWidth) return true
-          // Pinned items sit to the left of the drawer.
-          return point.x >= 0 && point.x <= pinnedRow.implicitWidth
+          if (root.reverse) {
+            var chevronX = pinnedRow.implicitWidth
+            if (point.x >= chevronX && point.x <= horizontalTrayRoot.implicitWidth) return true
+            return point.x >= 0 && point.x <= pinnedRow.implicitWidth
+          }
+          if (point.x >= 0 && point.x <= horizontalTrayRoot.drawerBlockWidth) return true
+          return point.x >= horizontalTrayRoot.drawerBlockWidth && point.x <= horizontalTrayRoot.implicitWidth
         }
       }
 
       Item {
         id: drawerArea
-        x: pinnedRow.implicitWidth
+        x: root.reverse ? pinnedRow.implicitWidth : 0
         width: horizontalTrayRoot.drawerBlockWidth
         height: root.barSize
         visible: root.allItems.length > 0
@@ -267,7 +271,7 @@ BarWidget {
           bar: root.bar
           width: implicitWidth
           height: implicitHeight
-          x: root.revealExtent
+          x: root.reverse ? root.revealExtent : 0
           text: "\uf054"
           onPressed: function(button) {
             if (button === Qt.RightButton) root.managePopupOpen = !root.managePopupOpen
@@ -276,7 +280,7 @@ BarWidget {
 
         Item {
           id: trayClip
-          x: 0
+          x: root.reverse ? 0 : expandIcon.width
           anchors.verticalCenter: parent.verticalCenter
           width: root.revealExtent
           height: root.barSize
@@ -299,7 +303,7 @@ BarWidget {
 
       Row {
         id: pinnedRow
-        x: 0
+        x: root.reverse ? 0 : drawerArea.x + horizontalTrayRoot.drawerBlockWidth
         anchors.verticalCenter: parent.verticalCenter
         spacing: root.trayItemGap
         leftPadding: root.pinnedItems.length > 0 && root.allItems.length > 0 ? root.trayJoinGap : 0

@@ -15,7 +15,16 @@
     "displayName": "System tray",
     "description": "Status notifier items",
     "category": "Status",
-    "allowMultiple": false
+    "allowMultiple": false,
+    "schema": [
+      {
+        "key": "reverse",
+        "type": "boolean",
+        "label": "Reverse drawer direction",
+        "description": "Place pinned items before the drawer and point the arrow inward.",
+        "defaultValue": false
+      }
+    ]
   },
   "omarchy": {
     "clonePaths": [

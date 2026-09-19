@@ -158,25 +158,60 @@ Panel {
   readonly property string liveTail: liveText.length > 420 ? "…" + liveText.slice(-420) : liveText
 
   // ---------- bar: idle icon ----------
-  BarIconButton {
+  Item {
     id: button
     anchors.fill: parent
     visible: !root.expanded
-    bar: root.bar
-    text: root.recording ? "" : (root.transcribing ? "" : (root.microphoneMuted ? "󰍭" : "󰍬"))
-    active: root.recording || root.transcribing || root.microphoneOpen || root.microphoneMuted || root.showError
-    useActiveColor: true
-    activeColor: root.recording ? "#89b4fa"
-      : root.transcribing ? (root.microphoneMuted ? root.fg : root.green)
-      : root.microphoneOpen ? root.green : (root.microphoneMuted ? root.fg : (root.showError ? Color.urgent : root.dim))
-    SequentialAnimation on opacity {
-      running: root.recording || root.transcribing || root.microphoneOpen
-      loops: Animation.Infinite
-      NumberAnimation { to: 0.48; duration: 500; easing.type: Easing.InOutQuad }
-      NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
+    readonly property string activityLabel: root.transcribing ? "Transcribing" : root.recording ? "Recording" : root.microphoneOpen ? "Listening" : ""
+    implicitWidth: label.implicitWidth + (label.visible ? Style.space(6) : 0) + icon.implicitWidth
+    implicitHeight: Style.bar.iconCanvas
+
+    Row {
+      anchors.centerIn: parent
+      spacing: Style.space(6)
+
+      BarIconButton {
+        id: icon
+        width: Style.bar.iconCanvas
+        height: Style.bar.iconCanvas
+        transform: Translate { y: Style.space(4) }
+        bar: root.bar
+        text: root.recording ? "" : (root.transcribing ? "" : (root.microphoneMuted ? "" : ""))
+        active: root.recording || root.transcribing || root.microphoneOpen || root.microphoneMuted || root.showError
+        useActiveColor: true
+        activeColor: root.recording ? "#89b4fa"
+          : root.transcribing ? (root.microphoneMuted ? root.fg : root.green)
+          : root.microphoneOpen ? root.green : (root.microphoneMuted ? root.fg : (root.showError ? Color.urgent : root.dim))
+        SequentialAnimation on opacity {
+          running: root.recording || root.transcribing || root.microphoneOpen
+          loops: Animation.Infinite
+          NumberAnimation { to: 0.48; duration: 500; easing.type: Easing.InOutQuad }
+          NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
+        }
+        tooltipText: root.recording ? "Recording" : root.transcribing ? "Transcribing" : root.microphoneOpen ? "Listening" : "Microphone"
+        onPressed: function(b) { root.pressed(b) }
+      }
+
+      Text {
+        id: label
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: Style.space(4)
+        visible: button.activityLabel !== ""
+        text: button.activityLabel
+        color: root.recording ? "#89b4fa"
+          : root.transcribing ? (root.microphoneMuted ? root.fg : root.green)
+          : root.green
+        font.family: root.fontFamily
+        font.pixelSize: Style.font.body
+        verticalAlignment: Text.AlignVCenter
+        SequentialAnimation on opacity {
+          running: button.activityLabel !== ""
+          loops: Animation.Infinite
+          NumberAnimation { to: 0.45; duration: 500; easing.type: Easing.InOutQuad }
+          NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
+        }
+      }
     }
-    tooltipText: root.recording ? "Capturing voice" : root.transcribing ? "Transcribing" : "Microphone"
-    onPressed: function(b) { root.pressed(b) }
   }
 
   // ---------- bar: live strip ----------
