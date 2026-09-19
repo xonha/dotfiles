@@ -79,7 +79,9 @@ Panel {
   }
   onRecordingChanged: if (recording) { showError = false; errorTimer.stop() }
 
-  readonly property bool expanded: !vertical && (busy || showError || download !== null)
+  // Keep the bar compact while recording/transcribing so the microphone and
+  // activity icons remain side by side. Only setup/error feedback expands it.
+  readonly property bool expanded: !vertical && (showError || download !== null)
   visible: alwaysShow || expanded
   implicitWidth: expanded ? strip.implicitWidth : button.implicitWidth
   implicitHeight: button.implicitHeight
@@ -149,22 +151,19 @@ Panel {
     anchors.fill: parent
     visible: !root.expanded
     bar: root.bar
-    text: root.recording || root.transcribing ? "󰐊" : (root.microphoneMuted ? "󰍭" : "󰍬")
-    active: root.recording || root.transcribing || root.microphoneOpen || root.showError
+    text: root.recording ? "" : (root.transcribing ? "" : (root.microphoneMuted ? "󰍭" : "󰍬"))
+    active: root.recording || root.transcribing || root.microphoneOpen || root.microphoneMuted || root.showError
     useActiveColor: true
-    activeColor: root.recording || root.transcribing
-      ? Color.accent
-      : root.microphoneOpen ? root.green : (root.showError ? Color.urgent : root.dim)
+    activeColor: root.recording ? "#89b4fa"
+      : root.transcribing ? "#cba6f7"
+      : root.microphoneOpen ? root.green : (root.microphoneMuted || root.showError ? Color.urgent : root.dim)
     SequentialAnimation on opacity {
       running: root.recording || root.transcribing || root.microphoneOpen
       loops: Animation.Infinite
       NumberAnimation { to: 0.48; duration: 500; easing.type: Easing.InOutQuad }
       NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
     }
-    tooltipText: (root.connected ? (root.svc.missing.length ? "Speech to text · click to install " + root.svc.missing.join(", ") : "Speech to text") : "Speech to text · starting")
-                 + (root.svc && root.svc.error !== "" ? " · " + root.svc.error : "")
-                 + (root.keyFor(root.defaultLang) !== "" ? " · " + root.keyFor(root.defaultLang) + ": dictate " + root.langName(root.defaultLang) : "")
-                 + " · right-click: dictate"
+    tooltipText: root.recording ? "Capturing voice" : root.transcribing ? "Transcribing" : "Microphone"
     onPressed: function(b) { root.pressed(b) }
   }
 
@@ -189,29 +188,28 @@ Panel {
         sine: root.connecting || (root.download !== null && !root.busy)
         idle: root.transcribing || (!root.recording && root.showError)
         color: root.showError && !root.busy ? Color.urgent : root.download !== null && !root.busy ? root.yellow : root.takeColor
+        visible: false
         Behavior on color { ColorAnimation { duration: 250 } }
       }
 
-      TextMetrics { id: liveMetrics; text: root.liveText; font.family: root.fontFamily; font.pixelSize: Style.font.body }
       Text {
+        id: stateIcon
         anchors.verticalCenter: parent.verticalCenter
-        text: root.liveText
-        color: root.showError && !root.busy ? Color.urgent : root.livePlaceholder ? root.dim : root.fg
+        text: root.transcribing ? "" : ""
+        color: root.transcribing ? "#cba6f7" : "#89b4fa"
         font.family: root.fontFamily
-        font.pixelSize: Style.font.body
-        font.italic: root.livePlaceholder
-        elide: Text.ElideLeft
-        width: Math.min(liveMetrics.advanceWidth + 2, root.maxTextWidth)
-        visible: text !== ""
+        font.pixelSize: Style.font.icon
+        SequentialAnimation on opacity {
+          running: root.recording || root.transcribing
+          loops: Animation.Infinite
+          NumberAnimation { to: 0.45; duration: 500; easing.type: Easing.InOutQuad }
+          NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
+        }
       }
 
       Text {
         anchors.verticalCenter: parent.verticalCenter
-        visible: root.recording
-        text: root.clock(root.svc ? root.svc.elapsed : 0)
-        color: root.dim
-        font.family: root.fontFamily
-        font.pixelSize: Style.font.caption
+        visible: false
       }
     }
     MouseArea {
@@ -1240,77 +1238,6 @@ Panel {
           label: "Keep the audio of every recording"
           checked: root.cfg.keepAudio !== false
           onToggled: if (root.svc) root.svc.setSetting("keepAudio", root.cfg.keepAudio === false)
-        }
-        // Bar animation: four live tiles, each showing its style with a pretend voice.
-        Column {
-          id: animCol
-          width: parent.width
-          spacing: Style.space(6)
-          Text { text: "Bar animation"; color: root.dim; font.family: root.fontFamily; font.pixelSize: Style.font.body }
-
-          // A synthetic voice envelope shared by the previews: phrases with pauses.
-          property var demoLevels: []
-          property real demoT: 0
-          Timer {
-            interval: 50
-            repeat: true
-            running: settingsLoader.active && root.opened
-            onTriggered: {
-              var col = animCol
-              col.demoT += 0.05
-              var phrase = (Math.sin(col.demoT * 0.9) + 1) / 2 > 0.35          // talking vs. a pause
-              var v = phrase ? 0.25 + 0.55 * Math.abs(Math.sin(col.demoT * 7.3) * Math.sin(col.demoT * 2.1)) + Math.random() * 0.15 : 0.03 + Math.random() * 0.04
-              var lv = col.demoLevels.slice(-47)
-              lv.push(Math.min(1, v))
-              col.demoLevels = lv
-            }
-          }
-
-          Row {
-            width: parent.width - root.trailInset
-            spacing: Style.space(8)
-            Repeater {
-              model: [ { key: "bars", label: "Bars" }, { key: "wave", label: "Wave" }, { key: "pulse", label: "Pulse" }, { key: "dots", label: "Dots" } ]
-              Rectangle {
-                id: tile
-                required property var modelData
-                readonly property bool current: String(root.cfg.animation || "bars") === modelData.key
-                width: (parent.width - parent.spacing * 3) / 4
-                height: Style.space(52)
-                radius: Style.cornerRadius
-                color: current ? Style.selectedFillFor(root.fg, Color.accent) : tileHover.hovered ? Style.hoverFillFor(root.fg, Color.accent) : Style.normalFillFor(root.fg, Color.accent)
-                border.width: current ? 1 : 0
-                border.color: Color.accent
-                HoverHandler { id: tileHover }
-                Column {
-                  anchors.centerIn: parent
-                  spacing: Style.space(6)
-                  Waveform {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    height: Style.bar.iconCanvas
-                    style: tile.modelData.key
-                    bars: 18
-                    levels: animCol.demoLevels
-                    color: root.green
-                  }
-                  Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: tile.modelData.label
-                    color: tile.current ? Color.accent : root.dim
-                    font.family: root.fontFamily
-                    font.pixelSize: Style.font.caption
-                    font.bold: tile.current
-                  }
-                }
-                MouseArea {
-                  anchors.fill: parent
-                  cursorShape: Qt.PointingHandCursor
-                  enabled: root.connected
-                  onClicked: if (root.svc) root.svc.setSetting("animation", tile.modelData.key)
-                }
-              }
-            }
-          }
         }
         Row {
           width: parent.width
