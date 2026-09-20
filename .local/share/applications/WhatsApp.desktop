@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=WhatsApp
+Exec=omarchy-launch-webapp https://web.whatsapp.com/
+Icon=whatsapp
+StartupWMClass=brave-web.whatsapp.com__-Default

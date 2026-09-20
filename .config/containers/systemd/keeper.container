@@ -1,0 +1,27 @@
+[Unit]
+Description=Keeper.sh — calendar sync and MCP server
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Imagem construída localmente a partir do fork em ~/.local/src/keeper.sh, que
+# carrega o conferenceData do Google Meet entre calendários Google. A tag upstream
+# ghcr.io/ridafkih/keeper-standalone:2 não tem essa alteração e um `podman pull`
+# dela reverteria o comportamento. Reconstrução em .setup/keeper/README.md.
+Image=localhost/keeper-standalone:meet
+ContainerName=keeper
+
+# Keeper bundles web, API, cron, worker, PostgreSQL, Redis and MCP.
+# Keep the database on persistent local storage.
+Volume=%h/.local/share/keeper/data:/var/lib/postgresql/data:Z
+EnvironmentFile=%h/.config/containers/systemd/keeper.env
+
+# Keep the application private; Tailscale Serve provides the HTTPS endpoint.
+PublishPort=127.0.0.1:8088:80
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target
