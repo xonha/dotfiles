@@ -54,38 +54,44 @@
           "id": "omarchy.indicators"
         },
         {
-          "id": "gigasolo.omavoice",
-          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E"
-        },
-        {
           "id": "omarchy.system-update"
         },
         {
           "id": "omarchy.keyboard-layout"
         },
         {
-          "id": "omarchy.audio"
-        },
-        {
-          "id": "omaconnect"
-        },
-        {
-          "id": "omarchy.tailscale"
-        },
-        {
-          "id": "omarchy.bluetooth"
-        },
-        {
-          "id": "omarchy.network"
+          "id": "dorneles.lock-keys",
+          "style": "icons",
+          "badgeStyle": "flat",
+          "mode": "active-only",
+          "showNum": false,
+          "showScroll": false,
+          "showNotifications": false
         },
         {
           "id": "crmne.hyprmoncfg"
         },
         {
-          "id": "omarchy.power"
+          "id": "omarchy.tailscale"
         },
         {
-          "id": "omarchy.weather"
+          "id": "omaconnect"
+        },
+        {
+          "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "gigasolo.omavoice",
+          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E"
+        },
+        {
+          "id": "omarchy.audio"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "omarchy.power"
         },
         {
           "id": "promaa.clock",
