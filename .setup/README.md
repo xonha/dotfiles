@@ -2,44 +2,33 @@
 
 ## Estrutura
 
-O instalador usa etapas numeradas em `stages/` apenas para definir a ordem.
-Módulos com responsabilidades concretas ficam fora delas:
+A raiz de `.setup/` guarda os fluxos de bootstrap da maquina. Cada servico
+persistente tem seu proprio diretorio, com os artefatos de deploy e o runbook
+(`README.md`) lado a lado: `lab/`, `immich/`, `keeper/`, `crafty/`, `samba/`.
 
-- `desktop/`: pacotes e preferências da sessão gráfica;
-- `desktop/thinkpad_t495/`: configurações específicas deste hardware;
-- `lib/`: funções reutilizáveis sem efeitos colaterais;
-- `docs/`: documentação operacional.
+Nada em `.setup/` e stowado. O que precisa virar symlink no `$HOME` — como os
+quadlets — mora em `.config/`.
 
-O perfil de monitores é exclusivo deste ThinkPad e é opcional durante
-`./.setup/install.sh`; outros computadores não recebem regras de tampa, saídas ou
-resoluções deste hardware.
+Dois fluxos de bootstrap, cada um com seu proprio entrypoint:
+
+- `omarchy-setup.sh`: roda as etapas numeradas (`10-server-packages.sh` ->
+  `20-dotfiles.sh` -> `30-login-shell.sh` -> `40-desktop.sh` (opcional) ->
+  `50-services.sh`), mais `desktop-packages.sh` e `omarchy-plugins.sh`, usados
+  so por `40-desktop.sh`.
+- `lab/setup.sh`: builda `lab/Dockerfile` (que roda
+  `lab/bootstrap-yay.sh`, `10-server-packages.sh` e `30-login-shell.sh`
+  dentro da imagem) e reinicia o servico `lab`.
+
+`_shared.sh` e `_packages.sh` sao compartilhados pelos dois fluxos.
 
 ## Login shell safety
 
-`.setup/stages/40-login-shell.sh` runs immediately after the server packages are installed. It
-configures Zsh as the login shell only after confirming that `command -v zsh`
+`.setup/30-login-shell.sh` runs immediately after the server packages are installed. It
+configures Bash as the login shell only after confirming that `command -v bash`
 returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's
 `pam_shells.so` from rejecting login if a distribution-provided shell (such as
 Fish) is later removed.
-
-## Nemo sidebar / XDG folders
-
-Applied by `.setup/desktop/nemo.sh` (run from `.setup/install.sh`).
-
-Two gotchas on a minimal Hyprland setup:
-
-1. **`~/.config/user-dirs.dirs` is never generated.** There is no XDG autostart
-   processor, so `xdg-user-dirs-update` never runs and every `XDG_*_DIR`
-   resolves to `$HOME`. Fixed by running it once in `nemo.sh` and via
-   `hl.exec_cmd("xdg-user-dirs-update")` in `hyprland.lua`.
-2. **Nemo does not auto-list the XDG folders.** Unlike Nautilus, it only shows
-   Home/Desktop/Filesystem/Trash plus whatever is in
-   `~/.config/gtk-3.0/bookmarks`. So the standard folders must be seeded there.
-   `sidebar-bookmark-breakpoint` (dconf) sets where the "My Computer" section
-   ends and "Bookmarks" begins. Custom folder icons live in GIO metadata
-   (`gio set … metadata::custom-icon-name`), which is per-machine, not a file
-   that can be stowed.
 
 ## Wake from Suspend via Keyboard (ThinkPad)
 
@@ -83,9 +72,6 @@ echo enabled | sudo tee /sys/bus/usb/devices/<port>/power/wakeup
 Then test with `systemctl suspend` and wake with a keypress.
 
 ### Make it persistent (udev rules)
-
-O script específico desta máquina está em
-`.setup/desktop/thinkpad_t495/wakeup.sh`.
 
 Create `/etc/udev/rules.d/90-wakeup-keyboard.rules`:
 

@@ -3,9 +3,11 @@
 .config/nvim/lazy-lock.json
 mimeinfo.cache
 .config/containers/systemd/samba.env
+.config/containers/systemd/keeper.env
+.config/omarchy/calendars.json
 
 # --- secrets / credentials (public repo: never commit) ---
-.config/gh/hosts.yml
+.config/gh/*
 .config/github-copilot/
 .config/configstore/
 .config/.jira/
@@ -13,6 +15,7 @@ mimeinfo.cache
 # --- machine state, caches, telemetry ---
 __pycache__/
 .config/chromium/
+.brave*
 .config/go/
 .config/Code/agent-host/
 .config/nextjs-nodejs/config.json

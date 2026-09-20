@@ -1,10 +1,10 @@
 [Unit]
-Description=Lab — personal Arch Linux development environment
+Description=Lab — Arch Linux development environment
 After=network-online.target
 Wants=network-online.target
 
 [Container]
-Image=localhost/toolbox:latest
+Image=localhost/lab:latest
 ContainerName=lab
 HostName=lab
 

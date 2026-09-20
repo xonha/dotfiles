@@ -1,0 +1,4 @@
+interface:
+  display_name: Dotfiles
+  short_description: Manage Henrique's versioned Linux configuration
+  default_prompt: Use $dotfiles to safely change this repository's configuration, setup flows, or services.

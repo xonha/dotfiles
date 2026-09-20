@@ -1,0 +1,99 @@
+{
+  "name": "Dock",
+  "created_at": "2026-09-04T23:30:59.723086632Z",
+  "updated_at": "2026-09-04T23:32:03.681021876Z",
+  "outputs": [
+    {
+      "key": "shenzhen ktc technology group|sfpccb24180|000000000000",
+      "match_key": "shenzhen ktc technology group|sfpccb24180|000000000000",
+      "name": "DP-3",
+      "description": "Shenzhen KTC Technology Group SFPCCB24180 000000000000",
+      "make": "Shenzhen KTC Technology Group",
+      "model": "SFPCCB24180",
+      "serial": "000000000000",
+      "enabled": true,
+      "mode": "1920x1080@120.00Hz",
+      "width": 1920,
+      "height": 1080,
+      "refresh": 120,
+      "x": 170,
+      "y": 30,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 10,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    },
+    {
+      "key": "sue|sfp2412fhd|000000000000",
+      "match_key": "sue|sfp2412fhd|000000000000",
+      "name": "DP-4",
+      "description": "SUE SFP2412FHD 000000000000",
+      "make": "SUE",
+      "model": "SFP2412FHD",
+      "serial": "000000000000",
+      "enabled": true,
+      "mode": "1920x1080@120.00Hz",
+      "width": 1920,
+      "height": 1080,
+      "refresh": 120,
+      "x": 2090,
+      "y": 30,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    },
+    {
+      "key": "lenovo group limited|0x40a9",
+      "match_key": "lenovo group limited|0x40a9",
+      "name": "eDP-1",
+      "description": "Lenovo Group Limited 0x40A9",
+      "make": "Lenovo Group Limited",
+      "model": "0x40A9",
+      "enabled": false,
+      "mode": "preferred",
+      "width": 0,
+      "height": 0,
+      "refresh": 60,
+      "x": -1,
+      "y": -1,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    }
+  ],
+  "workspaces": {
+    "enabled": true,
+    "strategy": "manual",
+    "max_workspaces": 9,
+    "group_size": 3,
+    "monitor_order": [
+      "lenovo group limited|0x40a9",
+      "shenzhen ktc technology group|sfpccb24180|000000000000",
+      "sue|sfp2412fhd|000000000000"
+    ],
+    "rules": [
+      {
+        "workspace": "4",
+        "output_key": ""
+      }
+    ]
+  },
+  "exec": ""
+}

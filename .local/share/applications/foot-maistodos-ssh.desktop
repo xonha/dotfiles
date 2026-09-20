@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Mais Todos SSH
+Comment=SSH para o Mais Todos via Foot
+Exec=foot --app-id=foot-maistodos-ssh -e ssh maistodos -t "tmux new-session -A -s main"
+Icon=foot-mauve
+Terminal=false
+Categories=System;TerminalEmulator;
+StartupWMClass=foot-maistodos-ssh

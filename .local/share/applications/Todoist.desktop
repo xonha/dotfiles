@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Todoist
+Exec=/opt/brave-origin-bin/brave-origin --profile-directory=Default --app-id=dlgohinmglaoopaiplliaecdpmnepmga
+Icon=todoist
+StartupWMClass=brave-dlgohinmglaoopaiplliaecdpmnepmga-Default

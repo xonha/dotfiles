@@ -1,0 +1,51 @@
+--- a/spa/plugins/bluez5/media-sink.c
++++ b/spa/plugins/bluez5/media-sink.c
+@@ -152,6 +152,7 @@
+ 	unsigned int start_ready:1;
+ 	unsigned int transport_started:1;
+ 	unsigned int following:1;
++	bool transport_wrote;	/* data left for the remote since transport start (HFP: only after RX was seen) */
+ 	unsigned int is_output:1;
+ 	unsigned int flush_pending:1;
+ 	unsigned int iso_pending:1;
+@@ -748,6 +749,8 @@
+ 		written = spa_bt_send(this->flush_source.fd, this->buffer, this->buffer_used,
+ 				&this->tx_latency, SPA_TIMESPEC_TO_NSEC(&ts_pre));
+ 	}
++	if (written > 0)
++		this->transport_wrote = true;
+ 
+ 	if (SPA_UNLIKELY(spa_log_level_topic_enabled(this->log, SPA_LOG_TOPIC_DEFAULT, SPA_LOG_LEVEL_TRACE))) {
+ 		struct timespec ts;
+@@ -1517,6 +1520,7 @@
+ 	struct impl *this = user_data;
+ 
+ 	this->transport_started = true;
++	this->transport_wrote = false;
+ 	if (this->transport->iso_io)
+ 		spa_bt_iso_io_set_cb(this->transport->iso_io, media_iso_pull, this);
+ 	return 0;
+@@ -2466,7 +2470,8 @@
+ 	else
+ 		transport_stop(this);
+ 
+-	if (state < SPA_BT_TRANSPORT_STATE_ACTIVE && was_started && !this->is_duplex && this->is_output) {
++	if (state < SPA_BT_TRANSPORT_STATE_ACTIVE && was_started && !this->is_duplex && this->is_output &&
++			!(this->codec->kind == MEDIA_CODEC_HFP && this->transport_wrote)) {
+ 		/*
+ 		 * If establishing connection fails due to remote end not activating
+ 		 * the transport, we won't get a write error, but instead see a transport
+@@ -2474,6 +2479,13 @@
+ 		 *
+ 		 * Treat this as a transport error, so that upper levels don't try to
+ 		 * retry too often.
++		 *
++		 * An HFP link that already carried audio both ways (sco-io only writes
++		 * after the first packet came in) and then hangs up is not a failed
++		 * activation: headsets drop the SCO link when the profile switches back
++		 * to A2DP after every call. Counting that as an error made
++		 * spa_bt_transport_acquire() refuse the next acquire once three such
++		 * hangups landed within its error window.
+ 		 */
+ 
+ 		spa_log_debug(this->log, "%p: transport %p becomes inactive: stop and indicate error",
