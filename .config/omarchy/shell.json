@@ -114,6 +114,16 @@
     "lock": 300,
     "screensaver": 150
   },
-  "plugins": [],
-  "version": 1
+  "plugins": [
+    {
+      "id": "henrique.notifications"
+    }
+  ],
+  "version": 1,
+  "disabledPlugins": [
+    "omarchy.notifications"
+  ],
+  "cloneSourceRestores": [
+    "henrique.notifications"
+  ]
 }
