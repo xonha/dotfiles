@@ -54,7 +54,8 @@
           "id": "omarchy.indicators"
         },
         {
-          "id": "gigasolo.omavoice"
+          "id": "gigasolo.omavoice",
+          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E"
         },
         {
           "id": "omarchy.system-update"

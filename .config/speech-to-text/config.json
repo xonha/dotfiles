@@ -3,8 +3,8 @@
   "engineCommand": "",
   "whisperModel": "",
   "languages": [
-    { "id": "pt", "code": "pt", "label": "Portuguese", "key": "", "autoSend": true, "agentKey": "", "engineArgs": "" },
-    { "id": "en", "code": "en", "label": "English", "key": "", "autoSend": true, "agentKey": "", "engineArgs": "" }
+    { "id": "pt", "code": "pt", "label": "Portuguese", "key": "SUPER J", "autoSend": true, "agentKey": "", "engineArgs": "" },
+    { "id": "en", "code": "en", "label": "English", "key": "SUPER K", "autoSend": true, "agentKey": "", "engineArgs": "" }
   ],
   "agentCommand": "omarchy-agent-prompt {text}",
   "liveText": true,

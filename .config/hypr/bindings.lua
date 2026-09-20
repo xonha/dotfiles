@@ -127,8 +127,6 @@ hl.unbind("SUPER + K")
 o.bind("SUPER + BACKSPACE", "Menu de sessão", "omarchy-menu toggle system")
 o.bind("SUPER + P", "Selecionar cor da tela", "hyprpicker --autocopy --notify")
 o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mute-microphone.sh")
-o.bind("SUPER + J", "Ditado em português", "~/.config/scripts/speech-to-text-with-mic-restore.sh pt")
-o.bind("SUPER + K", "Ditado em inglês", "~/.config/scripts/speech-to-text-with-mic-restore.sh en")
 o.bind("SUPER + SHIFT + M", "Reativar tela interna",
   [[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']])
 o.bind("SUPER + SHIFT + B", "Toggle window floating", hl.dsp.window.float())
