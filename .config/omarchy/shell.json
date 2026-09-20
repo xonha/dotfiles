@@ -40,6 +40,9 @@
           "id": "omarchy.agents"
         },
         {
+          "id": "alanfortlink.speech-to-text"
+        },
+        {
           "id": "xonha.tray",
           "reverse": true,
           "pinned": [],
@@ -51,15 +54,13 @@
           "id": "omarchy.indicators"
         },
         {
+          "id": "gigasolo.omavoice"
+        },
+        {
           "id": "omarchy.system-update"
         },
         {
           "id": "omarchy.keyboard-layout"
-        },
-        {
-          "id": "xonha.voice-tools",
-          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
-          "preset": "podcast"
         },
         {
           "id": "omarchy.audio"

@@ -16,7 +16,7 @@
   "pasteKeys": "ctrl+shift+v",
   "restoreClipboard": true,
   "maxDurationSecs": 300,
-  "device": "default",
+  "device": "bluez_input.00:02:5B:00:FF:0E",
   "animation": "pulse",
   "warmMic": false,
   "warmHoldSecs": 0,

@@ -4,6 +4,7 @@ set -Eeuo pipefail
 lang="${1:?language is required}"
 shift
 stt_bin="/home/henrique/.config/omarchy/plugins/xonha.voice-tools/bin/stt"
+config_file="/home/henrique/.config/speech-to-text/config.json"
 session_dir="${XDG_RUNTIME_DIR:-/tmp}/speech-to-text-mic-restore"
 session_file="$session_dir/session"
 
@@ -20,7 +21,17 @@ if [[ -f "$session_file" ]]; then
   exit $?
 fi
 
-mapfile -t sources < <(pactl list short sources | awk '$2 !~ /\.monitor$/ { print $2 }')
+stt_source="$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1])).get("device", "default"))' "$config_file" 2>/dev/null || true)"
+if [[ -z "$stt_source" || "$stt_source" == "default" ]]; then
+  notify-send "Speech to text" "Configure um microfone exclusivo para o ditado" 2>/dev/null || true
+  exit 1
+fi
+if ! pactl list short sources | awk '{print $2}' | grep -Fxq "$stt_source"; then
+  notify-send "Speech to text" "Microfone do ditado indisponível: $stt_source" 2>/dev/null || true
+  exit 1
+fi
+
+sources=("$stt_source")
 declare -A was_muted
 for source in "${sources[@]}"; do
   was_muted["$source"]=$(pactl get-source-mute "$source" | grep -q 'yes$' && echo 1 || echo 0)

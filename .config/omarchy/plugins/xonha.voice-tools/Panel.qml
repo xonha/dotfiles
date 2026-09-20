@@ -180,7 +180,7 @@ Panel {
         active: root.recording || root.transcribing || root.microphoneOpen || root.microphoneMuted || root.showError
         useActiveColor: true
         activeColor: root.recording ? "#89b4fa"
-          : root.transcribing ? (root.microphoneMuted ? root.fg : root.green)
+          : root.transcribing ? (root.microphoneMuted ? "#f38ba8" : root.green)
           : root.microphoneOpen ? root.green : (root.microphoneMuted ? root.fg : (root.showError ? Color.urgent : root.dim))
         SequentialAnimation on opacity {
           running: root.recording || root.transcribing || root.microphoneOpen
@@ -199,10 +199,10 @@ Panel {
         visible: button.activityLabel !== ""
         text: button.activityLabel
         color: root.recording ? "#89b4fa"
-          : root.transcribing ? (root.microphoneMuted ? root.fg : root.green)
+          : root.transcribing ? (root.microphoneMuted ? "#f38ba8" : root.green)
           : root.green
         font.family: root.fontFamily
-        font.pixelSize: Style.font.body
+        font.pixelSize: Style.font.body + 1
         verticalAlignment: Text.AlignVCenter
         SequentialAnimation on opacity {
           running: button.activityLabel !== ""
