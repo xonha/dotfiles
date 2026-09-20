@@ -69,6 +69,9 @@
           "showNotifications": false
         },
         {
+          "id": "omarchy.power"
+        },
+        {
           "id": "crmne.hyprmoncfg"
         },
         {
@@ -81,17 +84,14 @@
           "id": "omarchy.bluetooth"
         },
         {
+          "id": "omarchy.network"
+        },
+        {
           "id": "gigasolo.omavoice",
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E"
         },
         {
           "id": "omarchy.audio"
-        },
-        {
-          "id": "omarchy.network"
-        },
-        {
-          "id": "omarchy.power"
         },
         {
           "id": "promaa.clock",
