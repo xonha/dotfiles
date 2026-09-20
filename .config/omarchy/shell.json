@@ -40,8 +40,7 @@
           "id": "omarchy.agents"
         },
         {
-          "id": "alanfortlink.speech-to-text",
-          "alwaysShow": false
+          "id": "alanfortlink.speech-to-text"
         },
         {
           "id": "xonha.tray",
