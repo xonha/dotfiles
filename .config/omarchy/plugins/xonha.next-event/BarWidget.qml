@@ -34,6 +34,8 @@ BarWidget {
   readonly property bool useCalendarColors: Model.toBoolean(setting("useCalendarColors", true), true)
   readonly property bool colorOnBar: Model.toBoolean(setting("colorOnBar", false), false)
   readonly property string browserCommand: String(setting("browserCommand", "") || "").trim()
+  readonly property string calendarBrowserCommand: String(setting("calendarBrowserCommand", (Quickshell.env("HOME") || "") + "/.config/scripts/calendar-browser.sh") || "").trim()
+  readonly property string sharedSyncCommand: String(setting("sharedSyncCommand", (Quickshell.env("HOME") || "") + "/.config/omarchy/plugins/promaa.clock/fetch-events.py") || "").trim()
   // Base for "Open in Calendar". Defaults to the signed-in account; set to
   // e.g. "https://calendar.google.com/calendar/u/2" to open a specific
   // account (matches the u/N in your browser's calendar URL).
@@ -71,7 +73,7 @@ BarWidget {
   // Number of feeds that failed on the last fetch while *some* succeeded;
   // 0 means all known feeds responded. Used for a partial-offline status.
   property int offlineFeedCount: 0
-  readonly property bool fetching: fetchProc.running || syncProc.running
+  readonly property bool fetching: fetchProc.running || sharedSyncProc.running
   property date now: new Date()
 
   // Internal fetch-loop state (populated by fetchCalendar).
@@ -91,25 +93,28 @@ BarWidget {
     && root.now.getTime() < nextMeeting.end.getTime()
 
   // ---- actions
-  function openMeetingUrl(url) {
+  function openMeetingUrl(url, event) {
     if (!url) return
     var quote = Util.shellQuote(url)
-    if (browserCommand !== "") bar.run(browserCommand + " " + quote)
+    var calendarName = event && event.calendarName ? String(event.calendarName) : "Personal"
+    if (calendarBrowserCommand !== "") {
+      bar.run(calendarBrowserCommand + " " + quote + " " + Util.shellQuote(calendarName))
+    } else if (browserCommand !== "") bar.run(browserCommand + " " + quote)
     else bar.run("xdg-open " + quote)
   }
 
   function joinMeeting(event) {
-    if (event && event.meetUrl) openMeetingUrl(event.meetUrl)
+    if (event && event.meetUrl) openMeetingUrl(event.meetUrl, event)
   }
 
   function openCalendar(event) {
     var url = Model.eventCalendarUrl(event, root.calendarUrlBase)
-    if (url) openMeetingUrl(url)
+    if (url) openMeetingUrl(url, event)
   }
 
   function openEvent(event) {
     if (!event) return
-    if (event.meetUrl) openMeetingUrl(event.meetUrl)
+    if (event.meetUrl) openMeetingUrl(event.meetUrl, event)
     else openCalendar(event)
   }
 
@@ -119,7 +124,7 @@ BarWidget {
   // line. Feeds are fetched one at a time so a single offline feed doesn't
   // take down the whole widget: the rest still render, and the failed count is
   // surfaced as a partial-offline status.
-  function fetchCalendar() {
+  function fetchCalendar(syncSharedSource) {
     if (root.sourceMode === "ics") {
       if (!root.configured || fetchProc.running) return
       root.pendingFeeds = root.icsFeeds.slice()
@@ -133,7 +138,10 @@ BarWidget {
       }
       root.startNextFetch()
     } else {
-      if (!syncProc.running) syncProc.running = true
+      // JSON mode is read-only: promaa.clock owns synchronization and this
+      // widget only consumes its shared cache.
+      if (syncSharedSource && !sharedSyncProc.running) sharedSyncProc.running = true
+      else jsonFileView.reload()
     }
   }
 
@@ -259,7 +267,7 @@ BarWidget {
   }
 
   function refresh() {
-    fetchCalendar()
+    fetchCalendar(true)
   }
 
   function recalc() {
@@ -317,7 +325,7 @@ BarWidget {
     running: true
     repeat: true
     triggeredOnStart: true
-    onTriggered: root.fetchCalendar()
+    onTriggered: root.fetchCalendar(false)
   }
 
   // Keep the countdown fresh.
@@ -345,6 +353,15 @@ BarWidget {
     onFileChanged: reload()
   }
 
+  Process {
+    id: sharedSyncProc
+    command: ["python3", root.sharedSyncCommand]
+    onExited: function(exitCode) {
+      if (exitCode !== 0) console.warn("shared calendar sync exited with code", exitCode)
+      jsonFileView.reload()
+    }
+  }
+
   FileView {
     id: icsCacheFile
     path: root.sourceMode === Model.SOURCE_MODE_ICS ? root.icsCachePath : ""
@@ -352,18 +369,6 @@ BarWidget {
     atomicWrites: true
     printErrors: false
     onLoaded: root.onIcsCacheLoaded(text())
-  }
-
-  Process {
-    id: syncProc
-    command: [Qt.resolvedUrl("sync/next-event-sync").toString().replace("file://", "")]
-    onExited: function(exitCode) {
-      if (exitCode !== 0) {
-        console.warn("next-event-sync exited with code", exitCode)
-      } else {
-        jsonFileView.reload()
-      }
-    }
   }
 
   Component.onCompleted: {
