@@ -94,7 +94,7 @@
           "id": "omarchy.bluetooth"
         },
         {
-          "id": "ssupt.audio-control"
+          "id": "omarchy.audio"
         },
         {
           "id": "xonha.omavoice",
@@ -129,11 +129,9 @@
   ],
   "version": 1,
   "disabledPlugins": [
-    "omarchy.notifications",
-    "omarchy.audio"
+    "omarchy.notifications"
   ],
   "cloneSourceRestores": [
-    "xonha.notifications",
-    "ssupt.audio-control"
+    "xonha.notifications"
   ]
 }
