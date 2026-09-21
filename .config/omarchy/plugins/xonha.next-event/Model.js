@@ -2147,7 +2147,13 @@ class DisplayFormatter {
     return DisplayFormatter.hm(date, use12Hour)
   }
 
-  static eventCalendarUrl(event, base) {
+  static eventCalendarUrl(event, base, calendarBases) {
+    var calendarName = event && (event.calendarName || event.feedLabel)
+    var mappedBase = calendarBases && calendarName ? calendarBases[calendarName] : ""
+    if (mappedBase) {
+      var mappedUrl = String(mappedBase).trim().replace(/\/+$/, "")
+      return /\/$/.test(mappedUrl) ? mappedUrl : mappedUrl + "/"
+    }
     if (event && event.eventUrl) return event.eventUrl
     var baseUrl = String(base || DEFAULT_CALENDAR_URL_BASE)
       .trim()
@@ -2376,8 +2382,8 @@ function meetLabel(url) {
   return MeetingLinkDetector.meetLabel(url)
 }
 
-function eventCalendarUrl(event, base) {
-  return DisplayFormatter.eventCalendarUrl(event, base)
+function eventCalendarUrl(event, base, calendarBases) {
+  return DisplayFormatter.eventCalendarUrl(event, base, calendarBases)
 }
 function formatLabel(next, now, maxTitleLength, use12Hour) {
   return DisplayFormatter.formatLabel(next, now, maxTitleLength, use12Hour)

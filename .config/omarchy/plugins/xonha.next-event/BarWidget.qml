@@ -36,6 +36,7 @@ BarWidget {
   readonly property string browserCommand: String(setting("browserCommand", "") || "").trim()
   readonly property string calendarBrowserCommand: String(setting("calendarBrowserCommand", (Quickshell.env("HOME") || "") + "/.config/scripts/calendar-browser.sh") || "").trim()
   readonly property string sharedSyncCommand: String(setting("sharedSyncCommand", (Quickshell.env("HOME") || "") + "/.config/omarchy/plugins/promaa.clock/fetch-events.py") || "").trim()
+  readonly property var calendarUrlBases: setting("calendarUrlBases", ({ "Devbot": "https://outlook.office.com/calendar/view/month" }))
   // Base for "Open in Calendar". Defaults to the signed-in account; set to
   // e.g. "https://calendar.google.com/calendar/u/2" to open a specific
   // account (matches the u/N in your browser's calendar URL).
@@ -108,7 +109,7 @@ BarWidget {
   }
 
   function openCalendar(event) {
-    var url = Model.eventCalendarUrl(event, root.calendarUrlBase)
+    var url = Model.eventCalendarUrl(event, root.calendarUrlBase, root.calendarUrlBases)
     if (url) openMeetingUrl(url, event)
   }
 

@@ -37,7 +37,10 @@
           "showCalendarLabel": true,
           "useCalendarColors": true,
           "colorOnBar": false,
-          "timeFormat": "24"
+          "timeFormat": "24",
+          "calendarUrlBases": {
+            "Devbot": "https://outlook.office.com/calendar/view/month"
+          }
         },
         {
           "id": "alanfortlink.speech-to-text"
