@@ -3,9 +3,13 @@
   "id": "xonha.next-event",
   "name": "NextEvent (Chronica)",
   "version": "1.5.0",
-  "author": "tobiasz-p",
+  "author": "xonha (upstream: tobiasz-p)",
   "license": "MIT",
   "description": "Next event from Chronica's shared calendar cache, with meeting actions.",
+  "upstream": {
+    "repository": "https://github.com/tobiasz-p/next-event",
+    "credit": "Forked from tobiasz-p's next-event plugin."
+  },
   "kinds": ["bar-widget"],
   "entryPoints": {
     "barWidget": "BarWidget.qml"

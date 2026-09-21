@@ -37,7 +37,7 @@
           "useCalendarColors": true
         },
         {
-          "id": "alanfortlink.speech-to-text"
+          "id": "xonha.speech-to-text"
         },
         {
           "id": "robzolkos.github",
@@ -97,7 +97,7 @@
           "id": "ssupt.audio-control"
         },
         {
-          "id": "gigasolo.omavoice",
+          "id": "xonha.omavoice",
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
           "preset": "podcast"
         },

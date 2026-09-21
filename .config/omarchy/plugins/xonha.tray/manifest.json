@@ -5,6 +5,10 @@
   "version": "1.0.0",
   "author": "xonha",
   "description": "Status notifier items",
+  "upstream": {
+    "repository": "https://github.com/basecamp/omarchy",
+    "credit": "Forked from Omarchy's tray plugin."
+  },
   "kinds": [
     "bar-widget"
   ],
