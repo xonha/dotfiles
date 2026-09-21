@@ -127,7 +127,7 @@
   },
   "plugins": [
     {
-      "id": "henrique.notifications"
+      "id": "xonha.notifications"
     }
   ],
   "version": 1,
@@ -136,7 +136,7 @@
     "omarchy.audio"
   ],
   "cloneSourceRestores": [
-    "henrique.notifications",
+    "xonha.notifications",
     "ssupt.audio-control"
   ]
 }
