@@ -36,7 +36,8 @@ BarWidget {
   readonly property string browserCommand: String(setting("browserCommand", "") || "").trim()
   readonly property string calendarBrowserCommand: String(setting("calendarBrowserCommand", (Quickshell.env("HOME") || "") + "/.config/scripts/calendar-browser.sh") || "").trim()
   readonly property string sharedSyncCommand: String(setting("sharedSyncCommand", (Quickshell.env("HOME") || "") + "/.config/omarchy/plugins/promaa.clock/fetch-events.py") || "").trim()
-  readonly property var calendarUrlBases: setting("calendarUrlBases", ({ "Devbot": "https://outlook.office.com/calendar/view/month" }))
+  readonly property string calendarsConfigPath: String(setting("calendarsConfigPath", (Quickshell.env("HOME") || "") + "/.config/omarchy/calendars.json") || "").trim()
+  property var calendarUrlBases: ({})
   // Base for "Open in Calendar". Defaults to the signed-in account; set to
   // e.g. "https://calendar.google.com/calendar/u/2" to open a specific
   // account (matches the u/N in your browser's calendar URL).
@@ -111,6 +112,25 @@ BarWidget {
   function openCalendar(event) {
     var url = Model.eventCalendarUrl(event, root.calendarUrlBase, root.calendarUrlBases)
     if (url) openMeetingUrl(url, event)
+  }
+
+  function loadCalendarLinks(raw) {
+    try {
+      var links = JSON.parse(String(raw || "{}"))
+      var bases = {}
+      if (Array.isArray(links)) {
+        for (var i = 0; i < links.length; i++) {
+          var calendar = links[i]
+          if (calendar && calendar.name && calendar.calendarUrl)
+            bases[String(calendar.name)] = String(calendar.calendarUrl)
+        }
+      } else for (var name in links) {
+        if (links[name] && links[name].calendarUrl) bases[name] = String(links[name].calendarUrl)
+      }
+      root.calendarUrlBases = bases
+    } catch (_) {
+      root.calendarUrlBases = {}
+    }
   }
 
   function openEvent(event) {
@@ -351,6 +371,15 @@ BarWidget {
     onLoadFailed: function(error) {
       console.warn("NextEvent: eventsJson load failed: " + error + " path=" + root.eventsJsonPath)
     }
+    onFileChanged: reload()
+  }
+
+  FileView {
+    id: calendarsConfigFile
+    path: root.calendarsConfigPath
+    watchChanges: true
+    printErrors: false
+    onLoaded: root.loadCalendarLinks(text())
     onFileChanged: reload()
   }
 

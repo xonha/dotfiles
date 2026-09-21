@@ -373,51 +373,13 @@ Item {
       strength: Tokens.separatorGroup
     }
 
-    // =========================================================================
-    // 4. Actions & Integrations
-    // =========================================================================
-    Column {
-      width: parent.width
-      spacing: Style.space(8)
-
-      PanelSectionHeader {
-        text: "ACTIONS & INTEGRATIONS"
-        foreground: root.contentForeground
-        fontFamily: root.contentFontFamily
-      }
-
-      SettingField {
-        id: calendarUrlField
-        width: parent.width
-        label: "Calendar base URL"
-        description: "Base URL for \"Open in Calendar\" (e.g. append /u/1 for multi-account)."
-        text: root.hostWidget ? String(root.hostWidget.setting("calendarUrlBase", Model.DEFAULT_CALENDAR_URL_BASE)) : Model.DEFAULT_CALENDAR_URL_BASE
-        placeholderText: "https://calendar.google.com/calendar"
-        contentForeground: root.contentForeground
-        contentFontFamily: root.contentFontFamily
-        onModified: function(val) { root.settingChanged("calendarUrlBase", val) }
-      }
-
-      SettingField {
-        id: browserCmdField
-        width: parent.width
-        label: "Browser command"
-        description: "Custom command used to open meeting and calendar URLs (defaults to xdg-open)."
-        text: root.hostWidget ? String(root.hostWidget.setting("browserCommand", "")) : ""
-        placeholderText: "xdg-open"
-        contentForeground: root.contentForeground
-        contentFontFamily: root.contentFontFamily
-        onModified: function(val) { root.settingChanged("browserCommand", val) }
-      }
-    }
-
     PanelSeparator {
       foreground: root.contentForeground
       strength: Tokens.separatorGroup
     }
 
     // =========================================================================
-    // 5. Panel Shortcuts
+    // 4. Panel Shortcuts
     // =========================================================================
     Column {
       width: parent.width
