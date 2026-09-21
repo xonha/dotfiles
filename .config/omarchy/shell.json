@@ -15,18 +15,15 @@
             "cpu",
             "cputemp",
             "ram",
-            "disk",
-            "gpu",
-            "gputemp",
-            "vram"
+            "disk"
           ],
           "homeTiles": [
             "cpu",
             "ram",
-            "gpu",
             "net",
             "io",
-            "disk"
+            "disk",
+            "bat"
           ]
         },
         {
