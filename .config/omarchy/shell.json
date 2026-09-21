@@ -44,7 +44,8 @@
           "includeContributions": false,
           "linkBehavior": "Browser tab",
           "repositoryScope": "Owned and organizations",
-          "refreshIntervalSec": 1800
+          "refreshIntervalSec": 1800,
+          "iconAlwaysUnlit": true
         },
         {
           "id": "xonha.tray",
