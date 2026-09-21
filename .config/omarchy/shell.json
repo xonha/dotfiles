@@ -28,13 +28,13 @@
         },
         {
           "id": "xonha.next-event",
-          "sourceMode": "json",
+          "colorOnBar": true,
           "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
-          "showDaysAhead": 3,
           "showCalendarLabel": true,
-          "useCalendarColors": true,
-          "colorOnBar": false,
-          "timeFormat": "24"
+          "showDaysAhead": 3,
+          "sourceMode": "json",
+          "timeFormat": "24",
+          "useCalendarColors": true
         },
         {
           "id": "alanfortlink.speech-to-text"
