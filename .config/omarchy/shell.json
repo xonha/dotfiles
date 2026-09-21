@@ -95,12 +95,13 @@
           "id": "omarchy.bluetooth"
         },
         {
-          "id": "omarchy.audio"
+          "id": "ssupt.audio-control"
         },
         {
           "id": "xonha.omavoice",
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
-          "preset": "podcast"
+          "preset": "podcast",
+          "enabled": true
         },
         {
           "id": "promaa.clock",
@@ -130,9 +131,11 @@
   ],
   "version": 1,
   "disabledPlugins": [
-    "omarchy.notifications"
+    "omarchy.notifications",
+    "omarchy.audio"
   ],
   "cloneSourceRestores": [
-    "xonha.notifications"
+    "xonha.notifications",
+    "ssupt.audio-control"
   ]
 }
