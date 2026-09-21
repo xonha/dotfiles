@@ -30,6 +30,16 @@
           ]
         },
         {
+          "id": "xonha.next-event",
+          "sourceMode": "json",
+          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
+          "showDaysAhead": 3,
+          "showCalendarLabel": true,
+          "useCalendarColors": true,
+          "colorOnBar": false,
+          "timeFormat": "24"
+        },
+        {
           "id": "robzolkos.github",
           "includeContributions": false,
           "linkBehavior": "Browser tab",
@@ -81,17 +91,18 @@
           "id": "omaconnect"
         },
         {
-          "id": "omarchy.bluetooth"
-        },
-        {
           "id": "omarchy.network"
         },
         {
-          "id": "gigasolo.omavoice",
-          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E"
+          "id": "omarchy.bluetooth"
         },
         {
-          "id": "omarchy.audio"
+          "id": "ssupt.audio-control"
+        },
+        {
+          "id": "gigasolo.omavoice",
+          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
+          "preset": "podcast"
         },
         {
           "id": "promaa.clock",
@@ -121,9 +132,11 @@
   ],
   "version": 1,
   "disabledPlugins": [
-    "omarchy.notifications"
+    "omarchy.notifications",
+    "omarchy.audio"
   ],
   "cloneSourceRestores": [
-    "henrique.notifications"
+    "henrique.notifications",
+    "ssupt.audio-control"
   ]
 }

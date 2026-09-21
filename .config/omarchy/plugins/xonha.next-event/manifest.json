@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.next-event",
+  "name": "NextEvent (Chronica)",
+  "version": "1.5.0",
+  "author": "tobiasz-p",
+  "license": "MIT",
+  "description": "Next event from Chronica's shared calendar cache, with meeting actions.",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "NextEvent (Chronica)",
+    "description": "Shows the next event from the shared Chronica calendar cache and joins meeting calls",
+    "category": "Productivity",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
