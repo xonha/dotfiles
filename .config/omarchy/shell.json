@@ -47,9 +47,6 @@
           "refreshIntervalSec": 1800
         },
         {
-          "id": "omarchy.agents"
-        },
-        {
           "id": "alanfortlink.speech-to-text"
         },
         {
@@ -80,6 +77,9 @@
         },
         {
           "id": "omarchy.power"
+        },
+        {
+          "id": "omarchy.agents"
         },
         {
           "id": "crmne.hyprmoncfg"
