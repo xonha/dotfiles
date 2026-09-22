@@ -31,7 +31,7 @@
           "colorOnBar": true,
           "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
           "showCalendarLabel": true,
-          "showDaysAhead": 3,
+          "showDaysAhead": 0,
           "sourceMode": "json",
           "timeFormat": "24",
           "useCalendarColors": true
@@ -95,7 +95,7 @@
           "id": "omarchy.bluetooth"
         },
         {
-          "id": "ssupt.audio-control"
+          "id": "omarchy.audio"
         },
         {
           "id": "xonha.omavoice",
@@ -118,7 +118,8 @@
       ]
     },
     "position": "top",
-    "transparent": false
+    "transparent": false,
+    "id": "henrique.bar"
   },
   "idle": {
     "lock": 300,
@@ -131,11 +132,9 @@
   ],
   "version": 1,
   "disabledPlugins": [
-    "omarchy.notifications",
-    "omarchy.audio"
+    "omarchy.notifications"
   ],
   "cloneSourceRestores": [
-    "xonha.notifications",
-    "ssupt.audio-control"
+    "xonha.notifications"
   ]
 }
