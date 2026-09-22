@@ -1,6 +1,7 @@
 .config/hypr/monitors.conf
 .config/systemd/user/graphical-session.target.wants/
 .config/nvim/lazy-lock.json
+.local/share/nvim/
 mimeinfo.cache
 .config/containers/systemd/samba.env
 .config/containers/systemd/keeper.env
