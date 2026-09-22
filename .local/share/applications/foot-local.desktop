@@ -3,7 +3,7 @@ Type=Application
 Name=Foot + tmux
 Comment=Terminal local via Foot
 Exec=foot --app-id=foot-local -e tmux new-session -A -s main
-Icon=foot-red
+Icon=foot
 Terminal=false
 Categories=System;TerminalEmulator;
 StartupWMClass=foot-local
