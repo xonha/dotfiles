@@ -25,7 +25,7 @@ ssh lab          # Arch development container on bazzite (port 2224)
 > ```bash
 > ssh <your-user>@bazzite
 > ```
-> To add a `bazzite` alias, add a `Host bazzite` block to `.ssh/config` and
+> To add a `bazzite` alias, add a `Host bazzite` block to `ssh/config` and
 > re-run `dotdrop install --cfg dotdrop/config.yaml --profile omarchy` from the repo root — it deploys automatically.
 
 ## Machines

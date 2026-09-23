@@ -3,9 +3,9 @@ FROM archlinux:latest
 # The build context is the dotfiles repository. Copy the actual setup stages
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
-COPY .setup/_shared.sh .setup/_packages.sh \
-     .setup/lab/bootstrap-yay.sh .setup/10-server-packages.sh \
-     .setup/30-login-shell.sh /opt/dotfiles-setup/
+COPY setup/_shared.sh setup/_packages.sh \
+     setup/lab/bootstrap-yay.sh setup/10-server-packages.sh \
+     setup/30-login-shell.sh /opt/dotfiles-setup/
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
 RUN pacman -Syu --noconfirm \
@@ -64,7 +64,7 @@ RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
     && echo "install -d -m 755 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.config" >> /start.sh \
     && echo "if [[ ! -d /home/${USERNAME}/Dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/Dotfiles; fi" >> /start.sh \
-    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f .config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg dotdrop/config.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
+    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg dotdrop/config.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \

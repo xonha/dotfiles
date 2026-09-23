@@ -12,7 +12,7 @@ Depois de aplicar os dotfiles com Dotdrop, a partir da raiz deste repositório:
 
 ```bash
 mkdir -p ~/.config/containers/systemd ~/.local/share/keeper/data
-cp .setup/keeper/keeper.env.example \
+cp setup/keeper/keeper.env.example \
   ~/.config/containers/systemd/keeper.env
 chmod 600 ~/.config/containers/systemd/keeper.env
 

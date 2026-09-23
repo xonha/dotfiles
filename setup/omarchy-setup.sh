@@ -16,7 +16,7 @@ printf "${RESET}\n"
 source "$SETUP_DIR/10-server-packages.sh"
 run
 
-# Stow is provided by the server package stage above.
+# Dotdrop is provided by the server package stage above.
 source "$SETUP_DIR/20-dotfiles.sh"
 run
 

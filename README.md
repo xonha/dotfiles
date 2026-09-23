@@ -10,7 +10,7 @@ versionadas neste repositório e aplicadas após os padrões do Omarchy.
 ```bash
 git clone https://github.com/henriqueluhm/dotfiles.git "$HOME/dotfiles"
 cd "$HOME/dotfiles"
-./.setup/omarchy-setup.sh
+./setup/omarchy-setup.sh
 ```
 
 O instalador configura a base de terminal e permite escolher a instalação do
@@ -22,7 +22,7 @@ Os ajustes específicos de hardware ficam fora do fluxo principal.
 ## ThinkPad
 
 Wake por teclado e tampa via udev rules — diagnóstico e configuração manual
-documentados em [`.setup/README.md`](.setup/README.md).
+documentados em [`setup/README.md`](setup/README.md).
 
 ## Ambientes de desenvolvimento no Bazzite
 
@@ -30,18 +30,18 @@ documentados em [`.setup/README.md`](.setup/README.md).
 de aplicar os dotfiles com Dotdrop, execute:
 
 ```bash
-./.setup/lab/setup.sh
+./setup/lab/setup.sh
 ```
 
-O guia operacional está em [`.setup/lab/README.md`](.setup/lab/README.md).
+O guia operacional está em [`setup/lab/README.md`](setup/lab/README.md).
 
 ## Keeper.sh
 
 O Keeper.sh roda no Bazzite como serviço Quadlet rootless, na porta local
-`8088`. O guia operacional está em [`.setup/keeper/README.md`](.setup/keeper/README.md).
+`8088`. O guia operacional está em [`setup/keeper/README.md`](setup/keeper/README.md).
 
 ## Immich
 
 O Immich roda no Bazzite com Podman Compose, biblioteca no HD separado e
 acesso LAN/Tailscale/Funnel. O guia operacional está em
-[`.setup/immich/README.md`](.setup/immich/README.md).
+[`setup/immich/README.md`](setup/immich/README.md).

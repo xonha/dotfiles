@@ -14,7 +14,7 @@ internet and no router port-forwarding is involved.
 | `crafty` | `registry.gitlab.com/crafty-controller/crafty-4:latest` | 8443 | Web panel (HTTPS) |
 | Minecraft server | managed by Crafty | 25565 | The game server itself |
 
-The Quadlet unit lives at `.config/containers/systemd/crafty.container` in this
+The Quadlet unit lives at `config/containers/systemd/crafty.container` in this
 repo. Crafty runs the Minecraft server as a child process inside its own
 container — there is no separate Minecraft container.
 
@@ -392,7 +392,7 @@ for the new port and restart the service.
 - **`dotdrop` is not installed on `bazzite`** (Bazzite is image-based). Quadlet
   symlinks are created by hand, matching the existing pattern:
   ```bash
-  ln -sfn ../../../Dotfiles/.config/containers/systemd/crafty.container \
+  ln -sfn ../../../Dotfiles/config/containers/systemd/crafty.container \
           ~/.config/containers/systemd/crafty.container
   ```
 - Crafty runs as uid 1000, gid 0. Host directories must be owned accordingly

@@ -2,12 +2,12 @@
 
 ## Estrutura
 
-A raiz de `.setup/` guarda os fluxos de bootstrap da maquina. Cada servico
+A raiz de `setup/` guarda os fluxos de bootstrap da maquina. Cada servico
 persistente tem seu proprio diretorio, com os artefatos de deploy e o runbook
 (`README.md`) lado a lado: `lab/`, `immich/`, `keeper/`, `crafty/`, `samba/`.
 
-Nada em `.setup/` e aplicado pelo Dotdrop. O que precisa virar symlink no `$HOME` — como os
-quadlets — mora em `.config/`.
+Nada em `setup/` e aplicado pelo Dotdrop. O que precisa virar symlink no `$HOME` — como os
+quadlets — mora em `config/`.
 
 Dois fluxos de bootstrap, cada um com seu proprio entrypoint:
 

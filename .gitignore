@@ -1,32 +1,32 @@
-.config/hypr/monitors.conf
-.config/systemd/user/graphical-session.target.wants/
-.config/nvim/lazy-lock.json
-.local/share/nvim/
+config/hypr/monitors.conf
+config/systemd/user/graphical-session.target.wants/
+config/nvim/lazy-lock.json
+local/share/nvim/
 mimeinfo.cache
-.config/containers/systemd/samba.env
-.config/containers/systemd/keeper.env
-.config/omarchy/calendars.json
+config/containers/systemd/samba.env
+config/containers/systemd/keeper.env
+config/omarchy/calendars.json
 
 # --- secrets / credentials (public repo: never commit) ---
-.config/gh/*
-.config/github-copilot/
-.config/configstore/
-.config/.jira/
+config/gh/*
+config/github-copilot/
+config/configstore/
+config/.jira/
 
 # --- machine state, caches, telemetry ---
 __pycache__/
-.config/chromium/
+config/chromium/
 .brave*
-.config/go/
-.config/Code/agent-host/
-.config/nextjs-nodejs/config.json
-.config/opencode/opencode/node_modules/
+config/go/
+config/Code/agent-host/
+config/nextjs-nodejs/config.json
+config/opencode/opencode/node_modules/
 
 # --- agent runtime state and local machine configuration ---
 /ai/*
 !/ai/agents/
 !/ai/skills/
 
-# .ssh
-.ssh/*
-!.ssh/config
+# ssh
+ssh/*
+!ssh/config

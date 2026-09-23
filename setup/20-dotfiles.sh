@@ -16,7 +16,7 @@ run() {
   info "Pre-creating systemd drop-in directories (must not be symlinks)..."
   while IFS= read -r d; do
     mkdir -p "$HOME/$d"
-  done < <(cd "$dotfiles_dir" && find .config/systemd -type d -name '*.d' 2>/dev/null)
+  done < <(cd "$dotfiles_dir" && find config/systemd -type d -name '*.d' 2>/dev/null)
 
   info "Applying Dotdrop mappings from $dotfiles_dir..."
   pushd "$dotfiles_dir" >/dev/null

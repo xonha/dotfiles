@@ -18,7 +18,7 @@ to the host with Dotdrop or one of the setup entrypoints.
 
 ## When this skill must be used
 
-- Editing files under `.config/` or `.setup/`
+- Editing files under `config/` or `setup/`
 - Changing Hyprland, Omarchy, Foot, Neovim, shell, tmux, Starship, or Git config
 - Adding or changing systemd, Quadlet, Podman, Lab, Keeper.sh, or Immich setup
 - Running or changing the repository bootstrap and setup flows
@@ -41,11 +41,11 @@ questions that do not affect this dotfiles repository.
 
 | Area | Responsibility | Location |
 |---|---|---|
-| Dotfiles | Versioned user configuration | `.config/`, hidden files |
-| Setup | Installation and bootstrap | `.setup/`, numbered modules |
-| Desktop | Hyprland, Omarchy, Foot | `hypr/`, `.config/omarchy/`, `.config/foot/` |
-| Services | Systemd and containers | `.config/containers/`, `.config/systemd/` |
-| Operations | Per-service deploy artifacts and runbooks | `.setup/<service>/` |
+| Dotfiles | Versioned user configuration | `config/`, hidden files |
+| Setup | Installation and bootstrap | `setup/`, numbered modules |
+| Desktop | Hyprland, Omarchy, Foot | `hypr/`, `config/omarchy/`, `config/foot/` |
+| Services | Systemd and containers | `config/containers/`, `config/systemd/` |
+| Operations | Per-service deploy artifacts and runbooks | `setup/<service>/` |
 
 ## Main workflows
 
@@ -55,7 +55,7 @@ Read [references/omarchy.md](references/omarchy.md) before changing desktop
 configuration or Omarchy integration. The main entrypoint is:
 
 ```bash
-./.setup/omarchy-setup.sh
+./setup/omarchy-setup.sh
 ```
 
   It installs packages, applies the Dotdrop mappings, configures the login shell, and
@@ -72,7 +72,7 @@ minimum, validate Bash, Starship, and tmux; treat host-only desktop config such
 as Foot separately and document that boundary.
 
 ```bash
-./.setup/lab/setup.sh
+./setup/lab/setup.sh
 ```
 
 ### Dotdrop and linking
@@ -86,9 +86,9 @@ ignore rules, or files that may conflict with existing host configuration.
 2. Is the component managed by Omarchy? Preserve the native component unless the
    request explicitly asks for an override.
 3. Is it installation or bootstrap behavior? Put it in the appropriate numbered
-   `.setup/` module and reuse `_shared.sh` helpers.
+   `setup/` module and reuse `_shared.sh` helpers.
 4. Is it a persistent service? Update the setup code and the matching
-   `.setup/<service>/README.md` runbook.
+   `setup/<service>/README.md` runbook.
 5. Is it potentially destructive or privileged? Confirm scope, then make the
    smallest reversible change.
 6. Validate with the narrowest useful check: shell syntax, Dotdrop dry-run,
@@ -107,8 +107,8 @@ ignore rules, or files that may conflict with existing host configuration.
 ## Common requests
 
 - “Add a Hyprland shortcut” → edit `hypr/bindings.lua`, then validate or reload Hyprland.
-- “Change the Omarchy bar” → inspect `.config/omarchy/shell.json` and preserve Omarchy ownership boundaries.
-- “Install a base package” → inspect `.setup/10-server-packages.sh`.
-- “Change desktop package behavior” → inspect `.setup/40-desktop.sh` and its modules.
+- “Change the Omarchy bar” → inspect `config/omarchy/shell.json` and preserve Omarchy ownership boundaries.
+- “Install a base package” → inspect `setup/10-server-packages.sh`.
+- “Change desktop package behavior” → inspect `setup/40-desktop.sh` and its modules.
 - “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
-- “Change Immich or Keeper.sh” → read `.setup/immich/README.md` or `.setup/keeper/README.md` before editing.
+- “Change Immich or Keeper.sh” → read `setup/immich/README.md` or `setup/keeper/README.md` before editing.

@@ -1,6 +1,6 @@
 # Setup workflow
 
-The main setup flow is `.setup/omarchy-setup.sh`. It sources these stages in
+The main setup flow is `setup/omarchy-setup.sh`. It sources these stages in
 order:
 
 1. `10-server-packages.sh` — base packages
@@ -18,7 +18,7 @@ headless host. Preserve the existing `run` convention and `set -euo pipefail`.
 Useful checks:
 
 ```bash
-bash -n .setup/*.sh
+bash -n setup/*.sh
 git diff --check
 ```
 
