@@ -16,7 +16,7 @@ PKG_SERVER_EXTRA=(
   opencode
   uv
   go
-  rust
+  rustup
   fastfetch
   ripgrep
   socat
@@ -41,6 +41,8 @@ run() {
   info "Installing packages from extra and AUR..."
   yay -Syu --needed --noconfirm --removemake \
     "${PKG_SERVER_EXTRA[@]}" "${PKG_SERVER_AUR[@]}"
+  info "Installing the stable Rust toolchain..."
+  rustup default stable
   success "Shared CLI packages installed."
 }
 
