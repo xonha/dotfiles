@@ -32,9 +32,11 @@ o.window("^brave-origin$", {
 -- Disable Omarchy's default window transparency (see default/hypr/windows.lua).
 o.window(".*", { tag = "-default-opacity", opacity = "1 1" })
 
--- Added by hyprmoncfg: its generated monitor rules load last, so nothing before this can override the applied layout.
 do
   local path = os.getenv("HOME") .. "/.config/hypr/hyprmoncfg-monitors.lua"; local file = io.open(path, "r"); if file then
     file:close(); dofile(path)
   end
 end
+
+-- Added by hyprmoncfg: its generated monitor rules load last, so nothing before this can override the applied layout.
+do local path = os.getenv("HOME") .. "/.config/hypr/hyprmoncfg-monitors.lua"; local file = io.open(path, "r"); if file then file:close(); dofile(path) end end

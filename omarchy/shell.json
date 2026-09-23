@@ -74,11 +74,11 @@
           "iconAlwaysUnlit": true
         },
         {
-          "id": "omarchy.agents"
-        },
-        {
           "id": "xonha.cycle_browser",
           "scriptPath": "/home/henrique/.config/scripts/cycle-browser-profile.sh"
+        },
+        {
+          "id": "omarchy.agents"
         },
         {
           "id": "crmne.hyprmoncfg"
