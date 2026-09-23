@@ -19,7 +19,7 @@ No Bazzite, após aplicar os dotfiles com Dotdrop:
 
 ```bash
 cd ~/Dotfiles
-dotdrop install --cfg .dotdrop/config.yaml --profile omarchy
+dotdrop install --cfg dotdrop/config.yaml --profile omarchy
 ./.setup/lab/setup.sh
 ```
 

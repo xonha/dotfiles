@@ -53,7 +53,7 @@ copied into place rather than read from `$HOME`.
 
 ## Adding Dotfiles
 
-Add the mapping to `.dotdrop/config.yaml`, then re-run `dotdrop install`.
+Add the mapping to `dotdrop/config.yaml`, then re-run `dotdrop install`.
 
 <!-- SPECKIT START -->
 

@@ -1,7 +1,7 @@
 # Dotdrop ownership
 
 Dotdrop is the repository's only dotfile deployment tool. Its manifest is
-`.dotdrop/config.yaml`; mappings are explicit, so the source name and layout do
+`dotdrop/config.yaml`; mappings are explicit, so the source name and layout do
 not need to mirror the destination path.
 
 ## Applying the repository
@@ -9,13 +9,13 @@ not need to mirror the destination path.
 From the repository root:
 
 ```bash
-dotdrop install --cfg .dotdrop/config.yaml --profile omarchy
+dotdrop install --cfg dotdrop/config.yaml --profile omarchy
 ```
 
 Preview changes first:
 
 ```bash
-dotdrop install --cfg .dotdrop/config.yaml --profile omarchy --dry --no-banner
+dotdrop install --cfg dotdrop/config.yaml --profile omarchy --dry --no-banner
 ```
 
 The setup entrypoint calls the same command from `.setup/20-dotfiles.sh`.
