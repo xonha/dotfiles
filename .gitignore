@@ -20,6 +20,7 @@ config/go/
 config/Code/agent-host/
 config/nextjs-nodejs/config.json
 config/opencode/opencode/node_modules/
+config/shortcuts/claude-code-url-handler.desktop
 
 # --- agent runtime state and local machine configuration ---
 /ai/*
@@ -29,3 +30,6 @@ config/opencode/opencode/node_modules/
 # ssh
 ssh/*
 !ssh/config
+
+# ai
+ai/skills/synced

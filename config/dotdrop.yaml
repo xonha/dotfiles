@@ -89,6 +89,10 @@ dotfiles:
     src: config/scripts
     dst: ~/.config/scripts
     link: absolute
+  local_bin_update_lazypodman:
+    src: config/scripts/update-lazypodman.sh
+    dst: ~/.local/bin/update-lazypodman
+    link: absolute
   config_starship:
     src: config/starship.toml
     dst: ~/.config/starship.toml
@@ -150,6 +154,7 @@ profiles:
       - config_hyprmoncfg
       - config_nvim
       - config_scripts
+      - local_bin_update_lazypodman
       - config_starship
       - omarchy_themes
       - omarchy_shell
