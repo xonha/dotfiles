@@ -27,6 +27,10 @@ return {
           surface2 = "#2a2a2a",
         },
       },
+      custom_highlights = {
+        Normal = { bg = "#0f0f0f" },
+        NormalNC = { bg = "#0f0f0f" },
+      },
     },
   },
   {
