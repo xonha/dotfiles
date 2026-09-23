@@ -90,8 +90,8 @@ dotfiles:
     dst: ~/.ssh/config
     link: absolute
   themes:
-    src: config/themes
-    dst: ~/.themes
+    src: config/darkppuccin
+    dst: ~/.themes/Darkppuccin
     link: absolute
 
 profiles:
