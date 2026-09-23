@@ -29,6 +29,8 @@ PKG_DEV_COMMON=(
 # conflicts with the docker package) and docker-compose is the provider used by
 # `podman compose` and by projects that still call `docker-compose` directly.
 # podman-tui (AUR) talks to the local Podman engine, so it stays host-only.
+# docker-buildx gives Compose a BuildKit builder (see setup/50-services.sh);
+# without it Compose falls back to the classic builder, which lacks build ssh.
 PKG_HOST_ONLY=(
   earlyoom
   tailscale
@@ -36,4 +38,5 @@ PKG_HOST_ONLY=(
   podman-docker
   podman-tui-bin
   docker-compose
+  docker-buildx
 )

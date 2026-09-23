@@ -61,6 +61,31 @@ configure_podman_wsl() {
   success "Podman firewall driver disabled for WSL."
 }
 
+BUILDX_BUILDER=podman
+# Call the plugin directly: `docker buildx` resolves to `podman buildx` through
+# the podman-docker shim.
+BUILDX=/usr/lib/docker/cli-plugins/docker-buildx
+
+# Podman's Docker API has no BuildKit, so Compose builds using `ssh:` or other
+# BuildKit features fail. Run BuildKit as a container on Podman and make it the
+# default buildx builder; Compose loads the built images back into Podman.
+configure_buildx_builder() {
+  if [[ ! -x $BUILDX ]]; then
+    info "docker-buildx not installed, skipping builder."
+    return
+  fi
+  if ! "$BUILDX" inspect "$BUILDX_BUILDER" &>/dev/null \
+    && ! "$BUILDX" create --name "$BUILDX_BUILDER" --driver docker-container; then
+    warn "Failed to create buildx builder (is podman.socket active?)."
+    return
+  fi
+  if "$BUILDX" use --default "$BUILDX_BUILDER"; then
+    success "buildx builder $BUILDX_BUILDER is the default."
+  else
+    warn "Failed to select buildx builder $BUILDX_BUILDER."
+  fi
+}
+
 run() {
   header "Enable services"
 
@@ -79,6 +104,8 @@ run() {
   for svc in "${SERVICES_USER[@]}"; do
     enable_user_service "$svc"
   done
+
+  configure_buildx_builder
 
 }
 
