@@ -50,7 +50,7 @@ dotfiles:
     dst: ~/.config/hyprmoncfg
     link: absolute
   config_nvim:
-    src: config/nvim
+    src: nvim
     dst: ~/.config/nvim
     link: absolute
   config_scripts:
@@ -62,26 +62,26 @@ dotfiles:
     dst: ~/.config/starship.toml
     link: absolute
   omarchy_extensions:
-    src: config/omarchy/extensions
+    src: omarchy/extensions
     dst: ~/.config/omarchy/extensions
     link: link_children
   omarchy_themes:
-    src: config/omarchy/themes
+    src: omarchy/themes
     dst: ~/.config/omarchy/themes
     link: link_children
   omarchy_shell:
-    src: config/omarchy/shell.json
+    src: omarchy/shell.json
     dst: ~/.config/omarchy/shell.json
     link: absolute
 
-  local_applications:
-    src: local/share/applications
+  shortcuts:
+    src: config/shortcuts
     dst: ~/.local/share/applications
     link: link_children
     instignore:
       - mimeinfo.cache
-  local_icons:
-    src: local/share/icons/hicolor/scalable/apps
+  icons:
+    src: config/icons
     dst: ~/.local/share/icons/hicolor/scalable/apps
     link: link_children
 
@@ -90,7 +90,7 @@ dotfiles:
     dst: ~/.ssh/config
     link: absolute
   themes:
-    src: .themes
+    src: config/themes
     dst: ~/.themes
     link: absolute
 
@@ -114,7 +114,7 @@ profiles:
       - omarchy_extensions
       - omarchy_themes
       - omarchy_shell
-      - local_applications
-      - local_icons
+      - shortcuts
+      - icons
       - ssh_config
       - themes

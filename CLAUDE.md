@@ -23,10 +23,10 @@ machine.
 | Path                          | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
 | `hypr/`                       | Hyprland WM — Lua config, custom bindings, focus workflow, window rules and monitor profiles |
-| `config/omarchy/`             | Omarchy shell overrides — `shell.json` (bar layout, idle/lock), menu extensions, hooks, themes. `branding/`, `defaults/`, `plugins/`, `themed/` stay unstowed (Omarchy-owned) |
+| `omarchy/`                   | Omarchy shell overrides — `shell.json` (bar layout, idle/lock), menu extensions, hooks, themes. `branding/`, `defaults/`, `plugins/`, `themed/` stay unstowed (Omarchy-owned) |
 | `hypr/hyprmoncfg/`            | hyprmoncfg monitor profiles (used by the `crmne.hyprmoncfg` Omarchy bar plugin, installed via `setup/omarchy-plugins.sh`) |
 | `config/kitty/`               | Kitty terminal                                              |
-| `config/nvim/`                | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
+| `nvim/`                       | Neovim — LazyVim (`lazy-lock.json` gitignored)              |
 | `config/opencode/`            | OpenCode                                                    |
 | `config/scripts/`             | Custom shell scripts                                        |
 | `config/starship.toml`        | Starship prompt                                             |

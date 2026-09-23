@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.tray",
+  "name": "System tray (left)",
+  "version": "1.0.0",
+  "author": "xonha",
+  "description": "Status notifier items",
+  "upstream": {
+    "repository": "https://github.com/basecamp/omarchy",
+    "credit": "Forked from Omarchy's tray plugin."
+  },
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Tray.qml"
+  },
+  "barWidget": {
+    "displayName": "System tray",
+    "description": "Status notifier items",
+    "category": "Status",
+    "allowMultiple": false,
+    "schema": [
+      {
+        "key": "reverse",
+        "type": "boolean",
+        "label": "Reverse drawer direction",
+        "description": "Place pinned items before the drawer and point the arrow inward.",
+        "defaultValue": false
+      }
+    ]
+  },
+  "omarchy": {
+    "clonePaths": [
+      {
+        "source": "TrayModel.js",
+        "target": "TrayModel.js"
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.notifications",
+  "name": "My Notifications",
+  "version": "1.0.0",
+  "author": "xonha (upstream: Omarchy)",
+  "description": "Notification daemon, popups, DND, and history",
+  "upstream": {
+    "repository": "https://github.com/basecamp/omarchy",
+    "credit": "Forked from Omarchy's notifications plugin."
+  },
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml"
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.notifications"
+  }
+}

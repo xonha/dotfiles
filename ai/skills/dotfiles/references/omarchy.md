@@ -8,7 +8,7 @@ The repository intentionally versions user overrides for:
 
 - `.config/hypr/`
 - `.config/foot/`
-- selected `.config/omarchy/` files and extensions
+- selected `omarchy/` files and extensions
 
 Read the installed Omarchy skill before making end-user desktop changes. Use
 the official `omarchy` commands for Omarchy-owned operations, and do not edit
