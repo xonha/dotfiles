@@ -17,6 +17,15 @@ Volume=%h/lab/workspace:/workspace:Z
 Volume=%h/.ssh/authorized_keys:/run/host_ssh_key:ro,Z
 
 PublishPort=2224:22
+
+# Nested rootless Podman: fuse and tun back its storage and pasta networking,
+# SELinux labels would block the inner mounts, and the inner containers need
+# to mount a fresh /proc, which masked paths prevent.
+AddDevice=/dev/fuse
+AddDevice=/dev/net/tun
+SecurityLabelDisable=true
+Unmask=ALL
+
 WorkingDir=/workspace
 Memory=14g
 PidsLimit=4096

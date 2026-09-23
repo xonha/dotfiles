@@ -5,6 +5,10 @@ SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 
 # Arch extra repository.
+#
+# Podman replaces Docker: podman-docker provides the `docker` CLI shim (it
+# conflicts with the docker package) and docker-compose is the provider used by
+# `podman compose` and by projects that still call `docker-compose` directly.
 PKG_SERVER_EXTRA=(
   neovim
   npm
@@ -17,6 +21,9 @@ PKG_SERVER_EXTRA=(
   wget
   tmux
   lazygit
+  podman
+  podman-docker
+  docker-compose
   lazydocker
   starship
 )

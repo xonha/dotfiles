@@ -6,11 +6,9 @@ source "$SETUP_ROOT/_shared.sh"
 
 # Arch extra repository: desktop applications and host services.
 #
-# Podman replaces Docker: podman-docker provides the `docker` CLI shim (it
-# conflicts with the docker package) and docker-compose is the provider used by
-# `podman compose` and by projects that still call `docker-compose` directly.
-# docker-buildx gives Compose a BuildKit builder (see the services step);
-# without it Compose falls back to the classic builder, which lacks build ssh.
+# Podman itself comes from the shared CLI stage. docker-buildx gives Compose a
+# BuildKit builder (see the services step); without it Compose falls back to
+# the classic builder, which lacks build ssh.
 PKG_OMARCHY_EXTRA=(
   kdeconnect
   scrcpy
@@ -20,9 +18,6 @@ PKG_OMARCHY_EXTRA=(
   libreoffice-still
   earlyoom
   tailscale
-  podman
-  podman-docker
-  docker-compose
   docker-buildx
 )
 

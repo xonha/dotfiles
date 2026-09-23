@@ -31,6 +31,8 @@ When recreating `lab`, the task is complete only when:
   an interactive Bash session exposes `BLE_VERSION`;
 - `config/tmux.conf` is installed and tmux loads it successfully;
 - `lab.service` is active and SSH access works;
+- nested rootless Podman works inside `lab` (`podman run --rm alpine echo ok`)
+  and `DOCKER_HOST` points at its API socket;
 - the source and target configuration checksums are compared;
 - the clone is on the expected branch/commit and has no unexpected changes.
 

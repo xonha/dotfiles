@@ -6,6 +6,7 @@ FROM archlinux:latest
 COPY setup/_shared.sh \
      bazzite/lab/bootstrap-yay.sh setup/packages-server.sh \
      setup/login-shell.sh /opt/dotfiles-setup/
+COPY bazzite/lab/containers.conf /etc/containers/containers.conf.d/10-lab.conf
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
 RUN pacman -Syu --noconfirm \
@@ -36,6 +37,13 @@ RUN groupadd -g ${GID} ${USERNAME} \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 440 /etc/sudoers.d/${USERNAME}
 
+# Nested rootless Podman may only use IDs the outer keep-id namespace maps:
+# 0-65536, where ${UID} is the user itself. useradd's default 100000+ range is
+# unmapped, so delegate every other mapped ID instead.
+RUN printf '%s:1:%s\n%s:%s:%s\n' \
+      "${USERNAME}" "$((UID - 1))" "${USERNAME}" "$((UID + 1))" "$((65535 - UID))" \
+    | tee /etc/subuid > /etc/subgid
+
 # Run the same user-level stages as a regular installation. Lab uses the
 # shared CLI package stage; client services are installed only on Omarchy.
 USER ${USERNAME}
@@ -63,6 +71,8 @@ RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
     && echo "install -d -m 755 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.config" >> /start.sh \
     && echo "if [[ ! -d /home/${USERNAME}/Dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/Dotfiles; fi" >> /start.sh \
+    && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /run/user/${UID}" >> /start.sh \
+    && echo "runuser -u ${USERNAME} -- env XDG_RUNTIME_DIR=/run/user/${UID} podman system service --time=0 &" >> /start.sh \
     && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg config/dotdrop.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
