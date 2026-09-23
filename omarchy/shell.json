@@ -99,9 +99,10 @@
         },
         {
           "id": "xonha.omavoice",
+          "enabled": true,
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
           "preset": "podcast",
-          "enabled": true
+          "setDefaultSource": true
         },
         {
           "id": "promaa.clock",

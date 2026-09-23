@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 lang="${1:?language is required}"
 shift
-stt_bin="/home/henrique/.config/omarchy/plugins/xonha.voice-tools/bin/stt"
+stt_bin="/home/henrique/.config/omarchy/plugins/xonha.speech-to-text/bin/stt"
 config_file="/home/henrique/.config/speech-to-text/config.json"
 session_dir="${XDG_RUNTIME_DIR:-/tmp}/speech-to-text-mic-restore"
 session_file="$session_dir/session"
