@@ -11,12 +11,14 @@ SERVICES_ALWAYS=(
 )
 
 # Prompted individually — user decides per machine
-SERVICES_OPTIONAL=(
-  docker.service
-)
+SERVICES_OPTIONAL=()
 
-# Desktop user services are configured by their owning desktop modules.
-SERVICES_USER=()
+# Rootless Podman API socket: backs the docker CLI shim, docker-compose and
+# testcontainers through DOCKER_HOST (see config/bash.conf). Desktop user
+# services are configured by their owning desktop modules.
+SERVICES_USER=(
+  podman.socket
+)
 
 enable_service() {
   local svc="$1"
@@ -42,8 +44,27 @@ enable_user_service() {
   fi
 }
 
+PODMAN_WSL_SRC="$(cd "$SETUP_ROOT/.." && pwd)/config/containers/wsl-network.conf"
+PODMAN_WSL_DST="$HOME/.config/containers/containers.conf.d/20-wsl-network.conf"
+
+is_wsl() {
+  grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null
+}
+
+# The WSL2 kernel lacks the nftables fib expression netavark requires, so
+# rootless bridge networks need the firewall driver disabled there.
+configure_podman_wsl() {
+  is_wsl || return 0
+  info "Linking Podman WSL network config..."
+  mkdir -p "$(dirname "$PODMAN_WSL_DST")"
+  ln -sfn "$PODMAN_WSL_SRC" "$PODMAN_WSL_DST"
+  success "Podman firewall driver disabled for WSL."
+}
+
 run() {
   header "Enable services"
+
+  configure_podman_wsl
 
   for svc in "${SERVICES_ALWAYS[@]}"; do
     enable_service "$svc"

@@ -53,6 +53,14 @@ dotfiles:
     src: bazzite/samba/samba.container
     dst: ~/.config/containers/systemd/samba.container
     link: absolute
+  config_containers_compose:
+    src: config/containers/compose.conf
+    dst: ~/.config/containers/containers.conf.d/10-compose.conf
+    link: absolute
+  config_containers_registries:
+    src: config/containers/registries.conf
+    dst: ~/.config/containers/registries.conf.d/10-docker-hub.conf
+    link: absolute
   config_foot:
     src: config/foot.ini
     dst: ~/.config/foot/foot.ini
@@ -133,6 +141,8 @@ profiles:
       - bazzite_lab
       - bazzite_lab_home
       - bazzite_samba
+      - config_containers_compose
+      - config_containers_registries
       - config_foot
       - config_speech_to_text
       - config_voxtype

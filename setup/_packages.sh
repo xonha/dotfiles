@@ -22,10 +22,16 @@ PKG_DEV_COMMON=(
 )
 
 # Services and host-management tooling. These are intentionally excluded from
-# Lab: containers should not run their own Docker daemon, Tailscale or OOM
+# Lab: containers should not run their own container engine, Tailscale or OOM
 # manager.
+#
+# Podman replaces Docker: podman-docker provides the `docker` CLI shim (it
+# conflicts with the docker package) and docker-compose is the provider used by
+# `podman compose` and by projects that still call `docker-compose` directly.
 PKG_HOST_ONLY=(
   earlyoom
   tailscale
-  docker
+  podman
+  podman-docker
+  docker-compose
 )
