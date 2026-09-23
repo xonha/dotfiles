@@ -3,7 +3,7 @@ FROM archlinux:latest
 # The build context is the dotfiles repository. Copy the actual setup stages
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
-COPY setup/_shared.sh setup/_packages.sh \
+COPY setup/_shared.sh \
      bazzite/lab/bootstrap-yay.sh setup/10-server-packages.sh \
      setup/30-login-shell.sh /opt/dotfiles-setup/
 # Install only the container runtime/bootstrap prerequisites. The shared
@@ -37,10 +37,9 @@ RUN groupadd -g ${GID} ${USERNAME} \
     && chmod 440 /etc/sudoers.d/${USERNAME}
 
 # Run the same user-level stages as a regular installation. Lab uses the
-# package-stage target to omit host daemons such as Docker and Tailscale.
+# shared CLI package stage; client services are installed only on Omarchy.
 USER ${USERNAME}
 ENV USER=${USERNAME}
-ENV SETUP_TARGET=lab
 RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/bootstrap-yay.sh && run \
       && source /opt/dotfiles-setup/10-server-packages.sh && run \
       && source /opt/dotfiles-setup/30-login-shell.sh && run \

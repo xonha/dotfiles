@@ -9,17 +9,23 @@ persistente tem seu proprio diretorio, com os artefatos de deploy e o runbook
 Nada em `setup/` e aplicado pelo Dotdrop. O que precisa virar symlink no `$HOME` — como os
 quadlets — mora em `config/`.
 
-Dois fluxos de bootstrap, cada um com seu proprio entrypoint:
+| Arquivo | Responsabilidade |
+|---|---|
+| `omarchy-setup.sh` | Entrada interativa: executa os estagios abaixo em ordem. |
+| `10-server-packages.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
+| `20-dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
+| `30-login-shell.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
+| `40-omarchy.sh` | Estagio opcional do cliente: chama os dois modulos Omarchy abaixo. |
+| `omarchy-packages.sh` | Catalogo exclusivo do cliente Omarchy: apps, ferramentas de monitor e servicos do host, separados por repositorio. |
+| `omarchy-plugins.sh` | Instala plugins do shell Omarchy e habilita `hyprmoncfgd`. |
+| `50-services.sh` | Habilita os servicos de sistema disponiveis. |
+| `omarchy-usb-wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
+| `_shared.sh` | Funcoes auxiliares usadas pelos estagios. |
 
-- `omarchy-setup.sh`: roda as etapas numeradas (`10-server-packages.sh` ->
-  `20-dotfiles.sh` -> `30-login-shell.sh` -> `40-desktop.sh` (opcional) ->
-  `50-services.sh`), mais `desktop-packages.sh` e `omarchy-plugins.sh`, usados
-  so por `40-desktop.sh`.
-- `lab/setup.sh`: builda `lab/Dockerfile` (que roda
-  `lab/bootstrap-yay.sh`, `10-server-packages.sh` e `30-login-shell.sh`
-  dentro da imagem) e reinicia o servico `lab`.
-
-`_shared.sh` e `_packages.sh` sao compartilhados pelos dois fluxos.
+Somente `10-server-packages.sh` e `omarchy-packages.sh` declaram os catalogos
+de pacotes deste diretorio. O Lab usa o primeiro no build de
+`bazzite/lab/Dockerfile`; os pre-requisitos da imagem ficam no proprio
+Dockerfile. `bazzite/lab/setup.sh` constroi a imagem e reinicia o servico Lab.
 
 ## Login shell safety
 

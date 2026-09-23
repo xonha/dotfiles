@@ -19,7 +19,7 @@ dotdrop install --cfg config/dotdrop.yaml --profile omarchy --dry --no-banner
 ```
 
 The setup entrypoint calls the same command from `setup/20-dotfiles.sh`.
-`dotdrop` is installed by `setup/_packages.sh`.
+`dotdrop` is installed by `setup/10-server-packages.sh`.
 
 ## Repository mapping
 

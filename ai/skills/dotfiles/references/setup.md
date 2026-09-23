@@ -6,11 +6,12 @@ order:
 1. `10-server-packages.sh` — base packages
 2. `20-dotfiles.sh` — Dotdrop and Git remote setup
 3. `30-login-shell.sh` — safe login-shell configuration
-4. `40-desktop.sh` — optional graphical setup
+4. `40-omarchy.sh` — optional Omarchy client setup
 5. `50-services.sh` — system services
 
-Desktop-only modules include `desktop-packages.sh` and `omarchy-plugins.sh`.
-Shared behavior belongs in `_shared.sh` or `_packages.sh`.
+Only `10-server-packages.sh` and `omarchy-packages.sh` declare package lists,
+grouped by repository. `40-omarchy.sh` invokes the Omarchy package and plugin
+modules. Shared behavior belongs in `_shared.sh`.
 
 Before changing a stage, inspect its callers and whether it can run on a
 headless host. Preserve the existing `run` convention and `set -euo pipefail`.

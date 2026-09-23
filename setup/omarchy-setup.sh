@@ -24,12 +24,11 @@ run
 source "$SETUP_DIR/30-login-shell.sh"
 run
 
-if confirm_step \
-    "Install desktop packages" \
-    "On Omarchy, preserves its native shell and browser while applying versioned Hyprland and Foot overrides; installs only optional companion tools.
-  On other Arch desktops, installs the legacy Hyprland profile.
-  Skip this on headless / SSH-only machines."; then
-  source "$SETUP_DIR/40-desktop.sh"
+if is_omarchy && confirm_step \
+    "Install Omarchy client packages and plugins" \
+    "Keeps Omarchy's native desktop and adds the client applications and shell plugins.
+  Skip this on headless machines."; then
+  source "$SETUP_DIR/40-omarchy.sh"
   run
 fi
 
