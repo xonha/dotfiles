@@ -19,6 +19,7 @@ run() {
   local plugins=(
     "https://github.com/crmne/omarchy-hyprmoncfg.git"
     "https://github.com/promaaa/sync-calendar-omarchy.git"
+    "https://github.com/gigasolo/omavoice.git"
   )
 
   local repo

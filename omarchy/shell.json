@@ -90,11 +90,12 @@
           "id": "omaconnect"
         },
         {
-          "id": "xonha.omavoice",
+          "id": "gigasolo.omavoice",
           "enabled": true,
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
           "preset": "podcast",
-          "setDefaultSource": true
+          "setDefaultSource": true,
+          "previousAudioSource": "alsa_input.pci-0000_06_00.6.analog-stereo"
         },
         {
           "id": "omarchy.audio"
