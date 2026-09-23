@@ -23,7 +23,7 @@ When recreating `lab`, the task is complete only when:
 - the Arch image is built from the current repository;
 - `https://github.com/xonha/dotfiles.git` is cloned into `~/Dotfiles` inside the
   target machine;
-- `dotdrop install --cfg dotdrop/config.yaml --profile omarchy` is executed from that clone;
+- `dotdrop install --cfg config/dotdrop.yaml --profile omarchy` is executed from that clone;
 - Bash is the login shell;
 - `config/bash.conf` and `bash_profile` are installed;
 - `.config/starship.toml` is installed and `starship` is available;

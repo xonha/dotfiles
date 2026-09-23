@@ -20,7 +20,7 @@ run() {
 
   info "Applying Dotdrop mappings from $dotfiles_dir..."
   pushd "$dotfiles_dir" >/dev/null
-  dotdrop install --cfg dotdrop/config.yaml --profile omarchy --no-banner --nodiff
+  dotdrop install --cfg config/dotdrop.yaml --profile omarchy --no-banner --nodiff
   popd >/dev/null
   success "Dotfiles applied with Dotdrop."
 

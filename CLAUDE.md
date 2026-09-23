@@ -32,7 +32,7 @@ machine.
 | `config/starship.toml`        | Starship prompt                                             |
 | `config/tmux.conf`                  | Tmux                                                        |
 | `config/bash.conf` / `bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
-| `ssh/config`                  | SSH host aliases                                            |
+| `config/ssh.conf`                  | SSH host aliases                                            |
 | `config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba, Keeper, Lab) |
 | `setup/`                      | Bootstrap scripts, plus one directory per service holding its deploy artifacts and runbook (`lab/`, `immich/`, `keeper/`, `crafty/`, `samba/`) |
 
@@ -53,7 +53,7 @@ copied into place rather than read from `$HOME`.
 
 ## Adding Dotfiles
 
-Add the mapping to `dotdrop/config.yaml`, then re-run `dotdrop install`.
+Add the mapping to `config/dotdrop.yaml`, then re-run `dotdrop install`.
 
 <!-- SPECKIT START -->
 

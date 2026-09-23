@@ -90,7 +90,7 @@ dotfiles:
     link: link_children
 
   ssh_config:
-    src: ssh/config
+    src: config/ssh.conf
     dst: ~/.ssh/config
     link: absolute
   themes:

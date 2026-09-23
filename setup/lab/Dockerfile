@@ -64,7 +64,7 @@ RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
     && echo "install -d -m 755 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.config" >> /start.sh \
     && echo "if [[ ! -d /home/${USERNAME}/Dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/Dotfiles; fi" >> /start.sh \
-    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg dotdrop/config.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
+    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg config/dotdrop.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo '/usr/sbin/sshd' >> /start.sh \
     && echo 'exec sleep infinity' >> /start.sh \

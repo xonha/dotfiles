@@ -58,7 +58,7 @@ single-user machine; the alternative is a rootful quadlet in
 
 ```bash
 # From the dotfiles repo root on bazzite:
-dotdrop install --cfg dotdrop/config.yaml --profile omarchy
+dotdrop install --cfg config/dotdrop.yaml --profile omarchy
 
 # Verify the symlink:
 ls -la ~/.config/containers/systemd/samba.container
