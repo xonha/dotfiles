@@ -1,0 +1,92 @@
+# Dotdrop ownership
+
+Dotdrop is the repository's only dotfile deployment tool. Its manifest is
+`.dotdrop/config.yaml`; mappings are explicit, so the source name and layout do
+not need to mirror the destination path.
+
+## Applying the repository
+
+From the repository root:
+
+```bash
+dotdrop install --cfg .dotdrop/config.yaml --profile omarchy
+```
+
+Preview changes first:
+
+```bash
+dotdrop install --cfg .dotdrop/config.yaml --profile omarchy --dry --no-banner
+```
+
+The setup entrypoint calls the same command from `.setup/20-dotfiles.sh`.
+`dotdrop` is installed by `.setup/_packages.sh`.
+
+## Repository mapping
+
+The `omarchy` profile maps the repository's configuration to `$HOME`. The
+`ai/` directory is a shared source tree:
+
+```text
+ai/
+├── agents/
+└── skills/
+```
+
+Both agent directories intentionally point to that same source:
+
+```yaml
+agents_home:
+  src: ai
+  dst: ~/.agents
+  link: absolute
+
+claude_home:
+  src: ai
+  dst: ~/.claude
+  link: absolute
+```
+
+This is the supported pattern for exposing one repository directory at
+multiple target paths. Keep runtime state such as `ai/backups`, `ai/cache`,
+and `ai/sessions` ignored by Git.
+
+## Link modes
+
+- `absolute` links the complete source file or directory to one destination.
+- `link_children` links the children of a directory while keeping the target
+  directory itself available for unrelated files.
+- Use `link_children` when Omarchy or an application owns other entries in the
+  destination directory.
+- Use `absolute` only when the repository is intended to own the complete
+  target path.
+
+## Safety and conflicts
+
+- Inspect `git status` before changing the manifest.
+- Run the dry-run before applying mappings.
+- `backup: true` is enabled in the manifest, but avoid relying on repeated
+  backups with the same `.dotdropbak` name. Review existing backups before a
+  broad replacement.
+- `--force` is required for non-interactive replacement of an existing target.
+  Use it only after reviewing the dry-run.
+- Do not replace Omarchy-managed regular files or directories merely because
+  they exist in the repository. Add them to the manifest only when the
+  ownership decision is explicit.
+- Systemd drop-in directories must remain real directories; map their files or
+  children rather than linking the drop-in directory itself.
+
+## Verification
+
+After applying a mapping, verify the target resolves to the intended source:
+
+```bash
+readlink -f ~/.agents
+readlink -f ~/.claude
+diff -qr ~/.agents ~/.claude
+```
+
+For a mapping that should already be satisfied, Dotdrop should report:
+
+```text
+0 dotfile(s) installed.
+```

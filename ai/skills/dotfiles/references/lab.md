@@ -7,7 +7,7 @@ workspace, and SSH entrypoint.
 Before running it, ensure:
 
 - Podman is installed;
-- the dotfiles have already been stowed;
+- the dotfiles have already been applied with Dotdrop;
 - `$HOME/.config/containers/systemd/lab.container` exists.
 
 The normal command is:
@@ -23,7 +23,7 @@ When recreating `lab`, the task is complete only when:
 - the Arch image is built from the current repository;
 - `https://github.com/xonha/dotfiles.git` is cloned into `~/Dotfiles` inside the
   target machine;
-- `stow --restow .` is executed from that clone;
+- `dotdrop install --cfg .dotdrop/config.yaml --profile omarchy` is executed from that clone;
 - Bash is the login shell;
 - `.bashrc` and `.bash_profile` are installed;
 - `.config/starship.toml` is installed and `starship` is available;

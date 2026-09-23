@@ -3,18 +3,14 @@ config:
   backup: true
 
 dotfiles:
-  agents_agents:
-    src: .agents/agents
-    dst: ~/.agents/agents
+  agents_home:
+    src: ai
+    dst: ~/.agents
     link: absolute
-  agents_local:
-    src: .agents/local.example.json
-    dst: ~/.agents/local.example.json
+  claude_home:
+    src: ai
+    dst: ~/.claude
     link: absolute
-  claude_skills:
-    src: .claude/skills
-    dst: ~/.claude/skills
-    link: link_children
 
   bash_profile:
     src: .bash_profile
@@ -90,9 +86,8 @@ dotfiles:
 profiles:
   omarchy:
     dotfiles:
-      - agents_agents
-      - agents_local
-      - claude_skills
+      - agents_home
+      - claude_home
       - bash_profile
       - bashrc
       - face

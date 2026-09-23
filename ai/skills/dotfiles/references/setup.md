@@ -4,7 +4,7 @@ The main setup flow is `.setup/omarchy-setup.sh`. It sources these stages in
 order:
 
 1. `10-server-packages.sh` — base packages
-2. `20-dotfiles.sh` — GNU Stow and Git remote setup
+2. `20-dotfiles.sh` — Dotdrop and Git remote setup
 3. `30-login-shell.sh` — safe login-shell configuration
 4. `40-desktop.sh` — optional graphical setup
 5. `50-services.sh` — system services

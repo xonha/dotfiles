@@ -22,12 +22,10 @@ __pycache__/
 .config/nextjs-nodejs/config.json
 .config/opencode/opencode/node_modules/
 
-# --- valores machine/empresa-specific lidos pelas skills (ver local.example.json) ---
-.agents/local.json
-
-# --- claude code local state (mantem apenas .claude/skills versionado) ---
-.claude/*
-!.claude/skills
+# --- agent runtime state and local machine configuration ---
+/ai/*
+!/ai/agents/
+!/ai/skills/
 
 # .ssh
 .ssh/*

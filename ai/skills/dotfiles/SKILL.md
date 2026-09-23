@@ -4,7 +4,7 @@ description: >
   REQUIRED for changes to this user's Linux dotfiles, setup scripts, desktop
   configuration, systemd services, or development environments. Use when
   editing files under ~/.config/ or ~/.setup/, shell files, Hyprland,
-  Omarchy, GNU Stow, Podman containers, or personal service configuration.
+  Omarchy, Dotdrop, Podman containers, or personal service configuration.
   Excludes unrelated application source development.
 metadata:
   short-description: Manage Henrique's versioned Linux dotfiles
@@ -14,7 +14,7 @@ metadata:
 
 Manage this repository as the source of truth for Henrique's personal Linux
 configuration. Configuration changes belong in the repository and are applied
-to the host with GNU Stow or one of the setup entrypoints.
+to the host with Dotdrop or one of the setup entrypoints.
 
 ## When this skill must be used
 
@@ -58,7 +58,7 @@ configuration or Omarchy integration. The main entrypoint is:
 ./.setup/omarchy-setup.sh
 ```
 
-It installs packages, stows the dotfiles, configures the login shell, and
+  It installs packages, applies the Dotdrop mappings, configures the login shell, and
 optionally configures the desktop and services.
 
 ### Lab environment
@@ -75,9 +75,9 @@ as Foot separately and document that boundary.
 ./.setup/lab/setup.sh
 ```
 
-### Stow and linking
+### Dotdrop and linking
 
-Read [references/stow.md](references/stow.md) before changing ownership,
+Read [references/dotdrop.md](references/dotdrop.md) before changing mappings,
 ignore rules, or files that may conflict with existing host configuration.
 
 ## Decision framework
@@ -91,7 +91,7 @@ ignore rules, or files that may conflict with existing host configuration.
    `.setup/<service>/README.md` runbook.
 5. Is it potentially destructive or privileged? Confirm scope, then make the
    smallest reversible change.
-6. Validate with the narrowest useful check: shell syntax, Stow dry-run,
+6. Validate with the narrowest useful check: shell syntax, Dotdrop dry-run,
    service status, or the relevant application reload. For a recreated system,
    also verify that the expected dotfiles exist in the target and match the
    repository source.
@@ -99,7 +99,7 @@ ignore rules, or files that may conflict with existing host configuration.
 ## Topic references
 
 - [references/setup.md](references/setup.md) — setup stages and validation
-- [references/stow.md](references/stow.md) — ownership, exclusions, and conflicts
+- [references/dotdrop.md](references/dotdrop.md) — mappings, ownership, and conflicts
 - [references/omarchy.md](references/omarchy.md) — Omarchy integration boundaries
 - [references/lab.md](references/lab.md) — `lab`, Podman, and Quadlet
 - [references/services.md](references/services.md) — system and user services
