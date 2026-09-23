@@ -1,13 +1,3 @@
-local omarchy_theme = vim.fn.expand("~/.local/state/omarchy/current/theme/neovim.lua")
-
-if vim.fn.filereadable(omarchy_theme) == 1 then
-  local ok, spec = pcall(dofile, omarchy_theme)
-  if ok and type(spec) == "table" then
-    return spec
-  end
-end
-
--- Fallback for sessions where Omarchy has not generated a Neovim theme yet.
 return {
   {
     "catppuccin/nvim",
@@ -30,6 +20,7 @@ return {
       custom_highlights = {
         Normal = { bg = "#0f0f0f" },
         NormalNC = { bg = "#0f0f0f" },
+        NeoTreeEndOfBuffer = { bg = "#121212" },
       },
     },
   },
