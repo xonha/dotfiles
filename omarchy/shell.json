@@ -91,11 +91,11 @@
         },
         {
           "id": "xonha.omavoice",
-          "enabled": true,
+          "enabled": false,
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
           "preset": "podcast",
-          "setDefaultSource": true,
-          "previousAudioSource": "alsa_input.pci-0000_06_00.6.analog-stereo"
+          "previousAudioSource": "bluez_input.00:02:5B:00:FF:0E",
+          "setDefaultSource": true
         },
         {
           "id": "omarchy.audio"
