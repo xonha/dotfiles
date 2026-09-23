@@ -13,16 +13,12 @@ dotfiles:
     link: absolute
 
   bash_profile:
-    src: .bash_profile
+    src: config/bash
     dst: ~/.bash_profile
     link: absolute
   bashrc:
-    src: .bashrc
+    src: config/bash
     dst: ~/.bashrc
-    link: absolute
-  face:
-    src: .face
-    dst: ~/.face
     link: absolute
   hidden:
     src: .hidden
@@ -101,7 +97,6 @@ profiles:
       - claude_home
       - bash_profile
       - bashrc
-      - face
       - hidden
       - tmux
       - config_containers
