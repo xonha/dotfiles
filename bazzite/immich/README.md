@@ -11,7 +11,7 @@ por endereço.
 |------|-------|
 | Host | `bazzite` — Bazzite Silverblue |
 | Backend | Podman rootless + `podman compose` |
-| Versioned Compose | `setup/immich/docker-compose.yml` neste repositório |
+| Versioned Compose | `bazzite/immich/docker-compose.yml` neste repositório |
 | Diretório Compose | `/var/home/henrique/immich/` |
 | Servidor | `immich_server` |
 | PostgreSQL | `immich_postgres` |
@@ -20,7 +20,7 @@ por endereço.
 | Versão | `v3` (a versão da imagem é determinada pela release atual) |
 | Porta local | `2283` |
 
-O arquivo versionado em `setup/immich/docker-compose.yml` é baseado no
+O arquivo versionado em `bazzite/immich/docker-compose.yml` é baseado no
 Compose da release oficial atual do Immich. Ele contém os ajustes locais para
 Podman, SELinux e os endereços LAN/Tailscale/localhost. A cópia operacional
 fica em `/var/home/henrique/immich/docker-compose.yml` no Bazzite.
@@ -115,7 +115,7 @@ podman logs -f immich_server
 podman logs -f immich_postgres
 
 # A partir da máquina onde este repositório está disponível, publicar o Compose versionado
-scp setup/immich/docker-compose.yml bazzite:/var/home/henrique/immich/docker-compose.yml
+scp bazzite/immich/docker-compose.yml bazzite:/var/home/henrique/immich/docker-compose.yml
 
 # No bazzite, validar e aplicar a configuração
 cd /var/home/henrique/immich

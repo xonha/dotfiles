@@ -44,7 +44,7 @@ questions that do not affect this dotfiles repository.
 | Dotfiles | Versioned user configuration | `config/`, hidden files |
 | Setup | Installation and bootstrap | `setup/`, numbered modules |
 | Desktop | Hyprland, Omarchy, Foot | `hypr/`, `omarchy/`, `config/foot.ini` |
-| Services | Systemd and containers | `config/containers/`, `config/systemd/` |
+| Services | Systemd and containers | `bazzite/`, `config/systemd/` |
 | Operations | Per-service deploy artifacts and runbooks | `setup/<service>/` |
 
 ## Main workflows
@@ -72,7 +72,7 @@ minimum, validate Bash, Starship, and tmux; treat host-only desktop config such
 as Foot separately and document that boundary.
 
 ```bash
-./setup/lab/setup.sh
+./bazzite/lab/setup.sh
 ```
 
 ### Dotdrop and linking
@@ -111,4 +111,4 @@ ignore rules, or files that may conflict with existing host configuration.
 - “Install a base package” → inspect `setup/10-server-packages.sh`.
 - “Change desktop package behavior” → inspect `setup/40-desktop.sh` and its modules.
 - “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
-- “Change Immich or Keeper.sh” → read `setup/immich/README.md` or `setup/keeper/README.md` before editing.
+- “Change Immich or Keeper.sh” → read `bazzite/immich/README.md` or `bazzite/keeper/README.md` before editing.

@@ -8,7 +8,7 @@ de desenvolvimento definido no repositório.
 |---|---|---|---|---|
 | `lab` | Desenvolvimento | `2224` | `~/lab/workspace` | volume `lab-home` |
 
-A imagem é construída de `setup/lab/Dockerfile`. O workspace é uma pasta
+A imagem é construída de `bazzite/lab/Dockerfile`. O workspace é uma pasta
 normal no Bazzite e o home persistente fica no volume `lab-home`. Na primeira
 inicialização, o container clona `https://github.com/xonha/dotfiles.git` em
 `~/Dotfiles` e executa `dotdrop install` a partir desse clone.
@@ -20,7 +20,7 @@ No Bazzite, após aplicar os dotfiles com Dotdrop:
 ```bash
 cd ~/Dotfiles
 dotdrop install --cfg config/dotdrop.yaml --profile omarchy
-./setup/lab/setup.sh
+./bazzite/lab/setup.sh
 ```
 
 O instalador cria `~/lab/workspace`, constrói a imagem, recarrega a unidade
@@ -64,5 +64,5 @@ journalctl --user -u lab.service -f
 ```
 
 Para recriar completamente a máquina, pare a unidade, remova o container e o
-volume `lab-home`, e execute novamente `./setup/lab/setup.sh`. O diretório
+volume `lab-home`, e execute novamente `./bazzite/lab/setup.sh`. O diretório
 `~/lab/workspace` deve ser preservado se contiver código.

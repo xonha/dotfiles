@@ -30,18 +30,18 @@ documentados em [`setup/README.md`](setup/README.md).
 de aplicar os dotfiles com Dotdrop, execute:
 
 ```bash
-./setup/lab/setup.sh
+./bazzite/lab/setup.sh
 ```
 
-O guia operacional está em [`setup/lab/README.md`](setup/lab/README.md).
+O guia operacional está em [`bazzite/lab/README.md`](bazzite/lab/README.md).
 
 ## Keeper.sh
 
 O Keeper.sh roda no Bazzite como serviço Quadlet rootless, na porta local
-`8088`. O guia operacional está em [`setup/keeper/README.md`](setup/keeper/README.md).
+`8088`. O guia operacional está em [`bazzite/keeper/README.md`](bazzite/keeper/README.md).
 
 ## Immich
 
 O Immich roda no Bazzite com Podman Compose, biblioteca no HD separado e
 acesso LAN/Tailscale/Funnel. O guia operacional está em
-[`setup/immich/README.md`](setup/immich/README.md).
+[`bazzite/immich/README.md`](bazzite/immich/README.md).

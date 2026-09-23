@@ -4,7 +4,7 @@ FROM archlinux:latest
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
 COPY setup/_shared.sh setup/_packages.sh \
-     setup/lab/bootstrap-yay.sh setup/10-server-packages.sh \
+     bazzite/lab/bootstrap-yay.sh setup/10-server-packages.sh \
      setup/30-login-shell.sh /opt/dotfiles-setup/
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.

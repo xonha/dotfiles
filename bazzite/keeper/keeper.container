@@ -7,7 +7,7 @@ Wants=network-online.target
 # Imagem construída localmente a partir do fork em ~/.local/src/keeper.sh, que
 # carrega o conferenceData do Google Meet entre calendários Google. A tag upstream
 # ghcr.io/ridafkih/keeper-standalone:2 não tem essa alteração e um `podman pull`
-# dela reverteria o comportamento. Reconstrução em .setup/keeper/README.md.
+# dela reverteria o comportamento. Reconstrução em .bazzite/keeper/README.md.
 Image=localhost/keeper-standalone:meet
 ContainerName=keeper
 

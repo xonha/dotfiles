@@ -29,9 +29,25 @@ dotfiles:
     dst: ~/.tmux.conf
     link: absolute
 
-  config_containers:
-    src: config/containers
-    dst: ~/.config/containers
+  bazzite_crafty:
+    src: bazzite/crafty/crafty.container
+    dst: ~/.config/containers/systemd/crafty.container
+    link: absolute
+  bazzite_keeper:
+    src: bazzite/keeper/keeper.container
+    dst: ~/.config/containers/systemd/keeper.container
+    link: absolute
+  bazzite_lab:
+    src: bazzite/lab/lab.container
+    dst: ~/.config/containers/systemd/lab.container
+    link: absolute
+  bazzite_lab_home:
+    src: bazzite/lab/lab-home.volume
+    dst: ~/.config/containers/systemd/lab-home.volume
+    link: absolute
+  bazzite_samba:
+    src: bazzite/samba/samba.container
+    dst: ~/.config/containers/systemd/samba.container
     link: absolute
   config_foot:
     src: config/foot.ini
@@ -107,7 +123,11 @@ profiles:
       - bashrc
       - hidden
       - tmux
-      - config_containers
+      - bazzite_crafty
+      - bazzite_keeper
+      - bazzite_lab
+      - bazzite_lab_home
+      - bazzite_samba
       - config_foot
       - config_speech_to_text
       - config_voxtype

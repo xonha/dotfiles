@@ -1,6 +1,6 @@
 # Lab environment
 
-`setup/lab/setup.sh` builds `lab/Dockerfile`, reloads the user units,
+`bazzite/lab/setup.sh` builds `lab/Dockerfile`, reloads the user units,
 and restarts the `lab` service. The environment has an independent home,
 workspace, and SSH entrypoint.
 
@@ -13,7 +13,7 @@ Before running it, ensure:
 The normal command is:
 
 ```bash
-./setup/lab/setup.sh
+./bazzite/lab/setup.sh
 ```
 
 ## Reproduction definition of done
@@ -38,4 +38,4 @@ Foot is a graphical terminal configuration for the host that launches `ssh
 lab`. It is not expected inside the headless Arch container; validate it on the
 Omarchy/Bazzite host separately when the request concerns the terminal itself.
 
-Operational details belong in `setup/lab/README.md`, not duplicated here.
+Operational details belong in `bazzite/lab/README.md`, not duplicated here.
