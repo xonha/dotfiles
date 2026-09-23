@@ -124,7 +124,8 @@
     },
     "position": "top",
     "transparent": false,
-    "id": "henrique.bar"
+    "transparencyToggle": false,
+    "id": "xonha.bar"
   },
   "idle": {
     "lock": 300,

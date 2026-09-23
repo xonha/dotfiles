@@ -26,6 +26,20 @@ run() {
     omarchy plugin add "$repo" --enable --yes
   done
 
+  # Keep the local bar override in sync with the versioned copy. Plugin code
+  # must be copied: Omarchy does not load plugin directories through symlinks.
+  local bar_source="$SETUP_ROOT/../omarchy/plugins/xonha.bar"
+  local bar_target="$HOME/.config/omarchy/plugins/xonha.bar"
+  if [[ -L $bar_target ]]; then
+    error "Refusing to replace symlinked bar plugin: $bar_target"
+    return 1
+  fi
+  mkdir -p "$bar_target"
+  cp -aL "$bar_source/." "$bar_target/"
+  if omarchy-shell shell ping >/dev/null 2>&1; then
+    omarchy-shell shell rescanPlugins
+  fi
+
   # hyprmoncfgd watches for hotplug/lid/resume events; needed for
   # crmne.hyprmoncfg's automatic profile switching. aur/hyprmoncfg-bin
   # (installed by packages.sh) ships the binary but does not enable the
