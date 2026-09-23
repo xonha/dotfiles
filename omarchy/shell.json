@@ -40,18 +40,6 @@
           "id": "xonha.speech-to-text"
         },
         {
-          "id": "robzolkos.github",
-          "includeContributions": false,
-          "linkBehavior": "Browser tab",
-          "repositoryScope": "Owned and organizations",
-          "refreshIntervalSec": 1800,
-          "iconAlwaysUnlit": true
-        },
-        {
-          "id": "xonha.cycle_browser",
-          "scriptPath": "/home/henrique/.config/scripts/cycle-browser-profile.sh"
-        },
-        {
           "id": "xonha.tray",
           "reverse": true,
           "pinned": [],
@@ -78,10 +66,19 @@
           "showNotifications": false
         },
         {
-          "id": "omarchy.power"
+          "id": "robzolkos.github",
+          "includeContributions": false,
+          "linkBehavior": "Browser tab",
+          "repositoryScope": "Owned and organizations",
+          "refreshIntervalSec": 1800,
+          "iconAlwaysUnlit": true
         },
         {
           "id": "omarchy.agents"
+        },
+        {
+          "id": "xonha.cycle_browser",
+          "scriptPath": "/home/henrique/.config/scripts/cycle-browser-profile.sh"
         },
         {
           "id": "crmne.hyprmoncfg"
@@ -93,20 +90,23 @@
           "id": "omaconnect"
         },
         {
-          "id": "omarchy.network"
-        },
-        {
-          "id": "omarchy.bluetooth"
-        },
-        {
-          "id": "omarchy.audio"
-        },
-        {
           "id": "xonha.omavoice",
           "enabled": true,
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
           "preset": "podcast",
           "setDefaultSource": true
+        },
+        {
+          "id": "omarchy.audio"
+        },
+        {
+          "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "omarchy.power"
         },
         {
           "id": "promaa.clock",

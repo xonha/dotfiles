@@ -72,10 +72,9 @@ BarWidget {
     bar: root.bar
     text: "\uf0ac"
     foreground: root.profileColor
-    active: root.loading
     tooltipText: root.loading
       ? "Trocando perfil do navegador..."
-      : "Navegador: " + root.browserName + "\nPerfil: " + root.profile + " — clique para alternar"
+      : "Navegador: " + root.browserName + "\nPerfil: " + root.profile + "\nClique para alternar"
     onPressed: function(button) {
       if (button === Qt.LeftButton) root.cycleProfile()
       else if (button === Qt.MiddleButton) root.readProfile()
