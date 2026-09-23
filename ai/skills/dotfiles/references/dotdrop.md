@@ -32,23 +32,28 @@ ai/
 └── skills/
 ```
 
-Both agent directories intentionally point to that same source:
+The host agent directories contain local state, so only their versioned
+children are mapped:
 
 ```yaml
-agents_home:
-  src: ai
-  dst: ~/.agents
+agents_profiles:
+  src: ai/agents
+  dst: ~/.agents/agents
   link: absolute
 
-claude_home:
-  src: ai
-  dst: ~/.claude
+agents_skills:
+  src: ai/skills
+  dst: ~/.agents/skills
+  link: link_children
+
+claude_skills:
+  src: ai/skills
+  dst: ~/.claude/skills
   link: absolute
 ```
 
-This is the supported pattern for exposing one repository directory at
-multiple target paths. Keep runtime state such as `ai/backups`, `ai/cache`,
-and `ai/sessions` ignored by Git.
+This preserves local skills and runtime state in `~/.agents` and `~/.claude`
+while exposing the same versioned skills in both applications.
 
 ## Link modes
 
@@ -80,9 +85,9 @@ and `ai/sessions` ignored by Git.
 After applying a mapping, verify the target resolves to the intended source:
 
 ```bash
-readlink -f ~/.agents
-readlink -f ~/.claude
-diff -qr ~/.agents ~/.claude
+readlink -f ~/.agents/agents
+readlink -f ~/.agents/skills/dotfiles
+readlink -f ~/.claude/skills
 ```
 
 For a mapping that should already be satisfied, Dotdrop should report:

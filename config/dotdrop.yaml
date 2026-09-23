@@ -3,13 +3,17 @@ config:
   backup: true
 
 dotfiles:
-  agents_home:
-    src: ai
-    dst: ~/.agents
+  agents_profiles:
+    src: ai/agents
+    dst: ~/.agents/agents
     link: absolute
-  claude_home:
-    src: ai
-    dst: ~/.claude
+  agents_skills:
+    src: ai/skills
+    dst: ~/.agents/skills
+    link: link_children
+  claude_skills:
+    src: ai/skills
+    dst: ~/.claude/skills
     link: absolute
 
   bash_profile:
@@ -89,6 +93,10 @@ dotfiles:
     src: omarchy/shell.json
     dst: ~/.config/omarchy/shell.json
     link: absolute
+  omarchy_theme_hook:
+    src: omarchy/hooks/theme-set.d/apply-darkppuccin-gtk
+    dst: ~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-gtk
+    link: absolute
 
   shortcuts:
     src: config/shortcuts
@@ -113,8 +121,9 @@ dotfiles:
 profiles:
   omarchy:
     dotfiles:
-      - agents_home
-      - claude_home
+      - agents_profiles
+      - agents_skills
+      - claude_skills
       - bash_profile
       - bashrc
       - hidden
@@ -134,6 +143,7 @@ profiles:
       - config_starship
       - omarchy_themes
       - omarchy_shell
+      - omarchy_theme_hook
       - shortcuts
       - icons
       - ssh_config
