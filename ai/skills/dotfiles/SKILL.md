@@ -108,7 +108,7 @@ ignore rules, or files that may conflict with existing host configuration.
 
 - “Add a Hyprland shortcut” → edit `hypr/bindings.lua`, then validate or reload Hyprland.
 - “Change the Omarchy bar” → inspect `omarchy/shell.json` and preserve Omarchy ownership boundaries.
-- “Install a base package” → inspect `setup/10-server-packages.sh`.
-- “Change Omarchy client packages” → inspect `setup/omarchy-packages.sh` and `setup/40-omarchy.sh`.
+- “Install a base package” → inspect `setup/packages-server.sh`.
+- “Change Omarchy client packages” → inspect `setup/packages-client.sh`.
 - “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
 - “Change Immich or Keeper.sh” → read `bazzite/immich/README.md` or `bazzite/keeper/README.md` before editing.

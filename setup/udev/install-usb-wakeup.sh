@@ -3,12 +3,12 @@
 set -euo pipefail
 
 if (( EUID != 0 )); then
-  echo "Run as root: sudo ./setup/omarchy-usb-wakeup.sh" >&2
+  echo "Run as root: sudo ./setup/udev/install-usb-wakeup.sh" >&2
   exit 1
 fi
 
 setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-rule="$setup_dir/udev/90-omarchy-usb-wakeup.rules"
+rule="$setup_dir/90-omarchy-usb-wakeup.rules"
 target=/etc/udev/rules.d/90-omarchy-usb-wakeup.rules
 
 install -m 0644 "$rule" "$target"

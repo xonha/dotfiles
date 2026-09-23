@@ -1,11 +1,11 @@
 FROM archlinux:latest
 
-# The build context is the dotfiles repository. Copy the actual setup stages
+# The build context is the dotfiles repository. Copy the shared setup modules
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
 COPY setup/_shared.sh \
-     bazzite/lab/bootstrap-yay.sh setup/10-server-packages.sh \
-     setup/30-login-shell.sh /opt/dotfiles-setup/
+     bazzite/lab/bootstrap-yay.sh setup/packages-server.sh \
+     setup/login-shell.sh /opt/dotfiles-setup/
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
 RUN pacman -Syu --noconfirm \
@@ -41,8 +41,8 @@ RUN groupadd -g ${GID} ${USERNAME} \
 USER ${USERNAME}
 ENV USER=${USERNAME}
 RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/bootstrap-yay.sh && run \
-      && source /opt/dotfiles-setup/10-server-packages.sh && run \
-      && source /opt/dotfiles-setup/30-login-shell.sh && run \
+      && source /opt/dotfiles-setup/packages-server.sh && run \
+      && source /opt/dotfiles-setup/login-shell.sh && run \
       && (yay -S --needed --noconfirm blesh || true)'
 
 USER root

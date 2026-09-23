@@ -11,25 +11,24 @@ quadlets — mora em `config/`.
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `omarchy-setup.sh` | Entrada interativa: executa os estagios abaixo em ordem. |
-| `10-server-packages.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
-| `20-dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
-| `30-login-shell.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
-| `40-omarchy.sh` | Estagio opcional do cliente: chama os dois modulos Omarchy abaixo. |
-| `omarchy-packages.sh` | Catalogo exclusivo do cliente Omarchy: apps, ferramentas de monitor e servicos do host, separados por repositorio. |
+| `omarchy-setup.sh` | Entrada interativa: executa pacotes comuns, dotfiles e shell; no Omarchy oferece pacotes e plugins do cliente; por fim configura servicos. |
+| `packages-server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
+| `dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
+| `login-shell.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
+| `packages-client.sh` | Catalogo exclusivo do cliente Omarchy: apps, ferramentas de monitor e servicos do host, separados por repositorio. |
 | `omarchy-plugins.sh` | Instala plugins do shell Omarchy e habilita `hyprmoncfgd`. |
-| `50-services.sh` | Habilita os servicos de sistema disponiveis. |
-| `omarchy-usb-wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
+| `services.sh` | Habilita os servicos de sistema disponiveis. |
+| `udev/install-usb-wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
 | `_shared.sh` | Funcoes auxiliares usadas pelos estagios. |
 
-Somente `10-server-packages.sh` e `omarchy-packages.sh` declaram os catalogos
+Somente `packages-server.sh` e `packages-client.sh` declaram os catalogos
 de pacotes deste diretorio. O Lab usa o primeiro no build de
 `bazzite/lab/Dockerfile`; os pre-requisitos da imagem ficam no proprio
 Dockerfile. `bazzite/lab/setup.sh` constroi a imagem e reinicia o servico Lab.
 
 ## Login shell safety
 
-`.setup/30-login-shell.sh` runs immediately after the server packages are installed. It
+`setup/login-shell.sh` runs after the common packages and dotfiles are installed. It
 configures Bash as the login shell only after confirming that `command -v bash`
 returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's
@@ -42,7 +41,7 @@ By default, the ThinkPad only wakes from `systemctl suspend` via the power butto
 This documents how to enable wakeup from the internal keyboard and an external USB keyboard.
 
 For the Corne keyboard connected through the USB-C hub on this machine, run
-`sudo ./setup/omarchy-usb-wakeup.sh`. The versioned udev rule enables wake for the
+`sudo ./setup/udev/install-usb-wakeup.sh`. The versioned udev rule enables wake for the
 USB root hub, the two hub stages, the Corne keyboard, and the Logitech receiver.
 It applies to connected devices immediately and to future connections after a
 reboot. Test with the lid closed and wake the laptop from the external keyboard.

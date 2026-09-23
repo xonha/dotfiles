@@ -14,5 +14,5 @@ Read the installed Omarchy skill before making end-user desktop changes. Use
 the official `omarchy` commands for Omarchy-owned operations, and do not edit
 `/usr/share/omarchy/`.
 
-The integration decision is implemented in `.setup/_shared.sh` and
-`.setup/20-dotfiles.sh`; keep detection and exclusion logic centralized there.
+The integration decision is implemented in `setup/_shared.sh` and
+`setup/dotfiles.sh`; keep detection and exclusion logic centralized there.

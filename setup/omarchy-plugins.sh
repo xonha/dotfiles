@@ -42,7 +42,7 @@ run() {
 
   # hyprmoncfgd watches for hotplug/lid/resume events; needed for
   # crmne.hyprmoncfg's automatic profile switching. aur/hyprmoncfg-bin
-  # (installed by packages.sh) ships the binary but does not enable the
+  # (installed by packages-client.sh) ships the binary but does not enable the
   # service on its own.
   if command -v hyprmoncfgd >/dev/null 2>&1; then
     systemctl --user enable hyprmoncfgd.service

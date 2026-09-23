@@ -1,6 +1,6 @@
 # Services
 
-System services are configured by `.setup/50-services.sh`. Services that are
+System services are configured by `setup/services.sh`. Services that are
 always enabled are separate from optional services that require confirmation.
 User services must be checked with `systemctl --user` and may require an active
 login session.

@@ -13,27 +13,29 @@ printf "│         Henrique's Setup Script      │\n"
 printf "╰──────────────────────────────────────╯\n"
 printf "${RESET}\n"
 
-source "$SETUP_DIR/10-server-packages.sh"
-run
+run_module() {
+  local module="$1"
+  source "$SETUP_DIR/$module"
+  run
+}
+
+run_module packages-server.sh
 
 # Dotdrop is provided by the server package stage above.
-source "$SETUP_DIR/20-dotfiles.sh"
-run
+run_module dotfiles.sh
 
 # Configure the login shell after the shell packages are installed.
-source "$SETUP_DIR/30-login-shell.sh"
-run
+run_module login-shell.sh
 
 if is_omarchy && confirm_step \
     "Install Omarchy client packages and plugins" \
     "Keeps Omarchy's native desktop and adds the client applications and shell plugins.
   Skip this on headless machines."; then
-  source "$SETUP_DIR/40-omarchy.sh"
-  run
+  run_module packages-client.sh
+  run_module omarchy-plugins.sh
 fi
 
-source "$SETUP_DIR/50-services.sh"
-run
+run_module services.sh
 
 printf "\n${BOLD}${GREEN}All selected steps completed.${RESET}\n"
 printf "You may need to ${BOLD}log out and back in${RESET} for group changes to take effect.\n\n"
