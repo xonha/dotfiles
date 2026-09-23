@@ -30,8 +30,8 @@ machine.
 | `config/opencode/`            | OpenCode                                                    |
 | `config/scripts/`             | Custom shell scripts                                        |
 | `config/starship.toml`        | Starship prompt                                             |
-| `.tmux.conf`                  | Tmux                                                        |
-| `config/bash` / `bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
+| `config/tmux.conf`                  | Tmux                                                        |
+| `config/bash.conf` / `bash_profile` / `.bash_logout` | Bash (used by tmux panes, which default to Bash) |
 | `ssh/config`                  | SSH host aliases                                            |
 | `config/containers/systemd/` | Podman Quadlet units for `bazzite` services (Crafty, Samba, Keeper, Lab) |
 | `setup/`                      | Bootstrap scripts, plus one directory per service holding its deploy artifacts and runbook (`lab/`, `immich/`, `keeper/`, `crafty/`, `samba/`) |

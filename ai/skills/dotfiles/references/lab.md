@@ -25,11 +25,11 @@ When recreating `lab`, the task is complete only when:
   target machine;
 - `dotdrop install --cfg dotdrop/config.yaml --profile omarchy` is executed from that clone;
 - Bash is the login shell;
-- `config/bash` and `bash_profile` are installed;
+- `config/bash.conf` and `bash_profile` are installed;
 - `.config/starship.toml` is installed and `starship` is available;
 - `blesh` is installed from the AUR (with an upstream build as fallback) and
   an interactive Bash session exposes `BLE_VERSION`;
-- `.tmux.conf` is installed and tmux loads it successfully;
+- `config/tmux.conf` is installed and tmux loads it successfully;
 - `lab.service` is active and SSH access works;
 - the source and target configuration checksums are compared;
 - the clone is on the expected branch/commit and has no unexpected changes.

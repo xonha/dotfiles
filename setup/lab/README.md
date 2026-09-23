@@ -34,7 +34,7 @@ Uma recriação de `lab` só está concluída quando:
 - `~/Dotfiles` existe dentro do `lab` e é um clone limpo do repositório;
 - `dotdrop install` foi executado a partir de `~/Dotfiles`;
 - o login usa Bash;
-- `config/bash`, `bash_profile`, `.tmux.conf` e `config/starship.toml` estão
+- `config/bash.conf`, `bash_profile`, `config/tmux.conf` e `config/starship.toml` estão
   presentes no home do usuário;
 - `starship` e `tmux` estão disponíveis;
 - `blesh` está instalado pelo AUR (com build upstream como fallback) e uma

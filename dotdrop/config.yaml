@@ -13,11 +13,11 @@ dotfiles:
     link: absolute
 
   bash_profile:
-    src: config/bash
+    src: config/bash.conf
     dst: ~/.bash_profile
     link: absolute
   bashrc:
-    src: config/bash
+    src: config/bash.conf
     dst: ~/.bashrc
     link: absolute
   hidden:
@@ -25,7 +25,7 @@ dotfiles:
     dst: ~/.hidden
     link: absolute
   tmux:
-    src: .tmux.conf
+    src: config/tmux.conf
     dst: ~/.tmux.conf
     link: absolute
 
