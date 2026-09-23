@@ -43,7 +43,7 @@ questions that do not affect this dotfiles repository.
 |---|---|---|
 | Dotfiles | Versioned user configuration | `.config/`, hidden files |
 | Setup | Installation and bootstrap | `.setup/`, numbered modules |
-| Desktop | Hyprland, Omarchy, Foot | `.config/hypr/`, `.config/omarchy/`, `.config/foot/` |
+| Desktop | Hyprland, Omarchy, Foot | `hypr/`, `.config/omarchy/`, `.config/foot/` |
 | Services | Systemd and containers | `.config/containers/`, `.config/systemd/` |
 | Operations | Per-service deploy artifacts and runbooks | `.setup/<service>/` |
 
@@ -106,7 +106,7 @@ ignore rules, or files that may conflict with existing host configuration.
 
 ## Common requests
 
-- “Add a Hyprland shortcut” → edit `.config/hypr/bindings.lua`, then validate or reload Hyprland.
+- “Add a Hyprland shortcut” → edit `hypr/bindings.lua`, then validate or reload Hyprland.
 - “Change the Omarchy bar” → inspect `.config/omarchy/shell.json` and preserve Omarchy ownership boundaries.
 - “Install a base package” → inspect `.setup/10-server-packages.sh`.
 - “Change desktop package behavior” → inspect `.setup/40-desktop.sh` and its modules.

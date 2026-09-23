@@ -31,7 +31,7 @@ Devbot    → --profile-directory=Profile 2
 ```
 
 The launcher is `.config/scripts/calendar-browser.sh`. Hyprland bindings are
-in `.config/hypr/bindings.lua`; `Super+D` uses Profile 1 and `Super+S` uses
+in `hypr/bindings.lua`; `Super+D` uses Profile 1 and `Super+S` uses
 Profile 2. Reload Hyprland after changing bindings and restart the Omarchy
 shell after changing the calendar plugin.
 

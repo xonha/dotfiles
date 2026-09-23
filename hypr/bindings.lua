@@ -25,8 +25,18 @@ o.bind("SUPER + E", "Todoist",
   { launch = brave_app("dlgohinmglaoopaiplliaecdpmnepmga"), focus = "^brave-dlgohinmglaoopaiplliaecdpmnepmga-Default$" })
 o.bind("SUPER + R", "YouTube Music",
   { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
-o.bind("SUPER + D", "Mais Todos", { launch = brave_profile("maistodos", "/home/henrique/.config/BraveSoftware/Brave-Origin-MaisTodos"), focus = "^brave-origin-maistodos$" })
-o.bind("SUPER + S", "Devbot", { launch = brave_profile("devbot", "/home/henrique/.config/BraveSoftware/Brave-Origin-Devbot"), focus = "^brave-origin-devbot$" })
+o.bind("SUPER + D", "Mais Todos",
+  {
+    launch = brave_profile("maistodos", "/home/henrique/.config/BraveSoftware/Brave-Origin-MaisTodos"),
+    focus =
+    "^brave-origin-maistodos$"
+  })
+o.bind("SUPER + S", "Devbot",
+  {
+    launch = brave_profile("devbot", "/home/henrique/.config/BraveSoftware/Brave-Origin-Devbot"),
+    focus =
+    "^brave-origin-devbot$"
+  })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
 -- Windows
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
@@ -70,13 +80,15 @@ hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
 o.bind("SUPER + X", "Lab SSH",
   {
-    launch = "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#89b4fa\"'",
+    launch =
+    "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#89b4fa\"'",
     focus =
     "^foot-lab-ssh$"
   })
 o.bind("SUPER + C", "Mais Todos SSH",
   {
-    launch = "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux -u new-session -A -s main \\; set-option -t main @accent \"#cba6f7\"'",
+    launch =
+    "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux -u new-session -A -s main \\; set-option -t main @accent \"#cba6f7\"'",
     focus =
     "^foot-maistodos-ssh$"
   })

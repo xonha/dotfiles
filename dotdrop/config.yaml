@@ -42,7 +42,7 @@ dotfiles:
     dst: ~/.config/foot
     link: absolute
   config_hypr:
-    src: .config/hypr
+    src: hypr
     dst: ~/.config/hypr
     link: absolute
   config_hyprmoncfg:
