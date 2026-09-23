@@ -81,10 +81,6 @@ dotfiles:
     src: config/starship.toml
     dst: ~/.config/starship.toml
     link: absolute
-  omarchy_extensions:
-    src: omarchy/extensions
-    dst: ~/.config/omarchy/extensions
-    link: link_children
   omarchy_themes:
     src: omarchy/themes
     dst: ~/.config/omarchy/themes
@@ -136,7 +132,6 @@ profiles:
       - config_nvim
       - config_scripts
       - config_starship
-      - omarchy_extensions
       - omarchy_themes
       - omarchy_shell
       - shortcuts
