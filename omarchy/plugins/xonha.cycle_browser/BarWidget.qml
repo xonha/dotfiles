@@ -16,9 +16,15 @@ BarWidget {
   ) || "").replace(/^~/, Quickshell.env("HOME") || "")
   property string profile: "Outro"
   property bool loading: false
+  readonly property string browserName: {
+    var value = profile.toLowerCase()
+    if (value === "main" || value === "pessoal") return "Brave"
+    if (value === "maistodos") return "Brave"
+    if (value === "devbot") return "Brave"
+    return "Desconhecido"
+  }
   readonly property color profileColor: {
     var value = profile.toLowerCase()
-    if (value === "main" || value === "pessoal") return "#f38ba8"
     if (value === "maistodos") return "#cba6f7"
     if (value === "devbot") return "#89b4fa"
     return root.bar ? root.bar.barForeground : Color.foreground
@@ -69,7 +75,7 @@ BarWidget {
     active: root.loading
     tooltipText: root.loading
       ? "Trocando perfil do navegador..."
-      : "Perfil do navegador: " + root.profile + " — clique para alternar"
+      : "Navegador: " + root.browserName + "\nPerfil: " + root.profile + " — clique para alternar"
     onPressed: function(button) {
       if (button === Qt.LeftButton) root.cycleProfile()
       else if (button === Qt.MiddleButton) root.readProfile()

@@ -5,8 +5,9 @@ set -Eeuo pipefail
 
 # id|desktop file|label
 PROFILES=(
-  "maistodos|brave-maistodos.desktop|MaisTodos"
-  "pessoal|brave-browser.desktop|Main"
+  "pessoal|brave-origin.desktop|Pessoal"
+  "maistodos|brave-origin-maistodos.desktop|MaisTodos"
+  "devbot|brave-origin-devbot.desktop|DevBot"
 )
 
 MIMES=(
@@ -36,7 +37,10 @@ current_index() {
 apply_profile() {
   local index=$1 desktop
   desktop=$(field "$index" 2)
-  xdg-mime default "$desktop" "${MIMES[@]}"
+  local mime
+  for mime in "${MIMES[@]}"; do
+    xdg-mime default "$desktop" "$mime"
+  done
 }
 
 cycle_profile() {
