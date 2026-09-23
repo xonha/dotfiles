@@ -48,6 +48,10 @@
           "iconAlwaysUnlit": true
         },
         {
+          "id": "xonha.cycle_browser",
+          "scriptPath": "/home/henrique/.config/scripts/cycle-browser-profile.sh"
+        },
+        {
           "id": "xonha.tray",
           "reverse": true,
           "pinned": [],

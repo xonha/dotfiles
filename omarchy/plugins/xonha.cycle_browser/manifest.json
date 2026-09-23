@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.cycle_browser",
+  "name": "Default browser profile",
+  "version": "1.0.0",
+  "author": "xonha",
+  "license": "MIT",
+  "description": "Shows and cycles the default browser profile.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Default browser",
+    "description": "Click to cycle the default browser profile.",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "schema": [
+      {
+        "key": "scriptPath",
+        "type": "string",
+        "label": "Profile cycling script",
+        "defaultValue": "~/.config/scripts/cycle-browser-profile.sh"
+      }
+    ]
+  }
+}
