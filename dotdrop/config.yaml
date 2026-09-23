@@ -46,7 +46,7 @@ dotfiles:
     dst: ~/.config/hypr
     link: absolute
   config_hyprmoncfg:
-    src: config/hyprmoncfg
+    src: hypr/hyprmoncfg
     dst: ~/.config/hyprmoncfg
     link: absolute
   config_nvim:
