@@ -34,11 +34,11 @@ dotfiles:
     link: absolute
 
   config_containers:
-    src: .config/containers
+    src: config/containers
     dst: ~/.config/containers
     link: absolute
   config_foot:
-    src: .config/foot
+    src: config/foot
     dst: ~/.config/foot
     link: absolute
   config_hypr:
@@ -46,36 +46,47 @@ dotfiles:
     dst: ~/.config/hypr
     link: absolute
   config_hyprmoncfg:
-    src: .config/hyprmoncfg
+    src: config/hyprmoncfg
     dst: ~/.config/hyprmoncfg
     link: absolute
   config_nvim:
-    src: .config/nvim
+    src: config/nvim
     dst: ~/.config/nvim
     link: absolute
   config_scripts:
-    src: .config/scripts
+    src: config/scripts
     dst: ~/.config/scripts
     link: absolute
   config_starship:
-    src: .config/starship.toml
+    src: config/starship.toml
     dst: ~/.config/starship.toml
     link: absolute
   omarchy_extensions:
-    src: .config/omarchy/extensions
+    src: config/omarchy/extensions
     dst: ~/.config/omarchy/extensions
     link: link_children
   omarchy_themes:
-    src: .config/omarchy/themes
+    src: config/omarchy/themes
     dst: ~/.config/omarchy/themes
     link: link_children
   omarchy_shell:
-    src: .config/omarchy/shell.json
+    src: config/omarchy/shell.json
     dst: ~/.config/omarchy/shell.json
     link: absolute
 
+  local_applications:
+    src: local/share/applications
+    dst: ~/.local/share/applications
+    link: link_children
+    instignore:
+      - mimeinfo.cache
+  local_icons:
+    src: local/share/icons/hicolor/scalable/apps
+    dst: ~/.local/share/icons/hicolor/scalable/apps
+    link: link_children
+
   ssh_config:
-    src: .ssh/config
+    src: ssh/config
     dst: ~/.ssh/config
     link: absolute
   themes:
@@ -103,5 +114,7 @@ profiles:
       - omarchy_extensions
       - omarchy_themes
       - omarchy_shell
+      - local_applications
+      - local_icons
       - ssh_config
       - themes
