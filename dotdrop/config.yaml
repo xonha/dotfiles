@@ -34,8 +34,16 @@ dotfiles:
     dst: ~/.config/containers
     link: absolute
   config_foot:
-    src: config/foot
-    dst: ~/.config/foot
+    src: config/foot.ini
+    dst: ~/.config/foot/foot.ini
+    link: absolute
+  config_speech_to_text:
+    src: config/speech-to-text.json
+    dst: ~/.config/speech-to-text/config.json
+    link: absolute
+  config_voxtype:
+    src: config/voxtype.toml
+    dst: ~/.config/voxtype/config.toml
     link: absolute
   config_hypr:
     src: hypr
@@ -101,6 +109,8 @@ profiles:
       - tmux
       - config_containers
       - config_foot
+      - config_speech_to_text
+      - config_voxtype
       - config_hypr
       - config_hyprmoncfg
       - config_nvim

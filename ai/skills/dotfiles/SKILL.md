@@ -43,7 +43,7 @@ questions that do not affect this dotfiles repository.
 |---|---|---|
 | Dotfiles | Versioned user configuration | `config/`, hidden files |
 | Setup | Installation and bootstrap | `setup/`, numbered modules |
-| Desktop | Hyprland, Omarchy, Foot | `hypr/`, `omarchy/`, `config/foot/` |
+| Desktop | Hyprland, Omarchy, Foot | `hypr/`, `omarchy/`, `config/foot.ini` |
 | Services | Systemd and containers | `config/containers/`, `config/systemd/` |
 | Operations | Per-service deploy artifacts and runbooks | `setup/<service>/` |
 
