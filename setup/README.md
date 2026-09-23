@@ -35,6 +35,12 @@ Fish) is later removed.
 By default, the ThinkPad only wakes from `systemctl suspend` via the power button.
 This documents how to enable wakeup from the internal keyboard and an external USB keyboard.
 
+For the Corne keyboard connected through the USB-C hub on this machine, run
+`sudo ./setup/omarchy-usb-wakeup.sh`. The versioned udev rule enables wake for the
+USB root hub, the two hub stages, the Corne keyboard, and the Logitech receiver.
+It applies to connected devices immediately and to future connections after a
+reboot. Test with the lid closed and wake the laptop from the external keyboard.
+
 ### Why it happens
 
 The internal keyboard (`i8042/serio0`) and USB devices have their `power/wakeup` attribute

@@ -1,0 +1,7 @@
+# Let the external keyboard wake this ThinkPad through the USB-C hub.
+# The PCI USB controller and ACPI XHC0 already allow wake; the USB devices did not.
+ACTION=="add", SUBSYSTEM=="usb", KERNEL=="usb*", KERNELS=="0000:06:00.3", ATTR{power/wakeup}="enabled"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1a40", ATTR{idProduct}=="0101", ATTR{power/wakeup}="enabled"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="05e3", ATTR{idProduct}=="0610", ATTR{power/wakeup}="enabled"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1d50", ATTR{idProduct}=="615e", ATTR{power/wakeup}="enabled"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c52f", ATTR{power/wakeup}="enabled"
