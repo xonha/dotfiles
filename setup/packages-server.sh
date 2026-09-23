@@ -15,6 +15,8 @@ PKG_SERVER_EXTRA=(
   nvm
   opencode
   uv
+  go
+  rust
   fastfetch
   ripgrep
   socat
