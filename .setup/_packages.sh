@@ -13,7 +13,7 @@ PKG_DEV_COMMON=(
   fastfetch
   ripgrep
   socat
-  stow
+  dotdrop
   wget
   tmux
   lazygit

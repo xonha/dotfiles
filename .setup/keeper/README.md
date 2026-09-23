@@ -8,7 +8,7 @@ publicada. Veja [Imagem local](#imagem-local).
 
 ## Instalação
 
-Depois de aplicar os dotfiles com Stow, a partir da raiz deste repositório:
+Depois de aplicar os dotfiles com Dotdrop, a partir da raiz deste repositório:
 
 ```bash
 mkdir -p ~/.config/containers/systemd ~/.local/share/keeper/data

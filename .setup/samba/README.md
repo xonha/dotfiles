@@ -58,7 +58,7 @@ single-user machine; the alternative is a rootful quadlet in
 
 ```bash
 # From the dotfiles repo root on bazzite:
-stow .
+dotdrop install --cfg .dotdrop/config.yaml --profile omarchy
 
 # Verify the symlink:
 ls -la ~/.config/containers/systemd/samba.container
@@ -136,7 +136,7 @@ echo 'smb://bazzite/storage Storage' >> ~/.config/gtk-3.0/bookmarks
 ```
 
 The bookmark then shows exactly `Storage`. Note this file is local to each
-machine and is **not** managed by stow (it holds machine-specific paths).
+machine and is **not** managed by Dotdrop (it holds machine-specific paths).
 
 An alternative is mounting it via `/etc/fstab` with cifs, which also survives
 without a graphical session:

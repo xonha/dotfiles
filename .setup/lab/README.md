@@ -11,15 +11,15 @@ de desenvolvimento definido no repositório.
 A imagem é construída de `.setup/lab/Dockerfile`. O workspace é uma pasta
 normal no Bazzite e o home persistente fica no volume `lab-home`. Na primeira
 inicialização, o container clona `https://github.com/xonha/dotfiles.git` em
-`~/Dotfiles` e executa `stow --restow .` a partir desse clone.
+`~/Dotfiles` e executa `dotdrop install` a partir desse clone.
 
 ## Instalação e atualização
 
-No Bazzite, após aplicar os dotfiles com Stow:
+No Bazzite, após aplicar os dotfiles com Dotdrop:
 
 ```bash
 cd ~/Dotfiles
-stow .
+dotdrop install --cfg .dotdrop/config.yaml --profile omarchy
 ./.setup/lab/setup.sh
 ```
 
@@ -32,7 +32,7 @@ Uma recriação de `lab` só está concluída quando:
 
 - `lab.service` está ativo e `ssh lab` funciona;
 - `~/Dotfiles` existe dentro do `lab` e é um clone limpo do repositório;
-- `stow --restow .` foi executado a partir de `~/Dotfiles`;
+- `dotdrop install` foi executado a partir de `~/Dotfiles`;
 - o login usa Bash;
 - `.bashrc`, `.bash_profile`, `.tmux.conf` e `.config/starship.toml` estão
   presentes no home do usuário;

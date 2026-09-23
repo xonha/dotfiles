@@ -389,7 +389,7 @@ for the new port and restart the service.
 
 ## Notes
 
-- **`stow` is not installed on `bazzite`** (Bazzite is image-based). Quadlet
+- **`dotdrop` is not installed on `bazzite`** (Bazzite is image-based). Quadlet
   symlinks are created by hand, matching the existing pattern:
   ```bash
   ln -sfn ../../../Dotfiles/.config/containers/systemd/crafty.container \

@@ -1,0 +1,112 @@
+config:
+  dotpath: ..
+  backup: true
+
+dotfiles:
+  agents_agents:
+    src: .agents/agents
+    dst: ~/.agents/agents
+    link: absolute
+  agents_local:
+    src: .agents/local.example.json
+    dst: ~/.agents/local.example.json
+    link: absolute
+  claude_skills:
+    src: .claude/skills
+    dst: ~/.claude/skills
+    link: link_children
+
+  bash_profile:
+    src: .bash_profile
+    dst: ~/.bash_profile
+    link: absolute
+  bashrc:
+    src: .bashrc
+    dst: ~/.bashrc
+    link: absolute
+  face:
+    src: .face
+    dst: ~/.face
+    link: absolute
+  hidden:
+    src: .hidden
+    dst: ~/.hidden
+    link: absolute
+  tmux:
+    src: .tmux.conf
+    dst: ~/.tmux.conf
+    link: absolute
+
+  config_containers:
+    src: .config/containers
+    dst: ~/.config/containers
+    link: absolute
+  config_foot:
+    src: .config/foot
+    dst: ~/.config/foot
+    link: absolute
+  config_hypr:
+    src: .config/hypr
+    dst: ~/.config/hypr
+    link: absolute
+  config_hyprmoncfg:
+    src: .config/hyprmoncfg
+    dst: ~/.config/hyprmoncfg
+    link: absolute
+  config_nvim:
+    src: .config/nvim
+    dst: ~/.config/nvim
+    link: absolute
+  config_scripts:
+    src: .config/scripts
+    dst: ~/.config/scripts
+    link: absolute
+  config_starship:
+    src: .config/starship.toml
+    dst: ~/.config/starship.toml
+    link: absolute
+  omarchy_extensions:
+    src: .config/omarchy/extensions
+    dst: ~/.config/omarchy/extensions
+    link: link_children
+  omarchy_themes:
+    src: .config/omarchy/themes
+    dst: ~/.config/omarchy/themes
+    link: link_children
+  omarchy_shell:
+    src: .config/omarchy/shell.json
+    dst: ~/.config/omarchy/shell.json
+    link: absolute
+
+  ssh_config:
+    src: .ssh/config
+    dst: ~/.ssh/config
+    link: absolute
+  themes:
+    src: .themes
+    dst: ~/.themes
+    link: absolute
+
+profiles:
+  omarchy:
+    dotfiles:
+      - agents_agents
+      - agents_local
+      - claude_skills
+      - bash_profile
+      - bashrc
+      - face
+      - hidden
+      - tmux
+      - config_containers
+      - config_foot
+      - config_hypr
+      - config_hyprmoncfg
+      - config_nvim
+      - config_scripts
+      - config_starship
+      - omarchy_extensions
+      - omarchy_themes
+      - omarchy_shell
+      - ssh_config
+      - themes

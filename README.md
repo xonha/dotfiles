@@ -1,6 +1,6 @@
 # Dotfiles
 
-Configuração pessoal para Arch, instalada com GNU Stow. O instalador detecta
+Configuração pessoal para Arch, instalada com Dotdrop. O instalador detecta
 o Omarchy e preserva os componentes que ele administra (shell, Foot, navegador
 e gerenciador de arquivos). As configurações de usuário do Hyprland são
 versionadas neste repositório e aplicadas após os padrões do Omarchy.
@@ -16,7 +16,7 @@ cd "$HOME/dotfiles"
 O instalador configura a base de terminal e permite escolher a instalação do
 desktop. O Omarchy já fornece `yay`, então o bootstrap desse helper não é
 executado no host. No Omarchy, o perfil legado do Kitty
-não é aplicado; os dotfiles correspondentes também são excluídos do Stow.
+não é aplicado; os componentes correspondentes ficam fora do manifesto do Dotdrop.
 Os ajustes específicos de hardware ficam fora do fluxo principal.
 
 ## ThinkPad
@@ -27,7 +27,7 @@ documentados em [`.setup/README.md`](.setup/README.md).
 ## Ambientes de desenvolvimento no Bazzite
 
 `lab` usa uma imagem Arch focada em desenvolvimento no Bazzite. Depois
-de aplicar os dotfiles com Stow, execute:
+de aplicar os dotfiles com Dotdrop, execute:
 
 ```bash
 ./.setup/lab/setup.sh
