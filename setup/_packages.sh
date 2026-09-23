@@ -28,10 +28,12 @@ PKG_DEV_COMMON=(
 # Podman replaces Docker: podman-docker provides the `docker` CLI shim (it
 # conflicts with the docker package) and docker-compose is the provider used by
 # `podman compose` and by projects that still call `docker-compose` directly.
+# podman-tui (AUR) talks to the local Podman engine, so it stays host-only.
 PKG_HOST_ONLY=(
   earlyoom
   tailscale
   podman
   podman-docker
+  podman-tui-bin
   docker-compose
 )
