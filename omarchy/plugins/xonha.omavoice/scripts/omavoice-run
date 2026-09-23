@@ -1,0 +1,638 @@
+#!/usr/bin/env bash
+# Generate an isolated PipeWire client config and exec it.
+# This is the Omarchy speaker-tuning pattern: pipewire -c <our conf>, never
+# the daemon's pipewire.conf.d and never stock filter-chain.conf.d.
+set -euo pipefail
+
+preset="meeting"
+quality="better"
+engine_opt="auto"
+capture_gain_db=0
+output_gain_db=0
+eq_opt=""
+eq_body_db=0
+eq_pres_db=0
+eq_air_db=0
+target=""
+plugin_dir=""
+dump=0
+runtime_dir="${XDG_RUNTIME_DIR:-/tmp}/omavoice"
+
+usage() {
+  echo "Usage: omavoice-run [--dump] --preset meeting|podcast|clean [--quality good|better|best] [--engine auto|rnnoise|deepfilter|clean] [--eq neutral|warm|clear|bright] [--eq-body-db N] [--eq-pres-db N] [--eq-air-db N] [--capture-gain-db N] [--output-gain-db N] --target <node.name> --dir <plugin-dir>" >&2
+  exit 2
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --preset) preset="${2:-}"; shift 2 ;;
+    --quality) quality="${2:-}"; shift 2 ;;
+    --engine) engine_opt="${2:-auto}"; shift 2 ;;
+    --eq) eq_opt="${2:-}"; shift 2 ;;
+    --eq-body-db) eq_body_db="${2:-0}"; shift 2 ;;
+    --eq-pres-db) eq_pres_db="${2:-0}"; shift 2 ;;
+    --eq-air-db) eq_air_db="${2:-0}"; shift 2 ;;
+    --capture-gain-db) capture_gain_db="${2:-0}"; shift 2 ;;
+    --output-gain-db) output_gain_db="${2:-0}"; shift 2 ;;
+    --target) target="${2:-}"; shift 2 ;;
+    --dir) plugin_dir="${2:-}"; shift 2 ;;
+    --dump) dump=1; shift ;;
+    -h|--help) usage ;;
+    *) usage ;;
+  esac
+done
+
+[[ -n $target && -n $plugin_dir ]] || usage
+[[ $target =~ ^[A-Za-z0-9._:-]+$ ]] || usage
+[[ $preset == meeting || $preset == podcast || $preset == clean ]] || usage
+[[ $quality == good || $quality == better || $quality == best ]] || quality=better
+
+rnnoise=""
+for candidate in /usr/lib/ladspa/librnnoise_ladspa.so /usr/lib64/ladspa/librnnoise_ladspa.so; do
+  if [[ -f $candidate ]]; then
+    rnnoise=$candidate
+    break
+  fi
+done
+
+deepfilter=""
+for candidate in /usr/lib/ladspa/libdeep_filter_ladspa.so /usr/lib64/ladspa/libdeep_filter_ladspa.so; do
+  if [[ -f $candidate ]]; then
+    deepfilter=$candidate
+    break
+  fi
+done
+
+webrtc=""
+for candidate in /usr/lib/spa-0.2/aec/libspa-aec-webrtc.so /usr/lib64/spa-0.2/aec/libspa-aec-webrtc.so; do
+  if [[ -f $candidate ]]; then
+    webrtc=$candidate
+    break
+  fi
+done
+
+have_lsp=0
+[[ -f /usr/lib/lv2/lsp-plugins.lv2/compressor_mono.ttl && -f /usr/lib/lv2/lsp-plugins.lv2/limiter_mono.ttl ]] && have_lsp=1
+
+db_to_linear() {
+  awk -v db="${1:-0}" 'BEGIN {
+    if (db + 0 != db) db = 0
+    if (db < -12) db = -12
+    if (db > 12) db = 12
+    printf "%.8f", exp(db * log(10) / 20)
+  }'
+}
+
+preamp_gain=$(db_to_linear "$capture_gain_db")
+out_gain=$(db_to_linear "$output_gain_db")
+
+engine="clean"
+if [[ $preset == clean ]]; then
+  engine="clean"
+else
+  case $engine_opt in
+    rnnoise|deepfilter|clean)
+      engine=$engine_opt
+      ;;
+    *)
+      if [[ $preset == podcast && -n $deepfilter ]]; then
+        engine="deepfilter"
+      elif [[ -n $rnnoise ]]; then
+        engine="rnnoise"
+      fi
+      ;;
+  esac
+fi
+
+use_aec=0
+if [[ $preset == meeting && -n $webrtc ]]; then
+  use_aec=1
+fi
+
+# --dump is for tests. Live hosts get a pid-unique conf so a remount cannot
+# truncate the file another pipewire -c is about to parse.
+if [[ $dump -eq 1 ]]; then
+  conf=$(mktemp)
+  trap 'rm -f -- "$conf"' EXIT
+else
+  mkdir -p "$runtime_dir"
+  umask 077
+  conf="$runtime_dir/host.$$.conf"
+fi
+capture_target=$target
+if [[ $use_aec -eq 1 ]]; then
+  capture_target="omavoice.aec"
+fi
+
+stream_props() {
+  local name=$1
+  local desc=$2
+  local klass=$3
+  local extra=${4:-}
+  cat <<EOF
+                node.name = "$name"
+                node.description = "$desc"
+                media.class = $klass
+                audio.rate = 48000
+                audio.position = [ MONO ]
+                node.latency = 256/48000
+$extra
+EOF
+}
+
+# Light makeup after NS: ~2.5:1 into a −1 dB ceiling. LSP gains are linear.
+# Attack threshold 0.251 ≈ −12 dB; makeup 2.0 ≈ +6 dB.
+dynamics_nodes() {
+  [[ $have_lsp -eq 1 ]] || return 0
+  cat <<'EOF'
+                    {
+                        type = lv2
+                        name = comp
+                        plugin = "http://lsp-plug.in/plugins/lv2/compressor_mono"
+                        control = {
+                            "cm" = 0
+                            "al" = 0.25119
+                            "cr" = 2.5
+                            "at" = 15.0
+                            "rt" = 120.0
+                            "mk" = 2.0
+                        }
+                    }
+                    {
+                        type = lv2
+                        name = lim
+                        plugin = "http://lsp-plug.in/plugins/lv2/limiter_mono"
+                        control = {
+                            "alr" = 0
+                            "boost" = 0
+                            "th" = 0.891
+                            "g_in" = 1.0
+                        }
+                    }
+EOF
+}
+
+cat >"$conf" <<EOF
+context.properties = {
+    log.level = 0
+}
+
+context.spa-libs = {
+    audio.convert.* = audioconvert/libspa-audioconvert
+    support.*       = support/libspa-support
+    audio.aec       = aec/libspa-aec-webrtc
+}
+
+context.modules = [
+    { name = libpipewire-module-rt
+        args = { }
+        flags = [ ifexists nofail ]
+    }
+    { name = libpipewire-module-protocol-native }
+    { name = libpipewire-module-client-node }
+    { name = libpipewire-module-adapter }
+EOF
+
+if [[ $use_aec -eq 1 ]]; then
+  cat >>"$conf" <<EOF
+    { name = libpipewire-module-echo-cancel
+        flags = [ ifexists nofail ]
+        args = {
+            library.name = aec/libspa-aec-webrtc
+            monitor.mode = true
+            aec.args = {
+                webrtc.gain_control = false
+                webrtc.extended_filter = true
+                webrtc.delay_agnostic = true
+                webrtc.noise_suppression = false
+                webrtc.high_pass_filter = true
+            }
+            source.props = {
+                node.name = "omavoice.aec"
+                node.description = "Omavoice echo cancel"
+                media.class = Stream/Output/Audio/Internal
+                node.virtual = true
+                node.dont-fallback = true
+                priority.session = 0
+                session.suspend-timeout-seconds = 3
+            }
+            capture.props = {
+                node.name = "omavoice.aec.capture"
+                node.passive = true
+                node.dont-fallback = true
+                node.linger = true
+                node.dont-move = true
+                target.object = "$target"
+                session.suspend-timeout-seconds = 3
+            }
+            playback.props = {
+                node.name = "omavoice.aec.playback"
+                node.passive = true
+                node.suspend-on-idle = true
+                session.suspend-timeout-seconds = 3
+            }
+            sink.props = {
+                node.name = "omavoice.aec.sink"
+                node.passive = true
+                session.suspend-timeout-seconds = 3
+            }
+        }
+    }
+EOF
+fi
+
+# Build the voice graph as an explicit series so PipeWire does not duplicate
+# it per channel. Mono RNNoise/DFN ports are Input/Output; LSP uses in/out.
+# nofail here keeps an empty pipewire process up with no omavoice node.
+graph_head() {
+  cat <<EOF
+    { name = libpipewire-module-filter-chain
+        args = {
+            node.description = "Omavoice"
+            media.name = "Omavoice"
+            node.latency = 256/48000
+            audio.rate = 48000
+            audio.position = [ MONO ]
+            filter.graph = {
+                nodes = [
+EOF
+}
+
+graph_tail() {
+  local capture_pin=""
+  if [[ $capture_target == omavoice.aec ]]; then
+    capture_pin=$'                node.dont-fallback = true\n                node.linger = true\n                node.dont-move = true'
+  fi
+  cat <<EOF
+                ]
+$1
+            }
+            capture.props = {
+                node.name = "omavoice.capture"
+                node.passive = true
+$capture_pin
+                audio.rate = 48000
+                audio.position = [ MONO ]
+                node.latency = 256/48000
+                target.object = "$capture_target"
+            }
+            playback.props = {
+                node.name = "omavoice"
+                node.description = "Omavoice"
+                media.class = Audio/Source
+                node.virtual = true
+                media.role = Communication
+                session.suspend-timeout-seconds = 3
+                stream.dont-remix = true
+                audio.rate = 48000
+                audio.position = [ MONO ]
+                node.latency = 256/48000
+            }
+        }
+    }
+EOF
+}
+
+gain_node() {
+  local name=$1
+  local gain=$2
+  cat <<EOF
+                    {
+                        type = builtin
+                        name = $name
+                        label = mixer
+                        control = { "Gain 1" = $gain }
+                    }
+EOF
+}
+
+hpf_node() {
+  local freq=${1:-80.0}
+  cat <<EOF
+                    {
+                        type = builtin
+                        name = hp
+                        label = bq_highpass
+                        control = { "Freq" = $freq "Q" = 0.707 }
+                    }
+EOF
+}
+
+eq_peaking_node() {
+  local name=$1
+  local freq=$2
+  local q=$3
+  local gain=$4
+  cat <<EOF
+                    {
+                        type = builtin
+                        name = $name
+                        label = bq_peaking
+                        control = { "Freq" = $freq "Q" = $q "Gain" = $gain }
+                    }
+EOF
+}
+
+eq_highshelf_node() {
+  local name=$1
+  local freq=$2
+  local gain=$3
+  cat <<EOF
+                    {
+                        type = builtin
+                        name = $name
+                        label = bq_highshelf
+                        control = { "Freq" = $freq "Q" = 0.707 "Gain" = $gain }
+                    }
+EOF
+}
+
+rnnoise_node() {
+  local vad=$1 grace=$2
+  cat <<EOF
+                    {
+                        type = ladspa
+                        name = denoise
+                        plugin = "$rnnoise"
+                        label = noise_suppressor_mono
+                        control = {
+                            "VAD Threshold (%)" = $vad
+                            "VAD Grace Period (ms)" = $grace
+                            "Retroactive VAD Grace (ms)" = 0
+                        }
+                    }
+EOF
+}
+
+dfn_node() {
+  local atten=$1
+  cat <<EOF
+                    {
+                        type = ladspa
+                        name = denoise
+                        plugin = "$deepfilter"
+                        label = deep_filter_mono
+                        control = {
+                            "Attenuation Limit (dB)" = $atten
+                        }
+                    }
+EOF
+}
+
+meeting_vad=80.0
+meeting_grace=400
+podcast_vad=85.0
+podcast_grace=200
+podcast_dfn=70
+case $quality in
+  good)
+    meeting_vad=70.0
+    meeting_grace=500
+    podcast_vad=75.0
+    podcast_grace=400
+    podcast_dfn=50
+    ;;
+  best)
+    meeting_vad=85.0
+    meeting_grace=250
+    podcast_vad=90.0
+    podcast_grace=150
+    podcast_dfn=85
+    ;;
+esac
+
+# Must match Model.eqCurveParams. Meeting/Podcast always get hp so Neutral is HPF only.
+eq_curve=""
+if [[ $preset != clean ]]; then
+  eq_curve=$eq_opt
+  case $eq_curve in
+    presence) eq_curve=clear ;;
+    air) eq_curve=bright ;;
+  esac
+  if [[ $eq_curve != neutral && $eq_curve != warm && $eq_curve != clear && $eq_curve != bright ]]; then
+    if [[ $preset == podcast ]]; then eq_curve=clear; else eq_curve=warm; fi
+  fi
+fi
+
+hp_freq=80.0
+eq_body_gain=0
+eq_pres_gain=0
+eq_air_gain=0
+case $eq_curve in
+  warm) eq_body_gain=2.0; eq_pres_gain=-1.5 ;;
+  clear) eq_body_gain=-2.5; eq_pres_gain=2.0 ;;
+  bright) hp_freq=100.0; eq_pres_gain=1.0; eq_air_gain=2.5 ;;
+esac
+
+clamp_eq_trim() {
+  awk -v n="${1:-0}" 'BEGIN {
+    if (n + 0 != n) n = 0
+    if (n < -6) n = -6
+    if (n > 6) n = 6
+    printf "%.1f", n
+  }'
+}
+clamp_eq_band() {
+  awk -v n="${1:-0}" 'BEGIN {
+    if (n + 0 != n) n = 0
+    if (n < -12) n = -12
+    if (n > 12) n = 12
+    printf "%.1f", n
+  }'
+}
+eq_body_gain=$(clamp_eq_band "$(awk -v a="$eq_body_gain" -v b="$(clamp_eq_trim "$eq_body_db")" 'BEGIN { print a + b }')")
+eq_pres_gain=$(clamp_eq_band "$(awk -v a="$eq_pres_gain" -v b="$(clamp_eq_trim "$eq_pres_db")" 'BEGIN { print a + b }')")
+eq_air_gain=$(clamp_eq_band "$(awk -v a="$eq_air_gain" -v b="$(clamp_eq_trim "$eq_air_db")" 'BEGIN { print a + b }')")
+
+use_hpf=1
+
+link_lines=""
+add_link() {
+  link_lines+="                    { output = \"$1\" input = \"$2\" }"$'\n'
+}
+
+{
+  graph_head
+  gain_node preamp "$preamp_gain"
+  prev_out="preamp:Out"
+
+  if [[ $use_hpf -eq 1 ]]; then
+    hpf_node "$hp_freq"
+    add_link "$prev_out" "hp:In"
+    prev_out="hp:Out"
+  fi
+
+  if [[ $engine == rnnoise ]]; then
+    if [[ $preset == podcast ]]; then
+      rnnoise_node $podcast_vad $podcast_grace
+    else
+      rnnoise_node $meeting_vad $meeting_grace
+    fi
+    add_link "$prev_out" "denoise:Input"
+    prev_out="denoise:Output"
+  elif [[ $engine == deepfilter ]]; then
+    dfn_node $podcast_dfn
+    add_link "$prev_out" "denoise:Audio In"
+    prev_out="denoise:Audio Out"
+  fi
+
+  if [[ $preset != clean ]]; then
+    eq_peaking_node eq_body 250 0.9 "$eq_body_gain"
+    add_link "$prev_out" "eq_body:In"
+    prev_out="eq_body:Out"
+    eq_peaking_node eq_pres 3000 1.0 "$eq_pres_gain"
+    add_link "$prev_out" "eq_pres:In"
+    prev_out="eq_pres:Out"
+    eq_highshelf_node eq_air 8000 "$eq_air_gain"
+    add_link "$prev_out" "eq_air:In"
+    prev_out="eq_air:Out"
+  fi
+
+  if [[ $engine != clean ]]; then
+    dynamics_nodes
+    if [[ $have_lsp -eq 1 ]]; then
+      add_link "$prev_out" "comp:in"
+      add_link "comp:out" "lim:in"
+      prev_out="lim:out"
+    fi
+  fi
+
+  gain_node outgain "$out_gain"
+  add_link "$prev_out" "outgain:In 1"
+
+  graph_tail "                links = [
+${link_lines}                ]
+                inputs = [ \"preamp:In 1\" ]
+                outputs = [ \"outgain:Out\" ]"
+} >>"$conf"
+
+cat >>"$conf" <<EOF
+]
+EOF
+
+if [[ $dump -eq 1 ]]; then
+  cat "$conf"
+  exit 0
+fi
+
+# Filter-chain must not use nofail. If it fails to export, pipewire still
+# sits on D-Bus with no session client, QML thinks the host is up, and the
+# After hairline never appears until Reload.
+wait_session() {
+  local i
+  for i in $(seq 1 20); do
+    pw-cli info 0 >/dev/null 2>&1 && return 0
+    sleep 0.1
+  done
+  echo "omavoice-run: session PipeWire did not answer" >&2
+  return 1
+}
+
+omavoice_in_graph() {
+  pw-cli ls Node 2>/dev/null | grep -Eq 'node\.name = "omavoice(|\.[A-Za-z0-9._-]+)"'
+}
+
+# Isolated pipewire is gone; session copies of omavoice.aec* can linger
+# and block the next preset. Destroy by id, do not fail the start.
+destroy_leftover_nodes() {
+  pw-dump 2>/dev/null | python3 -c '
+import json, subprocess, sys
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    raise SystemExit(0)
+for obj in data:
+    if not str(obj.get("type") or "").endswith("Node"):
+        continue
+    props = (obj.get("info") or {}).get("props") or {}
+    name = str(props.get("node.name") or "")
+    if name == "omavoice" or name.startswith("omavoice.aec") or name in ("omavoice.capture", "omavoice.meter.hold"):
+        oid = obj.get("id")
+        if isinstance(oid, bool) or not isinstance(oid, int):
+            continue
+        if oid < 0:
+            continue
+        subprocess.run(
+            ["pw-cli", "destroy", str(oid)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+'
+}
+
+# Only the pipewire binary. pkill -f on the conf path also matches shells
+# whose argv text contains that path.
+drop_leftover_host() {
+  local pid cmd
+  for pid in $(pgrep -x pipewire || true); do
+    cmd=$(tr '\0' ' ' < "/proc/$pid/cmdline" 2>/dev/null || true)
+    case $cmd in
+      *"/omavoice/host"*)
+        kill "$pid" 2>/dev/null || true
+        ;;
+    esac
+  done
+  local i
+  for i in $(seq 1 20); do
+    local leftover=0
+    for pid in $(pgrep -x pipewire || true); do
+      cmd=$(tr '\0' ' ' < "/proc/$pid/cmdline" 2>/dev/null || true)
+      case $cmd in
+        *"/omavoice/host"*) leftover=1; kill -9 "$pid" 2>/dev/null || true ;;
+      esac
+    done
+    [[ $leftover -eq 0 ]] && break
+    sleep 0.1
+  done
+}
+
+wait_session || exit 1
+drop_leftover_host
+for i in $(seq 1 50); do
+  omavoice_in_graph || break
+  destroy_leftover_nodes
+  sleep 0.1
+done
+for stale in "$runtime_dir"/host.conf "$runtime_dir"/host.*.conf; do
+  [[ -f $stale ]] || continue
+  [[ $stale == "$conf" ]] && continue
+  base=$(basename -- "$stale")
+  if [[ $base =~ ^host\.([0-9]+)\.conf$ ]]; then
+    pid=${BASH_REMATCH[1]}
+    # A second start's wrapper is still alive; deleting this file makes
+    # pipewire -c fail and After never remounts.
+    [[ -d /proc/$pid ]] && continue
+  fi
+  rm -f -- "$stale"
+done
+
+pipewire_pid=""
+stop_pipewire() {
+  if [[ -n $pipewire_pid ]]; then
+    kill "$pipewire_pid" 2>/dev/null || true
+    wait "$pipewire_pid" 2>/dev/null || true
+    pipewire_pid=""
+  fi
+}
+trap stop_pipewire EXIT TERM INT
+
+/usr/bin/pipewire -c "$conf" &
+pipewire_pid=$!
+omavoice_ready() {
+  pw-cli ls Node 2>/dev/null | grep -Eq 'node\.name = "omavoice"$' || return 1
+  pw-cli ls Client 2>/dev/null | grep -Fq "pipewire.sec.pid = \"$pipewire_pid\""
+}
+for i in $(seq 1 50); do
+  kill -0 "$pipewire_pid" 2>/dev/null || exit 1
+  omavoice_ready && break
+  sleep 0.1
+done
+if ! omavoice_ready; then
+  echo "omavoice-run: omavoice did not appear in PipeWire" >&2
+  exit 1
+fi
+wait "$pipewire_pid"
+status=$?
+pipewire_pid=""
+exit "$status"

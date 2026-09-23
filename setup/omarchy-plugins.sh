@@ -19,7 +19,6 @@ run() {
   local plugins=(
     "https://github.com/crmne/omarchy-hyprmoncfg.git"
     "https://github.com/promaaa/sync-calendar-omarchy.git"
-    "https://github.com/gigasolo/omavoice.git"
   )
 
   local repo
@@ -27,16 +26,19 @@ run() {
     omarchy plugin add "$repo" --enable --yes
   done
 
-  # Keep the local bar override in sync with the versioned copy. Plugin code
+  # Keep the local plugin forks in sync with the versioned copies. Plugin code
   # must be copied: Omarchy does not load plugin directories through symlinks.
-  local bar_source="$SETUP_ROOT/../omarchy/plugins/xonha.bar"
-  local bar_target="$HOME/.config/omarchy/plugins/xonha.bar"
-  if [[ -L $bar_target ]]; then
-    error "Refusing to replace symlinked bar plugin: $bar_target"
-    return 1
-  fi
-  mkdir -p "$bar_target"
-  cp -aL "$bar_source/." "$bar_target/"
+  local fork source target
+  for fork in xonha.bar xonha.omavoice; do
+    source="$SETUP_ROOT/../omarchy/plugins/$fork"
+    target="$HOME/.config/omarchy/plugins/$fork"
+    if [[ -L $target ]]; then
+      error "Refusing to replace symlinked plugin: $target"
+      return 1
+    fi
+    mkdir -p "$target"
+    cp -aL "$source/." "$target/"
+  done
   if omarchy-shell shell ping >/dev/null 2>&1; then
     omarchy-shell shell rescanPlugins
   fi

@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.omavoice",
+  "name": "Omavoice",
+  "version": "0.3.2",
+  "author": "xonha (upstream: GigaSolo)",
+  "license": "MIT",
+  "homepage": "https://github.com/gigasolo/omavoice",
+  "upstream": {
+    "repository": "https://github.com/gigasolo/omavoice",
+    "credit": "Forked from GigaSolo's Omavoice plugin."
+  },
+  "description": "A virtual microphone for Zoom, Meet, and OBS. Meeting / Podcast / Clean, Voice looks, and an RNNoise or DeepFilterNet picker.",
+  "kinds": [
+    "service",
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Omavoice",
+    "description": "Virtual mic for calls and recording. Meeting / Podcast / Clean, Voice looks, RNNoise or DeepFilterNet.",
+    "category": "Audio",
+    "aliases": [
+      "omavoice",
+      "noise",
+      "microphone",
+      "voice"
+    ],
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "enabled": true,
+      "preset": "meeting",
+      "pinnedSource": "",
+      "previousAudioSource": "",
+      "setDefaultSource": true,
+      "engine": "auto",
+      "meetingQuality": "better",
+      "podcastQuality": "better",
+      "meetingEq": "warm",
+      "podcastEq": "clear",
+      "meetingEqBodyDb": 0,
+      "meetingEqPresenceDb": 0,
+      "meetingEqAirDb": 0,
+      "podcastEqBodyDb": 0,
+      "podcastEqPresenceDb": 0,
+      "podcastEqAirDb": 0,
+      "outputGainDb": 0,
+      "captureGainDb": 0
+    },
+    "schema": [
+      {
+        "key": "enabled",
+        "type": "boolean",
+        "label": "Omavoice on",
+        "defaultValue": true
+      },
+      {
+        "key": "preset",
+        "type": "enum",
+        "label": "Preset",
+        "options": [
+          "meeting",
+          "podcast",
+          "clean"
+        ],
+        "defaultValue": "meeting"
+      },
+      {
+        "key": "engine",
+        "type": "enum",
+        "label": "Denoise engine",
+        "options": [
+          "auto",
+          "rnnoise",
+          "deepfilter"
+        ],
+        "defaultValue": "auto"
+      },
+      {
+        "key": "pinnedSource",
+        "type": "string",
+        "label": "Pinned source node name",
+        "description": "Empty means auto: prefer a USB capture, otherwise the default mic.",
+        "defaultValue": ""
+      },
+      {
+        "key": "previousAudioSource",
+        "type": "string",
+        "label": "Last real capture before Omavoice",
+        "description": "Used by Auto when the default source is already omavoice. Not a pin.",
+        "defaultValue": ""
+      },
+      {
+        "key": "setDefaultSource",
+        "type": "boolean",
+        "label": "Make Omavoice the default input",
+        "defaultValue": true
+      },
+      {
+        "key": "meetingQuality",
+        "type": "enum",
+        "label": "Meeting: Softer, Balanced, or Stronger",
+        "options": [
+          "good",
+          "better",
+          "best"
+        ],
+        "defaultValue": "better"
+      },
+      {
+        "key": "podcastQuality",
+        "type": "enum",
+        "label": "Podcast: Softer, Balanced, or Stronger",
+        "options": [
+          "good",
+          "better",
+          "best"
+        ],
+        "defaultValue": "better"
+      },
+      {
+        "key": "meetingEq",
+        "type": "enum",
+        "label": "Meeting voice look",
+        "options": [
+          "neutral",
+          "warm",
+          "clear",
+          "bright"
+        ],
+        "defaultValue": "warm"
+      },
+      {
+        "key": "podcastEq",
+        "type": "enum",
+        "label": "Podcast voice look",
+        "options": [
+          "neutral",
+          "warm",
+          "clear",
+          "bright"
+        ],
+        "defaultValue": "clear"
+      },
+      {
+        "key": "meetingEqBodyDb",
+        "type": "number",
+        "label": "Meeting body trim (dB)",
+        "min": -6,
+        "max": 6,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "meetingEqPresenceDb",
+        "type": "number",
+        "label": "Meeting presence trim (dB)",
+        "min": -6,
+        "max": 6,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "meetingEqAirDb",
+        "type": "number",
+        "label": "Meeting air trim (dB)",
+        "min": -6,
+        "max": 6,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "podcastEqBodyDb",
+        "type": "number",
+        "label": "Podcast body trim (dB)",
+        "min": -6,
+        "max": 6,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "podcastEqPresenceDb",
+        "type": "number",
+        "label": "Podcast presence trim (dB)",
+        "min": -6,
+        "max": 6,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "podcastEqAirDb",
+        "type": "number",
+        "label": "Podcast air trim (dB)",
+        "min": -6,
+        "max": 6,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "outputGainDb",
+        "type": "number",
+        "label": "Output gain (dB)",
+        "min": -12,
+        "max": 12,
+        "step": 0.5,
+        "defaultValue": 0
+      },
+      {
+        "key": "captureGainDb",
+        "type": "number",
+        "label": "Input gain (dB)",
+        "min": -12,
+        "max": 12,
+        "step": 0.5,
+        "defaultValue": 0
+      }
+    ]
+  }
+}
