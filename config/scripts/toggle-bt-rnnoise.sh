@@ -5,17 +5,47 @@ card="bluez_card.00_02_5B_00_FF_0E"
 profile="headset-head-unit"
 music_profile="a2dp-sink"
 source_name="bt_rnnoise"
+capture_port="bt_rnnoise.capture:input_MONO"
+bluetooth_capture_port="bluez_input.00:02:5B:00:FF:0E:capture_MONO"
+internal_capture_ports=(
+  "alsa_input.pci-0000_06_00.6.analog-stereo:capture_FL"
+  "alsa_input.pci-0000_06_00.6.analog-stereo:capture_FR"
+)
 config="${HOME}/.config/pipewire/bt-rnnoise.conf"
 runtime_dir="${XDG_RUNTIME_DIR:-/tmp}/bt-rnnoise"
 pid_file="${runtime_dir}/pipewire.pid"
-previous_source_file="${runtime_dir}/previous-source"
 enabled_file="${runtime_dir}/enabled"
 log_file="${runtime_dir}/pipewire.log"
 
 mkdir -p "$runtime_dir"
 
-notify() {
-  notify-send "Bluetooth microphone" "$1" 2>/dev/null || true
+show_mic_osd() {
+  local state="$1"
+  if [[ "$state" == on ]]; then
+    omarchy-osd -i microphone -m "Microphone on"
+  else
+    omarchy-osd -i microphone-muted -m "Microphone muted"
+  fi
+}
+
+notify_error() {
+  omarchy-osd -i microphone-muted -m "$1" 2>/dev/null || true
+}
+
+link_capture_source() {
+  local source="$1" port
+  pw-link -d "$bluetooth_capture_port" "$capture_port" 2>/dev/null || true
+  for port in "${internal_capture_ports[@]}"; do
+    pw-link -d "$port" "$capture_port" 2>/dev/null || true
+  done
+
+  if [[ "$source" == bluetooth ]]; then
+    pw-link "$bluetooth_capture_port" "$capture_port" 2>/dev/null || true
+  else
+    for port in "${internal_capture_ports[@]}"; do
+      pw-link "$port" "$capture_port" 2>/dev/null || true
+    done
+  fi
 }
 
 set_all_sources_mute() {
@@ -37,27 +67,16 @@ running_pid() {
   return 1
 }
 
-restore_source() {
-  local previous fallback
-  previous=""
-  [[ -f "$previous_source_file" ]] && previous=$(<"$previous_source_file")
-  if [[ -n "$previous" && "$previous" != bluez_input.* && "$previous" != bt_rnnoise ]] && pactl list short sources | awk '{print $2}' | grep -Fxq "$previous"; then
-    pactl set-default-source "$previous" || true
-    return
-  fi
-  fallback=$(pactl list short sources | awk '$2 !~ /^bluez_input/ && $2 !~ /^bt_rnnoise/ { print $2; exit }')
-  [[ -n "$fallback" ]] && pactl set-default-source "$fallback" || true
-}
-
 if pid=$(running_pid); then
   if [[ -f "$enabled_file" ]]; then
     set_all_sources_mute 1
-    restore_source
-    rm -f "$enabled_file" "$previous_source_file"
+    pactl set-default-source "$source_name" || true
+    link_capture_source internal
+    rm -f "$enabled_file"
     # Keep the virtual source alive so applications such as Brave do not lose
     # their capture device while the Bluetooth profile changes.
     pactl set-card-profile "$card" "$music_profile" || true
-    notify "desativado; áudio em alta qualidade restaurado"
+    show_mic_osd off
     exit 0
   fi
 else
@@ -66,17 +85,15 @@ fi
 
 if [[ -f "$enabled_file" ]]; then
   rm -f "$enabled_file"
+  pactl set-default-source "$source_name" || true
+  link_capture_source internal
   pactl set-card-profile "$card" "$music_profile" || true
-  notify "desativado; áudio em alta qualidade restaurado"
+  show_mic_osd off
   exit 0
 fi
 
-previous=$(pactl get-default-source 2>/dev/null || true)
-printf '%s\n' "$previous" >"$previous_source_file"
-
 if ! pactl set-card-profile "$card" "$profile"; then
-  rm -f "$previous_source_file"
-  notify "não foi possível ativar o microfone mSBC"
+  notify_error "Não foi possível ativar o microfone mSBC"
   exit 1
 fi
 
@@ -87,10 +104,11 @@ fi
 
 for _ in {1..80}; do
   if pactl list short sources | awk '{print $2}' | grep -Fxq "$source_name"; then
+    link_capture_source bluetooth
     pactl set-default-source "$source_name"
     set_all_sources_mute 0
     : >"$enabled_file"
-    notify "ativado com RNNoise (mSBC)"
+    show_mic_osd on
     exit 0
   fi
   sleep 0.1
@@ -99,7 +117,7 @@ done
 if pid=$(running_pid); then
   kill "$pid" 2>/dev/null || true
 fi
-rm -f "$pid_file" "$previous_source_file" "$enabled_file"
+rm -f "$pid_file" "$enabled_file"
 pactl set-card-profile "$card" "$music_profile" || true
-notify "falha ao criar o microfone RNNoise"
+notify_error "Falha ao criar o microfone RNNoise"
 exit 1
