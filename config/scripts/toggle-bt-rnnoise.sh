@@ -22,9 +22,9 @@ mkdir -p "$runtime_dir"
 show_mic_osd() {
   local state="$1"
   if [[ "$state" == on ]]; then
-    omarchy-osd -i microphone -m "Microphone on"
+    omarchy-osd -i microphone -m "Open"
   else
-    omarchy-osd -i microphone-muted -m "Microphone muted"
+    omarchy-osd -i microphone-muted -m "Muted"
   fi
 }
 
