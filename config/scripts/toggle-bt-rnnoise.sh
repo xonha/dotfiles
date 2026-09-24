@@ -9,6 +9,7 @@ config="${HOME}/.config/pipewire/bt-rnnoise.conf"
 runtime_dir="${XDG_RUNTIME_DIR:-/tmp}/bt-rnnoise"
 pid_file="${runtime_dir}/pipewire.pid"
 previous_source_file="${runtime_dir}/previous-source"
+enabled_file="${runtime_dir}/enabled"
 log_file="${runtime_dir}/pipewire.log"
 
 mkdir -p "$runtime_dir"
@@ -40,7 +41,7 @@ restore_source() {
   local previous fallback
   previous=""
   [[ -f "$previous_source_file" ]] && previous=$(<"$previous_source_file")
-  if [[ -n "$previous" && "$previous" != bluez_input.* ]] && pactl list short sources | awk '{print $2}' | grep -Fxq "$previous"; then
+  if [[ -n "$previous" && "$previous" != bluez_input.* && "$previous" != bt_rnnoise ]] && pactl list short sources | awk '{print $2}' | grep -Fxq "$previous"; then
     pactl set-default-source "$previous" || true
     return
   fi
@@ -49,14 +50,22 @@ restore_source() {
 }
 
 if pid=$(running_pid); then
-  set_all_sources_mute 1
-  restore_source
-  kill "$pid" 2>/dev/null || true
-  for _ in {1..30}; do
-    kill -0 "$pid" 2>/dev/null || break
-    sleep 0.1
-  done
-  rm -f "$pid_file" "$previous_source_file"
+  if [[ -f "$enabled_file" ]]; then
+    set_all_sources_mute 1
+    restore_source
+    rm -f "$enabled_file" "$previous_source_file"
+    # Keep the virtual source alive so applications such as Brave do not lose
+    # their capture device while the Bluetooth profile changes.
+    pactl set-card-profile "$card" "$music_profile" || true
+    notify "desativado; áudio em alta qualidade restaurado"
+    exit 0
+  fi
+else
+  rm -f "$pid_file"
+fi
+
+if [[ -f "$enabled_file" ]]; then
+  rm -f "$enabled_file"
   pactl set-card-profile "$card" "$music_profile" || true
   notify "desativado; áudio em alta qualidade restaurado"
   exit 0
@@ -71,13 +80,16 @@ if ! pactl set-card-profile "$card" "$profile"; then
   exit 1
 fi
 
-pipewire -c "$config" >"$log_file" 2>&1 &
-printf '%s\n' "$!" >"$pid_file"
+if ! running_pid >/dev/null; then
+  pipewire -c "$config" >"$log_file" 2>&1 &
+  printf '%s\n' "$!" >"$pid_file"
+fi
 
 for _ in {1..80}; do
   if pactl list short sources | awk '{print $2}' | grep -Fxq "$source_name"; then
     pactl set-default-source "$source_name"
     set_all_sources_mute 0
+    : >"$enabled_file"
     notify "ativado com RNNoise (mSBC)"
     exit 0
   fi
@@ -87,7 +99,7 @@ done
 if pid=$(running_pid); then
   kill "$pid" 2>/dev/null || true
 fi
-rm -f "$pid_file" "$previous_source_file"
+rm -f "$pid_file" "$previous_source_file" "$enabled_file"
 pactl set-card-profile "$card" "$music_profile" || true
 notify "falha ao criar o microfone RNNoise"
 exit 1
