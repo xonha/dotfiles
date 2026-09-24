@@ -73,10 +73,6 @@ dotfiles:
     src: config/wireplumber/bluetooth-bt50-pro.conf
     dst: ~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf
     link: absolute
-  config_wireplumber_a2dp:
-    src: config/wireplumber/bluetooth-a2dp-autoconnect.conf
-    dst: ~/.config/wireplumber/wireplumber.conf.d/bluetooth-a2dp-autoconnect.conf
-    link: absolute
   config_hypr:
     src: hypr
     dst: ~/.config/hypr
@@ -92,6 +88,14 @@ dotfiles:
   config_scripts:
     src: config/scripts
     dst: ~/.config/scripts
+    link: absolute
+  config_pipewire_bt_rnnoise:
+    src: config/pipewire/bt-rnnoise.conf
+    dst: ~/.config/pipewire/bt-rnnoise.conf
+    link: absolute
+  config_toggle_bt_rnnoise:
+    src: config/scripts/toggle-bt-rnnoise.sh
+    dst: ~/.config/scripts/toggle-bt-rnnoise.sh
     link: absolute
   local_bin_update_lazypodman:
     src: config/scripts/update-lazypodman.sh
@@ -154,11 +158,12 @@ profiles:
       - config_foot
       - config_voxtype
       - config_wireplumber_bluetooth
-      - config_wireplumber_a2dp
       - config_hypr
       - config_hyprmoncfg
       - config_nvim
       - config_scripts
+      - config_pipewire_bt_rnnoise
+      - config_toggle_bt_rnnoise
       - local_bin_update_lazypodman
       - config_starship
       - omarchy_themes

@@ -90,14 +90,6 @@
           "id": "omaconnect"
         },
         {
-          "id": "xonha.omavoice",
-          "enabled": true,
-          "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
-          "preset": "podcast",
-          "previousAudioSource": "bluez_input.00:02:5B:00:FF:0E",
-          "setDefaultSource": true
-        },
-        {
           "id": "rtome85.audio-plus"
         },
         {
