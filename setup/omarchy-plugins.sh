@@ -29,7 +29,7 @@ run() {
   # Keep the local plugin forks in sync with the versioned copies. Plugin code
   # must be copied: Omarchy does not load plugin directories through symlinks.
   local fork source target
-  for fork in xonha.bar xonha.omavoice; do
+  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise; do
     source="$SETUP_ROOT/../omarchy/plugins/$fork"
     target="$HOME/.config/omarchy/plugins/$fork"
     if [[ -L $target ]]; then

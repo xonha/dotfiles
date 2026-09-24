@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.microphone-rnnoise",
+  "name": "RNNoise microphone indicator",
+  "version": "1.0.0",
+  "author": "xonha",
+  "license": "MIT",
+  "description": "Shows the RNNoise microphone state in the bar.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "RNNoise microphone",
+    "description": "Blinking red indicator while the microphone is open.",
+    "category": "Audio",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
