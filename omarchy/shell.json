@@ -37,9 +37,6 @@
           "useCalendarColors": true
         },
         {
-          "id": "xonha.speech-to-text"
-        },
-        {
           "id": "xonha.tray",
           "reverse": true,
           "pinned": [],

@@ -65,13 +65,17 @@ dotfiles:
     src: config/foot.ini
     dst: ~/.config/foot/foot.ini
     link: absolute
-  config_speech_to_text:
-    src: config/speech-to-text.json
-    dst: ~/.config/speech-to-text/config.json
-    link: absolute
   config_voxtype:
     src: config/voxtype.toml
     dst: ~/.config/voxtype/config.toml
+    link: absolute
+  config_wireplumber_bluetooth:
+    src: config/wireplumber/bluetooth-bt50-pro.conf
+    dst: ~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf
+    link: absolute
+  config_wireplumber_a2dp:
+    src: config/wireplumber/bluetooth-a2dp-autoconnect.conf
+    dst: ~/.config/wireplumber/wireplumber.conf.d/bluetooth-a2dp-autoconnect.conf
     link: absolute
   config_hypr:
     src: hypr
@@ -148,8 +152,9 @@ profiles:
       - config_containers_compose
       - config_containers_registries
       - config_foot
-      - config_speech_to_text
       - config_voxtype
+      - config_wireplumber_bluetooth
+      - config_wireplumber_a2dp
       - config_hypr
       - config_hyprmoncfg
       - config_nvim

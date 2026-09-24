@@ -1,7 +1,0 @@
-__pycache__/
-*.pyc
-diagnostics/**/*.ko
-diagnostics/**/*.so
-diagnostics/**/*.log
-diagnostics/**/*.btsnoop
-__pycache__/
