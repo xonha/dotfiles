@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 
 source_name="bt_rnnoise"
+mic_on_sound="/usr/share/sounds/freedesktop/stereo/message-new-instant.oga"
+mic_off_sound="/usr/share/sounds/freedesktop/stereo/network-connectivity-lost.oga"
 capture_port="bt_rnnoise.capture:input_MONO"
 snowball_capture_port="alsa_input.usb-BLUE_MICROPHONE_Blue_Snowball_SUGA_2021_01_21_75536-00.mono-fallback:capture_MONO"
 config="${HOME}/.config/pipewire/bt-rnnoise.conf"
@@ -61,6 +63,7 @@ if pid=$(running_pid); then
     pactl set-default-source "$source_name" || true
     pw-link -d "$snowball_capture_port" "$capture_port" 2>/dev/null || true
     rm -f "$enabled_file"
+    [[ -f "$mic_off_sound" ]] && pw-play "$mic_off_sound" >/dev/null 2>&1 &
     show_mic_osd off
     exit 0
   fi
@@ -79,6 +82,7 @@ for _ in {1..80}; do
     pactl set-default-source "$source_name"
     set_all_sources_mute 0
     : >"$enabled_file"
+    [[ -f "$mic_on_sound" ]] && pw-play "$mic_on_sound" >/dev/null 2>&1 &
     show_mic_osd on
     exit 0
   fi
