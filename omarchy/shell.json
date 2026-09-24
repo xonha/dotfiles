@@ -75,6 +75,9 @@
           "scriptPath": "/home/henrique/.config/scripts/cycle-browser-profile.sh"
         },
         {
+          "id": "omarchy.audio"
+        },
+        {
           "id": "omarchy.agents"
         },
         {
@@ -88,14 +91,14 @@
         },
         {
           "id": "xonha.omavoice",
-          "enabled": false,
+          "enabled": true,
           "pinnedSource": "bluez_input.00:02:5B:00:FF:0E",
           "preset": "podcast",
           "previousAudioSource": "bluez_input.00:02:5B:00:FF:0E",
           "setDefaultSource": true
         },
         {
-          "id": "omarchy.audio"
+          "id": "rtome85.audio-plus"
         },
         {
           "id": "omarchy.bluetooth"
