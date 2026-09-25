@@ -8,8 +8,8 @@ if (( EUID != 0 )); then
 fi
 
 setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-rule="$setup_dir/90-omarchy-usb-wakeup.rules"
-target=/etc/udev/rules.d/90-omarchy-usb-wakeup.rules
+rule="$setup_dir/90-thinkpad-usb-wakeup.rules"
+target=/etc/udev/rules.d/90-thinkpad-usb-wakeup.rules
 
 install -m 0644 "$rule" "$target"
 udevadm control --reload-rules

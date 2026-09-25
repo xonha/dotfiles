@@ -47,6 +47,51 @@ questions that do not affect this dotfiles repository.
 | Services | Systemd and containers | `bazzite/`, `config/systemd/` |
 | Operations | Per-service deploy artifacts and runbooks | `setup/<service>/` |
 
+## Configuration layers
+
+Keep the repository organized by scope. A change must be placed in the
+narrowest layer that owns it, so generic setup remains reusable across future
+machines and distributions.
+
+### Client machines
+
+- **Generic client layer**: shared desktop/user tools and client packages for
+  Arch-based systems. Keep these in `setup/` (for example,
+  `packages-client.sh`, `bash.sh`, `dotfiles.sh`, and `udev/` when the rule is
+  hardware-oriented rather than distribution-oriented).
+- **Distribution layer**: configuration that depends on a particular desktop
+  distribution or environment. Omarchy-specific orchestration and plugins
+  belong in `omarchy/`.
+- **Hardware layer**: rules tied to a physical model or device belong under a
+  hardware-specific path, such as `setup/udev/` for the ThinkPad USB wake rule.
+  Do not name hardware configuration after Omarchy merely because the current
+  machine runs Omarchy. Future hardware variants, such as Dell, should be
+  independently selectable.
+
+Current client targets include:
+
+- `omarchy` — current Omarchy client, composed from generic client setup plus
+  Omarchy-specific setup and applicable ThinkPad hardware setup;
+- `arch` — hypothetical plain Arch or another Arch-based client using only the
+  generic layers and any matching hardware layer;
+- hardware variants such as `thinkpad` and future `dell` — selected by device,
+  independently of the distribution.
+
+### Server machines
+
+- **Generic server layer**: shared CLI, development, container, and bootstrap
+  setup belongs in `setup/`.
+- **Environment layer**: a concrete server environment gets its own directory
+  and orchestrator. `bazzite/lab/` is the current example.
+- **Deployment or organization layer**: future environments such as `maistodos`
+  or a hypothetical company environment such as `ifood` must add only their
+  specific configuration on top of the generic server layer.
+
+Do not move a module into `omarchy/`, `bazzite/lab/`, or a future environment
+directory solely because the current orchestrator calls it. Move it there only
+when its behavior depends on that distribution, hardware, server environment,
+or organization.
+
 ## Main workflows
 
 ### Omarchy and desktop setup
@@ -55,11 +100,11 @@ Read [references/omarchy.md](references/omarchy.md) before changing desktop
 configuration or Omarchy integration. The main entrypoint is:
 
 ```bash
-./setup/omarchy-setup.sh
+./omarchy/setup.sh
 ```
 
-  It installs packages, applies the Dotdrop mappings, configures the login shell, and
-optionally configures the desktop and services.
+It installs generic client packages, applies Dotdrop mappings, configures the
+login shell, and then applies Omarchy-specific plugins and services.
 
 ### Lab environment
 
@@ -108,7 +153,14 @@ ignore rules, or files that may conflict with existing host configuration.
 
 - “Add a Hyprland shortcut” → edit `hypr/bindings.lua`, then validate or reload Hyprland.
 - “Change the Omarchy bar” → inspect `omarchy/shell.json` and preserve Omarchy ownership boundaries.
-- “Install a base package” → inspect `setup/packages-server.sh`.
-- “Change Omarchy client packages” → inspect `setup/packages-client.sh`.
+- “Install a base package” → decide first whether it is generic client/server,
+  Omarchy-specific, hardware-specific, or environment-specific; then inspect
+  the narrowest applicable module.
+- “Change client packages” → inspect `setup/packages-client.sh`; keep packages
+  reusable across Arch-based clients unless they depend on Omarchy.
+- “Change Omarchy-specific setup” → inspect `omarchy/setup.sh` and
+  `omarchy/plugins.sh`.
+- “Change hardware wake or device rules” → inspect `setup/udev/` and keep the
+  filename and path tied to the hardware, not the current distribution.
 - “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
 - “Change Immich or Keeper.sh” → read `bazzite/immich/README.md` or `bazzite/keeper/README.md` before editing.
