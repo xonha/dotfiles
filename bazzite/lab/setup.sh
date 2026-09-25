@@ -16,6 +16,9 @@ run() {
     return 1
   fi
 
+  deploy_unit_file "$LAB_ROOT/lab-home.volume"
+  deploy_unit_file "$LAB_ROOT/lab.container"
+
   local service quadlet
   for service in "${SERVICES[@]}"; do
     quadlet="$HOME/.config/containers/systemd/$service.container"

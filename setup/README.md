@@ -2,12 +2,14 @@
 
 ## Estrutura
 
-A raiz de `setup/` guarda os fluxos de bootstrap da maquina. Cada servico
-persistente tem seu proprio diretorio, com os artefatos de deploy e o runbook
-(`README.md`) lado a lado: `lab/`, `immich/`, `keeper/`, `crafty/`, `samba/`.
+A raiz de `setup/` guarda os modulos genericos de bootstrap. Os servicos do
+host Bazzite ficam em `bazzite/<servico>/`, com instalador, artefatos e runbook
+(`README.md`) lado a lado. `bazzite/setup.sh` os orquestra via SSH a partir de
+um cliente com este repositorio.
 
-Nada em `setup/` e aplicado pelo Dotdrop. O que precisa virar symlink no `$HOME` — como os
-quadlets — mora em `config/`.
+Nada em `setup/` e aplicado pelo Dotdrop. Os Quadlets do Bazzite sao copiados
+para o diretorio de unidades do usuario pelo setup remoto, sem exigir Dotdrop
+no host.
 
 | Arquivo | Responsabilidade |
 |---|---|

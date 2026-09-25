@@ -28,6 +28,11 @@ fica em `/var/home/henrique/immich/docker-compose.yml` no Bazzite.
 O `.env` não é versionado: ele contém a senha do PostgreSQL e valores
 específicos da máquina.
 
+De um cliente com este repositório e SSH, execute `./bazzite/setup.sh immich`
+após criar `~/immich/.env` no host. O script valida o disco e os endereços,
+instala o Compose versionado e inicia os containers. Não exige Dotdrop nem
+clone dos dotfiles no Bazzite.
+
 ## Armazenamento
 
 | Dados | Caminho | Disco |

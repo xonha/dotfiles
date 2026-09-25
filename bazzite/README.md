@@ -9,7 +9,7 @@ All machines connected via Tailscale MagicDNS.
 | `omarchy` | `omarchy` | 22 | ThinkPad T495 — Omarchy (Arch Linux) desktop |
 | `maistodos` | `maistodos` | 22 | Work machine — Arch WSL2 |
 | `lab` | `bazzite` | 2224 | Arch development container; forwards local :3000 |
-| `bazzite` | `bazzite` | 22 | Direct — no alias; see [bazzite access](#bazzite--bazzite-host) |
+| `bazzite` | `bazzite` | 22 | SSH alias for the Bazzite host |
 
 ```bash
 ssh omarchy      # ThinkPad T495 (Omarchy)
@@ -20,13 +20,8 @@ ssh lab          # Arch development container on bazzite (port 2224)
 > **lab port forward**: `ssh lab` automatically binds local port 3000 to
 > `localhost:3000` inside the development container.
 
-> **bazzite direct access**: No named alias exists for `bazzite` in
-> `~/.ssh/config`. Connect directly via Tailscale MagicDNS:
-> ```bash
-> ssh <your-user>@bazzite
-> ```
-> To add a `bazzite` alias, add a `Host bazzite` block to `ssh/config` and
-> re-run `dotdrop install --cfg config/dotdrop.yaml --profile omarchy` from the repo root — it deploys automatically.
+> **bazzite access**: `config/ssh.conf` defines `Host bazzite` with user
+> `henrique`; connect with `ssh bazzite`.
 
 ## Machines
 
@@ -80,6 +75,30 @@ the Windows system tray (not just in the WSL2 environment).
 | `keeper` | Quadlet rootless | local `8088`, Tailscale Serve `8444` | Calendar sync and MCP server (see [keeper/README.md](keeper/README.md)) |
 | `samba` | Quadlet rootless | Tailscale `445` | Storage shared over the tailnet (see [samba/README.md](samba/README.md)) |
 | `immich` | Podman Compose | `2283` | Photo and video library (see [immich/README.md](immich/README.md)) |
+
+## Setup from a client
+
+From a machine with this repository, SSH access to `bazzite`, and `tar`:
+
+```bash
+./bazzite/setup.sh                 # choose services interactively
+./bazzite/setup.sh lab crafty      # configure selected services
+```
+
+Set `BAZZITE_SSH_HOST` to use another SSH alias. The script sends only the
+required setup files to a temporary directory on the host and removes them
+afterward. It does not require Dotdrop or a persistent clone of this repository
+on the Bazzite host. Quadlet files are installed under
+`~/.config/containers/systemd/`; Immich's Compose file goes under `~/immich/`.
+The setup enables user linger so the services can start without an active SSH
+session.
+An existing file that differs from the versioned copy must be reviewed before
+the setup can replace it.
+
+Set up service-specific secrets and storage first, as described in each
+service's README. Keeper also requires its patched source tree on the host to
+build `localhost/keeper-standalone:meet`. The Lab container still maintains
+its own clone of the dotfiles inside its isolated home.
 
 Manage services on `bazzite`:
 

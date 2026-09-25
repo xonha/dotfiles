@@ -15,11 +15,17 @@ inicialização, o container clona `https://github.com/xonha/dotfiles.git` em
 
 ## Instalação e atualização
 
-No Bazzite, após aplicar os dotfiles com Dotdrop:
+Para orquestrar a instalação a partir de um cliente com SSH, use
+`./bazzite/setup.sh lab` na raiz deste repositório. Esse fluxo envia os arquivos
+temporariamente, instala o Quadlet e constrói a imagem no Bazzite; o host não
+precisa de Dotdrop nem de um clone persistente dos dotfiles. O clone descrito
+abaixo é criado dentro do container `lab`.
+
+Se o repositório já estiver no Bazzite, o instalador local também pode ser
+executado diretamente:
 
 ```bash
 cd ~/Dotfiles
-dotdrop install --cfg config/dotdrop.yaml --profile omarchy
 ./bazzite/lab/setup.sh
 ```
 

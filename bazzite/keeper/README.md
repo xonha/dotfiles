@@ -8,7 +8,14 @@ publicada. Veja [Imagem local](#imagem-local).
 
 ## Instalação
 
-Depois de aplicar os dotfiles com Dotdrop, a partir da raiz deste repositório:
+De um cliente com este repositório e SSH, execute `./bazzite/setup.sh keeper`.
+O script exige `keeper.env` com os segredos configurados e a imagem local
+`localhost/keeper-standalone:meet`; se ela não existir, constrói a imagem a
+partir de `~/.local/src/keeper.sh` no host. Ele instala o Quadlet sem exigir
+Dotdrop ou clone dos dotfiles no Bazzite.
+
+Como alternativa manual, depois de instalar o Quadlet a partir deste
+repositório:
 
 ```bash
 mkdir -p ~/.config/containers/systemd ~/.local/share/keeper/data
@@ -22,7 +29,7 @@ sed -i \
   ~/.config/containers/systemd/keeper.env
 
 systemctl --user daemon-reload
-systemctl --user enable --now keeper.service
+systemctl --user start keeper.service
 ```
 
 Abra `https://bazzite.tail9319fe.ts.net:8444` a partir de outro computador

@@ -18,6 +18,10 @@ The Quadlet unit lives at `bazzite/crafty/crafty.container` in this
 repo. Crafty runs the Minecraft server as a child process inside its own
 container — there is no separate Minecraft container.
 
+For a new host, run `./bazzite/setup.sh crafty` from a client with this
+repository and SSH access. It deploys the Quadlet, prepares the data
+directories and starts the user service.
+
 Data lives in `~/.local/share/crafty/` on `bazzite`:
 
 | Path | Contents |
@@ -389,11 +393,11 @@ for the new port and restart the service.
 
 ## Notes
 
-- **`dotdrop` is not installed on `bazzite`** (Bazzite is image-based). Quadlet
-  symlinks are created by hand, matching the existing pattern:
+- **`dotdrop` is not required on `bazzite`**. The remote setup copies the
+  Quadlet into the user unit directory; a local manual deployment can use:
   ```bash
-  ln -sfn ../../../Dotfiles/bazzite/crafty/crafty.container \
-          ~/.bazzite/crafty/crafty.container
+  install -m 0644 bazzite/crafty/crafty.container \
+    ~/.config/containers/systemd/crafty.container
   ```
 - Crafty runs as uid 1000, gid 0. Host directories must be owned accordingly
   inside the user namespace:

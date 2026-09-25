@@ -54,6 +54,12 @@ single-user machine; the alternative is a rootful quadlet in
 
 ## First-Time Setup
 
+After creating `samba.env`, mounting the disk, and applying the sysctl and
+firewall settings below, run `./bazzite/setup.sh samba` from a client with
+this repository and SSH access. It checks those prerequisites, installs the
+Quadlet and starts the user service. The manual steps below remain available
+for a local installation.
+
 ### 1. Deploy the Quadlet
 
 ```bash
