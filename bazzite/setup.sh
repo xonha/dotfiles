@@ -38,14 +38,20 @@ for dependency in ssh tar; do
   command -v "$dependency" >/dev/null 2>&1 || { error "$dependency is required on this client."; exit 1; }
 done
 
+ssh_options=(-o BatchMode=yes -o ConnectTimeout=5)
+if ! ssh "${ssh_options[@]}" "$host" 'grep -qi bazzite /etc/os-release && test "$(id -u)" -ne 0 && command -v podman >/dev/null && command -v tar >/dev/null && command -v loginctl >/dev/null'; then
+  error "SSH access to $host or Bazzite prerequisites are unavailable. Verify with: ssh $host"
+  exit 1
+fi
+
 cd "$DOTFILES_ROOT"
-stage="$(ssh "$host" 'mktemp -d /tmp/dotfiles-bazzite.XXXXXXXX')"
+stage="$(ssh "${ssh_options[@]}" "$host" 'mktemp -d /tmp/dotfiles-bazzite.XXXXXXXX')"
 if [[ ! "$stage" =~ ^/tmp/dotfiles-bazzite\.[[:alnum:]]{8}$ ]]; then
   error "Unexpected remote staging path; refusing to continue."
   exit 1
 fi
 
-cleanup() { ssh "$host" rm -r -- "$stage" || warn "Remove remote staging directory: $stage"; }
+cleanup() { ssh "${ssh_options[@]}" "$host" rm -r -- "$stage" || warn "Remove remote staging directory: $stage"; }
 trap cleanup EXIT
 
 tar -cf - \
@@ -56,6 +62,6 @@ tar -cf - \
   bazzite/keeper/keeper.container bazzite/keeper/setup.sh \
   bazzite/samba/samba.container bazzite/samba/setup.sh \
   bazzite/immich/docker-compose.yml bazzite/immich/setup.sh \
-  | ssh "$host" tar -xf - -C "$stage"
+  | ssh "${ssh_options[@]}" "$host" tar -xf - -C "$stage"
 
-ssh "$host" bash "$stage/bazzite/host_setup.sh" "${services[@]}"
+ssh "${ssh_options[@]}" "$host" bash "$stage/bazzite/host_setup.sh" "${services[@]}"
