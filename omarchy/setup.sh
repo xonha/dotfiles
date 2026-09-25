@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Interactive setup orchestrator.
-# Safe to run on both a desktop and an SSH-only server.
-
 set -euo pipefail
 
 OMARCHY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -37,13 +34,10 @@ run_module() {
 run_module yay.sh
 run_module pkg_server.sh
 
-# Configure RTK after its package is installed and before agent sessions start.
 run_module rtk.sh
 
-# Dotdrop is provided by the server package stage above.
 run_module dotfiles.sh
 
-# Configure the login shell after the shell packages are installed.
 run_module bash.sh
 
 run_module pkg_client.sh

@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# Shared helpers for setup steps
-
-# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -32,9 +29,6 @@ ensure_aur_package() {
   yay -S --needed --noconfirm "aur/$package"
 }
 
-# Ask the user to confirm a step before running it.
-# Usage: confirm_step "Step title" "Description"
-# Returns 0 if confirmed, 1 if skipped.
 confirm_step() {
   local title="$1"
   local desc="${2:-}"

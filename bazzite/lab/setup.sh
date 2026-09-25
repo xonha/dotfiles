@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Build and activate the rootless Arch development environment.
-
 set -euo pipefail
 
 LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

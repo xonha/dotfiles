@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Step: Safely configure Bash as the user's login shell.
-
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 

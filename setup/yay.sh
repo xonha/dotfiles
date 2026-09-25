@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Step: Install yay (AUR helper) when it is not already available.
-
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 
@@ -31,7 +29,6 @@ run() {
   success "yay installed."
 }
 
-# Allow sourcing without running (used by the orchestrator)
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   run
 fi

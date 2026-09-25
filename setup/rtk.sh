@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Step: Configure RTK integrations for supported coding agents.
-
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 

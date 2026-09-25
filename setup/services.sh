@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
-# Step: Enable and start systemd services
-
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 
-# Always enabled on every machine
 SERVICES_ALWAYS=(
   tailscaled.service
   earlyoom.service
 )
 
-# Prompted individually — user decides per machine
 SERVICES_OPTIONAL=()
 
 # Rootless Podman API socket: backs the docker CLI shim, docker-compose and

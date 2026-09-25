@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Step: Apply dotfiles with Dotdrop and switch remote to SSH
-
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 

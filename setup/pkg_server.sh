@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
-# Step: Install CLI packages shared by Omarchy, Lab, and headless Arch hosts.
-
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
 
-# Arch extra repository.
-#
 # Podman replaces Docker: podman-docker provides the `docker` CLI shim (it
 # conflicts with the docker package) and docker-compose is the provider used by
 # `podman compose` and by projects that still call `docker-compose` directly.
@@ -30,7 +26,6 @@ PKG_SERVER_EXTRA=(
   starship
 )
 
-# Arch User Repository.
 PKG_SERVER_AUR=(
   aur/dotdrop
   aur/specify-cli-bin
