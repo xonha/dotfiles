@@ -5,7 +5,7 @@ FROM archlinux:latest
 # and login-shell workflow.
 COPY setup/_shared.sh \
      setup/yay.sh setup/packages-server.sh \
-     setup/login-shell.sh /opt/dotfiles-setup/
+     setup/bash.sh /opt/dotfiles-setup/
 COPY bazzite/lab/containers.conf /etc/containers/containers.conf.d/10-lab.conf
 # Install only the container runtime/bootstrap prerequisites. The shared
 # package stage below installs all development packages.
@@ -50,7 +50,7 @@ USER ${USERNAME}
 ENV USER=${USERNAME}
 RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/yay.sh && run \
       && source /opt/dotfiles-setup/packages-server.sh && run \
-      && source /opt/dotfiles-setup/login-shell.sh && run \
+      && source /opt/dotfiles-setup/bash.sh && run \
       && (yay -S --needed --noconfirm blesh || true)'
 
 USER root

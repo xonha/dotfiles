@@ -15,7 +15,7 @@ quadlets — mora em `config/`.
 | `rtk.sh` | Instala as integrações globais do RTK para Claude Code, Codex e OpenCode. |
 | `packages-server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
 | `dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
-| `login-shell.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
+| `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
 | `packages-client.sh` | Catalogo exclusivo do cliente Omarchy: apps, ferramentas de monitor e servicos do host, separados por repositorio. |
 | `omarchy-plugins.sh` | Instala plugins do shell Omarchy e habilita `hyprmoncfgd`. |
 | `services.sh` | Habilita os servicos de sistema disponiveis. |
@@ -29,7 +29,7 @@ Dockerfile. `bazzite/lab/setup.sh` constroi a imagem e reinicia o servico Lab.
 
 ## Login shell safety
 
-`setup/login-shell.sh` runs after the common packages and dotfiles are installed. It
+`setup/bash.sh` runs after the common packages and dotfiles are installed. It
 configures Bash as the login shell only after confirming that `command -v bash`
 returns an executable and that the exact path is present in `/etc/shells`.
 The step then verifies the resulting passwd entry. This prevents PAM's

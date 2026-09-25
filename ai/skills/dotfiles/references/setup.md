@@ -5,7 +5,7 @@ order:
 
 1. `packages-server.sh` — shared CLI packages
 2. `dotfiles.sh` — Dotdrop and Git remote setup
-3. `login-shell.sh` — safe login-shell configuration
+3. `bash.sh` — safe login-shell configuration
 4. `packages-client.sh` and `omarchy-plugins.sh` — optional Omarchy client setup
 5. `services.sh` — system services
 

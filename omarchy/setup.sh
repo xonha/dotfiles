@@ -31,7 +31,7 @@ run_module rtk.sh
 run_module dotfiles.sh
 
 # Configure the login shell after the shell packages are installed.
-run_module login-shell.sh
+run_module bash.sh
 
 if is_omarchy && confirm_step \
     "Install Omarchy client packages and plugins" \
