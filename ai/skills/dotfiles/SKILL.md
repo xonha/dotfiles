@@ -47,6 +47,15 @@ questions that do not affect this dotfiles repository.
 | Services | Systemd and containers | `bazzite/`, `config/systemd/` |
 | Operations | Per-service deploy artifacts and runbooks | `setup/<service>/` |
 
+## Naming conventions
+
+Prefer `snake_case` for new files and for files being renamed, for example
+`pkg_client.sh`, `pkg_server.sh`, and `thinkpad_usb_wakeup.rules`. Preserve a
+different naming convention only when it is required by an external tool,
+systemd/udev filename contract, upstream project, or an existing public
+interface that would break if renamed. When renaming a file, update all
+callers, documentation, build contexts, and installation targets.
+
 ## Configuration layers
 
 Keep the repository organized by scope. A change must be placed in the
@@ -57,7 +66,7 @@ machines and distributions.
 
 - **Generic client layer**: shared desktop/user tools and client packages for
   Arch-based systems. Keep these in `setup/` (for example,
-  `packages-client.sh`, `bash.sh`, `dotfiles.sh`, and `udev/` when the rule is
+  `pkg_client.sh`, `bash.sh`, `dotfiles.sh`, and `udev/` when the rule is
   hardware-oriented rather than distribution-oriented).
 - **Distribution layer**: configuration that depends on a particular desktop
   distribution or environment. Omarchy-specific orchestration and plugins
@@ -156,7 +165,7 @@ ignore rules, or files that may conflict with existing host configuration.
 - “Install a base package” → decide first whether it is generic client/server,
   Omarchy-specific, hardware-specific, or environment-specific; then inspect
   the narrowest applicable module.
-- “Change client packages” → inspect `setup/packages-client.sh`; keep packages
+- “Change client packages” → inspect `setup/pkg_client.sh`; keep packages
   reusable across Arch-based clients unless they depend on Omarchy.
 - “Change Omarchy-specific setup” → inspect `omarchy/setup.sh` and
   `omarchy/plugins.sh`.

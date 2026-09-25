@@ -27,7 +27,7 @@ run_module() {
 }
 
 run_module yay.sh
-run_module packages-server.sh
+run_module pkg_server.sh
 
 # Configure RTK after its package is installed and before agent sessions start.
 run_module rtk.sh
@@ -38,7 +38,7 @@ run_module dotfiles.sh
 # Configure the login shell after the shell packages are installed.
 run_module bash.sh
 
-run_module packages-client.sh
+run_module pkg_client.sh
 source "$OMARCHY_ROOT/plugins.sh"
 run
 

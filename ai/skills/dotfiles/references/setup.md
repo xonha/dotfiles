@@ -3,13 +3,13 @@
 The main setup flow is `setup/omarchy-setup.sh`. It sources these modules in
 order:
 
-1. `packages-server.sh` — shared CLI packages
+1. `pkg_server.sh` — shared CLI packages
 2. `dotfiles.sh` — Dotdrop and Git remote setup
 3. `bash.sh` — safe login-shell configuration
-4. `packages-client.sh` and `omarchy/plugins.sh` — Omarchy client setup
+4. `pkg_client.sh` and `omarchy/plugins.sh` — client and Omarchy setup
 5. `services.sh` — system services
 
-Only `packages-server.sh` and `packages-client.sh` declare package lists,
+Only `pkg_server.sh` and `pkg_client.sh` declare shared package lists,
 grouped by repository. Shared behavior belongs in `_shared.sh`.
 
 Before changing a stage, inspect its callers and whether it can run on a

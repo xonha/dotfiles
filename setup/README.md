@@ -13,15 +13,15 @@ quadlets — mora em `config/`.
 |---|---|
 | `yay.sh` | Instala yay de forma idempotente para uso standalone ou como pre-requisito dos estagios que usam AUR. |
 | `rtk.sh` | Instala as integrações globais do RTK para Claude Code, Codex e OpenCode. |
-| `packages-server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
+| `pkg_server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
 | `dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
 | `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
-| `packages-client.sh` | Catalogo de apps, ferramentas de monitor e servicos para qualquer cliente Arch-based. |
+| `pkg_client.sh` | Catalogo de apps, ferramentas de monitor e servicos para qualquer cliente Arch-based. |
 | `services.sh` | Habilita os servicos de sistema disponiveis. |
 | `udev/install-usb-wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
 | `_shared.sh` | Funcoes auxiliares usadas pelos estagios. |
 
-`packages-server.sh` e `packages-client.sh` declaram os catalogos compartilhados
+`pkg_server.sh` e `pkg_client.sh` declaram os catalogos compartilhados
 de pacotes deste diretorio. O Lab usa o primeiro no build de
 `bazzite/lab/Dockerfile`; os pre-requisitos da imagem ficam no proprio
 Dockerfile. `bazzite/lab/setup.sh` constroi a imagem e reinicia o servico Lab.

@@ -4,7 +4,7 @@ FROM archlinux:latest
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
 COPY setup/_shared.sh \
-     setup/yay.sh setup/packages-server.sh \
+     setup/yay.sh setup/pkg_server.sh \
      setup/bash.sh /opt/dotfiles-setup/
 COPY bazzite/lab/containers.conf /etc/containers/containers.conf.d/10-lab.conf
 # Install only the container runtime/bootstrap prerequisites. The shared
@@ -49,7 +49,7 @@ RUN printf '%s:1:%s\n%s:%s:%s\n' \
 USER ${USERNAME}
 ENV USER=${USERNAME}
 RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/yay.sh && run \
-      && source /opt/dotfiles-setup/packages-server.sh && run \
+      && source /opt/dotfiles-setup/pkg_server.sh && run \
       && source /opt/dotfiles-setup/bash.sh && run \
       && (yay -S --needed --noconfirm blesh || true)'
 
