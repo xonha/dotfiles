@@ -9,6 +9,14 @@ DOTFILES_ROOT="$(cd "$OMARCHY_ROOT/.." && pwd)"
 SETUP_ROOT="$DOTFILES_ROOT/setup"
 source "$SETUP_ROOT/_shared.sh"
 
+# The Omarchy binary may not be on PATH in a non-interactive shell. The
+# packaged path and OMARCHY_PATH are stable fallback signals.
+is_omarchy() {
+  command -v omarchy >/dev/null 2>&1 \
+    || [[ -x /usr/share/omarchy/bin/omarchy ]] \
+    || [[ -n "${OMARCHY_PATH:-}" && -d "${OMARCHY_PATH}" ]]
+}
+
 if ! is_omarchy; then
   error "This setup requires Omarchy."
   exit 1
