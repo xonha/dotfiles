@@ -3,7 +3,7 @@
 Arch dotfiles managed with Dotdrop. The installer detects Omarchy and keeps
 Foot and other Omarchy-managed native applications outside Dotdrop. Hyprland and
 select Omarchy shell config (bar layout, idle/lock) are tracked here as user
-overrides on top of Omarchy's defaults. Run `./setup/omarchy-setup.sh` for a new
+overrides on top of Omarchy's defaults. Run `./omarchy/setup.sh` for a new
 machine.
 
 ## Index

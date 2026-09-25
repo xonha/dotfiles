@@ -1,6 +1,6 @@
 # Setup workflow
 
-The main setup flow is `setup/omarchy-setup.sh`. It sources these modules in
+The main setup flow is `omarchy/setup.sh`. It sources these modules in
 order:
 
 1. `pkg_server.sh` — shared CLI packages

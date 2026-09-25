@@ -3,13 +3,13 @@
 set -euo pipefail
 
 if (( EUID != 0 )); then
-  echo "Run as root: sudo ./setup/udev/install-usb-wakeup.sh" >&2
+  echo "Run as root: sudo ./setup/udev/usbc_wakeup.sh" >&2
   exit 1
 fi
 
 setup_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-rule="$setup_dir/90-thinkpad-usb-wakeup.rules"
-target=/etc/udev/rules.d/90-thinkpad-usb-wakeup.rules
+rule="$setup_dir/90_thinkpad_usb_wakeup.rules"
+target=/etc/udev/rules.d/90_thinkpad_usb_wakeup.rules
 
 install -m 0644 "$rule" "$target"
 udevadm control --reload-rules

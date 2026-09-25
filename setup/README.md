@@ -18,7 +18,7 @@ quadlets — mora em `config/`.
 | `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
 | `pkg_client.sh` | Catalogo de apps, ferramentas de monitor e servicos para qualquer cliente Arch-based. |
 | `services.sh` | Habilita os servicos de sistema disponiveis. |
-| `udev/install-usb-wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
+| `udev/usbc_wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
 | `_shared.sh` | Funcoes auxiliares usadas pelos estagios. |
 
 `pkg_server.sh` e `pkg_client.sh` declaram os catalogos compartilhados
@@ -41,7 +41,7 @@ By default, the ThinkPad only wakes from `systemctl suspend` via the power butto
 This documents how to enable wakeup from the internal keyboard and an external USB keyboard.
 
 For the Corne keyboard connected through the USB-C hub on this machine, run
-`sudo ./setup/udev/install-usb-wakeup.sh`. The versioned udev rule enables wake for the
+`sudo ./setup/udev/usbc_wakeup.sh`. The versioned udev rule enables wake for the
 USB root hub, the two hub stages, the Corne keyboard, and the Logitech receiver.
 It applies to connected devices immediately and to future connections after a
 reboot. Test with the lid closed and wake the laptop from the external keyboard.
