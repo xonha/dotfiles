@@ -17,7 +17,6 @@ quadlets — mora em `config/`.
 | `dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
 | `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
 | `packages-client.sh` | Catalogo exclusivo do cliente Omarchy: apps, ferramentas de monitor e servicos do host, separados por repositorio. |
-| `omarchy-plugins.sh` | Instala plugins do shell Omarchy e habilita `hyprmoncfgd`. |
 | `services.sh` | Habilita os servicos de sistema disponiveis. |
 | `udev/install-usb-wakeup.sh` | Instala a regra udev de wake pelo teclado externo neste ThinkPad. |
 | `_shared.sh` | Funcoes auxiliares usadas pelos estagios. |

@@ -5,7 +5,9 @@
 
 set -euo pipefail
 
-SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OMARCHY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(cd "$OMARCHY_ROOT/.." && pwd)"
+SETUP_ROOT="$DOTFILES_ROOT/setup"
 source "$SETUP_ROOT/_shared.sh"
 
 run() {
@@ -30,7 +32,7 @@ run() {
   # must be copied: Omarchy does not load plugin directories through symlinks.
   local fork source target
   for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise; do
-    source="$SETUP_ROOT/../omarchy/plugins/$fork"
+    source="$OMARCHY_ROOT/plugins/$fork"
     target="$HOME/.config/omarchy/plugins/$fork"
     if [[ -L $target ]]; then
       error "Refusing to replace symlinked plugin: $target"

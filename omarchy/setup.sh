@@ -39,7 +39,8 @@ run_module dotfiles.sh
 run_module bash.sh
 
 run_module packages-client.sh
-run_module omarchy-plugins.sh
+source "$OMARCHY_ROOT/plugins.sh"
+run
 
 run_module services.sh
 
