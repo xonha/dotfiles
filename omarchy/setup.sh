@@ -9,6 +9,11 @@ DOTFILES_ROOT="$(cd "$OMARCHY_ROOT/.." && pwd)"
 SETUP_ROOT="$DOTFILES_ROOT/setup"
 source "$SETUP_ROOT/_shared.sh"
 
+if ! is_omarchy; then
+  error "This setup requires Omarchy."
+  exit 1
+fi
+
 printf "${BOLD}${BLUE}"
 printf "╭──────────────────────────────────────╮\n"
 printf "│         Henrique's Setup Script      │\n"
@@ -33,13 +38,8 @@ run_module dotfiles.sh
 # Configure the login shell after the shell packages are installed.
 run_module bash.sh
 
-if is_omarchy && confirm_step \
-    "Install Omarchy client packages and plugins" \
-    "Keeps Omarchy's native desktop and adds the client applications and shell plugins.
-  Skip this on headless machines."; then
-  run_module packages-client.sh
-  run_module omarchy-plugins.sh
-fi
+run_module packages-client.sh
+run_module omarchy-plugins.sh
 
 run_module services.sh
 
