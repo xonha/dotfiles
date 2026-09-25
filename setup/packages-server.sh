@@ -34,6 +34,7 @@ PKG_SERVER_EXTRA=(
 PKG_SERVER_AUR=(
   aur/dotdrop
   aur/specify-cli-bin
+  aur/rtk-bin
 )
 
 run() {
