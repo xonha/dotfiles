@@ -21,6 +21,9 @@ run_module() {
 
 run_module packages-server.sh
 
+# Configure RTK after its package is installed and before agent sessions start.
+run_module rtk.sh
+
 # Dotdrop is provided by the server package stage above.
 run_module dotfiles.sh
 

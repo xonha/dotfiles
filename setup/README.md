@@ -11,7 +11,8 @@ quadlets — mora em `config/`.
 
 | Arquivo | Responsabilidade |
 |---|---|
-| `omarchy-setup.sh` | Entrada interativa: executa pacotes comuns, dotfiles e shell; no Omarchy oferece pacotes e plugins do cliente; por fim configura servicos. |
+| `omarchy-setup.sh` | Entrada interativa: executa pacotes comuns, configura RTK para Claude Code, Codex e OpenCode, aplica dotfiles e shell; no Omarchy oferece pacotes e plugins do cliente; por fim configura servicos. |
+| `rtk.sh` | Instala as integrações globais do RTK para Claude Code, Codex e OpenCode. |
 | `packages-server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
 | `dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
 | `login-shell.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
