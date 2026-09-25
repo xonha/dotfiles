@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Devbot
+Exec=microsoft-edge-stable --profile-directory=Default --class=microsoft-edge-devbot %U
+Icon=microsoft-edge
+StartupWMClass=microsoft-edge-devbot
+Terminal=false
+NoDisplay=true
+Categories=Network;WebBrowser;
+MimeType=x-scheme-handler/http;x-scheme-handler/https;text/html;

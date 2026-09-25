@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Mais Todos
+Exec=google-chrome-stable --profile-directory=Default --class=google-chrome-maistodos %U
+Icon=google-chrome
+StartupWMClass=google-chrome-maistodos
+Terminal=false
+NoDisplay=true
+Categories=Network;WebBrowser;
+MimeType=x-scheme-handler/http;x-scheme-handler/https;text/html;

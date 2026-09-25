@@ -3,9 +3,8 @@ local brave_flags = "--max-unused-resource-memory-usage-mb=128 --disk-cache-size
 local function brave_app(id)
   return ("brave-origin --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
 end
-local function brave_profile(profile, data_dir)
-  return ("brave-origin --profile-directory=Default --class=brave-origin-%s --user-data-dir='%s' %s")
-      :format(profile, data_dir, brave_flags)
+local function browser_profile(browser, class_name)
+  return ("%s --profile-directory=Default --class=%s"):format(browser, class_name)
 end
 hl.unbind("SUPER + V")
 hl.unbind("SUPER + F")
@@ -27,15 +26,15 @@ o.bind("SUPER + R", "YouTube Music",
   { launch = brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), focus = "^brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default$" })
 o.bind("SUPER + D", "Mais Todos",
   {
-    launch = brave_profile("maistodos", "/home/henrique/.config/BraveSoftware/Brave-Origin-MaisTodos"),
+    launch = browser_profile("google-chrome-stable", "google-chrome-maistodos"),
     focus =
-    "^brave-origin-maistodos$"
+    "^(google-chrome-maistodos|google-chrome)$"
   })
 o.bind("SUPER + S", "Devbot",
   {
-    launch = brave_profile("devbot", "/home/henrique/.config/BraveSoftware/Brave-Origin-Devbot"),
+    launch = browser_profile("microsoft-edge-stable", "microsoft-edge-devbot"),
     focus =
-    "^brave-origin-devbot$"
+    "^microsoft-edge-devbot$"
   })
 o.bind("SUPER + A", "Editor", { launch = "code", focus = "^code$" })
 -- Windows

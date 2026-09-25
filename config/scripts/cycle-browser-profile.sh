@@ -6,8 +6,8 @@ set -Eeuo pipefail
 # id|desktop file|label
 PROFILES=(
   "pessoal|brave-origin.desktop|Pessoal"
-  "maistodos|brave-origin-maistodos.desktop|MaisTodos"
-  "devbot|brave-origin-devbot.desktop|DevBot"
+  "maistodos|google-chrome-maistodos.desktop|MaisTodos"
+  "devbot|microsoft-edge-devbot.desktop|DevBot"
 )
 
 MIMES=(

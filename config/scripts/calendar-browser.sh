@@ -13,17 +13,15 @@ fi
 
 case "$label" in
   maistodos)
-    exec brave-origin \
+    exec google-chrome-stable \
       --profile-directory=Default \
-      --class=brave-origin-maistodos \
-      --user-data-dir="$HOME/.config/BraveSoftware/Brave-Origin-MaisTodos" \
+      --class=google-chrome-maistodos \
       "$url"
     ;;
   devbot)
-    exec brave-origin \
+    exec microsoft-edge-stable \
       --profile-directory=Default \
-      --class=brave-origin-devbot \
-      --user-data-dir="$HOME/.config/BraveSoftware/Brave-Origin-Devbot" \
+      --class=microsoft-edge-devbot \
       "$url"
     ;;
   personal|*)
