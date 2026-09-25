@@ -28,6 +28,15 @@ run() {
     omarchy plugin add "$repo" --enable --yes
   done
 
+  # promaa.clock may retain a local development path for the calendar
+  # launcher. Keep its event links on the Dotfiles-managed script instead.
+  local clock_panel="$HOME/.config/omarchy/plugins/promaa.clock/Panel.qml"
+  if [[ -f $clock_panel ]]; then
+    sed -i \
+      "s|/home/henrique/Dotfiles/.config/scripts/calendar-browser.sh|$HOME/.config/scripts/calendar-browser.sh|g" \
+      "$clock_panel"
+  fi
+
   # Keep the local plugin forks in sync with the versioned copies. Plugin code
   # must be copied: Omarchy does not load plugin directories through symlinks.
   local fork source target
