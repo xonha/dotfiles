@@ -22,7 +22,6 @@ PKG_SERVER_EXTRA=(
   podman
   podman-docker
   docker-compose
-  lazydocker
   starship
 )
 

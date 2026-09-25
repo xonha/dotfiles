@@ -11,14 +11,18 @@ if [[ -z "$url" ]]; then
   exit 2
 fi
 
+# Calendar routing is browser-based, not Brave-profile-based:
+#   MaisTodos -> Google Chrome
+#   Devbot    -> Microsoft Edge
+#   Personal  -> Brave
 case "$label" in
-  maistodos)
+  maistodos|maistodoswork|work)
     exec google-chrome-stable \
       --profile-directory=Default \
       --class=google-chrome-maistodos \
       "$url"
     ;;
-  devbot)
+  devbot|devbotwork)
     exec microsoft-edge-stable \
       --profile-directory=Default \
       --class=microsoft-edge-devbot \

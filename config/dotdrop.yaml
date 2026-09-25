@@ -97,6 +97,10 @@ dotfiles:
     src: config/scripts/toggle-bt-rnnoise.sh
     dst: ~/.config/scripts/toggle-bt-rnnoise.sh
     link: absolute
+  config_meeting_status:
+    src: config/scripts/meeting-status.sh
+    dst: ~/.config/scripts/meeting-status.sh
+    link: absolute
   local_bin_update_lazypodman:
     src: config/scripts/update-lazypodman.sh
     dst: ~/.local/bin/update-lazypodman

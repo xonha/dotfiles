@@ -36,6 +36,7 @@ BarWidget {
   readonly property string browserCommand: String(setting("browserCommand", "") || "").trim()
   readonly property string calendarBrowserCommand: String(setting("calendarBrowserCommand", (Quickshell.env("HOME") || "") + "/.config/scripts/calendar-browser.sh") || "").trim()
   readonly property string sharedSyncCommand: String(setting("sharedSyncCommand", (Quickshell.env("HOME") || "") + "/.config/omarchy/plugins/promaa.clock/fetch-events.py") || "").trim()
+  readonly property string meetingStatusCommand: String(setting("meetingStatusCommand", (Quickshell.env("HOME") || "") + "/.config/scripts/meeting-status.sh") || "").trim()
   readonly property string calendarsConfigPath: String(setting("calendarsConfigPath", (Quickshell.env("HOME") || "") + "/.config/omarchy/calendars.json") || "").trim()
   property var calendarUrlBases: ({})
   // Base for "Open in Calendar". Defaults to the signed-in account; set to
@@ -77,6 +78,9 @@ BarWidget {
   property int offlineFeedCount: 0
   readonly property bool fetching: fetchProc.running || sharedSyncProc.running
   property date now: new Date()
+  property string meetingStatus: "not_detected"
+  property bool browserCaptureActive: false
+  property bool meetingStatusRunning: false
 
   // Internal fetch-loop state (populated by fetchCalendar).
   property var pendingFeeds: []
@@ -93,6 +97,7 @@ BarWidget {
     && nextMeeting.start && nextMeeting.end
     && root.now.getTime() >= nextMeeting.start.getTime()
     && root.now.getTime() < nextMeeting.end.getTime()
+  readonly property bool browserInMeeting: root.meetingStatus === "in_meeting" || root.browserCaptureActive
 
   // ---- actions
   function openMeetingUrl(url, event) {
@@ -297,6 +302,22 @@ BarWidget {
 
   signal meetingDataChanged()
 
+  function updateMeetingStatus(raw) {
+    try {
+      var status = JSON.parse(String(raw || "{}"))
+      root.meetingStatus = String(status.state || "not_detected")
+      root.browserCaptureActive = status.browser_capture_active === true
+    } catch (_) {
+      root.meetingStatus = "unknown"
+      root.browserCaptureActive = false
+    }
+  }
+
+  function pollMeetingStatus() {
+    if (!root.meetingStatusCommand || meetingStatusProc.running) return
+    meetingStatusProc.running = true
+  }
+
   // ---- panel plumbing (shape contract for shell.summon/hide/toggle)
   readonly property bool opened: panelLoader.item ? panelLoader.item.opened === true : false
   readonly property bool popoutSwitchClosing: panelLoader.item ? panelLoader.item.popoutSwitchClosing === true : false
@@ -349,6 +370,14 @@ BarWidget {
     onTriggered: root.fetchCalendar(false)
   }
 
+  Timer {
+    interval: 5 * 1000
+    running: true
+    repeat: true
+    triggeredOnStart: true
+    onTriggered: root.pollMeetingStatus()
+  }
+
   // Keep the countdown fresh.
   Timer {
     id: nowTimer
@@ -389,6 +418,18 @@ BarWidget {
     onExited: function(exitCode) {
       if (exitCode !== 0) console.warn("shared calendar sync exited with code", exitCode)
       jsonFileView.reload()
+    }
+  }
+
+  Process {
+    id: meetingStatusProc
+    command: ["bash", "-c", root.meetingStatusCommand]
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: root.updateMeetingStatus(text)
+    }
+    onExited: function(exitCode) {
+      if (exitCode !== 0) root.updateMeetingStatus('{"state":"unknown"}')
     }
   }
 
@@ -442,7 +483,7 @@ BarWidget {
     labelVisible: true
     hasVisualContent: true
     dimmed: root.label === ""
-    active: root.inMeeting
+    active: root.inMeeting || root.browserInMeeting
     useActiveColor: !(root.useCalendarColors && root.colorOnBar)
     horizontalMargin: 8.75
     verticalPadding: 8.75
@@ -465,5 +506,5 @@ BarWidget {
     offlineFeedCount: root.offlineFeedCount,
     showCalendarLabel: root.showCalendarLabel,
     use12Hour: root.use12Hour
-  })
+  }) + (root.browserInMeeting ? "\nReunião ativa no navegador" : "")
 }

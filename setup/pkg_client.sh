@@ -11,15 +11,15 @@ PKG_CLIENT_EXTRA=(
   noise-suppression-for-voice
   mpv
   playerctl
-  libreoffice-still
   earlyoom
   tailscale
   docker-buildx
+  google-chrome
+  microsoft-edge-stable-bin
 )
 
 PKG_CLIENT_AUR=(
   aur/hyprmoncfg-bin # Used by the crmne.hyprmoncfg shell plugin.
-  aur/podman-tui-bin # Talks to the local Podman engine, so it stays host-only.
 )
 
 run() {
