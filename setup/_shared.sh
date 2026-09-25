@@ -15,6 +15,23 @@ warn()    { printf "${YELLOW}  [!]${RESET} %s\n" "$*"; }
 error()   { printf "${RED}  [err]${RESET} %s\n" "$*" >&2; }
 header()  { printf "\n${BOLD}${BLUE}=== %s ===${RESET}\n\n" "$*"; }
 
+ensure_aur_package() {
+  local package="$1"
+
+  if pacman -Q "$package" >/dev/null 2>&1; then
+    info "$package is already installed."
+    return 0
+  fi
+
+  if ! command -v yay >/dev/null 2>&1; then
+    error "yay is required to install aur/$package."
+    return 1
+  fi
+
+  info "Installing aur/$package..."
+  yay -S --needed --noconfirm "aur/$package"
+}
+
 # Ask the user to confirm a step before running it.
 # Usage: confirm_step "Step title" "Description"
 # Returns 0 if confirmed, 1 if skipped.

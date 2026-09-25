@@ -7,16 +7,7 @@ source "$SETUP_ROOT/_shared.sh"
 run() {
   header "Dotfiles & user setup"
 
-  if pacman -Q dotdrop >/dev/null 2>&1; then
-    info "Dotdrop is already installed."
-  else
-    if ! command -v yay >/dev/null 2>&1; then
-      error "yay is required to install aur/dotdrop. Run setup/yay.sh first."
-      return 1
-    fi
-    info "Installing Dotdrop from AUR..."
-    yay -S --needed --noconfirm aur/dotdrop
-  fi
+  ensure_aur_package dotdrop
 
   local dotfiles_dir
   dotfiles_dir="$(cd "$SETUP_ROOT/.." && pwd)"
