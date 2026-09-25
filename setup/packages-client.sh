@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Step: Install Omarchy client packages beyond its native desktop defaults.
+# Step: Install client packages beyond the native desktop defaults.
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
@@ -21,18 +21,18 @@ PKG_OMARCHY_EXTRA=(
   docker-buildx
 )
 
-# Arch User Repository.
-PKG_OMARCHY_AUR=(
-  aur/hyprmoncfg-bin # Used by the crmne.hyprmoncfg Omarchy shell plugin.
+# Arch User Repository. These packages are client-side but not Omarchy-specific.
+PKG_CLIENT_AUR=(
+  aur/hyprmoncfg-bin # Used by the crmne.hyprmoncfg shell plugin.
   aur/podman-tui-bin # Talks to the local Podman engine, so it stays host-only.
 )
 
 run() {
-  header "Install Omarchy client packages"
+  header "Install client packages"
   info "Installing packages from extra and AUR..."
   yay -Syu --needed --noconfirm --removemake \
-    "${PKG_OMARCHY_EXTRA[@]}" "${PKG_OMARCHY_AUR[@]}"
-  success "Omarchy client packages installed."
+    "${PKG_OMARCHY_EXTRA[@]}" "${PKG_CLIENT_AUR[@]}"
+  success "Client packages installed."
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
