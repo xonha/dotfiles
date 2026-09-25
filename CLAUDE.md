@@ -8,7 +8,7 @@ machine.
 
 ## Index
 
-- [Infrastructure](bazzite/infra.md) — machines, Tailscale network, how to reach each host
+- [Infrastructure](bazzite/README.md) — machines, Tailscale network, how to reach each host
 - [Lab](bazzite/lab/README.md) — Arch Linux development environment on Bazzite
 - [Crafty / Minecraft](bazzite/crafty/README.md) — Crafty Controller on bazzite; Tailscale-only access for friends
 - [Samba / Storage](bazzite/samba/README.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
