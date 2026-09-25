@@ -4,7 +4,7 @@ FROM archlinux:latest
 # used by a regular machine so Lab follows the same bootstrap, package
 # and login-shell workflow.
 COPY setup/_shared.sh \
-     bazzite/lab/bootstrap-yay.sh setup/packages-server.sh \
+     setup/yay.sh setup/packages-server.sh \
      setup/login-shell.sh /opt/dotfiles-setup/
 COPY bazzite/lab/containers.conf /etc/containers/containers.conf.d/10-lab.conf
 # Install only the container runtime/bootstrap prerequisites. The shared
@@ -48,7 +48,7 @@ RUN printf '%s:1:%s\n%s:%s:%s\n' \
 # shared CLI package stage; client services are installed only on Omarchy.
 USER ${USERNAME}
 ENV USER=${USERNAME}
-RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/bootstrap-yay.sh && run \
+RUN /bin/bash -o pipefail -c 'source /opt/dotfiles-setup/yay.sh && run \
       && source /opt/dotfiles-setup/packages-server.sh && run \
       && source /opt/dotfiles-setup/login-shell.sh && run \
       && (yay -S --needed --noconfirm blesh || true)'

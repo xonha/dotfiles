@@ -10,12 +10,12 @@ versionadas neste repositório e aplicadas após os padrões do Omarchy.
 ```bash
 git clone https://github.com/henriqueluhm/dotfiles.git "$HOME/dotfiles"
 cd "$HOME/dotfiles"
-./setup/omarchy-setup.sh
+./omarchy/setup.sh
 ```
 
 O instalador configura a base de terminal e permite escolher a instalação do
-desktop. O Omarchy já fornece `yay`, então o bootstrap desse helper não é
-executado no host. No Omarchy, o perfil legado do Kitty
+desktop. O setup verifica e instala `yay` quando necessário antes dos estágios
+que usam o AUR. No Omarchy, o perfil legado do Kitty
 não é aplicado; os componentes correspondentes ficam fora do manifesto do Dotdrop.
 Os ajustes específicos de hardware ficam fora do fluxo principal.
 

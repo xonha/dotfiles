@@ -4,8 +4,10 @@
 
 set -euo pipefail
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SETUP_DIR/_shared.sh"
+OMARCHY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(cd "$OMARCHY_ROOT/.." && pwd)"
+SETUP_ROOT="$DOTFILES_ROOT/setup"
+source "$SETUP_ROOT/_shared.sh"
 
 printf "${BOLD}${BLUE}"
 printf "╭──────────────────────────────────────╮\n"
@@ -15,10 +17,11 @@ printf "${RESET}\n"
 
 run_module() {
   local module="$1"
-  source "$SETUP_DIR/$module"
+  source "$SETUP_ROOT/$module"
   run
 }
 
+run_module yay.sh
 run_module packages-server.sh
 
 # Configure RTK after its package is installed and before agent sessions start.

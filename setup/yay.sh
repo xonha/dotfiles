@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Step: Bootstrap yay (AUR helper) for the Arch-based Lab image.
-# The Omarchy host already provides yay and does not source this stage.
+# Step: Install yay (AUR helper) when it is not already available.
 
 SETUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SETUP_ROOT/_shared.sh"
