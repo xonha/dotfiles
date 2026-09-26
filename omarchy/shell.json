@@ -37,13 +37,13 @@
           "useCalendarColors": true
         },
         {
+          "id": "alanfortlink.speech-to-text"
+        },
+        {
           "id": "xonha.tray",
           "reverse": true,
           "pinned": [],
           "hidden": []
-        },
-        {
-          "id": "alanfortlink.speech-to-text"
         }
       ],
       "right": [
