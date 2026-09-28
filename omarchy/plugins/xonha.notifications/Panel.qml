@@ -117,11 +117,13 @@ Item {
             font.pixelSize: Style.space(19)
             font.bold: true
           }
-          Text {
-            text: "✕"
-            color: Color.popups.text
-            font.pixelSize: Style.space(18)
-            MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.dismiss() }
+          Ui.Button {
+            text: "Testar notificação"
+            iconText: "󰂚"
+            bordered: true
+            focusable: true
+            enabled: root.monitorConnected
+            onClicked: root.testNotification()
           }
         }
 
@@ -157,16 +159,6 @@ Item {
           onChanged: function(value) { if (root.service) root.service.setNotificationPosition(value) }
         }
 
-        Ui.Button {
-          Layout.fillWidth: true
-          text: "Testar notificação"
-          iconText: "󰂚"
-          bordered: true
-          focusable: true
-          enabled: root.monitorConnected
-          onClicked: root.testNotification()
-        }
-
         Ui.Dropdown {
           Layout.fillWidth: true
           label: "Notificações guardadas"
@@ -185,11 +177,24 @@ Item {
             font.bold: true
             font.pixelSize: Style.space(14)
           }
-          Text {
-            text: "Atualizar"
-            color: Color.accent
-            font.pixelSize: Style.space(12)
-            MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: if (root.service) root.service.refreshHistory() }
+          Ui.PanelActionButton {
+            iconText: "󰑐"
+            tooltipText: "Atualizar histórico"
+            foreground: Color.accent
+            fontSize: Style.space(14)
+            focusable: true
+            enabled: root.service !== null
+            onClicked: root.service.refreshHistory()
+          }
+          Ui.PanelActionButton {
+            iconText: "󰆴"
+            fontSize: Style.space(12)
+            focusable: true
+            foreground: Color.popups.text
+            hoverColor: Color.urgent
+            tooltipText: "Apagar todo o histórico e dispensar os avisos atuais"
+            enabled: root.service && (history.count > 0 || root.service.popupModel.count > 0)
+            onClicked: root.service.clearAllNotifications()
           }
         }
 
@@ -203,6 +208,7 @@ Item {
           ScrollBar.vertical: ScrollBar { }
 
           delegate: Rectangle {
+            id: historyRow
             required property var modelData
             width: history.width - Style.space(12)
             height: entry.implicitHeight + Style.space(20)
@@ -215,13 +221,25 @@ Item {
               anchors.right: parent.right
               anchors.margins: Style.space(10)
               spacing: Style.space(4)
-              Text {
+              RowLayout {
                 width: parent.width
-                text: modelData.app + " · " + Qt.formatDateTime(new Date(modelData.timestamp), "dd/MM HH:mm")
-                textFormat: Text.PlainText
-                color: Qt.darker(Color.popups.text, 1.4)
-                font.pixelSize: Style.space(11)
-                elide: Text.ElideRight
+                Text {
+                  Layout.fillWidth: true
+                  text: historyRow.modelData.app + " · " + Qt.formatDateTime(new Date(historyRow.modelData.timestamp), "dd/MM HH:mm")
+                  textFormat: Text.PlainText
+                  color: Qt.darker(Color.popups.text, 1.4)
+                  font.pixelSize: Style.space(11)
+                  elide: Text.ElideRight
+                }
+                Ui.PanelActionButton {
+                  iconText: "󰆴"
+                  tooltipText: "Remover esta notificação do histórico"
+                  foreground: Color.popups.text
+                  hoverColor: Color.urgent
+                  fontSize: Style.space(14)
+                  focusable: true
+                  onClicked: if (root.service) root.service.removeHistoryEntry(historyRow.modelData)
+                }
               }
               Text {
                 width: parent.width

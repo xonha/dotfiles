@@ -298,6 +298,25 @@ function popupFileName(entry) {
   return imageStem(entry) + ".json"
 }
 
+function historyRemovalCommand(entry, historyDir, imagesDir) {
+  if (!entry || typeof entry.timestamp !== "number" || typeof entry.originalId !== "number") return null
+  if (!isFinite(entry.timestamp) || !isFinite(entry.originalId)
+      || entry.timestamp <= 0 || entry.originalId < 0
+      || Math.floor(entry.timestamp) !== entry.timestamp || Math.floor(entry.originalId) !== entry.originalId) return null
+  var stem = imageStem(entry)
+  if (!/^[0-9]+-[0-9]+$/.test(stem)) return null
+  return ["bash", "-c", "rm -f -- \"$1/$2.json\" \"$3/$2\"-*", "--", historyDir, stem, imagesDir]
+}
+
+function clearHistoryCommand(historyDir, imagesDir) {
+  return ["bash", "-c",
+    "for f in \"$1\"/*.json; do\n" +
+    "  [[ -e $f ]] || continue\n" +
+    "  stale=\"${f##*/}\"\n" +
+    "  rm -f -- \"$f\" \"$2/${stale%.json}\"-*\n" +
+    "done", "--", historyDir, imagesDir]
+}
+
 // ---------------------------------------------------- persisted images
 //
 // A notification's images only exist while it is live: Chromium-family
@@ -461,6 +480,8 @@ function historyRows(raw, liveRows, normalUrgency, limit) {
 
 if (typeof module !== "undefined") {
   module.exports = {
+    historyRemovalCommand: historyRemovalCommand,
+    clearHistoryCommand: clearHistoryCommand,
     normalizePosition: normalizePosition,
     isChromiumDerived: isChromiumDerived,
     sanitizeBody: sanitizeBody,

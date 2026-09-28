@@ -8,6 +8,10 @@ effect immediately, with space reserved for the bar on its configured edge.
 Use **Testar notificação** to preview the selected monitor and position. The
 center closes to leave the preview unobstructed; the test is archived normally.
 The button is disabled when the selected output is disconnected.
+Each history item has a trash button that removes its record and saved images.
+**Limpar todas** deletes the whole history and dismisses current toasts. Dismissal
+and deletion use the same serialized queue, so dismissed toasts are also removed
+from history. Clearing is permanent.
 
 Only the selected monitor shows toasts. If it is disconnected, toasts stay
 hidden; there is no automatic fallback to a potentially shared screen. The

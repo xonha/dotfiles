@@ -657,12 +657,27 @@ Item {
   }
 
   function clearHistory() {
-    enqueuePopupFileJob(["bash", "-c",
-      "for f in \"$1\"/*.json; do\n" +
-      "  [[ -e $f ]] || continue\n" +
-      "  stale=\"${f##*/}\"\n" +
-      "  rm -f \"$f\" \"$2/${stale%.json}\"-*\n" +
-      "done", "--", historyDir, imagesDir])
+    enqueuePopupFileJob(NotificationLogic.clearHistoryCommand(historyDir, imagesDir))
+  }
+
+  function clearAllNotifications() {
+    // Dismissing archives live toasts first. The queued clear follows those
+    // archives so they cannot repopulate the history after "clear all".
+    clearPopups()
+    clearHistory()
+  }
+
+  function removeHistoryEntry(entry) {
+    var command = NotificationLogic.historyRemovalCommand(entry, historyDir, imagesDir)
+    if (!command) return
+    // Only remove an entry currently shown by the center.
+    var key = NotificationLogic.popupFileName(entry)
+    for (var i = 0; i < historyEntries.length; i++) {
+      if (NotificationLogic.popupFileName(historyEntries[i]) === key) {
+        enqueuePopupFileJob(command)
+        return
+      }
+    }
   }
 
   // A restart can kill a queued job between its cp and its JSON write,
