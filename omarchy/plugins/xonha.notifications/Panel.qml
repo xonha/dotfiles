@@ -4,7 +4,7 @@ import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
 import qs.Commons
-import qs.Ui
+import qs.Ui as Ui
 import "NotificationLogic.js" as NotificationLogic
 
 Item {
@@ -49,6 +49,14 @@ Item {
   function dismiss() {
     close()
     if (shell) shell.hide("xonha.notifications")
+  }
+  function testNotification() {
+    if (!monitorConnected) return
+    dismiss()
+    Quickshell.execDetached([
+      "omarchy", "notification", "send", "-u", "low", "-t", "5000", "-g", "󰂚",
+      "Notificação de teste", "Este aviso usa o monitor e a posição escolhidos na central."
+    ])
   }
   Component.onDestruction: if (service) service.historyViewing = false
 
@@ -117,7 +125,7 @@ Item {
           }
         }
 
-        Dropdown {
+        Ui.Dropdown {
           Layout.fillWidth: true
           label: "Monitor dos avisos"
           value: root.service ? root.service.notificationMonitor : ""
@@ -134,7 +142,7 @@ Item {
           font.pixelSize: Style.space(12)
         }
 
-        Dropdown {
+        Ui.Dropdown {
           Layout.fillWidth: true
           label: "Posição dos avisos"
           value: root.service ? root.service.notificationPosition : "top-center"
@@ -149,7 +157,17 @@ Item {
           onChanged: function(value) { if (root.service) root.service.setNotificationPosition(value) }
         }
 
-        Dropdown {
+        Ui.Button {
+          Layout.fillWidth: true
+          text: "Testar notificação"
+          iconText: "󰂚"
+          bordered: true
+          focusable: true
+          enabled: root.monitorConnected
+          onClicked: root.testNotification()
+        }
+
+        Ui.Dropdown {
           Layout.fillWidth: true
           label: "Notificações guardadas"
           value: root.service ? String(root.service.historyLimit) : "100"
