@@ -395,20 +395,33 @@ function popupExpired(entry, duration, now) {
   return (Number(now) - Number((entry || {}).timestamp || 0)) >= lifetime
 }
 
-function popupPlacement(barPosition, barClearance, gapsOut) {
+function normalizePosition(value) {
+  var positions = ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]
+  var position = String(value || "")
+  return positions.indexOf(position) >= 0 ? position : "top-center"
+}
+
+function popupPlacement(barPosition, barClearance, gapsOut, popupPosition) {
   var position = String(barPosition || "top")
   var clearance = Number(barClearance)
   var gap = Number(gapsOut)
   if (!isFinite(clearance)) clearance = 0
   if (!isFinite(gap)) gap = 0
+  var placement = normalizePosition(popupPosition).split("-")
 
   return {
-    anchors: { top: true, bottom: false, left: false, right: false },
+    anchors: {
+      top: placement[0] === "top",
+      bottom: placement[0] === "bottom",
+      left: placement[1] === "left",
+      right: placement[1] === "right",
+      horizontalCenter: placement[1] === "center"
+    },
     margins: {
       top: position === "top" ? clearance : gap,
-      bottom: gap,
-      left: gap,
-      right: gap
+      bottom: position === "bottom" ? clearance : gap,
+      left: position === "left" ? clearance : gap,
+      right: position === "right" ? clearance : gap
     }
   }
 }
@@ -448,6 +461,7 @@ function historyRows(raw, liveRows, normalUrgency, limit) {
 
 if (typeof module !== "undefined") {
   module.exports = {
+    normalizePosition: normalizePosition,
     isChromiumDerived: isChromiumDerived,
     sanitizeBody: sanitizeBody,
     styledBody: styledBody,

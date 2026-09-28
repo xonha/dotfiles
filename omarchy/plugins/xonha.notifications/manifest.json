@@ -1,20 +1,30 @@
 {
   "schemaVersion": 1,
   "id": "xonha.notifications",
-  "name": "My Notifications",
-  "version": "1.0.0",
+  "name": "Notification Center",
+  "version": "1.1.0",
   "author": "xonha (upstream: Omarchy)",
-  "description": "Notification daemon, popups, DND, and history",
+  "description": "Choose a notification monitor and browse persistent notification history",
   "upstream": {
     "repository": "https://github.com/basecamp/omarchy",
     "credit": "Forked from Omarchy's notifications plugin."
   },
   "kinds": [
-    "service"
+    "service",
+    "panel",
+    "bar-widget"
   ],
   "keepLoaded": true,
   "entryPoints": {
-    "service": "Service.qml"
+    "service": "Service.qml",
+    "panel": "Panel.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Notification Center",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right"
   },
   "omarchy": {
     "clonedFrom": "omarchy.notifications"

@@ -24,6 +24,82 @@ Item {
   // regeneratable cache that a `rm -rf ~/.cache` should wipe.
   readonly property string stateDir: home + "/.local/state/omarchy/"
   readonly property string settingsPath: stateDir + "notifications.json"
+  readonly property string preferencesPath: stateDir + "notification-center.json"
+  property string notificationMonitor: "DP-3"
+  property string notificationPosition: "top-center"
+  property int historyLimit: 100
+  property bool preferencesLoaded: false
+  property bool historyViewing: false
+  property var historyEntries: []
+  property bool historyRefreshPending: false
+
+  function setNotificationMonitor(name) {
+    notificationMonitor = String(name || "").trim()
+    savePreferences()
+  }
+
+  function setHistoryLimit(limit) {
+    historyLimit = Math.max(1, Math.min(1000, Math.round(Number(limit) || 100)))
+    savePreferences()
+    refreshHistory()
+  }
+
+  function setNotificationPosition(position) {
+    notificationPosition = NotificationLogic.normalizePosition(position)
+    savePreferences()
+  }
+
+  function savePreferences() {
+    if (!preferencesLoaded) return
+    preferencesFile.setText(JSON.stringify({ version: 1, monitor: notificationMonitor, position: notificationPosition, historyLimit: historyLimit }, null, 2) + "\n")
+  }
+
+  FileView {
+    id: preferencesFile
+    path: service.preferencesPath
+    atomicWrites: true
+    printErrors: false
+    function hydrate(raw) {
+      if (service.preferencesLoaded) return
+      try {
+        var config = JSON.parse(raw || "{}")
+        if (typeof config.monitor === "string" && config.monitor.trim()) service.notificationMonitor = config.monitor.trim()
+        service.notificationPosition = NotificationLogic.normalizePosition(config.position)
+        if (typeof config.historyLimit === "number" && isFinite(config.historyLimit))
+          service.historyLimit = Math.max(1, Math.min(1000, Math.round(config.historyLimit)))
+      } catch (e) { console.warn("notification-center: invalid preferences", e) }
+      service.preferencesLoaded = true
+    }
+    onLoaded: hydrate(text())
+    onLoadFailed: hydrate("")
+  }
+
+  // Read archived files for the center without replaying or dismissing toasts.
+  function refreshHistory() {
+    historyRefreshPending = true
+    historyRefreshTimer.restart()
+  }
+
+  Timer {
+    id: historyRefreshTimer
+    interval: 150
+    onTriggered: {
+      if (centerHistoryProc.running) return
+      service.historyRefreshPending = false
+      centerHistoryProc.command = ["bash", "-c", "awk 1 \"$1\"/*.json 2>/dev/null || true", "--", service.historyDir]
+      centerHistoryProc.running = true
+    }
+  }
+
+  Process {
+    id: centerHistoryProc
+    running: false
+    onExited: if (service.historyRefreshPending) historyRefreshTimer.restart()
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: service.historyEntries = NotificationLogic.historyRows(text, [], NotificationUrgency.Normal, service.historyLimit)
+    }
+  }
   // One file per on-screen popup, so live toasts survive shell restarts.
   // A file exists exactly as long as its popup is showing: written when the
   // toast appears, moved into historyDir when it expires, is dismissed, or is
@@ -40,8 +116,7 @@ Item {
   // Corner radius is shared with the menu and shell panels.
   // It mirrors Hyprland's current decoration:rounding value.
   readonly property int cornerRadius: Style.cornerRadius
-  // Toasts are centered horizontally at the top. They clear the omarchy bar
-  // when it occupies the top edge.
+  // Toast placement clears the bar on whichever edge it occupies.
   readonly property string barPosition: shell && shell.barConfig ? String(shell.barConfig.position || "top") : "top"
   readonly property bool barVertical: barPosition === "left" || barPosition === "right"
   readonly property int defaultBarSize: barVertical ? Style.bar.sizeVertical : Style.bar.sizeHorizontal
@@ -90,8 +165,6 @@ Item {
 
   // How many notifications the history directory keeps, and therefore how
   // many `showHistory` can replay.
-  readonly property int historyLimit: 10
-
   readonly property int lowPopupDuration: 5000
   readonly property int normalPopupDuration: 8000
   readonly property int maxPopupDuration: 30000
@@ -478,6 +551,7 @@ Item {
         }
       }
       service.runNextPopupFileJob()
+      if (service.historyViewing) service.refreshHistory()
     }
   }
 
@@ -921,6 +995,20 @@ Item {
     }
 
     function ping(): string { return "ok" }
+
+    function setMonitor(name: string): string {
+      service.setNotificationMonitor(name)
+      return service.notificationMonitor
+    }
+
+    function setPosition(position: string): string {
+      service.setNotificationPosition(position)
+      return service.notificationPosition
+    }
+
+    function centerState(): string {
+      return JSON.stringify({ monitor: service.notificationMonitor, position: service.notificationPosition, historyLimit: service.historyLimit })
+    }
   }
 
   // ---------------------------------------------------- server
@@ -953,7 +1041,7 @@ Item {
       id: popupWindow
       required property var modelData
       screen: modelData
-      visible: popupModel.count > 0
+      visible: service.preferencesLoaded && popupModel.count > 0 && modelData.name === service.notificationMonitor
 
       WlrLayershell.namespace: "omarchy-notifications"
       WlrLayershell.layer: WlrLayer.Overlay
@@ -962,7 +1050,7 @@ Item {
       color: "transparent"
 
       readonly property var popupPlacement: NotificationLogic.popupPlacement(
-        service.barPosition, service.barClearance, Style.gapsOut)
+        service.barPosition, service.barClearance, Style.gapsOut, service.notificationPosition)
 
       // Full-screen, fixed-size surface (like the OSD overlay). Adding or
       // removing a toast changes only the content inside; the Wayland surface
@@ -976,9 +1064,15 @@ Item {
 
       ColumnLayout {
         id: popupColumn
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
+        anchors.horizontalCenter: popupWindow.popupPlacement.anchors.horizontalCenter ? parent.horizontalCenter : undefined
+        anchors.left: popupWindow.popupPlacement.anchors.left ? parent.left : undefined
+        anchors.right: popupWindow.popupPlacement.anchors.right ? parent.right : undefined
+        anchors.top: popupWindow.popupPlacement.anchors.top ? parent.top : undefined
+        anchors.bottom: popupWindow.popupPlacement.anchors.bottom ? parent.bottom : undefined
         anchors.topMargin: popupWindow.popupPlacement.margins.top
+        anchors.bottomMargin: popupWindow.popupPlacement.margins.bottom
+        anchors.leftMargin: popupWindow.popupPlacement.margins.left
+        anchors.rightMargin: popupWindow.popupPlacement.margins.right
         spacing: Style.space(8)
 
         Repeater {
