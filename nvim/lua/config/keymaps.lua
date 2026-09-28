@@ -19,8 +19,8 @@ map("i", "<S-Tab>", "<Tab>", { noremap = true, silent = true })
 map("n", "<leader>ce", ":EditCodeBlock<CR>:LspRestart<CR>", { noremap = true, silent = true, desc = "Edit Code Block" })
 
 map("n", "<leader>gd", function()
-  Snacks.terminal.open({ "lazydocker" }, { win = { keys = { term_normal = false } } })
-end, { desc = "Lazydocker" })
+  Snacks.terminal.open({ "lazypodman" }, { win = { keys = { term_normal = false } } })
+end, { desc = "Lazypodman" })
 
 map("i", "jf", function()
   return vim.fn["codeium#Accept"]()
