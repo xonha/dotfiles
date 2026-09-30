@@ -24,12 +24,6 @@ run() {
   popd >/dev/null
   success "Dotfiles applied with Dotdrop."
 
-  # secrets.env is versioned only as a commented template; hide local edits
-  # (tokens) from git so they are never staged.
-  info "Hiding local secrets.env edits from git..."
-  chmod 600 "$dotfiles_dir/secrets.env"
-  git -C "$dotfiles_dir" update-index --skip-worktree secrets.env
-
   info "Switching git remote to SSH..."
   local current
   current="$(git -C "$dotfiles_dir" remote get-url origin)"
