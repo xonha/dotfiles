@@ -1,6 +1,6 @@
 ---
 name: human-daily
-description: Escreve a daily async no formato do Slack do time (Ontem / Hoje / Bloqueios), em tom humano, levantando os fatos do git, do Jira e dos PRs em vez da memoria. Use quando o usuario pedir a daily, o report do dia, o async standup ou "o que eu fiz ontem" pra postar no canal.
+description: Escreve a daily async no formato do Slack do time (Ontem / Hoje / Bloqueios), em tom humano, levantando os fatos do git, do Jira, dos PRs e das sessoes do Claude/Codex em vez da memoria. Use quando o usuario pedir a daily, o report do dia, o async standup ou "o que eu fiz ontem" pra postar no canal.
 ---
 
 # Human Daily
@@ -19,9 +19,16 @@ constitution proíbe hostname interno e ID de canal em git. Eles ficam em
 ```json
 {
   "jira":  { "base_url": "https://SEU-TENANT.atlassian.net" },
-  "slack": { "daily_channel": "ID_DO_CANAL_OU_DM" }
+  "slack": { "daily_channel": "ID_DO_CANAL_OU_DM" },
+  "sessions": {
+    "cwd_prefixes": ["~/pasta-dos-repos-do-trabalho"],
+    "keywords": ["PROJ-", "n8n", "nome-da-empresa"]
+  }
 }
 ```
+
+`sessions` é o filtro de relevância do `sessions.py` (ver Processo): sessão entra se o cwd
+cai num dos prefixos ou se algum prompt/ação cita uma keyword. Sem a chave, nada é filtrado.
 
 **Antes de montar a daily, lê esse arquivo** (`cat ~/.agents/local.json`) e resolve os
 placeholders `{jira.base_url}` e `{slack.daily_channel}` que aparecem abaixo. Se o arquivo
@@ -209,12 +216,13 @@ faria algo diferente hoje?* Se não, não é bloqueio da daily.
 ## Processo
 
 1. **Levanta os fatos, não confia na memória.** A daily é sobre ontem, e ontem tem
-   registro. **Os três comandos, sempre — nenhum é opcional:**
+   registro. **Os comandos abaixo, sempre — nenhum é opcional:**
    ```bash
    git log --format="%ad %h %s" --date=short --since="3 days ago" --author="$(git config user.name)" --all
    gh pr list --author @me --state all --limit 10          # e os que estou revisando
    gh pr status
    jira issue list --assignee @me --plain --columns key,status,summary
+   python3 ~/.agents/skills/human-daily/sessions.py --since <AAAA-MM-DD>   # sessoes Claude + Codex
    ```
    Em repo de documentação, o `git log` é literalmente o diário — cada commit tem o
    porquê na mensagem. Use `--date=short`: **a data decide se o item vai em Ontem ou em
@@ -226,6 +234,26 @@ faria algo diferente hoje?* Se não, não é bloqueio da daily.
    review é o bloqueio mais comum da carreira dele e não aparece nem no git log nem no
    Jira.** Se o único lugar onde um fato existe é o GitHub, e eu não olhei o GitHub, o fato
    não entra no report.
+
+   **Sessões do Claude e do Codex** (`sessions.py`) cobrem o trabalho que não deixa rastro
+   em git, PR nem Jira: correção em fluxo do n8n, review postado, análise que virou decisão,
+   resposta dada a alguém. O script imprime, por sessão, os prompts, as ações que mudaram
+   estado fora da máquina (commit, PR, Jira, `n8n-mcp`, Slack) e a última resposta. Ação
+   que deu erro sai marcada `[FALHOU]` (só Claude; o Codex não expõe isso). A daily que
+   esta skill postou no canal de conferência é removida das ações.
+
+   🔴 **Sessão é conversa, não prova.** Prompt e resposta do agente dizem o que foi
+   discutido; não dizem que aconteceu. Sem ação correspondente sem `[FALHOU]`, o item é no
+   máximo **desenho**. Com ação, confirma na fonte antes de escrever "corrigi":
+   - **n8n:** para cada `workflowId` nas ações, `get_workflow_details` (nome do fluxo, que
+     é o que vai no bullet, nunca o ID) e `get_workflow_history` (a versão foi **publicada**
+     ou ficou em draft? `update_workflow` sozinho salva draft). Execução depois da correção
+     em `search_workflow_executions` é o "provado em" do bullet.
+   - **Review de PR:** `gh pr view <n> --json reviews` mostra se o review saiu.
+   - **Git/Jira:** já cobertos pelos comandos acima; a sessão só explica o porquê.
+
+   Sessão pessoal que cai no filtro (PDI, dúvida de carreira, conversa sobre ferramenta)
+   não entra: o critério do Ontem continua o mesmo, fato com consequência pro time.
 2. **Confere o estado real no Jira** dos cards que vai citar (`jira issue view`): status
    e o que de fato foi comentado lá. Não escreva "registrado no Jira" sem olhar.
 3. **Classifica cada item nos três estados** (desenho / ratificado / entregue) **antes**
@@ -259,6 +287,8 @@ faria algo diferente hoje?* Se não, não é bloqueio da daily.
 - [ ] **Nenhum bullet com três frases.** Se tem, a terceira sai.
 - [ ] **Travessão só na separação do card.** Dentro da frase, vírgula.
 - [ ] **Rodei `gh pr status`?** Se não, os Bloqueios estão incompletos por construção.
+- [ ] **Rodei `sessions.py`?** E todo item vindo só de sessão foi confirmado na fonte
+      (n8n publicado, review postado) ou escrito como desenho?
 - [ ] **Cada bloqueio passa no teste das 2 horas** — se resolvesse agora, o dia mudaria?
       Risco de fase não passa.
 - [ ] Todo número citado foi medido, não estimado de cabeça.
