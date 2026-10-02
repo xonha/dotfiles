@@ -60,6 +60,33 @@ Conduct a thorough, staff-engineer-level code review of all changes made during 
 
 **Constitution Authority**: The project constitution (`.specify/memory/constitution.md`) defines non-negotiable quality standards. Any violation is automatically a 🔴 Blocker.
 
+## Missing Spec Kit Helper Fallback
+
+Some projects intentionally keep `.specify/templates/` and
+`.specify/feature.json` but do not check in generated helpers under
+`.specify/scripts/` or install the `specify` CLI. Attempt the documented helper
+or template resolver when available. If it is absent, continue with the
+available project artifacts instead of aborting:
+
+1. Read `.specify/feature.json` and resolve `feature_directory` relative to the
+   repository root. Use the explicit feature directory supplied by the user
+   when one was provided for this invocation.
+2. Derive the expected artifact paths from that directory and verify the files
+   required by the current workflow. For setup steps, use the corresponding
+   checked-in file under `.specify/templates/` and create only the directories
+   or artifacts the workflow calls for.
+3. If the pointer is missing or invalid, resolve the feature from explicit
+   user input or the current feature context. Do not silently choose the most
+   recently modified feature when more than one candidate exists; ask which
+   feature to use only when context cannot disambiguate it.
+4. Report that the helper was unavailable and paths/templates were resolved
+   directly. Never claim the helper or hook ran when it did not.
+
+A missing `.specify/extensions.yml` means no extension hooks are configured;
+skip hook processing as instructed. It is not a missing prerequisite. If a
+configured hook cannot be dispatched by the current environment, report that
+hook separately while continuing any independent authorized work.
+
 ## Outline
 
 1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
