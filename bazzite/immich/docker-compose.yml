@@ -5,7 +5,7 @@
 #
 # Local adjustments for rootless Podman on Bazzite:
 # - :Z on bind mounts for SELinux.
-# - LAN_IP, TAILSCALE_IP and localhost binds for restricted access/Funnel.
+# - localhost bind for Tailscale Funnel access, independent of interface startup.
 # - CPU machine learning backend remains enabled; no hardware acceleration.
 
 #
@@ -32,8 +32,6 @@ services:
     env_file:
       - .env
     ports:
-      - '${LAN_IP}:2283:2283'
-      - '${TAILSCALE_IP}:2283:2283'
       - '127.0.0.1:2283:2283'
     depends_on:
       - redis

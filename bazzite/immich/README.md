@@ -56,10 +56,12 @@ esse caminho é realmente `/dev/sdb1`; caso contrário, não inicie o Compose.
 O servidor está publicado somente nestes endereços locais:
 
 ```text
-192.168.0.34:2283       LAN
-100.120.120.71:2283     Tailscale
 127.0.0.1:2283          destino do Tailscale Funnel
 ```
+
+LAN and tailnet access are provided through Tailscale Funnel/Serve. Binding
+only to localhost avoids startup failures when the network or Tailscale
+interfaces are not ready yet.
 
 Não há port forwarding no roteador e não há publicação direta da porta 2283
 na Internet.
