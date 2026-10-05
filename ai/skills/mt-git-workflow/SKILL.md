@@ -74,7 +74,13 @@ feat(GA-124): Add user sync endpoint
 Use the `gh` CLI to create a pull request:
 
 ```bash
-gh pr create --base develop --title "Brief description"
+gh pr create --base develop --title "Brief description" --reviewer MaisTodos/conta-digital
+```
+
+**Reviewer obrigatório:** todo PR deve ter o time `MaisTodos/conta-digital` (Conta Digital) como reviewer — sempre passe `--reviewer MaisTodos/conta-digital` no `gh pr create`. Se o PR já existir sem ele:
+
+```bash
+gh pr edit <PR> --add-reviewer MaisTodos/conta-digital
 ```
 
 The `gh` CLI will automatically open your default editor with the pull request template from `.github/pull_request_template.md`. Fill in all sections of the template completely.
@@ -97,7 +103,7 @@ Do not skip or remove any sections from the template.
 Once implementation is complete and all tests pass:
 
 1. Commit your code with structured commit messages (see above)
-2. Open a Pull Request using the template
+2. Open a Pull Request using the template, with `MaisTodos/conta-digital` as reviewer
 3. Update Jira with (in Brazilian Portuguese):
    - Summary of work done
    - Summary of relevant tests

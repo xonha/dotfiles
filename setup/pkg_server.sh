@@ -23,6 +23,7 @@ PKG_SERVER_EXTRA=(
   podman-docker
   docker-compose
   starship
+  jq
 )
 
 PKG_SERVER_AUR=(

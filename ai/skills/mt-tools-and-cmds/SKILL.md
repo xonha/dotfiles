@@ -60,7 +60,13 @@ Use the `gh` command for GitHub operations (PRs, issues, etc.).
 **Create a pull request:**
 
 ```bash
-gh pr create --base develop --title "<TITLE>"
+gh pr create --base develop --title "<TITLE>" --reviewer MaisTodos/conta-digital
+```
+
+**Reviewer obrigatório:** todo PR deve ter o time `MaisTodos/conta-digital` (Conta Digital) como reviewer — sempre passe `--reviewer MaisTodos/conta-digital` no `gh pr create`. Se o PR já existir sem ele:
+
+```bash
+gh pr edit <PR> --add-reviewer MaisTodos/conta-digital
 ```
 
 The `gh` CLI will automatically open your editor with the PR template from `.github/pull_request_template.md`. Complete all sections of the template.
@@ -148,7 +154,7 @@ pytest
 # Commit and create PR
 git add .
 git commit -m "feat(GA-124): Add user sync endpoint"
-gh pr create --base develop --title "feat: Add user sync endpoint" --body "Closes GA-124. See PR template."
+gh pr create --base develop --title "feat: Add user sync endpoint" --body "Closes GA-124. See PR template." --reviewer MaisTodos/conta-digital
 
 # Move issue to TO DO CR
 jira issue move GA-124 --status "TO DO CR"
