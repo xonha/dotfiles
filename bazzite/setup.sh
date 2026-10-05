@@ -61,7 +61,8 @@ tar -cf - \
   bazzite/crafty/crafty.container bazzite/crafty/setup.sh \
   bazzite/keeper/keeper.container bazzite/keeper/setup.sh \
   bazzite/samba/samba.container bazzite/samba/setup.sh \
-  bazzite/immich/docker-compose.yml bazzite/immich/setup.sh \
+  bazzite/immich/docker-compose.yml bazzite/immich/setup.sh bazzite/immich/podman-restart.service.d/10-immich-mount.conf \
+  bazzite/immich/immich-healthcheck.sh bazzite/immich/immich-healthcheck.service bazzite/immich/immich-healthcheck.timer \
   | ssh "${ssh_options[@]}" "$host" tar -xf - -C "$stage"
 
 ssh "${ssh_options[@]}" "$host" bash "$stage/bazzite/host_setup.sh" "${services[@]}"

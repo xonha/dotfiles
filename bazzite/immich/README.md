@@ -137,6 +137,27 @@ O `podman-restart.service` deve permanecer habilitado porque os containers
 foram criados com `restart=always`. O `loginctl` do usuário `henrique` deve
 continuar com `Linger=yes`.
 
+O setup instala um override em
+`~/.config/systemd/user/podman-restart.service.d/` com
+`RequiresMountsFor=/run/media/system/hd`. Assim, o serviço aguarda o HD antes
+de tentar iniciar os containers. O setup também recusa iniciar se o mount não
+for `/dev/sdb1` ou se `UPLOAD_LOCATION` não existir.
+
+O setup também habilita `immich-healthcheck.timer`, que executa a cada cinco
+minutos. Ele verifica o mount, a biblioteca e o HTTP local do Immich e tenta
+iniciar somente o `immich_server` quando ele estiver parado. Para receber
+alertas externos, crie no Bazzite o arquivo
+`~/.config/immich/healthcheck.env` com uma URL privada do Healthchecks.io:
+
+```bash
+mkdir -p ~/.config/immich
+printf 'HEALTHCHECKS_URL=https://hc-ping.com/SEU_TOKEN\n' > ~/.config/immich/healthcheck.env
+chmod 600 ~/.config/immich/healthcheck.env
+```
+
+A URL não é versionada. O heartbeat só é enviado depois que o mount e o
+endpoint HTTP local passam nas verificações.
+
 Não use `podman compose down` como rotina de atualização sem confirmar o
 impacto; o PostgreSQL e a biblioteca são dados persistentes importantes.
 

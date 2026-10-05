@@ -1,10 +1,10 @@
 ---
 name: dotfiles
 description: >
-  REQUIRED for changes to this user's Linux dotfiles, setup scripts, desktop
-  configuration, systemd services, or development environments. Use when
-  editing files under ~/.config/ or ~/.setup/, shell files, Hyprland,
-  Omarchy, Dotdrop, Podman containers, or personal service configuration.
+  REQUIRED for changes to this user's versioned Linux dotfiles, setup scripts,
+  desktop configuration, or development environment. Use when editing files
+  under ~/.config/ or ~/.setup/, shell files, Hyprland, Omarchy, Dotdrop, or
+  repository-owned setup and deployment artifacts.
   Excludes unrelated application source development.
 metadata:
   short-description: Manage Henrique's versioned Linux dotfiles
@@ -20,7 +20,7 @@ to the host with Dotdrop or one of the setup entrypoints.
 
 - Editing files under `config/` or `setup/`
 - Changing Hyprland, Omarchy, Foot, Neovim, shell, tmux, Starship, or Git config
-- Adding or changing systemd, Quadlet, Podman, Lab, Keeper.sh, or Immich setup
+- Adding or changing repository-owned setup and deployment artifacts
 - Running or changing the repository bootstrap and setup flows
 - Deciding whether a configuration should be owned by this repository or Omarchy
 
@@ -44,7 +44,7 @@ questions that do not affect this dotfiles repository.
 | Dotfiles | Versioned user configuration | `config/`, hidden files |
 | Setup | Installation and bootstrap | `setup/`, numbered modules |
 | Desktop | Hyprland, Omarchy, Foot | `hypr/`, `omarchy/`, `config/foot.ini` |
-| Services | Systemd and containers | `bazzite/`, `config/systemd/` |
+| Services | Versioned service units and deployment artifacts | `config/systemd/`, `bazzite/` |
 | Operations | Per-service deploy artifacts and runbooks | `setup/<service>/` |
 
 ## Naming conventions
@@ -86,20 +86,13 @@ Current client targets include:
 - hardware variants such as `thinkpad` and future `dell` — selected by device,
   independently of the distribution.
 
-### Server machines
+### Server and Bazzite boundary
 
-- **Generic server layer**: shared CLI, development, container, and bootstrap
-  setup belongs in `setup/`.
-- **Environment layer**: a concrete server environment gets its own directory
-  and orchestrator. `bazzite/lab/` is the current example.
-- **Deployment or organization layer**: future environments such as `maistodos`
-  or a hypothetical company environment such as `ifood` must add only their
-  specific configuration on top of the generic server layer.
-
-Do not move a module into `omarchy/`, `bazzite/lab/`, or a future environment
-directory solely because the current orchestrator calls it. Move it there only
-when its behavior depends on that distribution, hardware, server environment,
-or organization.
+Generic server setup belongs in `setup/`. Bazzite-specific deployment artifacts
+belong in `bazzite/`, while runtime operation and troubleshooting of the host
+belongs to the [`bazzite` skill](../bazzite/SKILL.md). Do not move a module into
+`bazzite/` solely because a Bazzite orchestrator calls it; move it only when its
+behavior depends on that host environment.
 
 ## Main workflows
 
@@ -115,19 +108,11 @@ configuration or Omarchy integration. The main entrypoint is:
 It installs generic client packages, applies Dotdrop mappings, configures the
 login shell, and then applies Omarchy-specific plugins and services.
 
-### Lab environment
+### Bazzite services
 
-Read [references/lab.md](references/lab.md) before changing `lab`, Quadlet
-units, or the Lab image.
-
-Recreating a system such as `lab` is not complete until its applicable
-dotfiles are provisioned and verified inside the recreated environment. At
-minimum, validate Bash, Starship, and tmux; treat host-only desktop config such
-as Foot separately and document that boundary.
-
-```bash
-./bazzite/lab/setup.sh
-```
+For runtime operations, read and use the `bazzite` skill. For repository edits,
+read the matching service runbook and setup script here, then validate the
+versioned artifact and hand off host execution to the `bazzite` workflow.
 
 ### Dotdrop and linking
 
@@ -155,8 +140,7 @@ ignore rules, or files that may conflict with existing host configuration.
 - [references/setup.md](references/setup.md) — setup stages and validation
 - [references/dotdrop.md](references/dotdrop.md) — mappings, ownership, and conflicts
 - [references/omarchy.md](references/omarchy.md) — Omarchy integration boundaries
-- [references/lab.md](references/lab.md) — `lab`, Podman, and Quadlet
-- [references/services.md](references/services.md) — system and user services
+- [references/services.md](references/services.md) — repository-owned service configuration
 
 ## Common requests
 
@@ -171,5 +155,5 @@ ignore rules, or files that may conflict with existing host configuration.
   `omarchy/plugins.sh`.
 - “Change hardware wake or device rules” → inspect `setup/udev/` and keep the
   filename and path tied to the hardware, not the current distribution.
-- “Rebuild `lab`” → follow [references/lab.md](references/lab.md).
-- “Change Immich or Keeper.sh” → read `bazzite/immich/README.md` or `bazzite/keeper/README.md` before editing.
+- “Operate or troubleshoot Bazzite, Lab, Immich, Keeper.sh, Crafty, or Samba” → use the `bazzite` skill.
+- “Change the versioned Immich or Keeper.sh deployment” → read the matching Bazzite runbook before editing.

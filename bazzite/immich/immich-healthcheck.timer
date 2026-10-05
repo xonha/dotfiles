@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodic Immich healthcheck
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+Unit=immich-healthcheck.service
+
+[Install]
+WantedBy=timers.target

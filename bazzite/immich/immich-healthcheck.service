@@ -1,0 +1,9 @@
+[Unit]
+Description=Check and recover Immich
+RequiresMountsFor=/run/media/system/hd
+After=podman-restart.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-%h/.config/immich/healthcheck.env
+ExecStart=%h/.local/libexec/immich-healthcheck.sh
