@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.fingerprint",
+  "name": "Fingerprint Readers",
+  "version": "1.0.0",
+  "author": "henrique (adapted from zimixin)",
+  "license": "MIT",
+  "description": "Manage Synaptics and Chipsailing readers through system fprintd.",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Fingerprint Readers",
+    "description": "Per-reader enrollment and verification with system fprintd.",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

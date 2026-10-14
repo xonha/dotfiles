@@ -1,0 +1,16 @@
+diff --git a/libfprint/sigfm/meson.build b/libfprint/sigfm/meson.build
+index 5b2b4af..06e7513 100644
+--- a/libfprint/sigfm/meson.build
++++ b/libfprint/sigfm/meson.build
+@@ -4 +4,10 @@
+-opencv = dependency('opencv4', required: true)
++opencv = dependency('opencv4', required: false)
++if not opencv.found()
++  opencv = dependency('opencv5', required: false)
++endif
++if not opencv.found()
++  opencv = dependency('opencv', required: false)
++endif
++if not opencv.found()
++  opencv = dependency('OpenCV', method: 'cmake', required: true)
++endif

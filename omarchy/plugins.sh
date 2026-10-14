@@ -40,7 +40,7 @@ run() {
   # Keep the local plugin forks in sync with the versioned copies. Plugin code
   # must be copied: Omarchy does not load plugin directories through symlinks.
   local fork source target
-  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise xonha.next-event xonha.notifications; do
+  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise xonha.next-event xonha.notifications xonha.fingerprint; do
     source="$OMARCHY_ROOT/plugins/$fork"
     target="$HOME/.config/omarchy/plugins/$fork"
     if [[ -L $target ]]; then
@@ -50,6 +50,9 @@ run() {
     mkdir -p "$target"
     cp -aL "$source/." "$target/"
   done
+  local fingerprint_helper="$HOME/.config/omarchy/plugins/xonha.fingerprint/bin/fingerprint_device.py"
+  mkdir -p "$(dirname "$fingerprint_helper")"
+  install -m 0755 "$DOTFILES_ROOT/setup/fingerprint/fingerprint_device.py" "$fingerprint_helper"
   if omarchy-shell shell ping >/dev/null 2>&1; then
     omarchy-shell shell rescanPlugins
   fi

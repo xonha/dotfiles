@@ -1,0 +1,39 @@
+# ThinkPad T495 Synaptics (06cb:00bd) and Chipsailing CS9711 (2541:0236).
+# The source is pinned because this fork contains an experimental matcher.
+pkgname=libfprint-git
+pkgver=1.94.10.cs9711.g02b285c
+pkgrel=1
+epoch=2
+pkgdesc='libfprint with Synaptics and Chipsailing CS9711 drivers'
+arch=('x86_64')
+url='https://github.com/archeYR/libfprint-CS9711'
+license=('LGPL-2.1-or-later')
+depends=('gcc-libs' 'glib2' 'glibc' 'libgudev' 'libgusb' 'openssl' 'pixman' 'opencv')
+makedepends=('git' 'meson' 'ninja' 'glib2-devel' 'gobject-introspection' 'cairo' 'doctest')
+provides=('libfprint' 'libfprint-2.so=2-64')
+conflicts=('libfprint')
+source=(
+  'git+https://github.com/archeYR/libfprint-CS9711.git#commit=02b285c9703c38d308fbe47a3c566ef1e7f883ca'
+  'opencv_compat.patch'
+)
+sha256sums=('SKIP' '4ce800613485d9f2ee735f7de85dca0a6b6141b8474ffa90fb3987fb619bb20a')
+
+prepare() {
+  cd "$srcdir/libfprint-CS9711"
+  patch -p1 < "$srcdir/opencv_compat.patch"
+  sed -i 's/#define CS9711_DEFAULT_RESET_SLEEP.*/#define CS9711_DEFAULT_RESET_SLEEP  1500/' \
+    libfprint/drivers/cs9711/cs9711.c
+}
+
+build() {
+  arch-meson libfprint-CS9711 build \
+    -Ddrivers=synaptics,cs9711 \
+    -Ddoc=false \
+    -Dinstalled-tests=false \
+    -Dgtk-examples=false
+  meson compile -C build
+}
+
+package() {
+  DESTDIR="$pkgdir" meson install -C build
+}
