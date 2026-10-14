@@ -24,6 +24,7 @@ install -m 0644 "$IMMICH_ROOT/podman-restart.service.d/10-immich-mount.conf" \
   "$user_systemd_dir/podman-restart.service.d/10-immich-mount.conf"
 install -d "$user_exec_dir"
 install -m 0755 "$IMMICH_ROOT/immich-healthcheck.sh" "$user_exec_dir/immich-healthcheck.sh"
+install -m 0644 "$IMMICH_ROOT/immich-start.service" "$user_systemd_dir/immich-start.service"
 install -m 0644 "$IMMICH_ROOT/immich-healthcheck.service" "$user_systemd_dir/immich-healthcheck.service"
 install -m 0644 "$IMMICH_ROOT/immich-healthcheck.timer" "$user_systemd_dir/immich-healthcheck.timer"
 systemctl --user daemon-reload
@@ -42,6 +43,7 @@ fi
 cd "$destination"
 podman compose config >/dev/null
 podman compose up -d
-systemctl --user enable --now podman-restart.service
+systemctl --user enable --now immich-start.service
+systemctl --user enable podman-restart.service
 systemctl --user enable --now immich-healthcheck.timer
 podman compose ps

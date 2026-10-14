@@ -19,8 +19,9 @@ fi
 
 status="$(podman inspect -f '{{.State.Status}}' immich_server)"
 if [[ "$status" != running ]]; then
-  log "immich_server is $status; attempting a safe restart"
-  podman start immich_server >/dev/null || fail "could not start immich_server"
+  log "immich_server is $status; attempting a Compose recovery"
+  (cd "$HOME/immich" && podman compose up -d immich-server) \
+    || fail "could not recreate immich_server"
 fi
 
 http_code="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-time 10 http://127.0.0.1:2283 || true)"

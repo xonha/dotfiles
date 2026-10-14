@@ -1,0 +1,14 @@
+[Unit]
+Description=Start Immich server
+RequiresMountsFor=/run/media/system/hd
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=%h/immich
+ExecStart=/home/henrique/.local/bin/podman-compose up -d immich-server
+
+[Install]
+WantedBy=default.target

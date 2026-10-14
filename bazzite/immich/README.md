@@ -145,7 +145,9 @@ for `/dev/sdb1` ou se `UPLOAD_LOCATION` não existir.
 
 O setup também habilita `immich-healthcheck.timer`, que executa a cada cinco
 minutos. Ele verifica o mount, a biblioteca e o HTTP local do Immich e tenta
-iniciar somente o `immich_server` quando ele estiver parado. Para receber
+recriar somente o `immich_server` via Compose quando ele estiver parado ou
+inconsistente. O serviço `immich-start.service` também inicia o servidor
+independentemente do `podman-restart.service` no boot. Para receber
 alertas externos, crie no Bazzite o arquivo
 `~/.config/immich/healthcheck.env` com uma URL privada do Healthchecks.io:
 
