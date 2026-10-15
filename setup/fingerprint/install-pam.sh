@@ -10,6 +10,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 gate=/usr/local/libexec/xonha-fingerprint-lid-gate
 install -D -m 0755 "$SCRIPT_DIR/pam_lid_gate.sh" "$gate"
 
+install -D -m 0644 "$SCRIPT_DIR/90_chipsailing_fprintd_refresh.rules" \
+  /etc/udev/rules.d/90_chipsailing_fprintd_refresh.rules
+install -D -m 0644 "$SCRIPT_DIR/xonha_fprintd_refresh.service" \
+  /etc/systemd/system/xonha_fprintd_refresh.service
+systemctl daemon-reload
+udevadm control --reload-rules
+
 updated=0
 for pam in /etc/pam.d/sudo /etc/pam.d/polkit-1; do
   [[ -f $pam ]] || continue
@@ -31,5 +38,5 @@ for pam in /etc/pam.d/sudo /etc/pam.d/polkit-1; do
 done
 
 if (( updated == 0 )); then
-  printf 'No Omarchy fingerprint lid gates found; installed %s only.\n' "$gate"
+  printf 'PAM unchanged; installed %s and the CS9711 refresh rule.\n' "$gate"
 fi

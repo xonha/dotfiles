@@ -1,0 +1,2 @@
+# A reconnect can leave an old CS9711 device in fprintd's device list.
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="2541", ATTR{idProduct}=="0236", TAG+="systemd", ENV{SYSTEMD_WANTS}+="xonha_fprintd_refresh.service"

@@ -1,0 +1,6 @@
+[Unit]
+Description=Refresh fprintd after the Chipsailing reader reconnects
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl try-restart fprintd.service

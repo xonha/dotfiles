@@ -66,6 +66,12 @@ The replacement skips fingerprint authentication only when the lid is closed
 and the Chipsailing USB reader is absent. Password authentication remains
 available in either case.
 
+The installer also adds a udev rule that refreshes `fprintd` when the CS9711
+reconnects. A USB disconnect during resume can otherwise leave duplicate
+reader entries in the running daemon and send `sudo` straight to the password
+prompt. Re-run the installer to apply the rule on an existing installation.
+To clear duplicate entries immediately, run `sudo systemctl restart fprintd.service`.
+
 If the CS9711 reports `enroll-disconnected`, check `journalctl -k` for a USB
 disconnect and reconnect. Try the dongle directly in a ThinkPad USB port first;
 it can be unstable behind unpowered hubs. A `Release` error after disconnect
