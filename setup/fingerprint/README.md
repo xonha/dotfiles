@@ -53,6 +53,19 @@ uses Synaptics when the dongle is absent. Its choice is made at the start of
 each authentication attempt; a disconnect during a scan does not switch
 readers mid-attempt.
 
+Omarchy skips PAM fingerprint authentication while the lid is closed. To keep
+the external reader usable in that state while still avoiding a timeout when
+only the internal reader is available, install the local PAM gate:
+
+```sh
+pkexec /home/henrique/Dotfiles/setup/fingerprint/install-pam.sh
+```
+
+The installer backs up and updates the Omarchy gate in `sudo` and `polkit-1`.
+The replacement skips fingerprint authentication only when the lid is closed
+and the Chipsailing USB reader is absent. Password authentication remains
+available in either case.
+
 If the CS9711 reports `enroll-disconnected`, check `journalctl -k` for a USB
 disconnect and reconnect. Try the dongle directly in a ThinkPad USB port first;
 it can be unstable behind unpowered hubs. A `Release` error after disconnect
