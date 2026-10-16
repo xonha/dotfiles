@@ -26,8 +26,8 @@ Panel {
   property bool statusReady: false
 
   function readerLabel(reader) {
-    if (reader === "chipsailing") return "Chipsailing USB"
-    if (reader === "synaptics") return "Synaptics interno"
+    if (reader === "chipsailing") return "External Reader"
+    if (reader === "synaptics") return "Internal Reader"
     return reader || "Desconhecido"
   }
 

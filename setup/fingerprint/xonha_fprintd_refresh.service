@@ -1,5 +1,5 @@
 [Unit]
-Description=Refresh fprintd after the Chipsailing reader reconnects
+Description=Refresh fprintd after the CS9711 USB reader reconnects
 
 [Service]
 Type=oneshot

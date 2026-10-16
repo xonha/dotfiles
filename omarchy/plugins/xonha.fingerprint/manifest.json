@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "author": "henrique (adapted from zimixin)",
   "license": "MIT",
-  "description": "Manage Synaptics and Chipsailing readers through system fprintd.",
+  "description": "Manage Internal Reader and External Reader through system fprintd.",
   "kinds": ["bar-widget"],
   "entryPoints": {
     "barWidget": "Panel.qml"

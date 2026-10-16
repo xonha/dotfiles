@@ -47,8 +47,8 @@ not the original `fingerprint-ocv` daemon.
 
 For automatic selection by whether the dongle is connected, register one
 finger on the internal Synaptics reader and two different fingers on the
-Chipsailing reader (for example, right index on both and right thumb on the
-dongle). `pam_fprintd` then prefers Chipsailing while both are connected and
+external CS9711 USB reader (for example, right index on both and right thumb on
+the dongle). `pam_fprintd` then prefers the USB reader while both are connected and
 uses Synaptics when the dongle is absent. Its choice is made at the start of
 each authentication attempt; a disconnect during a scan does not switch
 readers mid-attempt.
@@ -63,14 +63,15 @@ pkexec /home/henrique/Dotfiles/setup/fingerprint/install-pam.sh
 
 The installer backs up and updates the Omarchy gate in `sudo` and `polkit-1`.
 The replacement skips fingerprint authentication only when the lid is closed
-and the Chipsailing USB reader is absent. Password authentication remains
+and the CS9711 USB reader is absent. Password authentication remains
 available in either case.
 
 The installer also adds a udev rule that refreshes `fprintd` when the CS9711
-reconnects. A USB disconnect during resume can otherwise leave duplicate
-reader entries in the running daemon and send `sudo` straight to the password
-prompt. Re-run the installer to apply the rule on an existing installation.
-To clear duplicate entries immediately, run `sudo systemctl restart fprintd.service`.
+reconnects and a system-sleep hook that refreshes it after resume. Either event
+can otherwise leave stale reader entries in the running daemon and send `sudo`
+straight to the password prompt. Re-run the installer to apply these recovery
+hooks on an existing installation. To clear duplicate entries immediately, run
+`sudo systemctl restart fprintd.service`.
 
 If the CS9711 reports `enroll-disconnected`, check `journalctl -k` for a USB
 disconnect and reconnect. Try the dongle directly in a ThinkPad USB port first;

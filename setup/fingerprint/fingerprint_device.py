@@ -13,7 +13,10 @@ MANAGER_PATH = "/net/reactivated/Fprint/Manager"
 MANAGER_INTERFACE = "net.reactivated.Fprint.Manager"
 DEVICE_INTERFACE = "net.reactivated.Fprint.Device"
 FLAGS = Gio.DBusCallFlags.ALLOW_INTERACTIVE_AUTHORIZATION
-READER_NAMES = {"chipsailing": "Chipsailing", "synaptics": "Synaptics"}
+READER_NAMES = {
+    "chipsailing": ("External Reader", "USB Reader", "Chipsailing"),
+    "synaptics": ("Internal Reader", "Synaptics"),
+}
 
 
 def call(proxy, method, parameters=None):
@@ -48,10 +51,11 @@ def devices(connection):
 
 
 def select_device(connection, reader):
+    names = READER_NAMES[reader]
     matches = [
         (path, name, device)
         for path, name, device in devices(connection)
-        if READER_NAMES[reader].lower() in name.lower()
+        if any(alias.lower() in name.lower() for alias in names)
     ]
     if len(matches) != 1:
         raise RuntimeError(f"Expected one {reader} reader; found {len(matches)}")
@@ -71,7 +75,11 @@ def status_data(connection):
     readers = []
     for path, name, device in devices(connection):
         reader = next(
-            (key for key, label in READER_NAMES.items() if label.lower() in name.lower()),
+            (
+                key
+                for key, aliases in READER_NAMES.items()
+                if any(alias.lower() in name.lower() for alias in aliases)
+            ),
             "other",
         )
         fingers = enrolled_fingers(device)

@@ -14,6 +14,8 @@ install -D -m 0644 "$SCRIPT_DIR/90_chipsailing_fprintd_refresh.rules" \
   /etc/udev/rules.d/90_chipsailing_fprintd_refresh.rules
 install -D -m 0644 "$SCRIPT_DIR/xonha_fprintd_refresh.service" \
   /etc/systemd/system/xonha_fprintd_refresh.service
+install -D -m 0755 "$SCRIPT_DIR/90-xonha-fprintd-resume" \
+  /usr/lib/systemd/system-sleep/90-xonha-fprintd-resume
 systemctl daemon-reload
 udevadm control --reload-rules
 

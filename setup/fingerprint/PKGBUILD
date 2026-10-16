@@ -4,7 +4,7 @@ pkgname=libfprint-git
 pkgver=1.94.10.cs9711.g02b285c
 pkgrel=1
 epoch=2
-pkgdesc='libfprint with Synaptics and Chipsailing CS9711 drivers'
+pkgdesc='libfprint with Synaptics and CS9711 USB fingerprint drivers'
 arch=('x86_64')
 url='https://github.com/archeYR/libfprint-CS9711'
 license=('LGPL-2.1-or-later')
@@ -23,6 +23,11 @@ prepare() {
   patch -p1 < "$srcdir/opencv_compat.patch"
   sed -i 's/#define CS9711_DEFAULT_RESET_SLEEP.*/#define CS9711_DEFAULT_RESET_SLEEP  1500/' \
     libfprint/drivers/cs9711/cs9711.c
+  # Present a friendly name in PAM prompts while retaining the CS9711 driver.
+  sed -i 's/Chipsailing CS9711Fingprint/External Reader/' \
+    libfprint/drivers/cs9711/cs9711.c
+  sed -i 's/#define SYNAPTICS_DRIVER_FULLNAME "Synaptics Sensors"/#define SYNAPTICS_DRIVER_FULLNAME "Internal Reader"/' \
+    libfprint/drivers/synaptics/synaptics.h
 }
 
 build() {
