@@ -154,7 +154,7 @@ Panel {
         spacing: Style.space(8)
 
         Text {
-          text: "Leitores de digital"
+          text: "Fingerprint Readers"
           color: root.foreground
           font.family: root.fontFamily
           font.pixelSize: Style.font.title
@@ -162,10 +162,10 @@ Panel {
         }
         Text {
           width: parent.width
-          text: !root.statusReady ? "Aguardando fprintd…"
-            : root.readers.length === 0 ? "Nenhum leitor conectado"
-            : root.preferredReader ? "Autenticação: " + root.readerLabel(root.preferredReader)
-            : "Cadastre uma digital para autenticar"
+          text: !root.statusReady ? "Waiting for fprintd…"
+            : root.readers.length === 0 ? "No reader connected"
+            : root.preferredReader ? "Authentication: " + root.readerLabel(root.preferredReader)
+            : "Enroll a fingerprint to authenticate"
           color: root.dim
           font.family: root.fontFamily
           font.pixelSize: Style.font.bodySmall
@@ -174,7 +174,7 @@ Panel {
 
         PanelSectionHeader {
           width: parent.width
-          text: "LEITORES"
+          text: "READERS"
           foreground: root.foreground
           fontFamily: root.fontFamily
         }
@@ -189,7 +189,7 @@ Panel {
 
         PanelSectionHeader {
           width: parent.width
-          text: "AÇÕES · " + root.readerLabel(root.selectedReader)
+          text: "ACTIONS · " + root.readerLabel(root.selectedReader)
           foreground: root.foreground
           fontFamily: root.fontFamily
         }
@@ -199,15 +199,15 @@ Panel {
           spacing: Style.space(8)
           ActionTile {
             width: (parent.width - parent.spacing) / 2
-            label: "Cadastrar"
-            hint: root.nextFinger() || "Sem posição livre"
+            label: "Enroll"
+            hint: root.nextFinger() || "No slots available"
             enabled: !!root.selectedDevice() && !!root.nextFinger()
             onClicked: root.runAction("enroll")
           }
           ActionTile {
             width: (parent.width - parent.spacing) / 2
-            label: "Testar"
-            hint: "verificar digital"
+            label: "Verify"
+            hint: "verify fingerprint"
             enabled: !!root.selectedDevice() && root.selectedDevice().count > 0
             onClicked: root.runAction("verify")
           }
@@ -215,8 +215,8 @@ Panel {
 
         Text {
           width: parent.width
-          text: "Com o dongle conectado, o PAM usa o leitor com mais digitais. "
-            + "Para preferir o dongle: 2 nele e 1 no interno. Sem o dongle, usa o interno."
+          text: "When the dongle is connected, PAM uses the reader with the most enrolled fingerprints. "
+            + "To prefer the dongle, enroll 2 fingerprints on it and 1 on the internal reader. Without the dongle, the internal reader is used."
           color: root.dim
           font.family: root.fontFamily
           font.pixelSize: Style.font.caption
@@ -245,7 +245,7 @@ Panel {
       anchors.rightMargin: Style.space(10)
       spacing: Style.space(3)
       Text {
-        text: root.readerLabel(row.device.reader) + " · " + row.device.count + " digital(is)"
+        text: root.readerLabel(row.device.reader) + " · " + row.device.count + " fingerprint(s)"
         color: root.foreground
         font.family: root.fontFamily
         font.pixelSize: Style.font.bodySmall
@@ -254,7 +254,7 @@ Panel {
       Text {
         width: parent.width
         text: row.device.fingers && row.device.fingers.length
-          ? row.device.fingers.join(", ") : "Nenhuma digital cadastrada"
+          ? row.device.fingers.join(", ") : "No fingerprints enrolled"
         color: root.dim
         font.family: root.fontFamily
         font.pixelSize: Style.font.caption
