@@ -2,7 +2,7 @@
 # The source is pinned because this fork contains an experimental matcher.
 pkgname=libfprint-git
 pkgver=1.94.10.cs9711.g02b285c
-pkgrel=1
+pkgrel=2
 epoch=2
 pkgdesc='libfprint with Synaptics and CS9711 USB fingerprint drivers'
 arch=('x86_64')
@@ -23,10 +23,10 @@ prepare() {
   patch -p1 < "$srcdir/opencv_compat.patch"
   sed -i 's/#define CS9711_DEFAULT_RESET_SLEEP.*/#define CS9711_DEFAULT_RESET_SLEEP  1500/' \
     libfprint/drivers/cs9711/cs9711.c
-  # Present a friendly name in PAM prompts while retaining the CS9711 driver.
-  sed -i 's/Chipsailing CS9711Fingprint/External Reader/' \
+  # Present friendly names in PAM prompts while retaining the driver IDs.
+  sed -i 's/dev_class->full_name = .*/dev_class->full_name = "External Reader";/' \
     libfprint/drivers/cs9711/cs9711.c
-  sed -i 's/#define SYNAPTICS_DRIVER_FULLNAME "Synaptics Sensors"/#define SYNAPTICS_DRIVER_FULLNAME "Internal Reader"/' \
+  sed -i 's/#define SYNAPTICS_DRIVER_FULLNAME .*/#define SYNAPTICS_DRIVER_FULLNAME "Internal Reader"/' \
     libfprint/drivers/synaptics/synaptics.h
 }
 

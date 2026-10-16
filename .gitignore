@@ -15,6 +15,11 @@ config/.jira/
 
 # --- machine state, caches, telemetry ---
 __pycache__/
+/hypr/hyprmoncfg/display-fallbacks.json
+/setup/fingerprint/src/
+/setup/fingerprint/pkg/
+/setup/fingerprint/libfprint-CS9711/
+/setup/fingerprint/*.pkg.tar.zst
 config/chromium/
 .brave*
 config/go/

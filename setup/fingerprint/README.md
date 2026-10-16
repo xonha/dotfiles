@@ -17,8 +17,7 @@ the resulting package through pacman:
 sudo pacman -S --needed base-devel git meson ninja glib2-devel libgusb \
   pixman cairo openssl opencv doctest gobject-introspection
 cd setup/fingerprint
-makepkg
-sudo pacman -U libfprint-git-[0-9]*.pkg.tar.zst
+makepkg -Csi
 sudo systemctl restart fprintd.service
 ```
 
