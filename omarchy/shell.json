@@ -124,7 +124,7 @@
         }
       ]
     },
-    "position": "top",
+    "position": "bottom",
     "transparent": false,
     "transparencyToggle": false,
     "id": "xonha.bar"
