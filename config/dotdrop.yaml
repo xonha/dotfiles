@@ -41,6 +41,10 @@ dotfiles:
     src: bazzite/keeper/keeper.container
     dst: ~/.config/containers/systemd/keeper.container
     link: absolute
+  bazzite_songmirror:
+    src: bazzite/songmirror/songmirror.container
+    dst: ~/.config/containers/systemd/songmirror.container
+    link: absolute
   bazzite_lab:
     src: bazzite/lab/lab.container
     dst: ~/.config/containers/systemd/lab.container
@@ -154,6 +158,7 @@ profiles:
       - tmux
       - bazzite_crafty
       - bazzite_keeper
+      - bazzite_songmirror
       - bazzite_lab
       - bazzite_lab_home
       - bazzite_samba

@@ -54,9 +54,9 @@ Hyprland overrides on top of Omarchy's defaults.
 
 ### bazzite — Bazzite Host
 
-Home server running rootless Podman workloads. `lab`, `crafty`, `keeper`, and
-`samba` run as systemd user services; Immich runs through Podman Compose. SSH
-access via direct connection (`ssh <your-user>@bazzite`). The `lab` alias lands
+Home server running rootless Podman workloads. `lab`, `crafty`, `keeper`,
+`songmirror`, and `samba` run as systemd user services; Immich runs through
+Podman Compose. SSH access via direct connection (`ssh <your-user>@bazzite`). The `lab` alias lands
 on the development container through port 2224.
 
 ### maistodos — Work Machine (Arch WSL2)
@@ -73,6 +73,7 @@ the Windows system tray (not just in the WSL2 environment).
 | `lab` | Quadlet rootless | SSH `2224` | Arch development environment (see [lab/README.md](lab/README.md)) |
 | `crafty` | Quadlet rootless | `8443`, `25565` | Minecraft server manager (see [crafty/README.md](crafty/README.md)) |
 | `keeper` | Quadlet rootless | local `8088`, Tailscale Serve `8444` | Calendar sync and MCP server (see [keeper/README.md](keeper/README.md)) |
+| `songmirror` | Quadlet rootless | local `8888`, Tailscale Serve `8447` | Spotify and YouTube Music playlist sync (see [songmirror/README.md](songmirror/README.md)) |
 | `samba` | Quadlet rootless | Tailscale `445` | Storage shared over the tailnet (see [samba/README.md](samba/README.md)) |
 | `immich` | Podman Compose | `2283` | Photo and video library (see [immich/README.md](immich/README.md)) |
 
@@ -83,6 +84,7 @@ From a machine with this repository, SSH access to `bazzite`, and `tar`:
 ```bash
 ./bazzite/setup.sh                 # choose services interactively
 ./bazzite/setup.sh lab crafty      # configure selected services
+./bazzite/setup.sh songmirror      # configure SongMirror
 ```
 
 Set `BAZZITE_SSH_HOST` to use another SSH alias. The script sends only the

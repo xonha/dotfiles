@@ -9,20 +9,20 @@ host="${BAZZITE_SSH_HOST:-bazzite}"
 services=()
 
 usage() {
-  printf 'Usage: %s [lab|crafty|keeper|samba|immich ...]\n' "$0"
+  printf 'Usage: %s [lab|crafty|keeper|samba|immich|songmirror ...]\n' "$0"
   printf 'With no arguments, choose services interactively. SSH host: %s\n' "$host"
 }
 
 for service in "$@"; do
   case "$service" in
-    lab|crafty|keeper|samba|immich) services+=("$service") ;;
+    lab|crafty|keeper|samba|immich|songmirror) services+=("$service") ;;
     -h|--help) usage; exit 0 ;;
     *) error "Unknown service: $service"; usage >&2; exit 2 ;;
   esac
 done
 
 if (( ${#services[@]} == 0 )); then
-  for service in lab crafty keeper samba immich; do
+  for service in lab crafty keeper samba immich songmirror; do
     if confirm_step "Set up $service"; then
       services+=("$service")
     fi
@@ -38,7 +38,7 @@ for dependency in ssh tar; do
   command -v "$dependency" >/dev/null 2>&1 || { error "$dependency is required on this client."; exit 1; }
 done
 
-ssh_options=(-o BatchMode=yes -o ConnectTimeout=5)
+ssh_options=(-F "$DOTFILES_ROOT/config/ssh.conf" -o BatchMode=yes -o ConnectTimeout=5)
 if ! ssh "${ssh_options[@]}" "$host" 'grep -qi bazzite /etc/os-release && test "$(id -u)" -ne 0 && command -v podman >/dev/null && command -v tar >/dev/null && command -v loginctl >/dev/null'; then
   error "SSH access to $host or Bazzite prerequisites are unavailable. Verify with: ssh $host"
   exit 1
@@ -60,6 +60,7 @@ tar -cf - \
   bazzite/lab/Dockerfile bazzite/lab/containers.conf bazzite/lab/lab.container bazzite/lab/lab-home.volume bazzite/lab/setup.sh \
   bazzite/crafty/crafty.container bazzite/crafty/setup.sh \
   bazzite/keeper/keeper.container bazzite/keeper/setup.sh \
+  bazzite/songmirror/songmirror.container bazzite/songmirror/setup.sh \
   bazzite/samba/samba.container bazzite/samba/setup.sh \
   bazzite/immich/docker-compose.yml bazzite/immich/setup.sh bazzite/immich/podman-restart.service.d/10-immich-mount.conf \
   bazzite/immich/immich-start.service bazzite/immich/immich-healthcheck.sh bazzite/immich/immich-healthcheck.service bazzite/immich/immich-healthcheck.timer \
