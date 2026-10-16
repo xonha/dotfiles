@@ -1,5 +1,6 @@
 -- Tiled 4K workspace: two rows with 2/5 | 3/5 width columns.
--- ctx.area already excludes the space reserved by the bar.
+-- The 4K bar sits between the rows; its layer surface is 30px high.
+local middle_bar_height = 30
 local zone_by_window = {}
 local preferred_zone_by_class = {
   ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 3, -- YouTube Music, lower left
@@ -14,10 +15,11 @@ end
 local function zone_boxes(area)
   local left = math.floor(area.w * 2 / 5)
   local right = area.w - left
-  local upper = math.floor(area.h / 2)
-  local lower = area.h - upper
+  local usable_height = area.h - middle_bar_height
+  local upper = math.floor(usable_height / 2)
+  local lower = usable_height - upper
   local right_x = area.x + left
-  local lower_y = area.y + upper
+  local lower_y = area.y + upper + middle_bar_height
 
   return {
     { x = area.x, y = area.y, w = left, h = upper },

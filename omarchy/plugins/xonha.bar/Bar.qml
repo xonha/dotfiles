@@ -1233,14 +1233,17 @@ Item {
 
   component BarPanel: PanelWindow {
     id: barWindow
+    readonly property bool centeredOn4k: screen && screen.name === "DP-1"
+      && screen.width === 3840 && screen.height === 2160
 
-    // Hiding parks the bar just past its screen edge instead of unmapping it.
+    // Hiding parks edge bars just past their screen edge. The centered 4K bar
+    // unmaps because it has no screen edge to park beyond.
     // Unmapping frees the layer surface and the whole scene graph, so every
     // reveal has to rebuild them — new surface, re-shaped glyphs, re-uploaded
     // textures — which measures ~150ms against ~20ms to tear down. Parking
     // keeps the surface alive, so showing is only a margin change.
-    visible: !remapGuard.remapping
-    exclusionMode: root.barHidden ? ExclusionMode.Ignore : ExclusionMode.Auto
+    visible: !remapGuard.remapping && (!centeredOn4k || !root.barHidden)
+    exclusionMode: root.barHidden || centeredOn4k ? ExclusionMode.Ignore : ExclusionMode.Auto
 
     ScreenMoveRemap {
       id: remapGuard
@@ -1248,15 +1251,18 @@ Item {
     }
 
     margins {
-      top: root.barHidden && root.position === "top" ? -root.barSize : 0
-      bottom: root.barHidden && root.position === "bottom" ? -root.barSize : 0
-      left: root.barHidden && root.position === "left" ? -root.barSize : 0
-      right: root.barHidden && root.position === "right" ? -root.barSize : 0
+      top: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2)
+        : root.barHidden && root.position === "top" ? -root.barSize : 0
+      bottom: !centeredOn4k && root.barHidden && root.position === "bottom" ? -root.barSize : 0
+      left: centeredOn4k ? 12
+        : root.barHidden && root.position === "left" ? -root.barSize : 0
+      right: centeredOn4k ? 12
+        : root.barHidden && root.position === "right" ? -root.barSize : 0
     }
 
     anchors {
-      top: root.position === "top" || root.vertical
-      bottom: root.position === "bottom" || root.vertical
+      top: centeredOn4k || root.position === "top" || root.vertical
+      bottom: !centeredOn4k && (root.position === "bottom" || root.vertical)
       left: root.position === "left" || !root.vertical
       right: root.position === "right" || !root.vertical
     }
