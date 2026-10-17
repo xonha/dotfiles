@@ -145,8 +145,15 @@ o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 -- o.bind("SUPER + SHIFT + D", "Docker", { tui = "omarchy-launch-docker-tui" }) -- Omarchy default
 -- Omarchy's older SUPER + SHIFT + C action was Calendar (https://app.hey.com/calendar/weeks/).
 
--- Restore actions freed by the new zone keys.
-o.bind("SUPER + SHIFT + T", "Reload Hyprland", "hyprctl reload")
+-- SUPER + SHIFT + T previously reloaded Hyprland.
+hl.unbind("SUPER + SHIFT + T")
+o.bind("SUPER + SHIFT + T", "Toggle 4K row width", function()
+  four_zones.toggle_row_wide()
+end)
+hl.unbind("SUPER + SHIFT + G") -- Omarchy default: Signal
+o.bind("SUPER + SHIFT + G", "Toggle 4K half-row cell", function()
+  four_zones.toggle_half_cell()
+end)
 
 -- Keep universal copy and paste on SUPER + SHIFT + C/V.
 hl.unbind("SUPER + SHIFT + C")
