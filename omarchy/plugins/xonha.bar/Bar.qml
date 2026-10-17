@@ -1235,6 +1235,7 @@ Item {
     id: barWindow
     readonly property bool centeredOn4k: screen && screen.name === "DP-1"
       && screen.width === 3840 && screen.height === 2160
+    readonly property int centeredBarMargin: centeredOn4k ? (screen.width - 1920) / 2 : 0
 
     // Hiding parks edge bars just past their screen edge. The centered 4K bar
     // unmaps because it has no screen edge to park beyond.
@@ -1254,9 +1255,9 @@ Item {
       top: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2)
         : root.barHidden && root.position === "top" ? -root.barSize : 0
       bottom: !centeredOn4k && root.barHidden && root.position === "bottom" ? -root.barSize : 0
-      left: centeredOn4k ? 12
+      left: centeredOn4k ? centeredBarMargin
         : root.barHidden && root.position === "left" ? -root.barSize : 0
-      right: centeredOn4k ? 12
+      right: centeredOn4k ? centeredBarMargin
         : root.barHidden && root.position === "right" ? -root.barSize : 0
     }
 
@@ -1269,7 +1270,7 @@ Item {
 
     implicitWidth: root.vertical ? root.barSize : 0
     implicitHeight: root.vertical ? 0 : root.barSize
-    color: root.transparent ? "transparent" : root.background
+    color: root.transparent || centeredOn4k ? "transparent" : root.background
     surfaceFormat.opaque: false
     WlrLayershell.namespace: "omarchy-bar"
     WlrLayershell.layer: WlrLayer.Top
@@ -1359,15 +1360,44 @@ Item {
       Item {
         anchors.fill: parent
 
-        CenterModules { anchors.fill: parent }
+        Rectangle {
+          visible: barWindow.centeredOn4k && !root.transparent && leftModules.width > 0
+          x: leftModules.x - Style.space(8)
+          width: leftModules.width + Style.space(16)
+          height: parent.height
+          radius: height / 2
+          color: root.background
+        }
+
+        Rectangle {
+          visible: barWindow.centeredOn4k && !root.transparent && centerModules.horizontalContentWidth > 0
+          anchors.centerIn: parent
+          width: centerModules.horizontalContentWidth + Style.space(16)
+          height: parent.height
+          radius: height / 2
+          color: root.background
+        }
+
+        Rectangle {
+          visible: barWindow.centeredOn4k && !root.transparent && rightModules.width > 0
+          x: rightModules.x - Style.space(8)
+          width: rightModules.width + Style.space(16)
+          height: parent.height
+          radius: height / 2
+          color: root.background
+        }
+
+        CenterModules { id: centerModules; anchors.fill: parent }
 
         LeftModules {
+          id: leftModules
           anchors.left: parent.left
           anchors.leftMargin: Style.space(8)
           anchors.verticalCenter: parent.verticalCenter
         }
 
         RightModules {
+          id: rightModules
           anchors.right: parent.right
           anchors.rightMargin: Style.space(8)
           anchors.verticalCenter: parent.verticalCenter
@@ -1543,8 +1573,11 @@ Item {
     property var entries: root.layoutEntries("center")
     readonly property bool hasAnchor: root.entryIndex(entries, root.centerAnchor) !== -1
     readonly property var anchorEntry: root.findCenterAnchorEntry()
+    readonly property real horizontalContentWidth: centerLayout.item && !root.vertical
+      ? centerLayout.item.contentWidth : 0
 
     Loader {
+      id: centerLayout
       anchors.fill: parent
       sourceComponent: root.vertical ? verticalCenterModules : horizontalCenterModules
     }
@@ -1553,6 +1586,9 @@ Item {
       id: horizontalCenterModules
 
       Item {
+        readonly property real contentWidth: centerRoot.hasAnchor
+          ? beforeAnchor.width + centerAnchorModule.width + afterAnchor.width
+          : unanchoredList.width
         anchors.fill: parent
 
         CenterGestureArea { anchors.fill: parent }
@@ -1562,6 +1598,7 @@ Item {
         }
 
         ModuleList {
+          id: unanchoredList
           visible: !centerRoot.hasAnchor
           entries: centerRoot.entries
           region: "center"
@@ -1569,6 +1606,7 @@ Item {
         }
 
         ModuleList {
+          id: beforeAnchor
           visible: centerRoot.hasAnchor
           entries: root.entriesBefore(centerRoot.entries, root.centerAnchor)
           region: "center"
@@ -1585,6 +1623,7 @@ Item {
         }
 
         ModuleList {
+          id: afterAnchor
           visible: centerRoot.hasAnchor
           entries: root.entriesAfter(centerRoot.entries, root.centerAnchor)
           region: "center"
