@@ -1236,6 +1236,7 @@ Item {
     readonly property bool centeredOn4k: screen && screen.name === "DP-1"
       && screen.width === 3840 && screen.height === 2160
     readonly property int centeredBarMargin: centeredOn4k ? (screen.width - 1920) / 2 : 0
+    readonly property int centeredBarTop: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2) : 0
 
     // Hiding parks edge bars just past their screen edge. The centered 4K bar
     // unmaps because it has no screen edge to park beyond.
@@ -1252,13 +1253,10 @@ Item {
     }
 
     margins {
-      top: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2)
-        : root.barHidden && root.position === "top" ? -root.barSize : 0
+      top: !centeredOn4k && root.barHidden && root.position === "top" ? -root.barSize : 0
       bottom: !centeredOn4k && root.barHidden && root.position === "bottom" ? -root.barSize : 0
-      left: centeredOn4k ? centeredBarMargin
-        : root.barHidden && root.position === "left" ? -root.barSize : 0
-      right: centeredOn4k ? centeredBarMargin
-        : root.barHidden && root.position === "right" ? -root.barSize : 0
+      left: !centeredOn4k && root.barHidden && root.position === "left" ? -root.barSize : 0
+      right: !centeredOn4k && root.barHidden && root.position === "right" ? -root.barSize : 0
     }
 
     anchors {
@@ -1269,14 +1267,22 @@ Item {
     }
 
     implicitWidth: root.vertical ? root.barSize : 0
-    implicitHeight: root.vertical ? 0 : root.barSize
+    // Shared Omarchy panels place themselves below the bar window's bottom
+    // edge. Extend that window to the middle on 4K, but accept clicks only
+    // on the actual 1920px bar content.
+    implicitHeight: centeredOn4k ? centeredBarTop + root.barSize : (root.vertical ? 0 : root.barSize)
     color: root.transparent || centeredOn4k ? "transparent" : root.background
     surfaceFormat.opaque: false
+    mask: Region { item: barContent }
     WlrLayershell.namespace: "omarchy-bar"
     WlrLayershell.layer: WlrLayer.Top
 
     Loader {
-      anchors.fill: parent
+      id: barContent
+      x: barWindow.centeredOn4k ? barWindow.centeredBarMargin : 0
+      y: barWindow.centeredBarTop
+      width: barWindow.centeredOn4k ? 1920 : barWindow.width
+      height: barWindow.centeredOn4k ? root.barSize : barWindow.height
       sourceComponent: root.vertical ? verticalBar : horizontalBar
 
       // A child of the loader, not a sibling of the sections: an ancestor stays

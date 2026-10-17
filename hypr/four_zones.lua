@@ -1,6 +1,8 @@
 -- Tiled 4K workspace: two rows with 2/5 | 3/5 width columns.
 -- The 4K bar sits between the rows; its layer surface is 30px high.
 local middle_bar_height = 30
+local stash_prefix = "special:four-zones-"
+local zone_priority = { 4, 2, 3, 1 } -- lower right, upper right, lower left, upper left
 local zone_by_window = {}
 local span_mode_by_window = {}
 local preferred_zone_by_class = {
@@ -8,9 +10,29 @@ local preferred_zone_by_class = {
 }
 local pending_launches = {}
 
+local function least_populated_zone(count)
+  local best = zone_priority[1]
+  for index = 2, #zone_priority do
+    local zone = zone_priority[index]
+    if count(zone) < count(best) then best = zone end
+  end
+  return best
+end
+
 local function target_id(target)
   local window = target.window
   return window and tostring(window.stable_id) or "target:" .. tostring(target.index)
+end
+
+local function stashed_zone(window)
+  local name = window.workspace and window.workspace.name or ""
+  local zone = tonumber(name:match("^special:four%-zones%-(%d)$"))
+  return zone and zone >= 1 and zone <= 4 and zone or nil
+end
+
+local function assigned_zone(window)
+  return zone_by_window[tostring(window.stable_id)] or stashed_zone(window)
+      or preferred_zone_by_class[window.class]
 end
 
 local function zone_boxes(area)
@@ -38,6 +60,10 @@ local function place_stacked(targets, box)
   end
 end
 
+local function place_full(targets, box)
+  for _, target in ipairs(targets) do target:place(box) end
+end
+
 hl.layout.register("four_zones", {
   recalculate = function(ctx)
     local buckets = { {}, {}, {}, {} }
@@ -45,13 +71,9 @@ hl.layout.register("four_zones", {
 
     for _, target in ipairs(ctx.targets) do
       local id = target_id(target)
-      local zone = zone_by_window[id] or
-          (target.window and preferred_zone_by_class[target.window.class])
+      local zone = target.window and assigned_zone(target.window) or zone_by_window[id]
       if not zone then
-        zone = 1
-        for index = 2, 4 do
-          if #buckets[index] < #buckets[zone] then zone = index end
-        end
+        zone = least_populated_zone(function(index) return #buckets[index] end)
       end
       zone_by_window[id] = zone
       table.insert(buckets[zone], target)
@@ -108,7 +130,8 @@ hl.layout.register("four_zones", {
     end
 
     for zone, box in ipairs(boxes) do
-      place_stacked(buckets[zone], box)
+      if span_mode then place_stacked(buckets[zone], box)
+      else place_full(buckets[zone], box) end
     end
   end,
 
@@ -136,23 +159,30 @@ end
 local function first_available_zone(workspace)
   local counts = { 0, 0, 0, 0 }
   for _, window in ipairs(hl.get_windows()) do
-    if window.workspace and window.workspace.id == workspace.id then
-      local zone = zone_by_window[tostring(window.stable_id)]
+    if window.workspace and (window.workspace.id == workspace.id or stashed_zone(window)) then
+      local zone = assigned_zone(window)
       if zone then counts[zone] = counts[zone] + 1 end
     end
   end
-  local best = 1
-  for zone = 2, 4 do
-    if counts[zone] < counts[best] then best = zone end
-  end
-  return best
+  return least_populated_zone(function(zone) return counts[zone] end)
 end
 
 local function show_window(window, zone)
   local workspace = samsung_workspace()
   if not window or not workspace then return end
   local id = tostring(window.stable_id)
-  zone = zone or preferred_zone_by_class[window.class] or zone_by_window[id] or first_available_zone(workspace)
+  zone = zone or assigned_zone(window) or first_available_zone(workspace)
+
+  -- Keep only the selected window on this zone's visible workspace. A named
+  -- special workspace holds each replaced window until its app shortcut is used.
+  for _, candidate in ipairs(hl.get_windows()) do
+    if candidate.stable_id ~= window.stable_id and candidate.workspace and
+        candidate.workspace.id == workspace.id and not candidate.floating and
+        assigned_zone(candidate) == zone then
+      hl.dispatch(hl.dsp.window.move({ window = candidate,
+        workspace = stash_prefix .. zone, follow = false }))
+    end
+  end
 
   if not window.workspace or window.workspace.id ~= workspace.id then
     hl.dispatch(hl.dsp.window.move({ window = window, workspace = workspace.name, follow = false }))
@@ -162,14 +192,48 @@ local function show_window(window, zone)
   zone_by_window[id] = zone
   preferred_zone_by_class[window.class] = zone
 
-  -- The layout tiles multiple windows in one zone vertically. Avoid mutating
-  -- Hyprland groups here: group:add crashed the compositor on window events.
+  -- Avoid Hyprland groups here: group:add crashed the compositor on window events.
   hl.dispatch(hl.dsp.focus({ workspace = workspace.name }))
   hl.dispatch(hl.dsp.layout("refresh"))
   hl.dispatch(hl.dsp.focus({ window = window }))
 end
 
+local function reconcile_visible_zones()
+  local workspace = samsung_workspace()
+  if not workspace then return end
+
+  local active = hl.get_active_window()
+  for zone = 1, 4 do
+    local occupants = {}
+    local keep
+    for _, window in ipairs(hl.get_windows()) do
+      if window.workspace and window.workspace.id == workspace.id and
+          not window.floating and assigned_zone(window) == zone then
+        table.insert(occupants, window)
+        if not keep or (active and active.stable_id == window.stable_id) then
+          keep = window
+        end
+      end
+    end
+    for _, window in ipairs(occupants) do
+      if window.stable_id ~= keep.stable_id then
+        hl.dispatch(hl.dsp.window.move({ window = window,
+          workspace = stash_prefix .. zone, follow = false }))
+      end
+    end
+  end
+end
+
+local function schedule_reconcile()
+  hl.timer(reconcile_visible_zones, { timeout = 100, type = "oneshot" })
+end
+
+hl.on("config.reloaded", schedule_reconcile)
+hl.on("workspace.active", schedule_reconcile)
+hl.on("window.move_to_workspace", schedule_reconcile)
+
 hl.on("window.open", function(window)
+  schedule_reconcile()
   for index, pending in ipairs(pending_launches) do
     if pending.match(window) then
       table.remove(pending_launches, index)
@@ -177,6 +241,9 @@ hl.on("window.open", function(window)
       return
     end
   end
+  local workspace = samsung_workspace()
+  if workspace and window.workspace and window.workspace.id == workspace.id and
+      not window.floating then show_window(window) end
 end)
 
 hl.on("window.title", function(window)
@@ -188,6 +255,28 @@ hl.on("window.title", function(window)
     end
   end
 end)
+
+local function restore_stashed_without_samsung()
+  if samsung_workspace() then return end
+  local workspace
+  for _, monitor in ipairs(hl.get_monitors()) do
+    if monitor.name ~= "FALLBACK" and monitor.active_workspace then
+      workspace = monitor.active_workspace
+      break
+    end
+  end
+  if not workspace then return end
+
+  for _, window in ipairs(hl.get_windows()) do
+    if stashed_zone(window) then
+      hl.dispatch(hl.dsp.window.move({ window = window,
+        workspace = workspace.name, follow = false }))
+    end
+  end
+end
+
+hl.on("monitor.layout_changed", restore_stashed_without_samsung)
+hl.on("config.reloaded", restore_stashed_without_samsung)
 
 local function toggle_span(mode)
   local workspace = samsung_workspace()
@@ -227,15 +316,32 @@ return {
 
   launch_or_focus = function(match, command, default_zone)
     local workspace = samsung_workspace()
+    local matches = {}
     for _, window in ipairs(hl.get_windows()) do
-      if match(window) then
-        if workspace then
-          show_window(window, preferred_zone_by_class[window.class] or default_zone)
-        else
-          hl.dispatch(hl.dsp.focus({ window = window }))
+      if match(window) then table.insert(matches, window) end
+    end
+    if #matches > 0 then
+      local window = matches[1]
+      local active = hl.get_active_window()
+      for index, candidate in ipairs(matches) do
+        if active and candidate.stable_id == active.stable_id then
+          window = matches[index % #matches + 1]
+          break
         end
-        return
       end
+      if workspace then
+        show_window(window, preferred_zone_by_class[window.class] or default_zone)
+      else
+        if stashed_zone(window) then
+          local active_workspace = hl.get_active_workspace()
+          if active_workspace and not active_workspace.special then
+            hl.dispatch(hl.dsp.window.move({ window = window,
+              workspace = active_workspace.name, follow = false }))
+          end
+        end
+        hl.dispatch(hl.dsp.focus({ window = window }))
+      end
+      return
     end
 
     if not workspace then

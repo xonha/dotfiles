@@ -173,8 +173,8 @@ o.bind("SUPER + ALT + D", "Display", "omarchy-shell shell toggle omarchy.monitor
 o.bind("SUPER + ALT + C", "Control center", "omarchy-menu toggle system")
 local window_zone_shortcuts_4k = {
   { key = "E", zone = 1, name = "upper left" },
-  { key = "D", zone = 2, name = "upper right" },
-  { key = "R", zone = 3, name = "lower left" },
+  { key = "R", zone = 2, name = "upper right" },
+  { key = "D", zone = 3, name = "lower left" },
   { key = "F", zone = 4, name = "lower right" },
 }
 
