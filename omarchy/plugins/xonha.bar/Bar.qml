@@ -1267,6 +1267,8 @@ Item {
     id: barWindow
     readonly property bool centeredOn4k: !root.vertical && screen && screen.name === "DP-1"
       && screen.width === 3840 && screen.height === 2160 && !root.maximizedOn4k
+    readonly property bool bottomRoundedOnly: root.maximizedOn4k && screen && screen.name === "DP-1"
+      && root.position === "top"
     readonly property bool constrained: root.vertical ? height > 1920 : width > 1920
     readonly property int centeredBarTop: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2) : 0
 
@@ -1405,8 +1407,16 @@ Item {
           x: leftModules.x - Style.space(8)
           width: leftModules.width + Style.space(16)
           height: parent.height
-          radius: height / 2
+          radius: 6
           color: root.background
+
+          Rectangle {
+            visible: barWindow.bottomRoundedOnly
+            anchors.top: parent.top
+            width: parent.width
+            height: parent.height / 2
+            color: parent.color
+          }
         }
 
         Rectangle {
@@ -1414,8 +1424,16 @@ Item {
           anchors.centerIn: parent
           width: centerModules.horizontalContentWidth + Style.space(16)
           height: parent.height
-          radius: height / 2
+          radius: 6
           color: root.background
+
+          Rectangle {
+            visible: barWindow.bottomRoundedOnly
+            anchors.top: parent.top
+            width: parent.width
+            height: parent.height / 2
+            color: parent.color
+          }
         }
 
         Rectangle {
@@ -1423,8 +1441,16 @@ Item {
           x: rightModules.x - Style.space(8)
           width: rightModules.width + Style.space(16)
           height: parent.height
-          radius: height / 2
+          radius: 6
           color: root.background
+
+          Rectangle {
+            visible: barWindow.bottomRoundedOnly
+            anchors.top: parent.top
+            width: parent.width
+            height: parent.height / 2
+            color: parent.color
+          }
         }
 
         CenterModules { id: centerModules; anchors.fill: parent }

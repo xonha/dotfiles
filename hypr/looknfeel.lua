@@ -9,7 +9,7 @@ local function update_rounding()
     end
   end
 
-  hl.config({ decoration = { rounding = connected and 8 or 0 } })
+  hl.config({ decoration = { rounding = connected and 6 or 0 } })
 end
 
 update_rounding()
