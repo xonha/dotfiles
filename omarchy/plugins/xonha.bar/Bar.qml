@@ -39,6 +39,10 @@ Item {
   // killing the entire shell. Hidden panels stay mapped but park off-screen
   // without an exclusion zone; updated by the FileView watcher further down.
   property bool barHidden: false
+  // On the 4K workspace, a maximized window uses the working area below the
+  // bar. Move the normally centered bar to the top while that mode is active.
+  property bool maximizedOn4k: false
+  onMaximizedOn4kChanged: if (maximizedOn4k) maximizedGeometryRefresh.restart()
   property string home: Quickshell.env("HOME")
   property string stateHome: home + "/.local/state"
   property string omarchyConfigDir: home + "/.config/omarchy"
@@ -1178,6 +1182,34 @@ Item {
     onFileChanged: barHiddenProbe.running = true
   }
 
+  Process {
+    id: maximizedOn4kProbe
+    running: true
+    command: ["bash", "-c", "jq -r -s '.[0] as $monitors | .[1] as $clients | any($monitors[]; .name == \"DP-1\" and (.id as $monitorId | .activeWorkspace.id as $workspaceId | any($clients[]; .monitor == $monitorId and .workspace.id == $workspaceId and .fullscreen == 1)))' <(hyprctl -j monitors) <(hyprctl -j clients)"]
+    stdout: SplitParser { onRead: function(line) { root.maximizedOn4k = String(line).trim() === "true" } }
+  }
+  Timer {
+    id: maximizedOn4kRefresh
+    interval: 100
+    onTriggered: maximizedOn4kProbe.running = true
+  }
+  Timer {
+    id: maximizedGeometryRefresh
+    interval: 200
+    onTriggered: maximizedGeometryFix.running = true
+  }
+  Process {
+    id: maximizedGeometryFix
+    command: [root.home + "/.config/scripts/reflow_maximized_4k.sh"]
+  }
+  Connections {
+    target: Hyprland
+    function onRawEvent(event) {
+      if (["fullscreen", "workspace", "activewindow", "closewindow", "movewindow",
+           "monitoradded", "monitorremoved"].includes(event.name)) maximizedOn4kRefresh.restart()
+    }
+  }
+
   // The directory watch can permanently stop delivering events after flag
   // changes land in quick succession, stranding the bar off screen until the
   // shell restarts. `omarchy-toggle-bar` nudges this after flipping the flag
@@ -1233,9 +1265,9 @@ Item {
 
   component BarPanel: PanelWindow {
     id: barWindow
-    readonly property bool centeredOn4k: screen && screen.name === "DP-1"
-      && screen.width === 3840 && screen.height === 2160
-    readonly property int centeredBarMargin: centeredOn4k ? (screen.width - 1920) / 2 : 0
+    readonly property bool centeredOn4k: !root.vertical && screen && screen.name === "DP-1"
+      && screen.width === 3840 && screen.height === 2160 && !root.maximizedOn4k
+    readonly property bool constrained: root.vertical ? height > 1920 : width > 1920
     readonly property int centeredBarTop: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2) : 0
 
     // Hiding parks edge bars just past their screen edge. The centered 4K bar
@@ -1271,7 +1303,7 @@ Item {
     // edge. Extend that window to the middle on 4K, but accept clicks only
     // on the actual 1920px bar content.
     implicitHeight: centeredOn4k ? centeredBarTop + root.barSize : (root.vertical ? 0 : root.barSize)
-    color: root.transparent || centeredOn4k ? "transparent" : root.background
+    color: root.transparent || constrained ? "transparent" : root.background
     surfaceFormat.opaque: false
     mask: Region { item: barContent }
     WlrLayershell.namespace: "omarchy-bar"
@@ -1279,10 +1311,12 @@ Item {
 
     Loader {
       id: barContent
-      x: barWindow.centeredOn4k ? barWindow.centeredBarMargin : 0
-      y: barWindow.centeredBarTop
-      width: barWindow.centeredOn4k ? 1920 : barWindow.width
-      height: barWindow.centeredOn4k ? root.barSize : barWindow.height
+      x: root.vertical ? 0 : Math.floor((barWindow.width - width) / 2)
+      y: barWindow.centeredOn4k ? barWindow.centeredBarTop
+        : (root.vertical ? Math.floor((barWindow.height - height) / 2) : 0)
+      width: root.vertical ? barWindow.width : Math.min(1920, barWindow.width)
+      height: barWindow.centeredOn4k ? root.barSize
+        : (root.vertical ? Math.min(1920, barWindow.height) : barWindow.height)
       sourceComponent: root.vertical ? verticalBar : horizontalBar
 
       // A child of the loader, not a sibling of the sections: an ancestor stays
@@ -1367,7 +1401,7 @@ Item {
         anchors.fill: parent
 
         Rectangle {
-          visible: barWindow.centeredOn4k && !root.transparent && leftModules.width > 0
+          visible: barWindow.constrained && !root.transparent && leftModules.width > 0
           x: leftModules.x - Style.space(8)
           width: leftModules.width + Style.space(16)
           height: parent.height
@@ -1376,7 +1410,7 @@ Item {
         }
 
         Rectangle {
-          visible: barWindow.centeredOn4k && !root.transparent && centerModules.horizontalContentWidth > 0
+          visible: barWindow.constrained && !root.transparent && centerModules.horizontalContentWidth > 0
           anchors.centerIn: parent
           width: centerModules.horizontalContentWidth + Style.space(16)
           height: parent.height
@@ -1385,7 +1419,7 @@ Item {
         }
 
         Rectangle {
-          visible: barWindow.centeredOn4k && !root.transparent && rightModules.width > 0
+          visible: barWindow.constrained && !root.transparent && rightModules.width > 0
           x: rightModules.x - Style.space(8)
           width: rightModules.width + Style.space(16)
           height: parent.height
@@ -1416,6 +1450,12 @@ Item {
 
       Item {
         anchors.fill: parent
+
+        Rectangle {
+          anchors.fill: parent
+          visible: barWindow.constrained && !root.transparent
+          color: root.background
+        }
 
         CenterModules { anchors.fill: parent }
 
