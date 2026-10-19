@@ -1399,6 +1399,8 @@ Item {
 
       Item {
         anchors.fill: parent
+        readonly property int outerCornerRadius:
+          barWindow.screen && barWindow.screen.width <= 1920 ? 0 : 6
 
         Rectangle {
           visible: barWindow.constrained && !root.transparent && leftModules.width > 0
@@ -1406,8 +1408,10 @@ Item {
           width: leftModules.width + Style.space(16)
           height: parent.height
           radius: 6
-          topLeftRadius: root.position === "top" ? 0 : 6
-          bottomLeftRadius: root.position === "bottom" ? 0 : 6
+          topLeftRadius: root.position === "top" ? 0 : outerCornerRadius
+          topRightRadius: 6
+          bottomLeftRadius: root.position === "bottom" ? 0 : outerCornerRadius
+          bottomRightRadius: 6
           color: root.background
         }
 
@@ -1417,6 +1421,10 @@ Item {
           width: centerModules.horizontalContentWidth + Style.space(16)
           height: parent.height
           radius: 6
+          topLeftRadius: 6
+          topRightRadius: 6
+          bottomLeftRadius: 6
+          bottomRightRadius: 6
           color: root.background
         }
 
@@ -1426,8 +1434,10 @@ Item {
           width: rightModules.width + Style.space(16)
           height: parent.height
           radius: 6
-          topRightRadius: root.position === "top" ? 0 : 6
-          bottomRightRadius: root.position === "bottom" ? 0 : 6
+          topLeftRadius: 6
+          topRightRadius: root.position === "top" ? 0 : outerCornerRadius
+          bottomLeftRadius: 6
+          bottomRightRadius: root.position === "bottom" ? 0 : outerCornerRadius
           color: root.background
         }
 
