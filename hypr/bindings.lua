@@ -27,10 +27,9 @@ o.bind("SUPER + V", "Foot + tmux",
   grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main"))
 o.bind("SUPER + F", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
-o.bind("SUPER + W", "WhatsApp", function()
-  four_zones.launch_or_focus(match_classes("brave-web.whatsapp.com__-Default"),
-    o.launch_webapp("https://web.whatsapp.com/"))
-end)
+o.bind("SUPER + W", "WhatsApp",
+  grid_app(match_classes("brave-web.whatsapp.com__-Default"),
+    "brave-origin --profile-directory=Default --app=https://web.whatsapp.com/"))
 o.bind("SUPER + G", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
 o.bind("SUPER + E", "Todoist",
   grid_app(match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"), brave_app("dlgohinmglaoopaiplliaecdpmnepmga")))

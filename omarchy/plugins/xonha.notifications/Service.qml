@@ -25,7 +25,7 @@ Item {
   readonly property string stateDir: home + "/.local/state/omarchy/"
   readonly property string settingsPath: stateDir + "notifications.json"
   readonly property string preferencesPath: stateDir + "notification-center.json"
-  property string notificationMonitor: "DP-3"
+  property string notificationMonitor: "DP-1"
   property string notificationPosition: "top-center"
   property int historyLimit: 100
   property bool preferencesLoaded: false
@@ -122,6 +122,20 @@ Item {
   readonly property int defaultBarSize: barVertical ? Style.bar.sizeVertical : Style.bar.sizeHorizontal
   readonly property int liveBarSize: shell && shell.bar && !shell.bar.barHidden ? Math.max(0, shell.bar.barSize) : defaultBarSize
   readonly property int barClearance: liveBarSize + Style.gapsOut
+  property var barAnchors: ({})
+  property var barAnchor: null
+
+  function setBarAnchor(screen, x, y) {
+    var horizontal = Number(x)
+    var vertical = Number(y)
+    if (!screen || !isFinite(horizontal) || !isFinite(vertical)) return
+    var next = Object.assign({}, barAnchors)
+    next[screen] = { x: horizontal, y: vertical }
+    barAnchors = next
+    if (screen === notificationMonitor) barAnchor = next[screen]
+  }
+
+  onNotificationMonitorChanged: barAnchor = barAnchors[notificationMonitor] || null
 
   // Live Notification objects by originalId, kept OUT of the ListModels: a
   // QObject stored in a model role becomes a dangling C++ pointer when the
@@ -943,6 +957,11 @@ Item {
   IpcHandler {
     target: "notifications"
 
+    function setBarAnchor(screen: string, x: string, y: string): string {
+      service.setBarAnchor(screen, x, y)
+      return "ok"
+    }
+
     function dndState(): string {
       return service.doNotDisturb ? "on" : "off"
     }
@@ -1079,15 +1098,14 @@ Item {
 
       ColumnLayout {
         id: popupColumn
-        anchors.horizontalCenter: popupWindow.popupPlacement.anchors.horizontalCenter ? parent.horizontalCenter : undefined
-        anchors.left: popupWindow.popupPlacement.anchors.left ? parent.left : undefined
-        anchors.right: popupWindow.popupPlacement.anchors.right ? parent.right : undefined
-        anchors.top: popupWindow.popupPlacement.anchors.top ? parent.top : undefined
-        anchors.bottom: popupWindow.popupPlacement.anchors.bottom ? parent.bottom : undefined
-        anchors.topMargin: popupWindow.popupPlacement.margins.top
-        anchors.bottomMargin: popupWindow.popupPlacement.margins.bottom
-        anchors.leftMargin: popupWindow.popupPlacement.margins.left
-        anchors.rightMargin: popupWindow.popupPlacement.margins.right
+        readonly property bool belowBar: service.barAnchor !== null && service.barPosition === "top"
+        x: belowBar ? Math.round((popupWindow.width - implicitWidth) / 2)
+          : popupWindow.popupPlacement.anchors.left ? popupWindow.popupPlacement.margins.left
+          : popupWindow.popupPlacement.anchors.right ? popupWindow.width - implicitWidth - popupWindow.popupPlacement.margins.right
+          : Math.round((popupWindow.width - implicitWidth) / 2)
+        y: belowBar ? service.barAnchor.y + Style.gapsOut
+          : popupWindow.popupPlacement.anchors.top ? popupWindow.popupPlacement.margins.top
+          : popupWindow.height - implicitHeight - popupWindow.popupPlacement.margins.bottom
         spacing: Style.space(8)
 
         Repeater {

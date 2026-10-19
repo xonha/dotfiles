@@ -86,12 +86,14 @@ Item {
 
     Rectangle {
       id: card
-      anchors.top: parent.top
-      anchors.right: parent.right
-      anchors.margins: Style.gapsOut
-      anchors.topMargin: Style.gapsOut + Style.space(32)
+      readonly property bool belowBar: root.service && root.service.barAnchor !== null
+        && root.service.barPosition === "top" && root.monitorConnected
+      x: belowBar ? Math.max(Style.gapsOut,
+        Math.min(root.service.barAnchor.x - width, window.width - width - Style.gapsOut))
+        : window.width - width - Style.gapsOut
+      y: belowBar ? root.service.barAnchor.y + Style.gapsOut : Style.gapsOut + Style.space(32)
       width: Math.min(Style.space(460), window.width - Style.gapsOut * 2)
-      height: Math.min(Style.space(640), window.height - anchors.topMargin - Style.gapsOut)
+      height: Math.min(Style.space(640), window.height - y - Style.gapsOut)
       color: Color.popups.background
       radius: Style.cornerRadius
       border.color: Color.popups.border

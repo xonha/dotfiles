@@ -5,6 +5,11 @@ notification center. Click the bell to choose the output, the toast position,
 and browse archived notifications. The panel opens on the selected output.
 Position choices are top/bottom combined with left/center/right. Changes take
 effect immediately, with space reserved for the bar on its configured edge.
+With a top bar, live toasts are centered on the selected screen at the bell
+widget's height, immediately below the bar. The saved position is used while
+the widget is unavailable.
+The notification center panel opens below the bell widget, aligned to its
+right edge. Live toasts remain centered on the screen.
 Use **Testar notificação** to preview the selected monitor and position. The
 center closes to leave the preview unobstructed; the test is archived normally.
 The button is disabled when the selected output is disconnected.
@@ -25,7 +30,7 @@ Notifications received during Do Not Disturb retain upstream behavior.
 Preferences are saved in `~/.local/state/omarchy/notification-center.json`.
 The existing history is reused from
 `~/.local/state/omarchy/notifications/history/`.
-The default output is DP-3, matching this machine's left monitor.
+The default output is DP-1, matching this machine's active monitor.
 
 Open the center from a terminal:
 
