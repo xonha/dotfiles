@@ -1,6 +1,6 @@
 -- Tiled 4K workspace: two rows with 2/5 | 3/5 width columns.
--- The 4K bar sits between the rows; its layer surface is 30px high.
-local middle_bar_height = 30
+-- The navbar is on the top edge, so the rows use the normal Hyprland gap.
+local middle_bar_height = 0
 local stash_prefix = "special:four-zones-"
 local zone_priority = { 4, 2, 3, 1 } -- lower right, upper right, lower left, upper left
 local zone_by_window = {}

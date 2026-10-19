@@ -1265,10 +1265,8 @@ Item {
 
   component BarPanel: PanelWindow {
     id: barWindow
-    readonly property bool centeredOn4k: !root.vertical && screen && screen.name === "DP-1"
-      && screen.width === 3840 && screen.height === 2160 && !root.maximizedOn4k
-    readonly property bool bottomRoundedOnly: root.maximizedOn4k && screen && screen.name === "DP-1"
-      && root.position === "top"
+    // Keep the navbar on the configured screen edge, including the 4K monitor.
+    readonly property bool centeredOn4k: false
     readonly property bool constrained: root.vertical ? height > 1920 : width > 1920
     readonly property int centeredBarTop: centeredOn4k ? Math.floor((screen.height - root.barSize) / 2) : 0
 
@@ -1408,15 +1406,9 @@ Item {
           width: leftModules.width + Style.space(16)
           height: parent.height
           radius: 6
+          topLeftRadius: root.position === "top" ? 0 : 6
+          bottomLeftRadius: root.position === "bottom" ? 0 : 6
           color: root.background
-
-          Rectangle {
-            visible: barWindow.bottomRoundedOnly
-            anchors.top: parent.top
-            width: parent.width
-            height: parent.height / 2
-            color: parent.color
-          }
         }
 
         Rectangle {
@@ -1426,14 +1418,6 @@ Item {
           height: parent.height
           radius: 6
           color: root.background
-
-          Rectangle {
-            visible: barWindow.bottomRoundedOnly
-            anchors.top: parent.top
-            width: parent.width
-            height: parent.height / 2
-            color: parent.color
-          }
         }
 
         Rectangle {
@@ -1442,15 +1426,9 @@ Item {
           width: rightModules.width + Style.space(16)
           height: parent.height
           radius: 6
+          topRightRadius: root.position === "top" ? 0 : 6
+          bottomRightRadius: root.position === "bottom" ? 0 : 6
           color: root.background
-
-          Rectangle {
-            visible: barWindow.bottomRoundedOnly
-            anchors.top: parent.top
-            width: parent.width
-            height: parent.height / 2
-            color: parent.color
-          }
         }
 
         CenterModules { id: centerModules; anchors.fill: parent }
