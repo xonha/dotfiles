@@ -15,6 +15,10 @@ dotfiles:
     src: ai/skills
     dst: ~/.claude/skills
     link: absolute
+  codex_skills:
+    src: ai/skills
+    dst: ~/.codex/skills
+    link: link_children
 
   bash_profile:
     src: config/bash.conf
