@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Keep the Plymouth boot screen aligned with the custom dark palette.
+[[ ${1:-} == "darkppuccin" ]] || exit 0
+
+# Use the theme's darkest background and its red accent instead of the
+# foreground color used by Omarchy's generic theme helper.
+omarchy-plymouth-set "#0f0f0f" "#f38ba8" \
+  /usr/share/plymouth/themes/omarchy/logo.png

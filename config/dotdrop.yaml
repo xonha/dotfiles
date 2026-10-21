@@ -125,6 +125,10 @@ dotfiles:
     src: omarchy/hooks/theme-set.d/apply-darkppuccin-gtk
     dst: ~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-gtk
     link: absolute
+  omarchy_plymouth_theme_hook:
+    src: omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth
+    dst: ~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth
+    link: absolute
 
   shortcuts:
     src: config/shortcuts
@@ -178,6 +182,7 @@ profiles:
       - omarchy_themes
       - omarchy_shell
       - omarchy_theme_hook
+      - omarchy_plymouth_theme_hook
       - shortcuts
       - icons
       - ssh_config
