@@ -65,6 +65,10 @@ RUN if [[ ! -r /usr/share/blesh/ble.sh ]]; then \
     fi
 RUN pacman -Scc --noconfirm
 
+# Install the SSH healthcheck used by the Quadlet container health policy.
+COPY bazzite/lab/ssh-healthcheck.sh /usr/local/bin/lab-ssh-healthcheck
+RUN chmod 0755 /usr/local/bin/lab-ssh-healthcheck
+
 # Create startup script to run SSH and keep container alive (as root)
 RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
@@ -75,8 +79,7 @@ RUN echo '#!/bin/bash' > /start.sh \
     && echo "runuser -u ${USERNAME} -- env XDG_RUNTIME_DIR=/run/user/${UID} podman system service --time=0 &" >> /start.sh \
     && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg config/dotdrop.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
-    && echo '/usr/sbin/sshd' >> /start.sh \
-    && echo 'exec sleep infinity' >> /start.sh \
+    && echo 'exec /usr/sbin/sshd -D -e' >> /start.sh \
     && chmod +x /start.sh
 WORKDIR /workspace
 

@@ -18,6 +18,14 @@ Volume=%h/.ssh/authorized_keys:/run/host_ssh_key:ro,Z
 
 PublishPort=2224:22
 
+# Detect an SSH daemon that is listening but no longer completing the banner
+# handshake. An unhealthy container is killed so systemd can restart it.
+HealthCmd=/usr/local/bin/lab-ssh-healthcheck
+HealthInterval=30s
+HealthStartPeriod=60s
+HealthRetries=3
+HealthOnFailure=kill
+
 # Nested rootless Podman: fuse and tun back its storage and pasta networking,
 # SELinux labels would block the inner mounts, and the inner containers need
 # to mount a fresh /proc, which masked paths prevent.

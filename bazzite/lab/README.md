@@ -97,6 +97,11 @@ systemctl --user restart lab.service
 journalctl --user -u lab.service -f
 ```
 
+O container executa o `sshd` em foreground e possui um healthcheck que valida
+o banner SSH a cada 30 segundos. Se o daemon travar depois de abrir a porta,
+o healthcheck marca o container como unhealthy, o Podman o encerra e o
+`lab.service` o reinicia automaticamente.
+
 Para recriar completamente a máquina, pare a unidade, remova o container e o
 volume `lab-home`, e execute novamente `./bazzite/lab/setup.sh`. O diretório
 `~/lab/workspace` deve ser preservado se contiver código.
