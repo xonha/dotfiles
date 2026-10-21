@@ -16,6 +16,7 @@ PKG_CLIENT_EXTRA=(
   docker-buildx
   google-chrome
   microsoft-edge-stable-bin
+  transmission-gtk
 )
 
 PKG_CLIENT_AUR=(

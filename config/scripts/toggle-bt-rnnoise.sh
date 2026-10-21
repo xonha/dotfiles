@@ -14,6 +14,10 @@ log_file="${runtime_dir}/pipewire.log"
 
 mkdir -p "$runtime_dir"
 
+# Avoid two Super+T presses racing while PipeWire is still creating the node.
+exec 9>"$runtime_dir/toggle.lock"
+flock -n 9 || exit 0
+
 show_mic_osd() {
   local state="$1"
   if [[ "$state" == on ]]; then
@@ -28,12 +32,10 @@ notify_error() {
 }
 
 link_capture_source() {
-  for _ in {1..30}; do
-    if pw-link -i bt_rnnoise.capture 2>/dev/null | grep -Fxq "$capture_port"; then
-      break
-    fi
-    sleep 0.1
-  done
+  # The source is already guaranteed to exist by the caller. Give the graph a
+  # short settle window before creating the link, without polling pw-link 30
+  # times (which was a noticeable part of the shortcut latency).
+  sleep 0.05
   pw-link -d "$snowball_capture_port" "$capture_port" 2>/dev/null || true
   pw-link "$snowball_capture_port" "$capture_port" 2>/dev/null || true
 }
@@ -76,8 +78,8 @@ if ! running_pid >/dev/null; then
   printf '%s\n' "$!" >"$pid_file"
 fi
 
-for _ in {1..80}; do
-  if pactl list short sources | awk '{print $2}' | grep -Fxq "$source_name"; then
+for _ in {1..60}; do
+  if pactl list short sources | grep -Eq "[[:space:]]${source_name}[[:space:]]"; then
     link_capture_source snowball
     pactl set-default-source "$source_name"
     set_all_sources_mute 0

@@ -22,6 +22,7 @@ hl.unbind("SUPER + F")
 hl.unbind("SUPER + Q")
 hl.unbind("SUPER + W")
 hl.unbind("SUPER + G")
+hl.unbind("SUPER + R")
 hl.unbind("SUPER + S")
 o.bind("SUPER + V", "Foot + tmux",
   grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main"))
@@ -33,8 +34,7 @@ o.bind("SUPER + W", "WhatsApp",
 o.bind("SUPER + G", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
 o.bind("SUPER + E", "Todoist",
   grid_app(match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"), brave_app("dlgohinmglaoopaiplliaecdpmnepmga")))
-o.bind("SUPER + R", "YouTube Music",
-  grid_app(match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"), brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), 3))
+o.bind("SUPER + R", "Red", "flatpak run com.ktechpit.red")
 o.bind("SUPER + D", "Mais Todos",
   grid_app(match_classes("google-chrome-maistodos", "google-chrome"),
     browser_profile("google-chrome-stable", "google-chrome-maistodos")))
