@@ -2,7 +2,11 @@
 """Posta um PR review com comentarios inline via gh api.
 
 Tom dos comentarios: PT-BR informal, sem acento ("vc", "pra", "tb"). Um por achado.
-Posta so achados 🔴 e 🟡. Da sugestao de codigo (bloco suggestion) quando for simples.
+O que posta e o EVENT seguem a Regra de veredito do SKILL.md:
+  tem 🔴 -> REQUEST_CHANGES, posta 🔴+🟡 (ignora 🟢)
+  tem 🟡 -> COMMENT, posta tudo (🟡+🟢)
+  so 🟢  -> APPROVE, posta os 🟢
+Da sugestao de codigo (bloco suggestion) quando for simples.
 
 Uso:
     1. Pega o SHA do head:
@@ -19,7 +23,7 @@ OWNER = "owner"
 REPO = "repo"
 PR = 0
 SHA = "<head-sha>"  # gh pr view PR --json headRefOid -q .headRefOid
-EVENT = "COMMENT"  # ou "REQUEST_CHANGES"
+EVENT = "COMMENT"  # REQUEST_CHANGES (tem 🔴) | COMMENT (tem 🟡) | APPROVE (so 🟢)
 
 # Cada achado: path + (line) OU (start_line, line) + body.
 # body em PT-BR informal, sem acento. Pra sugerir codigo, inclui no body um bloco:
