@@ -54,12 +54,17 @@ Jarvis.
   Configurações → Dispositivos e serviços → Adicionar integração, procure
   **Wyoming Protocol** e adicione duas entradas apontando para
   `127.0.0.1:10300` (Whisper) e
-  `127.0.0.1:10200` (Piper), depois selecione os dois em um Assist de idioma
-  português brasileiro. O satélite deve aparecer como dispositivo ESPHome;
+  `127.0.0.1:10200` (Piper). Em Configurações → Assistentes de voz, crie o
+  assistente **Jarvis** em português brasileiro com agente Home Assistant,
+  faster-whisper em **Fala para texto** e Piper em **Texto para fala**. Defina
+  Jarvis como assistente preferido. O satélite deve aparecer como dispositivo ESPHome;
   se não aparecer, adicione uma integração ESPHome no IP Wi-Fi do Jarvis e
   porta 6053 (veja `Server started` em `podman logs linux-voice-assistant`).
-  O wake word configurado é `hey_jarvis`. Validar áudio e carga da CPU neste
-  notebook; o microfone integrado pode exigir aproximação física.
+  O wake word configurado é `hey_jarvis`. A sensibilidade do microfone interno
+  ficou em 0,85. Se a ativação falhar ou ocorrer sem comando, ajuste o controle
+  **Wake Word 1 Sensitivity** do dispositivo Jarvis em passos de 0,05. Validar
+  áudio e carga da CPU neste notebook; o microfone integrado pode exigir
+  aproximação física.
 - Music Assistant oferece músicas locais e rádio, mas YouTube Music sem anúncios
   requer YouTube Music Premium. A conta atual não tem Premium. O processador
   Intel deste notebook é antigo; Smart Fades não funciona sem AVX2. Depois de
