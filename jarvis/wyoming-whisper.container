@@ -8,7 +8,7 @@ Image=docker.io/rhasspy/wyoming-whisper:3.8.1
 ContainerName=wyoming-whisper
 PublishPort=127.0.0.1:10300:10300
 Volume=%h/.local/share/jarvis/wyoming-whisper:/data:Z
-Environment=WYO_WHISPER_MODEL=tiny-int8
+Environment=WYO_WHISPER_MODEL=base-int8
 Environment=WYO_WHISPER_LANGUAGE=pt-BR
 
 [Service]

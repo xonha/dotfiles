@@ -48,8 +48,9 @@ Jarvis.
   A necessidade de um coordenador Zigbee, Thread ou Matter depende dos
   dispositivos reais; um rádio USB exigirá mapeamento adicional no container.
 - A voz local requer microfone, alto-falante, wake word, transcrição e síntese
-  configurados como um dispositivo Assist. Whisper transcreve em português e
-  Piper fala em português brasileiro. Esta instalação não usa a assinatura
+  configurados como um dispositivo Assist. Whisper usa o modelo `base-int8`
+  para transcrever em português e Piper fala em português brasileiro. Esta
+  instalação não usa a assinatura
   Home Assistant Cloud nem a loja de Apps do Home Assistant OS. Em
   Configurações → Dispositivos e serviços → Adicionar integração, procure
   **Wyoming Protocol** e adicione duas entradas apontando para
@@ -62,9 +63,11 @@ Jarvis.
   porta 6053 (veja `Server started` em `podman logs linux-voice-assistant`).
   O wake word configurado é `hey_jarvis`. A sensibilidade do microfone interno
   ficou em 0,85. Se a ativação falhar ou ocorrer sem comando, ajuste o controle
-  **Wake Word 1 Sensitivity** do dispositivo Jarvis em passos de 0,05. Validar
-  áudio e carga da CPU neste notebook; o microfone integrado pode exigir
-  aproximação física.
+  **Wake Word 1 Sensitivity** do dispositivo Jarvis em passos de 0,05. O ganho
+  automático está em 10, a redução de ruído em 2 e o volume da fonte PipeWire
+  foi reduzido a 40% porque as gravações saturavam em 100%. Validar áudio e
+  carga da CPU neste notebook; o microfone integrado pode exigir aproximação
+  física.
 - Music Assistant oferece músicas locais e rádio, mas YouTube Music sem anúncios
   requer YouTube Music Premium. A conta atual não tem Premium. O processador
   Intel deste notebook é antigo; Smart Fades não funciona sem AVX2. Depois de
