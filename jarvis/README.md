@@ -79,3 +79,8 @@ Jarvis.
 - O lançador `jarvis-meet.desktop` abre o Google Meet no Firefox do Jarvis.
   Entre na conta Google na tela integrada e teste câmera, microfone,
   alto-falante e uma chamada real antes de automatizar chamadas por voz.
+- O lançador `jarvis-chatgpt.desktop` abre o ChatGPT no Firefox do Jarvis.
+  Entre na conta Pro diretamente na tela integrada, conceda acesso ao
+  microfone se solicitado e teste a conversa por voz no navegador. Esse acesso
+  usa o ChatGPT na web; a integração oficial OpenAI do Home Assistant exige
+  uma chave de API com faturamento separado.

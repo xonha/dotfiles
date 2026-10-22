@@ -11,4 +11,5 @@ scp "$jarvis_root/wyoming-whisper.container" "$jarvis_host:.config/containers/sy
 scp "$jarvis_root/wyoming-piper.container" "$jarvis_host:.config/containers/systemd/wyoming-piper.container"
 scp "$jarvis_root/linux-voice-assistant.container" "$jarvis_host:.config/containers/systemd/linux-voice-assistant.container"
 scp "$jarvis_root/jarvis-meet.desktop" "$jarvis_host:.local/share/applications/jarvis-meet.desktop"
+scp "$jarvis_root/jarvis-chatgpt.desktop" "$jarvis_host:.local/share/applications/jarvis-chatgpt.desktop"
 ssh "$jarvis_host" 'systemctl --user daemon-reload && systemctl --user start homeassistant.service music-assistant.service wyoming-whisper.service wyoming-piper.service linux-voice-assistant.service && systemctl --user is-active homeassistant.service music-assistant.service wyoming-whisper.service wyoming-piper.service linux-voice-assistant.service'
