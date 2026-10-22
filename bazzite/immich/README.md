@@ -163,6 +163,15 @@ endpoint HTTP local passam nas verificações.
 Não use `podman compose down` como rotina de atualização sem confirmar o
 impacto; o PostgreSQL e a biblioteca são dados persistentes importantes.
 
+### Fork de stacks automáticas (staging)
+
+O protótipo do fork é validado em uma implantação separada antes de qualquer
+troca de imagem em produção. Os artefatos e o procedimento ficam em
+[`staging/README.md`](staging/README.md). O staging usa cópias do banco e da
+mídia, outro diretório Compose, containers próprios e a porta local `2284`.
+Não aponte o staging para os caminhos de `UPLOAD_LOCATION` ou
+`DB_DATA_LOCATION` desta implantação.
+
 ## Segurança e escopo
 
 - PostgreSQL e Redis não têm portas publicadas para a rede.

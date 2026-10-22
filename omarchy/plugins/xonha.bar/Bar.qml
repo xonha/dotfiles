@@ -1303,9 +1303,9 @@ Item {
     // edge. Extend that window to the middle on 4K, but accept clicks only
     // on the actual 1920px bar content.
     implicitHeight: centeredOn4k ? centeredBarTop + root.barSize : (root.vertical ? 0 : root.barSize)
-    color: root.transparent || constrained ? "transparent" : root.background
-    surfaceFormat.opaque: false
-    mask: Region { item: barContent }
+    // Paint the full surface with the same theme color as the bar content.
+    color: root.background
+    surfaceFormat.opaque: true
     WlrLayershell.namespace: "omarchy-bar"
     WlrLayershell.layer: WlrLayer.Top
 
@@ -1399,19 +1399,17 @@ Item {
 
       Item {
         anchors.fill: parent
-        readonly property int outerCornerRadius:
-          barWindow.screen && barWindow.screen.width <= 1920 ? 0 : 6
 
         Rectangle {
           visible: barWindow.constrained && !root.transparent && leftModules.width > 0
           x: leftModules.x - Style.space(8)
           width: leftModules.width + Style.space(16)
           height: parent.height
-          radius: 6
-          topLeftRadius: root.position === "top" ? 0 : outerCornerRadius
-          topRightRadius: 6
-          bottomLeftRadius: root.position === "bottom" ? 0 : outerCornerRadius
-          bottomRightRadius: 6
+          radius: 0
+          topLeftRadius: 0
+          topRightRadius: 0
+          bottomLeftRadius: 0
+          bottomRightRadius: 0
           color: root.background
         }
 
@@ -1420,11 +1418,11 @@ Item {
           anchors.centerIn: parent
           width: centerModules.horizontalContentWidth + Style.space(16)
           height: parent.height
-          radius: 6
-          topLeftRadius: 6
-          topRightRadius: 6
-          bottomLeftRadius: 6
-          bottomRightRadius: 6
+          radius: 0
+          topLeftRadius: 0
+          topRightRadius: 0
+          bottomLeftRadius: 0
+          bottomRightRadius: 0
           color: root.background
         }
 
@@ -1433,11 +1431,11 @@ Item {
           x: rightModules.x - Style.space(8)
           width: rightModules.width + Style.space(16)
           height: parent.height
-          radius: 6
-          topLeftRadius: 6
-          topRightRadius: root.position === "top" ? 0 : outerCornerRadius
-          bottomLeftRadius: 6
-          bottomRightRadius: root.position === "bottom" ? 0 : outerCornerRadius
+          radius: 0
+          topLeftRadius: 0
+          topRightRadius: 0
+          bottomLeftRadius: 0
+          bottomRightRadius: 0
           color: root.background
         }
 

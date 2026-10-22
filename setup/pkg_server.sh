@@ -24,6 +24,7 @@ PKG_SERVER_EXTRA=(
   docker-compose
   starship
   jq
+  aria2
 )
 
 PKG_SERVER_AUR=(

@@ -144,6 +144,10 @@ dotfiles:
     src: config/icons
     dst: ~/.local/share/icons/hicolor/scalable/apps
     link: link_children
+  nautilus_extensions:
+    src: config/nautilus-python
+    dst: ~/.local/share/nautilus-python/extensions
+    link: link_children
 
   ssh_config:
     src: config/ssh.conf
@@ -189,5 +193,6 @@ profiles:
       - omarchy_plymouth_theme_hook
       - shortcuts
       - icons
+      - nautilus_extensions
       - ssh_config
       - themes
