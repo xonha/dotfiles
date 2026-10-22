@@ -84,3 +84,25 @@ Jarvis.
   microfone se solicitado e teste a conversa por voz no navegador. Esse acesso
   usa o ChatGPT na web; a integração oficial OpenAI do Home Assistant exige
   uma chave de API com faturamento separado.
+
+## ChatGPT Pro e Home Assistant
+
+O aplicativo oficial ChatGPT para Fedora 44 pode usar a conta Pro e conectar-se
+ao servidor MCP do Home Assistant pela rede local. Instale o RPM oficial para
+Fedora x64 conforme a [documentação da OpenAI](https://learn.chatgpt.com/docs/linux/linux-app).
+No Jarvis, depois de baixar o pacote para `~/Downloads`, execute:
+
+```bash
+sudo dnf install ~/Downloads/chatgpt.x86_64.rpm
+```
+
+Entre na conta Pro no aplicativo. No Home Assistant, adicione a integração
+**Model Context Protocol Server** em Configurações → Dispositivos e serviços.
+Depois, no ChatGPT Desktop, abra Configurações → Plugins → Adicionar servidor MCP,
+use `http://jarvis:8123/api/mcp` como conexão e selecione OAuth. Autorize o
+acesso no Home Assistant e exponha ao Assist somente os dispositivos que
+quer controlar. O aplicativo instalado no Jarvis consegue alcançar esse
+endereço pela rede local; no ChatGPT pela web, seria necessário um endereço
+acessível pela internet. O modo de voz do aplicativo requer iniciar a conversa
+no aplicativo ou por um atalho configurado nele; não usa automaticamente a
+palavra de ativação do satélite local.
