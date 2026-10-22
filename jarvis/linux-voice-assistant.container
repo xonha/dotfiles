@@ -1,0 +1,28 @@
+[Unit]
+Description=Jarvis voice satellite
+Wants=network-online.target pipewire-pulse.socket
+After=network-online.target pipewire-pulse.socket
+
+[Container]
+Image=ghcr.io/ohf-voice/linux-voice-assistant:1.1.15
+ContainerName=linux-voice-assistant
+Network=host
+User=0
+PodmanArgs=--security-opt label=disable
+Volume=%h/.local/share/jarvis/voice/local:/app/local
+Volume=%h/.local/share/jarvis/voice/configuration:/app/configuration
+Volume=/run/user/1000/pulse:/run/user/1000/pulse:ro
+Volume=%h/.config/pulse/cookie:/run/user/1000/pulse/cookie:ro
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=PULSE_SERVER=unix:/run/user/1000/pulse/native
+Environment=PULSE_COOKIE=/run/user/1000/pulse/cookie
+Environment=CLIENT_NAME=Jarvis
+Environment=WAKE_MODEL=hey_jarvis
+Environment=DISABLE_PERIPHERAL_API=1
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=600
+
+[Install]
+WantedBy=default.target
