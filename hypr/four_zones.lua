@@ -103,6 +103,26 @@ hl.layout.register("four_zones", {
 
       local left, right = boxes[wide_start], boxes[wide_start + 1]
       span_target:place({ x = left.x, y = left.y, w = left.w + right.w, h = left.h })
+    elseif span_mode == "column" then
+      local tall_start = span_zone % 2 == 1 and 1 or 2
+      local other_start = tall_start == 1 and 2 or 1
+
+      -- Same as the row toggle, but the other windows move to the opposite
+      -- column while the focused window fills its column's full height.
+      for zone = tall_start, tall_start + 2, 2 do
+        for _, target in ipairs(buckets[zone]) do
+          if target_id(target) ~= span_id then
+            local destination = #buckets[other_start] <= #buckets[other_start + 2]
+                and other_start or other_start + 2
+            table.insert(buckets[destination], target)
+          end
+        end
+        buckets[zone] = {}
+      end
+
+      local upper, lower = boxes[tall_start], boxes[tall_start + 2]
+      span_target:place({ x = upper.x, y = upper.y, w = upper.w,
+        h = lower.y + lower.h - upper.y })
     elseif span_mode == "half_cell" then
       local row_start = span_zone <= 2 and 1 or 3
       local other_zone = span_zone == row_start and row_start + 1 or row_start
@@ -308,6 +328,10 @@ return {
 
   toggle_row_wide = function()
     toggle_span("row")
+  end,
+
+  toggle_column_tall = function()
+    toggle_span("column")
   end,
 
   toggle_half_cell = function()

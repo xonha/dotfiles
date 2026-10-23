@@ -147,12 +147,16 @@ o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 -- Omarchy's older SUPER + SHIFT + C action was Calendar (https://app.hey.com/calendar/weeks/).
 
 -- SUPER + SHIFT + T previously reloaded Hyprland.
-hl.unbind("SUPER + SHIFT + T")
-o.bind("SUPER + SHIFT + T", "Toggle 4K row width", function()
+hl.unbind("SUPER + SHIFT + G") -- Omarchy default: Signal
+o.bind("SUPER + SHIFT + G", "Toggle 4K row width", function()
   four_zones.toggle_row_wide()
 end)
-hl.unbind("SUPER + SHIFT + G") -- Omarchy default: Signal
-o.bind("SUPER + SHIFT + G", "Toggle 4K half-row cell", function()
+hl.unbind("SUPER + SHIFT + T")
+o.bind("SUPER + SHIFT + T", "Toggle 4K column height", function()
+  four_zones.toggle_column_tall()
+end)
+hl.unbind("SUPER + SHIFT + S") -- Omarchy default: Google Maps
+o.bind("SUPER + SHIFT + S", "Toggle 4K half-row cell", function()
   four_zones.toggle_half_cell()
 end)
 
