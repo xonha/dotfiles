@@ -38,9 +38,41 @@ curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8123/
 curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8095/
 ```
 
-Para atualizar, revise as versões das imagens nos arquivos `.container`, rode
-`./jarvis/deploy.sh` e reinicie os serviços com `systemctl --user restart` no
-Jarvis.
+Para atualizar, revise as versões das imagens nos arquivos `.container` e rode
+`./jarvis/deploy.sh`. O script reinicia apenas os serviços cujo arquivo
+`.container` mudou em relação à cópia no Jarvis.
+
+## Tampa do notebook
+
+`logind-lid.conf` é instalado em `/etc/systemd/logind.conf.d/jarvis-lid.conf`
+para que fechar a tampa não suspenda o Jarvis. Por ser um arquivo do sistema, o
+`deploy.sh` pede a senha do `sudo` no Jarvis apenas quando esse arquivo muda.
+
+## Backup
+
+O timer `jarvis-backup.timer` roda `~/.local/bin/jarvis-backup` todo dia às
+4h e guarda os 14 arquivos mais recentes em `~/.local/share/jarvis-backups/`.
+O arquivo inclui a configuração do Home Assistant (com um snapshot consistente
+do histórico), do Music Assistant e do satélite de voz. Os modelos de Whisper e
+Piper e os caches ficam de fora, porque são baixados de novo. O Music Assistant
+trava os próprios bancos SQLite, então o backup o para por cerca de 10 segundos.
+Os backups ficam no mesmo disco: protegem contra erro de configuração, não
+contra falha do disco.
+
+```bash
+systemctl --user list-timers jarvis-backup.timer
+systemctl --user start jarvis-backup.service   # backup imediato
+journalctl --user -u jarvis-backup.service
+```
+
+Para restaurar, pare os serviços, extraia o arquivo sobre `~/.local/share/` e
+inicie os serviços de novo:
+
+```bash
+systemctl --user stop homeassistant.service music-assistant.service linux-voice-assistant.service
+tar -C ~/.local/share -xzf ~/.local/share/jarvis-backups/jarvis-AAAAMMDD-HHMMSS.tar.gz
+systemctl --user start homeassistant.service music-assistant.service linux-voice-assistant.service
+```
 
 ## Próximas integrações
 

@@ -1,0 +1,8 @@
+[Unit]
+Description=Back up Jarvis service data
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/jarvis-backup
+Nice=10
+IOSchedulingClass=idle
