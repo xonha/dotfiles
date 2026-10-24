@@ -17,6 +17,7 @@ PKG_CLIENT_EXTRA=(
   google-chrome
   microsoft-edge-stable-bin
   transmission-gtk
+  bambustudio-bin
 )
 
 PKG_CLIENT_AUR=(
