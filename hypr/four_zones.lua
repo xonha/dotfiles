@@ -2,7 +2,7 @@
 -- The navbar is on the top edge, so the rows use the normal Hyprland gap.
 local middle_bar_height = 0
 local stash_prefix = "special:four-zones-"
-local zone_priority = { 4, 2, 3, 1 } -- lower right, upper right, lower left, upper left
+local zone_priority = { 5, 6, 1, 2, 3, 4 } -- lower right, upper right, lower left, upper left
 local zone_by_window = {}
 local span_mode_by_window = {}
 local preferred_zone_by_class = {
@@ -27,7 +27,7 @@ end
 local function stashed_zone(window)
   local name = window.workspace and window.workspace.name or ""
   local zone = tonumber(name:match("^special:four%-zones%-(%d)$"))
-  return zone and zone >= 1 and zone <= 4 and zone or nil
+  return zone and zone >= 1 and zone <= 6 and zone or nil
 end
 
 local function assigned_zone(window)
@@ -36,19 +36,16 @@ local function assigned_zone(window)
 end
 
 local function zone_boxes(area)
-  local left = math.floor(area.w * 2 / 5)
-  local right = area.w - left
-  local usable_height = area.h - middle_bar_height
-  local upper = math.floor(usable_height / 2)
-  local lower = usable_height - upper
-  local right_x = area.x + left
-  local lower_y = area.y + upper + middle_bar_height
-
+  local side = math.floor(area.w / 4)
+  local center = area.w - 2 * side
+  local half = math.floor(area.h / 2)
   return {
-    { x = area.x, y = area.y, w = left, h = upper },
-    { x = right_x, y = area.y, w = right, h = upper },
-    { x = area.x, y = lower_y, w = left, h = lower },
-    { x = right_x, y = lower_y, w = right, h = lower },
+    { x = area.x, y = area.y, w = side, h = half },
+    { x = area.x + side + center, y = area.y, w = side, h = half },
+    { x = area.x, y = area.y + half, w = side, h = half },
+    { x = area.x + side + center, y = area.y + half, w = side, h = area.h - half },
+    { x = area.x + side, y = area.y, w = center, h = half },
+    { x = area.x + side, y = area.y + half, w = center, h = area.h - half },
   }
 end
 
@@ -66,9 +63,9 @@ end
 
 hl.layout.register("four_zones", {
   recalculate = function(ctx)
-    local buckets = { {}, {}, {}, {} }
-    local span_target, span_zone, span_id, span_mode
-
+    local buckets = { {}, {}, {}, {}, {}, {} }
+    local active = hl.get_active_window()
+    local focused_target, focused_zone
     for _, target in ipairs(ctx.targets) do
       local id = target_id(target)
       local zone = target.window and assigned_zone(target.window) or zone_by_window[id]
@@ -77,81 +74,18 @@ hl.layout.register("four_zones", {
       end
       zone_by_window[id] = zone
       table.insert(buckets[zone], target)
-      if span_mode_by_window[id] then
-        span_target, span_zone, span_id, span_mode = target, zone, id,
-            span_mode_by_window[id]
+      if active and target.window and target.window.stable_id == active.stable_id and zone <= 4 then
+        focused_target, focused_zone = target, zone
       end
     end
-
     local boxes = zone_boxes(ctx.area)
-    if span_mode == "row" then
-      local wide_start = span_zone <= 2 and 1 or 3
-      local other_start = wide_start == 1 and 3 or 1
-
-      -- Keep the other windows visible in the opposite row. Their saved zones
-      -- stay unchanged, so switching the toggle off restores the four zones.
-      for zone = wide_start, wide_start + 1 do
-        for _, target in ipairs(buckets[zone]) do
-          if target_id(target) ~= span_id then
-            local destination = #buckets[other_start] <= #buckets[other_start + 1]
-                and other_start or other_start + 1
-            table.insert(buckets[destination], target)
-          end
-        end
-        buckets[zone] = {}
-      end
-
-      local left, right = boxes[wide_start], boxes[wide_start + 1]
-      span_target:place({ x = left.x, y = left.y, w = left.w + right.w, h = left.h })
-    elseif span_mode == "column" then
-      local tall_start = span_zone % 2 == 1 and 1 or 2
-      local other_start = tall_start == 1 and 2 or 1
-
-      -- Same as the row toggle, but the other windows move to the opposite
-      -- column while the focused window fills its column's full height.
-      for zone = tall_start, tall_start + 2, 2 do
-        for _, target in ipairs(buckets[zone]) do
-          if target_id(target) ~= span_id then
-            local destination = #buckets[other_start] <= #buckets[other_start + 2]
-                and other_start or other_start + 2
-            table.insert(buckets[destination], target)
-          end
-        end
-        buckets[zone] = {}
-      end
-
-      local upper, lower = boxes[tall_start], boxes[tall_start + 2]
-      span_target:place({ x = upper.x, y = upper.y, w = upper.w,
-        h = lower.y + lower.h - upper.y })
-    elseif span_mode == "half_cell" then
-      local row_start = span_zone <= 2 and 1 or 3
-      local other_zone = span_zone == row_start and row_start + 1 or row_start
-      local left_width = math.floor(ctx.area.w / 2)
-      local right_width = ctx.area.w - left_width
-      local left_box = { x = ctx.area.x, y = boxes[row_start].y,
-        w = left_width, h = boxes[row_start].h }
-      local right_box = { x = ctx.area.x + left_width, y = boxes[row_start].y,
-        w = right_width, h = boxes[row_start].h }
-      local cell = span_zone == row_start and left_box or right_box
-      local other_cell = span_zone == row_start and right_box or left_box
-
-      -- If several windows shared the focused zone, keep them visible in the
-      -- adjacent cell while the focused window fills its own 2x2 cell.
-      for _, target in ipairs(buckets[span_zone]) do
-        if target_id(target) ~= span_id then
-          table.insert(buckets[other_zone], target)
-        end
-      end
-
-      buckets[span_zone] = {}
-      span_target:place(cell)
-      place_stacked(buckets[other_zone], other_cell)
-      buckets[other_zone] = {}
-    end
-
-    for zone, box in ipairs(boxes) do
-      if span_mode then place_stacked(buckets[zone], box)
-      else place_full(buckets[zone], box) end
+    for zone, box in ipairs(boxes) do place_full(buckets[zone], box) end
+    if focused_target then
+      local width = math.floor(ctx.area.w / 3)
+      local x = focused_zone % 2 == 1 and ctx.area.x or ctx.area.x + ctx.area.w - width
+      local height = math.floor(ctx.area.h / 2)
+      local y = focused_zone <= 2 and ctx.area.y or ctx.area.y + ctx.area.h - height
+      focused_target:place({ x = x, y = y, w = width, h = height })
     end
   end,
 
@@ -177,7 +111,7 @@ local function samsung_workspace()
 end
 
 local function first_available_zone(workspace)
-  local counts = { 0, 0, 0, 0 }
+  local counts = { 0, 0, 0, 0, 0, 0 }
   for _, window in ipairs(hl.get_windows()) do
     if window.workspace and (window.workspace.id == workspace.id or stashed_zone(window)) then
       local zone = assigned_zone(window)
@@ -223,7 +157,7 @@ local function reconcile_visible_zones()
   if not workspace then return end
 
   local active = hl.get_active_window()
-  for zone = 1, 4 do
+  for zone = 1, 6 do
     local occupants = {}
     local keep
     for _, window in ipairs(hl.get_windows()) do
@@ -247,6 +181,16 @@ end
 local function schedule_reconcile()
   hl.timer(reconcile_visible_zones, { timeout = 100, type = "oneshot" })
 end
+
+hl.on("window.active", function()
+  hl.timer(function()
+    local workspace = samsung_workspace()
+    local active_workspace = hl.get_active_workspace()
+    if workspace and active_workspace and workspace.id == active_workspace.id then
+      hl.dispatch(hl.dsp.layout("refresh"))
+    end
+  end, { timeout = 10, type = "oneshot" })
+end)
 
 hl.on("config.reloaded", schedule_reconcile)
 hl.on("workspace.active", schedule_reconcile)

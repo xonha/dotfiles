@@ -181,6 +181,8 @@ local window_zone_shortcuts_4k = {
   { key = "R", zone = 2, name = "upper right" },
   { key = "D", zone = 3, name = "lower left" },
   { key = "F", zone = 4, name = "lower right" },
+  { key = "UP", zone = 5, name = "upper center" },
+  { key = "DOWN", zone = 6, name = "lower center" },
 }
 
 for _, shortcut in ipairs(window_zone_shortcuts_4k) do
