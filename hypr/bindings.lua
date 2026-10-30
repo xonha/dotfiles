@@ -171,12 +171,12 @@ o.bind("SUPER + ALT + R", "Show reminders", "omarchy-reminder show")
 o.bind("SUPER + ALT + D", "Display", "omarchy-shell shell toggle omarchy.monitor")
 o.bind("SUPER + ALT + C", "Control center", "omarchy-menu toggle system")
 local window_zone_shortcuts_4k = {
-  { key = "W", zone = 1, name = "upper left" },
+  { key = "W", zone = 4, name = "upper left" },
   { key = "E", zone = 5, name = "upper center" },
-  { key = "R", zone = 2, name = "upper right" },
-  { key = "S", zone = 3, name = "lower left" },
-  { key = "D", zone = 6, name = "lower center" },
-  { key = "F", zone = 4, name = "lower right" },
+  { key = "R", zone = 6, name = "upper right" },
+  { key = "S", zone = 1, name = "lower left" },
+  { key = "D", zone = 2, name = "lower center" },
+  { key = "F", zone = 3, name = "lower right" },
 }
 
 for _, shortcut in ipairs(window_zone_shortcuts_4k) do

@@ -1,12 +1,27 @@
--- Tiled 4K workspace: two rows with 2/5 | 3/5 width columns.
+-- Tiled 4K workspace: zones 4 5 6 above zones 1 2 3.
 -- The navbar is on the top edge, so the rows use the normal Hyprland gap.
 local middle_bar_height = 0
 local stash_prefix = "special:four-zones-"
-local zone_priority = { 5, 6, 1, 2, 3, 4 } -- lower right, upper right, lower left, upper left
+local zone_priority = { 5, 2, 4, 6, 1, 3 }
 local zone_by_window = {}
 local span_mode_by_window = {}
+local wide_center_classes = {
+  ["foot-local"] = true,
+  ["foot-maistodos-ssh"] = true,
+  ["brave-origin"] = true,
+  ["google-chrome-maistodos"] = true,
+  ["google-chrome"] = true,
+  ["microsoft-edge-devbot"] = true,
+}
 local preferred_zone_by_class = {
-  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 3, -- YouTube Music, lower left
+  ["brave-web.whatsapp.com__-Default"] = 4,
+  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 3,
+  ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = 1,
+  ["brave-origin"] = 5,
+  ["google-chrome-maistodos"] = 2,
+  ["google-chrome"] = 2,
+  ["foot-local"] = 2,
+  ["foot-maistodos-ssh"] = 5,
 }
 local pending_launches = {}
 
@@ -41,12 +56,12 @@ local function zone_boxes(area)
   local center_x = area.x + math.floor((area.w - center) / 2)
   local half = math.floor(area.h / 2)
   return {
-    { x = area.x, y = area.y, w = side, h = half },
-    { x = area.x + area.w - side, y = area.y, w = side, h = half },
     { x = area.x, y = area.y + half, w = side, h = half },
-    { x = area.x + area.w - side, y = area.y + half, w = side, h = area.h - half },
-    { x = center_x, y = area.y, w = center, h = half },
     { x = center_x, y = area.y + half, w = center, h = area.h - half },
+    { x = area.x + area.w - side, y = area.y + half, w = side, h = area.h - half },
+    { x = area.x, y = area.y, w = side, h = half },
+    { x = center_x, y = area.y, w = center, h = half },
+    { x = area.x + area.w - side, y = area.y, w = side, h = half },
   }
 end
 
@@ -75,16 +90,30 @@ hl.layout.register("four_zones", {
       end
       zone_by_window[id] = zone
       table.insert(buckets[zone], target)
-      if active and target.window and target.window.stable_id == active.stable_id and zone <= 4 then
+      if active and target.window and target.window.stable_id == active.stable_id and zone ~= 2 and zone ~= 5 then
         focused_target, focused_zone = target, zone
       end
     end
     local boxes = zone_boxes(ctx.area)
+    for _, zone in ipairs({ 2, 5 }) do
+      local target = buckets[zone][1]
+      local class = target and target.window and target.window.class
+      if wide_center_classes[class] then
+        local width = math.floor(ctx.area.w * 2 / 3)
+        local x = ctx.area.x + math.floor((ctx.area.w - width) / 2)
+        local left = boxes[zone - 1]
+        local right = boxes[zone + 1]
+        boxes[zone].x, boxes[zone].w = x, width
+        left.w = x - ctx.area.x
+        right.x = x + width
+        right.w = ctx.area.x + ctx.area.w - right.x
+      end
+    end
     if focused_target then
       local side_box = boxes[focused_zone]
-      local center_box = boxes[focused_zone <= 2 and 5 or 6]
+      local center_box = boxes[focused_zone <= 3 and 2 or 5]
       local width = math.floor(ctx.area.w * 2 / 5)
-      if focused_zone % 2 == 1 then
+      if focused_zone == 1 or focused_zone == 4 then
         side_box.w = width
         local right = center_box.x + center_box.w
         center_box.x = ctx.area.x + width
@@ -153,7 +182,6 @@ local function show_window(window, zone)
   hl.dispatch(hl.dsp.window.fullscreen({ window = window, action = "unset" }))
   hl.dispatch(hl.dsp.window.float({ window = window, action = "disable" }))
   zone_by_window[id] = zone
-  preferred_zone_by_class[window.class] = zone
 
   -- Avoid Hyprland groups here: group:add crashed the compositor on window events.
   hl.dispatch(hl.dsp.focus({ workspace = workspace.name }))
