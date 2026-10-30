@@ -37,15 +37,16 @@ end
 
 local function zone_boxes(area)
   local side = math.floor(area.w / 4)
-  local center = area.w - 2 * side
+  local center = math.floor(area.w / 2)
+  local center_x = area.x + math.floor((area.w - center) / 2)
   local half = math.floor(area.h / 2)
   return {
     { x = area.x, y = area.y, w = side, h = half },
-    { x = area.x + side + center, y = area.y, w = side, h = half },
+    { x = area.x + area.w - side, y = area.y, w = side, h = half },
     { x = area.x, y = area.y + half, w = side, h = half },
-    { x = area.x + side + center, y = area.y + half, w = side, h = area.h - half },
-    { x = area.x + side, y = area.y, w = center, h = half },
-    { x = area.x + side, y = area.y + half, w = center, h = area.h - half },
+    { x = area.x + area.w - side, y = area.y + half, w = side, h = area.h - half },
+    { x = center_x, y = area.y, w = center, h = half },
+    { x = center_x, y = area.y + half, w = center, h = area.h - half },
   }
 end
 
@@ -79,14 +80,22 @@ hl.layout.register("four_zones", {
       end
     end
     local boxes = zone_boxes(ctx.area)
-    for zone, box in ipairs(boxes) do place_full(buckets[zone], box) end
     if focused_target then
-      local width = math.floor(ctx.area.w / 3)
-      local x = focused_zone % 2 == 1 and ctx.area.x or ctx.area.x + ctx.area.w - width
-      local height = math.floor(ctx.area.h / 2)
-      local y = focused_zone <= 2 and ctx.area.y or ctx.area.y + ctx.area.h - height
-      focused_target:place({ x = x, y = y, w = width, h = height })
+      local side_box = boxes[focused_zone]
+      local center_box = boxes[focused_zone <= 2 and 5 or 6]
+      local width = math.floor(ctx.area.w * 2 / 5)
+      if focused_zone % 2 == 1 then
+        side_box.w = width
+        local right = center_box.x + center_box.w
+        center_box.x = ctx.area.x + width
+        center_box.w = right - center_box.x
+      else
+        side_box.x = ctx.area.x + ctx.area.w - width
+        side_box.w = width
+        center_box.w = side_box.x - center_box.x
+      end
     end
+    for zone, box in ipairs(boxes) do place_full(buckets[zone], box) end
   end,
 
   layout_msg = function(_, msg)
@@ -188,6 +197,7 @@ hl.on("window.active", function()
     local active_workspace = hl.get_active_workspace()
     if workspace and active_workspace and workspace.id == active_workspace.id then
       hl.dispatch(hl.dsp.layout("refresh"))
+
     end
   end, { timeout = 10, type = "oneshot" })
 end)

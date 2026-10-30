@@ -134,8 +134,6 @@ o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mute-microp
 o.bind("SUPER + SHIFT + M", "Reativar tela interna",
   [[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']])
 o.bind("SUPER + SHIFT + B", "Toggle maximized window", hl.dsp.window.fullscreen({ mode = "maximized" }))
-o.bind("SUPER + SHIFT + W", "Toggle window floating", hl.dsp.window.float())
-o.bind("SUPER + SHIFT + W", "Center window", hl.dsp.window.center())
 o.bind("SUPER + SHIFT + RETURN", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 
@@ -156,10 +154,6 @@ hl.unbind("SUPER + SHIFT + T")
 o.bind("SUPER + SHIFT + T", "Toggle 4K column height", function()
   four_zones.toggle_column_tall()
 end)
-hl.unbind("SUPER + SHIFT + S") -- Omarchy default: Google Maps
-o.bind("SUPER + SHIFT + S", "Toggle 4K half-row cell", function()
-  four_zones.toggle_half_cell()
-end)
 
 -- Keep universal copy and paste on SUPER + SHIFT + C/V.
 hl.unbind("SUPER + SHIFT + C")
@@ -177,12 +171,12 @@ o.bind("SUPER + ALT + R", "Show reminders", "omarchy-reminder show")
 o.bind("SUPER + ALT + D", "Display", "omarchy-shell shell toggle omarchy.monitor")
 o.bind("SUPER + ALT + C", "Control center", "omarchy-menu toggle system")
 local window_zone_shortcuts_4k = {
-  { key = "E", zone = 1, name = "upper left" },
+  { key = "W", zone = 1, name = "upper left" },
+  { key = "E", zone = 5, name = "upper center" },
   { key = "R", zone = 2, name = "upper right" },
-  { key = "D", zone = 3, name = "lower left" },
+  { key = "S", zone = 3, name = "lower left" },
+  { key = "D", zone = 6, name = "lower center" },
   { key = "F", zone = 4, name = "lower right" },
-  { key = "UP", zone = 5, name = "upper center" },
-  { key = "DOWN", zone = 6, name = "lower center" },
 }
 
 for _, shortcut in ipairs(window_zone_shortcuts_4k) do
