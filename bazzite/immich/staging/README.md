@@ -73,3 +73,29 @@ Sequência no Bazzite, sempre com `-p immich-staging-v334` em
 3. Trocar `IMMICH_SERVER_IMAGE` no `.env` dessa instância pela imagem do fork,
    recriar só o `immich-server` e verificar a migração
    `1792600000000-AddAutomaticStackFlag` e `No schema drift detected`.
+
+### Retomada em 2026-10-30
+
+O dump de 2026-10-21 foi restaurado no PostgreSQL vazio do staging v3.3.4;
+as contagens conferiram: 16.127 assets, dois usuários e 18 stacks. A imagem
+oficial v3.3.4 iniciou, aplicou sua migração, não apontou divergência de
+esquema e respondeu ao ping. Em seguida, a imagem local do fork foi carregada
+no Bazzite e instalada somente no servidor desse staging. A migração do fork
+executou, as colunas novas existem, não houve divergência de esquema e o ping
+respondeu; as contagens permaneceram iguais. O ambiente está na porta local
+2285 e usa a cópia antiga da biblioteca, não uma cópia atualizada.
+
+Ainda faltam testes funcionais controlados de agrupamento, escolha manual,
+idempotência e rollback, além de avaliar a qualidade com fotos reais. A
+imagem do fork não foi instalada na produção. O fork também ainda não adiciona
+fotos novas a stacks automáticas existentes; consulte o plano no checkout.
+
+### Encerramento em 2026-10-30
+
+O fork foi abandonado: o repositório `xonha/immich` e os checkouts locais foram
+removidos, e o acesso por Tailscale Serve/Funnel criado para o app Android foi
+desativado. Os dois stagings (`~/immich-staging` e `~/immich-staging-v334`)
+foram apagados com containers, redes, volumes, mídia copiada e bancos, assim
+como as imagens `localhost/immich-best-pick:*` e o contexto de build
+`~/immich-build`. O backup `~/immich-backups/pre-fork-2026-10-21` foi mantido e
+a produção não foi alterada. Para um novo staging, recomece pelo `prepare.sh`.
