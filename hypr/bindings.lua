@@ -145,16 +145,6 @@ o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 -- o.bind("SUPER + SHIFT + D", "Docker", { tui = "omarchy-launch-docker-tui" }) -- Omarchy default
 -- Omarchy's older SUPER + SHIFT + C action was Calendar (https://app.hey.com/calendar/weeks/).
 
--- SUPER + SHIFT + T previously reloaded Hyprland.
-hl.unbind("SUPER + SHIFT + G") -- Omarchy default: Signal
-o.bind("SUPER + SHIFT + G", "Toggle 4K row width", function()
-  four_zones.toggle_row_wide()
-end)
-hl.unbind("SUPER + SHIFT + T")
-o.bind("SUPER + SHIFT + T", "Toggle 4K column height", function()
-  four_zones.toggle_column_tall()
-end)
-
 -- Keep universal copy and paste on SUPER + SHIFT + C/V.
 hl.unbind("SUPER + SHIFT + C")
 o.bind("SUPER + SHIFT + C", "Universal copy", universal_clipboard_shortcut("CTRL", "C", "CTRL", "Insert"))
@@ -172,13 +162,26 @@ o.bind("SUPER + ALT + D", "Display", "omarchy-shell shell toggle omarchy.monitor
 o.bind("SUPER + ALT + C", "Control center", "omarchy-menu toggle system")
 local window_zone_shortcuts_4k = {
   { key = "W", zone = 4, name = "upper left" },
-  { key = "E", zone = 5, name = "upper center" },
-  { key = "R", zone = 6, name = "upper right" },
+  { key = "F", zone = 5, name = "upper center" },
+  { key = "T", zone = 6, name = "upper right" },
   { key = "S", zone = 1, name = "lower left" },
   { key = "D", zone = 2, name = "lower center" },
-  { key = "F", zone = 3, name = "lower right" },
+  { key = "G", zone = 3, name = "lower right" },
 }
 
+hl.unbind("SUPER + SHIFT + E")
+hl.unbind("SUPER + SHIFT + R")
+o.bind("SUPER + SHIFT + E", "Toggle floating window", function()
+  local window = hl.get_active_window()
+  if not window then return end
+  local was_floating = window.floating
+  hl.dispatch(hl.dsp.window.float({ window = window, action = "toggle" }))
+  if not was_floating then
+    hl.dispatch(hl.dsp.window.resize({ window = window, x = 1920, y = 1080, relative = false }))
+    hl.dispatch(hl.dsp.window.center({ window = window }))
+  end
+end)
+o.bind("SUPER + SHIFT + R", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 for _, shortcut in ipairs(window_zone_shortcuts_4k) do
   local key = "SUPER + SHIFT + " .. shortcut.key
   hl.unbind(key)

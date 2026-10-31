@@ -5,14 +5,6 @@ local stash_prefix = "special:four-zones-"
 local zone_priority = { 5, 2, 4, 6, 1, 3 }
 local zone_by_window = {}
 local span_mode_by_window = {}
-local wide_center_classes = {
-  ["foot-local"] = true,
-  ["foot-maistodos-ssh"] = true,
-  ["brave-origin"] = true,
-  ["google-chrome-maistodos"] = true,
-  ["google-chrome"] = true,
-  ["microsoft-edge-devbot"] = true,
-}
 local fixed_size_on_focus_classes = {
   ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = true,
   ["org.gnome.Nautilus"] = true,
@@ -56,17 +48,19 @@ local function assigned_zone(window)
 end
 
 local function zone_boxes(area)
-  local side = math.floor(area.w / 4)
-  local center = math.floor(area.w / 2)
+  local center = math.floor(area.w * 0.56)
   local center_x = area.x + math.floor((area.w - center) / 2)
+  local side = center_x - area.x
+  local right_x = center_x + center
+  local right_width = area.x + area.w - right_x
   local half = math.floor(area.h / 2)
   return {
     { x = area.x, y = area.y + half, w = side, h = half },
     { x = center_x, y = area.y + half, w = center, h = area.h - half },
-    { x = area.x + area.w - side, y = area.y + half, w = side, h = area.h - half },
+    { x = right_x, y = area.y + half, w = right_width, h = area.h - half },
     { x = area.x, y = area.y, w = side, h = half },
     { x = center_x, y = area.y, w = center, h = half },
-    { x = area.x + area.w - side, y = area.y, w = side, h = half },
+    { x = right_x, y = area.y, w = right_width, h = half },
   }
 end
 
@@ -101,20 +95,6 @@ hl.layout.register("four_zones", {
       end
     end
     local boxes = zone_boxes(ctx.area)
-    for _, zone in ipairs({ 2, 5 }) do
-      local target = buckets[zone][1]
-      local class = target and target.window and target.window.class
-      if wide_center_classes[class] then
-        local width = math.floor(ctx.area.w * 0.56)
-        local x = ctx.area.x + math.floor((ctx.area.w - width) / 2)
-        local left = boxes[zone - 1]
-        local right = boxes[zone + 1]
-        boxes[zone].x, boxes[zone].w = x, width
-        left.w = x - ctx.area.x
-        right.x = x + width
-        right.w = ctx.area.x + ctx.area.w - right.x
-      end
-    end
     if focused_target then
       local side_box = boxes[focused_zone]
       local center_box = boxes[focused_zone <= 3 and 2 or 5]
