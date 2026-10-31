@@ -29,13 +29,13 @@ o.bind("SUPER + V", "Foot + tmux",
   grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main"))
 o.bind("SUPER + F", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
-o.bind("SUPER + E", "WhatsApp",
+o.bind("SUPER + R", "WhatsApp",
   grid_app(match_classes("brave-web.whatsapp.com__-Default"),
     "brave-origin --profile-directory=Default --app=https://web.whatsapp.com/"))
-o.bind("SUPER + T", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
-o.bind("SUPER + W", "Todoist",
+o.bind("SUPER + W", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
+o.bind("SUPER + T", "Todoist",
   grid_app(match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"), brave_app("dlgohinmglaoopaiplliaecdpmnepmga")))
-o.bind("SUPER + R", "YouTube Music",
+o.bind("SUPER + E", "YouTube Music",
   grid_app(match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"), brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), 4))
 o.bind("SUPER + D", "Mais Todos",
   grid_app(match_classes("google-chrome-maistodos", "google-chrome"),

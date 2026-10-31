@@ -13,6 +13,10 @@ local wide_center_classes = {
   ["google-chrome"] = true,
   ["microsoft-edge-devbot"] = true,
 }
+local fixed_size_on_focus_classes = {
+  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = true,
+  ["org.gnome.Nautilus"] = true,
+}
 local preferred_zone_by_class = {
   ["brave-web.whatsapp.com__-Default"] = 6,
   ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 4,
@@ -91,7 +95,8 @@ hl.layout.register("four_zones", {
       end
       zone_by_window[id] = zone
       table.insert(buckets[zone], target)
-      if active and target.window and target.window.stable_id == active.stable_id and zone ~= 2 and zone ~= 5 then
+      if active and target.window and target.window.stable_id == active.stable_id and
+          zone ~= 2 and zone ~= 5 and not fixed_size_on_focus_classes[target.window.class] then
         focused_target, focused_zone = target, zone
       end
     end
