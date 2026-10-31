@@ -1,10 +1,9 @@
-# Jarvis: Home Assistant
+# Jarvis
 
-O Jarvis roda Home Assistant, Music Assistant, Whisper, Piper e o satélite
-Linux Voice Assistant em Podman rootless. Os arquivos `.container` são as
-configurações versionadas dos serviços;
-os dados ficam em `~/.local/share/jarvis/` no Jarvis e não devem ser copiados
-para este repositório.
+O Jarvis roda Music Assistant, Whisper e Piper em Podman rootless. Os arquivos
+`.container` são as configurações versionadas dos serviços; os dados ficam em
+`~/.local/share/jarvis/` no Jarvis e não devem ser copiados para este
+repositório.
 
 ## Instalação e atualização
 
@@ -14,12 +13,9 @@ No computador que tem o alias SSH `jarvis`:
 ./jarvis/deploy.sh
 ```
 
-O Home Assistant usa a porta 8123. Abra `http://jarvis:8123` pela tailnet e
-conclua a criação da conta de administrador na interface. Não guarde essa senha
-no repositório. Music Assistant usa `http://jarvis:8095`; use essa interface
-para adicionar rádio ou arquivos de música locais. Para garantir inicialização
-sem uma sessão SSH ou gráfica ativa,
-execute uma vez no Jarvis:
+Music Assistant usa `http://jarvis:8095`; use essa interface para adicionar
+rádio ou arquivos de música locais. Para garantir inicialização sem uma sessão
+SSH ou gráfica ativa, execute uma vez no Jarvis:
 
 ```bash
 loginctl enable-linger henrique
@@ -28,19 +24,17 @@ loginctl enable-linger henrique
 Verificação no Jarvis:
 
 ```bash
-systemctl --user status homeassistant.service
 systemctl --user status music-assistant.service
 systemctl --user status wyoming-whisper.service wyoming-piper.service
-systemctl --user status linux-voice-assistant.service
-podman logs homeassistant
 podman logs music-assistant
-curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8123/
 curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8095/
 ```
 
 Para atualizar, revise as versões das imagens nos arquivos `.container` e rode
 `./jarvis/deploy.sh`. O script reinicia apenas os serviços cujo arquivo
-`.container` mudou em relação à cópia no Jarvis.
+`.container` mudou em relação à cópia no Jarvis. Ele mantém o Home Assistant
+desativado e preserva os dados existentes em `~/.local/share/jarvis/homeassistant`
+caso queira recuperá-los depois.
 
 ## Tampa do notebook
 
@@ -52,8 +46,8 @@ para que fechar a tampa não suspenda o Jarvis. Por ser um arquivo do sistema, o
 
 O timer `jarvis-backup.timer` roda `~/.local/bin/jarvis-backup` todo dia às
 4h e guarda os 14 arquivos mais recentes em `~/.local/share/jarvis-backups/`.
-O arquivo inclui a configuração do Home Assistant (com um snapshot consistente
-do histórico), do Music Assistant e do satélite de voz. Os modelos de Whisper e
+O arquivo inclui os dados do Music Assistant e do satélite de voz. Os dados
+antigos do Home Assistant são excluídos do backup. Os modelos de Whisper e
 Piper e os caches ficam de fora, porque são baixados de novo. O Music Assistant
 trava os próprios bancos SQLite, então o backup o para por cerca de 10 segundos.
 Os backups ficam no mesmo disco: protegem contra erro de configuração, não
@@ -66,75 +60,22 @@ journalctl --user -u jarvis-backup.service
 ```
 
 Para restaurar, pare os serviços, extraia o arquivo sobre `~/.local/share/` e
-inicie os serviços de novo:
+inicie o Music Assistant de novo:
 
 ```bash
-systemctl --user stop homeassistant.service music-assistant.service linux-voice-assistant.service
+systemctl --user stop music-assistant.service
 tar -C ~/.local/share -xzf ~/.local/share/jarvis-backups/jarvis-AAAAMMDD-HHMMSS.tar.gz
-systemctl --user start homeassistant.service music-assistant.service linux-voice-assistant.service
+systemctl --user start music-assistant.service
 ```
 
-## Próximas integrações
+O Music Assistant oferece músicas locais e rádio. YouTube Music sem anúncios
+requer YouTube Music Premium. Depois de adicionar uma fonte (por exemplo,
+Radio Browser) e selecionar um player, configure o próprio Music Assistant.
 
-- Pareie as luzes e demais dispositivos na interface do Home Assistant.
-  A necessidade de um coordenador Zigbee, Thread ou Matter depende dos
-  dispositivos reais; um rádio USB exigirá mapeamento adicional no container.
-- A voz local requer microfone, alto-falante, wake word, transcrição e síntese
-  configurados como um dispositivo Assist. Whisper usa o modelo `base-int8`
-  para transcrever em português e Piper fala em português brasileiro. Esta
-  instalação não usa a assinatura
-  Home Assistant Cloud nem a loja de Apps do Home Assistant OS. Em
-  Configurações → Dispositivos e serviços → Adicionar integração, procure
-  **Wyoming Protocol** e adicione duas entradas apontando para
-  `127.0.0.1:10300` (Whisper) e
-  `127.0.0.1:10200` (Piper). Em Configurações → Assistentes de voz, crie o
-  assistente **Jarvis** em português brasileiro com agente Home Assistant,
-  faster-whisper em **Fala para texto** e Piper em **Texto para fala**. Defina
-  Jarvis como assistente preferido. O satélite deve aparecer como dispositivo ESPHome;
-  se não aparecer, adicione uma integração ESPHome no IP Wi-Fi do Jarvis e
-  porta 6053 (veja `Server started` em `podman logs linux-voice-assistant`).
-  O wake word configurado é `hey_jarvis`. A sensibilidade do microfone interno
-  ficou em 0,85. Se a ativação falhar ou ocorrer sem comando, ajuste o controle
-  **Wake Word 1 Sensitivity** do dispositivo Jarvis em passos de 0,05. O ganho
-  automático está em 10, a redução de ruído em 2 e o volume da fonte PipeWire
-  foi reduzido a 40% porque as gravações saturavam em 100%. Validar áudio e
-  carga da CPU neste notebook; o microfone integrado pode exigir aproximação
-  física.
-- Music Assistant oferece músicas locais e rádio, mas YouTube Music sem anúncios
-  requer YouTube Music Premium. A conta atual não tem Premium. O processador
-  Intel deste notebook é antigo; Smart Fades não funciona sem AVX2. Depois de
-  adicionar uma fonte (por exemplo, Radio Browser) e selecionar um player,
-  adicione a integração oficial Music Assistant em Home Assistant →
-  Configurações → Dispositivos e serviços, usando `127.0.0.1:8095` e a conta
-  administradora do Music Assistant. Exponha o player ao Assist em
-  Configurações → Assistentes de voz → Expor para comandar a música por voz.
-- O lançador `jarvis-meet.desktop` abre o Google Meet no Firefox do Jarvis.
-  Entre na conta Google na tela integrada e teste câmera, microfone,
-  alto-falante e uma chamada real antes de automatizar chamadas por voz.
-- O lançador `jarvis-chatgpt.desktop` abre o ChatGPT no Firefox do Jarvis.
-  Entre na conta Pro diretamente na tela integrada, conceda acesso ao
-  microfone se solicitado e teste a conversa por voz no navegador. Esse acesso
-  usa o ChatGPT na web; a integração oficial OpenAI do Home Assistant exige
-  uma chave de API com faturamento separado.
+O lançador `jarvis-meet.desktop` abre o Google Meet no Firefox do Jarvis. Entre
+na conta Google na tela integrada e teste câmera, microfone, alto-falante e uma
+chamada real antes de automatizar chamadas por voz.
 
-## ChatGPT Pro e Home Assistant
-
-O aplicativo oficial ChatGPT para Fedora 44 pode usar a conta Pro e conectar-se
-ao servidor MCP do Home Assistant pela rede local. Instale o RPM oficial para
-Fedora x64 conforme a [documentação da OpenAI](https://learn.chatgpt.com/docs/linux/linux-app).
-No Jarvis, depois de baixar o pacote para `~/Downloads`, execute:
-
-```bash
-sudo dnf install ~/Downloads/chatgpt.x86_64.rpm
-```
-
-Entre na conta Pro no aplicativo. No Home Assistant, adicione a integração
-**Model Context Protocol Server** em Configurações → Dispositivos e serviços.
-Depois, no ChatGPT Desktop, abra Configurações → Plugins → Adicionar servidor MCP,
-use `http://jarvis:8123/api/mcp` como conexão e selecione OAuth. Autorize o
-acesso no Home Assistant e exponha ao Assist somente os dispositivos que
-quer controlar. O aplicativo instalado no Jarvis consegue alcançar esse
-endereço pela rede local; no ChatGPT pela web, seria necessário um endereço
-acessível pela internet. O modo de voz do aplicativo requer iniciar a conversa
-no aplicativo ou por um atalho configurado nele; não usa automaticamente a
-palavra de ativação do satélite local.
+O lançador `jarvis-chatgpt.desktop` abre o ChatGPT no Firefox do Jarvis. Entre
+na conta Pro diretamente na tela integrada e conceda acesso ao microfone se
+solicitado.

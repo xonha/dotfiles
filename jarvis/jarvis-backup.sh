@@ -22,24 +22,13 @@ fi
 # Whisper and Piper models are downloaded again on start; caches and logs are disposable.
 rsync -a \
   --exclude='/wyoming-*/' \
-  --exclude='/homeassistant/.cache/' \
-  --exclude='/homeassistant/backups/' \
-  --exclude='/homeassistant/tts/' \
-  --exclude='/homeassistant/home-assistant.log*' \
-  --exclude='/homeassistant/home-assistant_v2.db*' \
+  --exclude='/homeassistant/' \
   --exclude='/music-assistant/.cache/' \
   "$data/" "$stage/jarvis/"
 
 if [[ -n "$restart_music" ]]; then
   systemctl --user start music-assistant.service
   restart_music=""
-fi
-
-# Home Assistant keeps writing its history while running; a copy of the live file
-# can capture a half-written page, so take a consistent SQLite snapshot instead.
-if [[ -f "$data/homeassistant/home-assistant_v2.db" ]]; then
-  python3 -c 'import sqlite3, sys; src = sqlite3.connect(sys.argv[1], timeout=30); dst = sqlite3.connect(sys.argv[2]); src.backup(dst); dst.close(); src.close()' \
-    "$data/homeassistant/home-assistant_v2.db" "$stage/jarvis/homeassistant/home-assistant_v2.db"
 fi
 
 mkdir -p "$dest"
