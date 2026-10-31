@@ -35,7 +35,7 @@ o.bind("SUPER + G", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omar
 o.bind("SUPER + E", "Todoist",
   grid_app(match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"), brave_app("dlgohinmglaoopaiplliaecdpmnepmga")))
 o.bind("SUPER + R", "YouTube Music",
-  grid_app(match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"), brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), 3))
+  grid_app(match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"), brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), 6))
 o.bind("SUPER + D", "Mais Todos",
   grid_app(match_classes("google-chrome-maistodos", "google-chrome"),
     browser_profile("google-chrome-stable", "google-chrome-maistodos")))

@@ -15,7 +15,7 @@ local wide_center_classes = {
 }
 local preferred_zone_by_class = {
   ["brave-web.whatsapp.com__-Default"] = 4,
-  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 3,
+  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 6,
   ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = 1,
   ["brave-origin"] = 5,
   ["google-chrome-maistodos"] = 2,
@@ -99,7 +99,7 @@ hl.layout.register("four_zones", {
       local target = buckets[zone][1]
       local class = target and target.window and target.window.class
       if wide_center_classes[class] then
-        local width = math.floor(ctx.area.w * 2 / 3)
+        local width = math.floor(ctx.area.w * 0.56)
         local x = ctx.area.x + math.floor((ctx.area.w - width) / 2)
         local left = boxes[zone - 1]
         local right = boxes[zone + 1]
