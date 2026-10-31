@@ -21,6 +21,7 @@ hl.unbind("SUPER + V")
 hl.unbind("SUPER + F")
 hl.unbind("SUPER + Q")
 hl.unbind("SUPER + W")
+hl.unbind("SUPER + T")
 hl.unbind("SUPER + G")
 hl.unbind("SUPER + R")
 hl.unbind("SUPER + S")
@@ -28,11 +29,11 @@ o.bind("SUPER + V", "Foot + tmux",
   grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main"))
 o.bind("SUPER + F", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
-o.bind("SUPER + W", "WhatsApp",
+o.bind("SUPER + E", "WhatsApp",
   grid_app(match_classes("brave-web.whatsapp.com__-Default"),
     "brave-origin --profile-directory=Default --app=https://web.whatsapp.com/"))
-o.bind("SUPER + G", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
-o.bind("SUPER + E", "Todoist",
+o.bind("SUPER + T", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
+o.bind("SUPER + W", "Todoist",
   grid_app(match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"), brave_app("dlgohinmglaoopaiplliaecdpmnepmga")))
 o.bind("SUPER + R", "YouTube Music",
   grid_app(match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"), brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), 6))
@@ -120,7 +121,6 @@ end
 -- System shortcuts
 hl.unbind("SUPER + BACKSPACE")
 hl.unbind("SUPER + P")
-hl.unbind("SUPER + T")
 hl.unbind("SUPER + SHIFT + M")
 hl.unbind("SUPER + SHIFT + B")
 hl.unbind("SUPER + SHIFT + W") -- Omarchy default: Omawrite
@@ -130,7 +130,7 @@ hl.unbind("SUPER + J")
 hl.unbind("SUPER + K")
 o.bind("SUPER + BACKSPACE", "Menu de sessão", "omarchy-menu toggle system")
 o.bind("SUPER + P", "Selecionar cor da tela", "hyprpicker --autocopy --notify")
-o.bind("SUPER + T", "Ativar/silenciar microfone", "~/.config/scripts/mute-microphone.sh")
+o.bind("SUPER + G", "Ativar/silenciar microfone", "~/.config/scripts/mute-microphone.sh")
 o.bind("SUPER + SHIFT + M", "Reativar tela interna",
   [[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']])
 o.bind("SUPER + SHIFT + B", "Toggle maximized window", hl.dsp.window.fullscreen({ mode = "maximized" }))
