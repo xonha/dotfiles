@@ -14,10 +14,10 @@ local wide_center_classes = {
   ["microsoft-edge-devbot"] = true,
 }
 local preferred_zone_by_class = {
-  ["brave-web.whatsapp.com__-Default"] = 4,
-  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 6,
-  ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = 1,
-  ["org.gnome.Nautilus"] = 3,
+  ["brave-web.whatsapp.com__-Default"] = 6,
+  ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = 4,
+  ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = 3,
+  ["org.gnome.Nautilus"] = 1,
   ["brave-origin"] = 5,
   ["google-chrome-maistodos"] = 2,
   ["google-chrome"] = 2,
