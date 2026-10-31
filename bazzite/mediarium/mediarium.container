@@ -1,0 +1,32 @@
+[Unit]
+Description=Mediarium media manager
+StartLimitIntervalSec=0
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=ghcr.io/rdborg/mediarium:latest
+ContainerName=mediarium
+PublishPort=127.0.0.1:8264:8264
+Volume=%h/.local/share/mediarium/config:/config:Z
+Volume=/run/media/system/hd/mediarium:/data
+SecurityLabelDisable=true
+Environment=TZ=America/Sao_Paulo
+Environment=DOWNLOADS_DIR=/data/downloads
+Environment=MOVIES_DIR=/data/movies
+Environment=TV_DIR=/data/tv
+Environment=MUSIC_DIR=/data/music
+Environment=EBOOKS_DIR=/data/ebooks
+Environment=AUDIOBOOKS_DIR=/data/audiobooks
+# Container root maps to the host user in rootless Podman.
+Environment=PUID=0
+Environment=PGID=0
+
+[Service]
+ExecStartPre=/usr/bin/bash -c 'test "$(findmnt -rn -M /run/media/system/hd -o SOURCE)" = /dev/sdb1'
+Restart=on-failure
+RestartSec=30
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target
