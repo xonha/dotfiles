@@ -1,0 +1,23 @@
+[Unit]
+Description=Caddy — HTTPS for private bazzite services on *.plu.nz
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Imagem local com o módulo caddy-dns/cloudflare; veja bazzite/caddy/README.md.
+Image=localhost/caddy-cloudflare:2
+ContainerName=caddy
+
+# Rede do host para alcançar os serviços em 127.0.0.1. O Caddy escuta só em
+# loopback (127.0.0.1:8453); o Tailscale Serve leva a 443 da tailnet até ele.
+Network=host
+EnvironmentFile=%h/.config/containers/systemd/caddy.env
+Volume=%h/.config/caddy/Caddyfile:/etc/caddy/Caddyfile:ro,Z
+Volume=%h/.local/share/caddy/data:/data:Z
+Volume=%h/.local/share/caddy/config:/config:Z
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

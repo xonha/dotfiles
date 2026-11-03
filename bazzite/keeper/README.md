@@ -32,11 +32,20 @@ systemctl --user daemon-reload
 systemctl --user start keeper.service
 ```
 
-Abra `https://bazzite.tail9319fe.ts.net:8444` a partir de outro computador
-conectado ao Tailscale.
+> **Migração para `keeper.plu.nz` em andamento** — até concluir os passos em
+> [../caddy/README.md](../caddy/README.md#estado-da-implantação-2026-11-03), o
+> host ainda usa `https://bazzite.tail9319fe.ts.net:8444`.
 
-O serviço escuta somente em loopback e o Tailscale Serve fornece HTTPS apenas
-para o tailnet. Para Google/Outlook, configure as credenciais OAuth próprias.
+Abra `https://keeper.plu.nz` a partir de outro computador conectado ao
+Tailscale. O nome aponta para o IP do bazzite na tailnet e o HTTPS vem do
+Caddy (veja [../caddy/README.md](../caddy/README.md)); fora da tailnet ele não
+conecta. O endereço `https://bazzite.tail9319fe.ts.net:8444` continua
+disponível como alternativa.
+
+O serviço escuta somente em loopback; o Caddy e o Tailscale Serve fornecem
+HTTPS apenas para o tailnet. Os redirecionamentos de OAuth usam
+`BETTER_AUTH_URL`, então cadastre `https://keeper.plu.nz` como origem e
+endereço de retorno nas credenciais do Google/Outlook. Para Google/Outlook, configure as credenciais OAuth próprias.
 `WEBHOOK_PUBLIC_URL` só deve ser configurada quando existir uma URL HTTPS
 pública alcançável pelos provedores.
 

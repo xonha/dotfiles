@@ -1,0 +1,27 @@
+# Proxy HTTPS dos serviços privados do bazzite em *.plu.nz.
+# Os registros DNS apontam para o IP do bazzite no Tailscale (DNS only), e o
+# Tailscale Serve encaminha a porta 443 da tailnet para 127.0.0.1:8453.
+# Nada aqui é alcançável fora da tailnet.
+{
+	admin off
+	default_bind 127.0.0.1
+	http_port 8452
+	https_port 8453
+	auto_https disable_redirects
+}
+
+*.plu.nz {
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+		resolvers 1.1.1.1
+	}
+
+	@keeper host keeper.plu.nz
+	handle @keeper {
+		reverse_proxy 127.0.0.1:8088
+	}
+
+	handle {
+		abort
+	}
+}

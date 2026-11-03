@@ -13,7 +13,8 @@ machine.
 - [Crafty / Minecraft](bazzite/crafty/README.md) — Crafty Controller on bazzite; Tailscale-only access for friends
 - [Samba / Storage](bazzite/samba/README.md) — 1 TB HDD on bazzite shared over Tailscale via Samba (rootless Podman + Quadlet)
 - [Immich](bazzite/immich/README.md) — photo/video library on bazzite with Podman Compose and Tailscale Funnel
-- [Keeper.sh](bazzite/keeper/README.md) — calendar sync and MCP server on bazzite, behind Tailscale Serve
+- [Keeper.sh](bazzite/keeper/README.md) — calendar sync and MCP server on bazzite, at `keeper.plu.nz` (tailnet only)
+- [Caddy](bazzite/caddy/README.md) — HTTPS for private `*.plu.nz` names on bazzite, reachable only over Tailscale
 - [Setup notes](setup/README.md) — wake-from-suspend, udev rules, hardware quirks
 - [Dotdrop layout](#dotdrop-layout) — directory map for this repo
 - [`.config/` vs `.setup/`](#config-vs-setup) — which of the two a new file belongs in

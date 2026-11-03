@@ -9,20 +9,20 @@ host="${BAZZITE_SSH_HOST:-bazzite}"
 services=()
 
 usage() {
-  printf 'Usage: %s [lab|crafty|keeper|samba|immich|songmirror|mediarium|jellyfin ...]\n' "$0"
+  printf 'Usage: %s [lab|crafty|keeper|caddy|samba|immich|songmirror|mediarium|jellyfin ...]\n' "$0"
   printf 'With no arguments, choose services interactively. SSH host: %s\n' "$host"
 }
 
 for service in "$@"; do
   case "$service" in
-    lab|crafty|keeper|samba|immich|songmirror|mediarium|jellyfin) services+=("$service") ;;
+    lab|crafty|keeper|caddy|samba|immich|songmirror|mediarium|jellyfin) services+=("$service") ;;
     -h|--help) usage; exit 0 ;;
     *) error "Unknown service: $service"; usage >&2; exit 2 ;;
   esac
 done
 
 if (( ${#services[@]} == 0 )); then
-  for service in lab crafty keeper samba immich songmirror mediarium jellyfin; do
+  for service in lab crafty keeper caddy samba immich songmirror mediarium jellyfin; do
     if confirm_step "Set up $service"; then
       services+=("$service")
     fi
@@ -60,6 +60,7 @@ tar -cf - \
   bazzite/lab/Dockerfile bazzite/lab/containers.conf bazzite/lab/lab.container bazzite/lab/lab-home.volume bazzite/lab/setup.sh \
   bazzite/crafty/crafty.container bazzite/crafty/setup.sh \
   bazzite/keeper/keeper.container bazzite/keeper/setup.sh \
+  bazzite/caddy/Containerfile bazzite/caddy/Caddyfile bazzite/caddy/caddy.container bazzite/caddy/setup.sh \
   bazzite/songmirror/songmirror.container bazzite/songmirror/setup.sh \
   bazzite/mediarium/mediarium.container bazzite/mediarium/setup.sh \
   bazzite/jellyfin/jellyfin.container bazzite/jellyfin/setup.sh \

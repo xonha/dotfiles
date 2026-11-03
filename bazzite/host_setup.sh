@@ -24,7 +24,7 @@ fi
 
 for service in "$@"; do
   case "$service" in
-    lab|crafty|keeper|samba|immich|songmirror|mediarium|jellyfin) ;;
+    lab|crafty|keeper|caddy|samba|immich|songmirror|mediarium|jellyfin) ;;
     *) error "Unknown service: $service"; exit 2 ;;
   esac
   bash "$BAZZITE_ROOT/$service/setup.sh"
