@@ -20,12 +20,20 @@ keeper.plu.nz ──DNS only (Cloudflare)──▶ 100.120.120.71 (bazzite na ta
   o Caddy rootless escuta em `127.0.0.1:8453`, e o Tailscale Serve encaminha a
   443 da tailnet para lá em TCP puro.
 
+| Nome | Destino | Observação |
+|---|---|---|
+| `keeper.plu.nz` | `http://127.0.0.1:8088` | Keeper.sh |
+| `songmirror.plu.nz` | `http://127.0.0.1:8888` | SongMirror (sem login próprio) |
+| `crafty.plu.nz` | `https://127.0.0.1:8443` | Crafty; certificado autoassinado no backend |
+| `sunshine.plu.nz` | `https://127.0.0.1:47990` | Sunshine (Flatpak, fora do repositório); certificado autoassinado no backend |
+
 Os registros públicos com proxy (`jellyfin.plu.nz`, `mediarium.plu.nz`) usam o
 Cloudflare Tunnel e não passam por aqui.
 
 Em produção desde 2026-11-03: certificado `*.plu.nz` emitido pelo Let's
 Encrypt e renovado pelo próprio Caddy. O registro `keeper.plu.nz` foi criado
-pela API com o token do `caddy.env`. Antes da migração, o `keeper.env` do host
+pela API com o token do `caddy.env`, assim como os de `songmirror`, `crafty` e
+`sunshine`. Antes da migração, o `keeper.env` do host
 foi salvo em `keeper.env.bak-20261103`.
 
 ## Token da Cloudflare
@@ -51,7 +59,17 @@ instala o `Caddyfile` em `~/.config/caddy/`, inicia `caddy.service` e configura
 
 ## Adicionar um serviço
 
-1. Crie o registro `A <nome>.plu.nz → 100.120.120.71`, DNS only.
+1. Crie o registro `A <nome>.plu.nz → 100.120.120.71`, DNS only. Com o token
+   do `caddy.env`, no bazzite:
+
+```bash
+set -a; . ~/.config/containers/systemd/caddy.env; set +a
+curl -sS -X POST -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  "https://api.cloudflare.com/client/v4/zones/e6140a3223b27caa89bef0e1f0ba95ef/dns_records" \
+  --data '{"type":"A","name":"<nome>.plu.nz","content":"100.120.120.71","proxied":false,"ttl":1}'
+```
+
 2. Adicione um bloco `@<nome> host <nome>.plu.nz` + `handle` no `Caddyfile`.
 3. No bazzite, copie o arquivo e recarregue:
 

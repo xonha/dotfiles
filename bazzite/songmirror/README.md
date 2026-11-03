@@ -5,9 +5,11 @@ Contas, tokens, cache, histórico e backups de playlists ficam em
 `~/.local/share/songmirror/data`.
 
 A interface não tem login. O container publica a porta `8888` somente em
-`127.0.0.1`, e o setup configura o Tailscale Serve em HTTPS na porta `8447`.
-Abra `https://bazzite.tail9319fe.ts.net:8447` em um dispositivo conectado ao
-tailnet. A interface não deve ser publicada na internet.
+`127.0.0.1`. Abra `https://songmirror.plu.nz` em um dispositivo conectado ao
+tailnet; o nome aponta para o IP do bazzite na tailnet e o HTTPS vem do
+[Caddy](../caddy/README.md). O setup também configura o Tailscale Serve em
+`https://bazzite.tail9319fe.ts.net:8447` como alternativa. A interface não
+deve ser publicada na internet.
 
 ## Instalação
 

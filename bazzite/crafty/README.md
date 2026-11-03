@@ -36,7 +36,7 @@ Data lives in `~/.local/share/crafty/` on `bazzite`:
 
 | What | Address | Who |
 |------|---------|-----|
-| Crafty panel | `https://bazzite:8443` | You (personal tailnet) |
+| Crafty panel | `https://crafty.plu.nz` (valid cert via [Caddy](../caddy/README.md)), or `https://bazzite:8443` (self-signed) | You (personal tailnet) |
 | Minecraft server | `bazzite:25565` | You + friends (`tag:gamer`) |
 
 The panel serves a **self-signed certificate** — your browser will warn on
