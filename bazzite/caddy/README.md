@@ -23,48 +23,10 @@ keeper.plu.nz ──DNS only (Cloudflare)──▶ 100.120.120.71 (bazzite na ta
 Os registros públicos com proxy (`jellyfin.plu.nz`, `mediarium.plu.nz`) usam o
 Cloudflare Tunnel e não passam por aqui.
 
-## Estado da implantação (2026-11-03)
-
-> **Em andamento — ainda não está no ar.** Remova esta seção quando concluir.
-
-Já feito:
-
-- Arquivos versionados em `bazzite/caddy/` e `caddy` registrado em
-  `bazzite/setup.sh` e `bazzite/host_setup.sh`.
-- Imagem `localhost/caddy-cloudflare:2` construída no bazzite (Caddy v2.11.7
-  com `dns.providers.cloudflare`). O `Caddyfile` passou no `caddy validate`,
-  que só recusou o token de teste.
-- `~/.config/containers/systemd/caddy.env` criado no bazzite com `chmod 600`,
-  **ainda sem o token**.
-- `keeper.env.example` atualizado para `https://keeper.plu.nz`. O
-  `keeper.env` **do host não foi alterado** e continua em
-  `https://bazzite.tail9319fe.ts.net:8444`.
-
-Ainda não feito: `caddy.service` não foi iniciado, o `tailscale serve --tcp=443`
-não foi configurado e o registro DNS não existe.
-
-Para concluir:
-
-1. Criar o token da Cloudflare (seção abaixo) e preenchê-lo no bazzite:
-   `ssh -t bazzite nano ~/.config/containers/systemd/caddy.env`.
-2. Criar `A keeper.plu.nz → 100.120.120.71` com proxy **desligado** (no painel
-   ou pela API com o token).
-3. `./bazzite/setup.sh caddy` — inicia o Caddy, emite `*.plu.nz` e configura a
-   443 da tailnet. Conferir com `podman logs caddy` e `tailscale serve status`.
-4. Migrar o Keeper no host:
-   ```bash
-   f=~/.config/containers/systemd/keeper.env
-   cp -p "$f" "$f.bak-$(date +%Y%m%d)"
-   sed -i \
-     -e 's|^BETTER_AUTH_URL=.*|BETTER_AUTH_URL=https://keeper.plu.nz|' \
-     -e 's|^TRUSTED_ORIGINS=.*|TRUSTED_ORIGINS=https://keeper.plu.nz,https://bazzite.tail9319fe.ts.net:8444,http://localhost:8088|' \
-     "$f"
-   systemctl --user restart keeper.service
-   ```
-5. No Google Cloud (e Microsoft, se usado), adicionar `https://keeper.plu.nz`
-   como origem JavaScript e o endereço de retorno correspondente no OAuth.
-6. Testar `https://keeper.plu.nz` de um nó da tailnet (login e vínculo de
-   conta) e confirmar que de fora da tailnet a conexão não abre.
+Em produção desde 2026-11-03: certificado `*.plu.nz` emitido pelo Let's
+Encrypt e renovado pelo próprio Caddy. O registro `keeper.plu.nz` foi criado
+pela API com o token do `caddy.env`. Antes da migração, o `keeper.env` do host
+foi salvo em `keeper.env.bak-20261103`.
 
 ## Token da Cloudflare
 

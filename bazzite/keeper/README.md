@@ -32,10 +32,6 @@ systemctl --user daemon-reload
 systemctl --user start keeper.service
 ```
 
-> **Migração para `keeper.plu.nz` em andamento** — até concluir os passos em
-> [../caddy/README.md](../caddy/README.md#estado-da-implantação-2026-11-03), o
-> host ainda usa `https://bazzite.tail9319fe.ts.net:8444`.
-
 Abra `https://keeper.plu.nz` a partir de outro computador conectado ao
 Tailscale. O nome aponta para o IP do bazzite na tailnet e o HTTPS vem do
 Caddy (veja [../caddy/README.md](../caddy/README.md)); fora da tailnet ele não
