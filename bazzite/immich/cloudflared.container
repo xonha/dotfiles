@@ -1,0 +1,18 @@
+[Unit]
+Description=Cloudflare Tunnel for Immich
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=docker.io/cloudflare/cloudflared:latest
+ContainerName=cloudflared-immich
+Network=host
+EnvironmentFile=%h/.config/cloudflared/immich.env
+Exec=tunnel --no-autoupdate run
+
+[Service]
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

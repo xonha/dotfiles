@@ -1,9 +1,13 @@
 # Jellyfin no Bazzite
 
 O Jellyfin roda em um Quadlet Podman rootless com a imagem oficial. Acesse
-`https://bazzite.tail9319fe.ts.net:8450` pela tailnet e conclua o assistente
-inicial, criando a conta de administrador. A porta local 8096 escuta apenas no
-localhost. Descoberta automática e DLNA não estão configurados.
+`https://jellyfin.plu.nz` pela internet e conclua o assistente inicial, criando
+a conta de administrador. O domínio usa um registro CNAME com proxy da
+Cloudflare para o Cloudflare Tunnel do Bazzite. A rota do túnel encaminha
+`jellyfin.plu.nz` para `http://127.0.0.1:8096`, sem expor a porta do Jellyfin
+diretamente na rede. O acesso privado em
+`https://bazzite.tail9319fe.ts.net:8450` também permanece disponível pela
+tailnet. Descoberta automática e DLNA não estão configurados.
 
 No assistente, adicione bibliotecas para `/media/movies` (filmes), `/media/tv`
 (séries) e `/media/music` (música). Elas correspondem às pastas do Mediarium no
