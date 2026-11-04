@@ -25,7 +25,7 @@ hl.unbind("SUPER + T")
 hl.unbind("SUPER + G")
 hl.unbind("SUPER + R")
 hl.unbind("SUPER + S")
-o.bind("SUPER + V", "Foot + tmux",
+o.bind("SUPER + S", "Foot + tmux",
   grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main"))
 o.bind("SUPER + F", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
@@ -40,8 +40,6 @@ o.bind("SUPER + E", "YouTube Music",
 o.bind("SUPER + D", "Mais Todos",
   grid_app(match_classes("google-chrome-maistodos", "google-chrome"),
     browser_profile("google-chrome-stable", "google-chrome-maistodos")))
-o.bind("SUPER + S", "Devbot",
-  grid_app(match_classes("microsoft-edge-devbot"), browser_profile("microsoft-edge-stable", "microsoft-edge-devbot")))
 o.bind("SUPER + A", "Editor", grid_app(match_classes("code"), "code"))
 -- Windows
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
