@@ -1185,7 +1185,7 @@ Item {
   Process {
     id: maximizedOn4kProbe
     running: true
-    command: ["bash", "-c", "jq -r -s '.[0] as $monitors | .[1] as $clients | any($monitors[]; .name == \"DP-1\" and (.id as $monitorId | .activeWorkspace.id as $workspaceId | any($clients[]; .monitor == $monitorId and .workspace.id == $workspaceId and .fullscreen == 1)))' <(hyprctl -j monitors) <(hyprctl -j clients)"]
+    command: ["bash", "-c", "jq -r -s '.[0] as $monitors | .[1] as $clients | any($monitors[]; (.description | startswith(\"Samsung Electric Company U32J59x\")) and (.id as $monitorId | .activeWorkspace.id as $workspaceId | any($clients[]; .monitor == $monitorId and .workspace.id == $workspaceId and .fullscreen == 1)))' <(hyprctl -j monitors) <(hyprctl -j clients)"]
     stdout: SplitParser { onRead: function(line) { root.maximizedOn4k = String(line).trim() === "true" } }
   }
   Timer {

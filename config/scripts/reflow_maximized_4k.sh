@@ -7,7 +7,7 @@ set -euo pipefail
 if jq -e -s '
   .[0] as $monitors | .[1] as $window |
   any($monitors[];
-    .name == "DP-1" and .id == $window.monitor and
+    (.description | startswith("Samsung Electric Company U32J59x")) and .id == $window.monitor and
     .reserved[1] > 0 and $window.fullscreen == 1 and
     $window.at[1] < (.y + .reserved[1]))
 ' <(hyprctl -j monitors) <(hyprctl -j activewindow) >/dev/null; then

@@ -119,18 +119,37 @@ hl.layout.register("four_zones", {
   end,
 })
 
--- Apply only to workspaces displayed on the Samsung, preserving other monitors.
-hl.workspace_rule({ workspace = "m[DP-1]", layout = "lua:four_zones" })
+-- The connector can change between docks; identify the Samsung by its EDID.
+local function samsung_monitor()
+  for _, monitor in ipairs(hl.get_monitors()) do
+    if (monitor.description or ""):find("Samsung Electric Company U32J59x", 1, true) then
+      return monitor
+    end
+  end
+end
+
+local function apply_samsung_layout()
+  local monitor = samsung_monitor()
+  if monitor then
+    hl.workspace_rule({ workspace = "m[" .. monitor.name .. "]", layout = "lua:four_zones" })
+    if monitor.active_workspace then
+      hl.workspace_rule({ workspace = tostring(monitor.active_workspace.id), layout = "lua:four_zones" })
+    end
+  end
+end
+
+apply_samsung_layout()
+hl.on("monitor.layout_changed", apply_samsung_layout)
 hl.on("workspace.created", function(workspace)
-  if workspace.monitor and workspace.monitor.name == "DP-1" then
+  local monitor = samsung_monitor()
+  if monitor and workspace.monitor and workspace.monitor.name == monitor.name then
     hl.workspace_rule({ workspace = tostring(workspace.id), layout = "lua:four_zones" })
   end
 end)
 
 local function samsung_workspace()
-  local monitor = hl.get_monitor("DP-1")
-  if not monitor or
-      not (monitor.description or ""):find("Samsung Electric Company U32J59x", 1, true) then return nil end
+  local monitor = samsung_monitor()
+  if not monitor then return nil end
   return monitor.active_workspace
 end
 
