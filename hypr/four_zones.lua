@@ -7,6 +7,7 @@ local zone_by_window = {}
 local span_mode_by_window = {}
 local fixed_size_on_focus_classes = {
   ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = true,
+  ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = true,
   ["org.gnome.Nautilus"] = true,
 }
 local preferred_zone_by_class = {
