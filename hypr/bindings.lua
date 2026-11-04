@@ -18,6 +18,7 @@ local function grid_app(classes, command, default_zone)
   end
 end
 hl.unbind("SUPER + V")
+hl.unbind("SUPER + D")
 hl.unbind("SUPER + F")
 hl.unbind("SUPER + Q")
 hl.unbind("SUPER + W")
@@ -76,15 +77,9 @@ o.bind("code:194", "Previous track", "playerctl previous")
 o.bind("code:195", "Play/pause", "playerctl play-pause")
 o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
--- Remote shortcuts
+-- Remove default remote shortcut bindings
 hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
-o.bind("SUPER + X", "Lab SSH",
-  grid_app(match_classes("foot-lab-ssh"),
-    "foot --app-id=foot-lab-ssh -e ssh lab -t 'tmux new-session -A -s main \\; set-option -t main @accent \"#89b4fa\"'"))
-o.bind("SUPER + C", "Mais Todos SSH",
-  grid_app(match_classes("foot-maistodos-ssh"),
-    "foot --app-id=foot-maistodos-ssh -e ssh maistodos -t 'tmux -u new-session -A -s main \\; set-option -t main @accent \"#cba6f7\"'"))
 -- Clipboard
 local function send_shortcut_once(mods, key)
   return function()
