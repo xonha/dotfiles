@@ -18,9 +18,9 @@ Each history item has a trash button that removes its record and saved images.
 and deletion use the same serialized queue, so dismissed toasts are also removed
 from history. Clearing is permanent.
 
-Only the selected monitor shows toasts. If it is disconnected, toasts stay
-hidden; there is no automatic fallback to a potentially shared screen. The
-center can still be opened on an available monitor to change the selection.
+In Automatic mode, toasts use an external monitor when one is connected and
+the laptop display otherwise. A manually selected disconnected monitor keeps
+toasts hidden; the center can still be opened to change the selection.
 
 Notifications are archived when they expire, are dismissed, or acted on.
 History survives shell restarts. The default limit is 100 entries; the panel
@@ -30,7 +30,7 @@ Notifications received during Do Not Disturb retain upstream behavior.
 Preferences are saved in `~/.local/state/omarchy/notification-center.json`.
 The existing history is reused from
 `~/.local/state/omarchy/notifications/history/`.
-The default output is DP-1, matching this machine's active monitor.
+The default output is Automatic. External outputs take priority over eDP displays.
 
 Open the center from a terminal:
 

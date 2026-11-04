@@ -25,7 +25,14 @@ Item {
   readonly property string stateDir: home + "/.local/state/omarchy/"
   readonly property string settingsPath: stateDir + "notifications.json"
   readonly property string preferencesPath: stateDir + "notification-center.json"
-  property string notificationMonitor: "DP-1"
+  property string notificationMonitor: "auto"
+  readonly property string effectiveMonitor: {
+    if (notificationMonitor !== "auto") return notificationMonitor
+    var screens = Quickshell.screens
+    for (var i = 0; i < screens.length; i++)
+      if (screens[i].name.indexOf("eDP-") !== 0) return screens[i].name
+    return screens.length ? screens[0].name : ""
+  }
   property string notificationPosition: "top-center"
   property int historyLimit: 100
   property bool preferencesLoaded: false
@@ -132,10 +139,10 @@ Item {
     var next = Object.assign({}, barAnchors)
     next[screen] = { x: horizontal, y: vertical }
     barAnchors = next
-    if (screen === notificationMonitor) barAnchor = next[screen]
+    if (screen === effectiveMonitor) barAnchor = next[screen]
   }
 
-  onNotificationMonitorChanged: barAnchor = barAnchors[notificationMonitor] || null
+  onEffectiveMonitorChanged: barAnchor = barAnchors[effectiveMonitor] || null
 
   // Live Notification objects by originalId, kept OUT of the ListModels: a
   // QObject stored in a model role becomes a dangling C++ pointer when the
@@ -1041,7 +1048,7 @@ Item {
     }
 
     function centerState(): string {
-      return JSON.stringify({ monitor: service.notificationMonitor, position: service.notificationPosition, historyLimit: service.historyLimit })
+      return JSON.stringify({ monitor: service.notificationMonitor, effectiveMonitor: service.effectiveMonitor, position: service.notificationPosition, historyLimit: service.historyLimit })
     }
   }
 
@@ -1075,7 +1082,7 @@ Item {
       id: popupWindow
       required property var modelData
       screen: modelData
-      visible: service.preferencesLoaded && popupModel.count > 0 && modelData.name === service.notificationMonitor
+      visible: service.preferencesLoaded && popupModel.count > 0 && modelData.name === service.effectiveMonitor
 
       WlrLayershell.namespace: "omarchy-notifications"
       WlrLayershell.layer: WlrLayer.Overlay

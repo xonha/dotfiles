@@ -17,17 +17,17 @@ Item {
   readonly property var selectedScreen: {
     var screens = Quickshell.screens
     for (var i = 0; i < screens.length; i++) {
-      if (service && screens[i].name === service.notificationMonitor) return screens[i]
+      if (service && screens[i].name === service.effectiveMonitor) return screens[i]
     }
     // Opening the center explicitly must still allow fixing a disconnected output.
     return screens.length ? screens[0] : null
   }
-  readonly property bool monitorConnected: service && selectedScreen && selectedScreen.name === service.notificationMonitor
+  readonly property bool monitorConnected: service && selectedScreen && selectedScreen.name === service.effectiveMonitor
   readonly property var monitorOptions: {
-    var options = []
+    var options = [{ value: "auto", label: "Automático (externo se conectado)" }]
     var screens = Quickshell.screens
     for (var i = 0; i < screens.length; i++) options.push({ value: screens[i].name, label: screens[i].name })
-    if (service && !monitorConnected)
+    if (service && !monitorConnected && service.notificationMonitor !== "auto")
       options.unshift({ value: service.notificationMonitor, label: service.notificationMonitor + " (desconectado)" })
     return options
   }
