@@ -21,12 +21,28 @@ run() {
   local plugins=(
     "https://github.com/crmne/omarchy-hyprmoncfg.git"
     "https://github.com/promaaa/sync-calendar-omarchy.git"
+    "https://github.com/birajdotdev/omacore.git"
   )
+
+  # Omacore reads each P30i earbud through the OpenSCQ30 CLI.
+  if ! command -v openscq30 >/dev/null 2>&1; then
+    omarchy pkg add openscq30-cli
+  fi
 
   local repo
   for repo in "${plugins[@]}"; do
     omarchy plugin add "$repo" --enable --yes
   done
+
+  # Use a plain bar-colored earbud glyph and hide it when disconnected.
+  local omacore_dir="$HOME/.config/omarchy/plugins/io.github.birajdotdev.omacore"
+  local omacore_patch="$OMARCHY_ROOT/patches/omacore_panel.patch"
+  if patch --dry-run --batch -p1 -d "$omacore_dir" < "$omacore_patch" >/dev/null; then
+    patch --batch -p1 -d "$omacore_dir" < "$omacore_patch"
+  elif ! patch --dry-run --batch -R -p1 -d "$omacore_dir" < "$omacore_patch" >/dev/null; then
+    error "Omacore panel changed upstream; review $omacore_patch before applying."
+    return 1
+  fi
 
   # promaa.clock may retain a local development path for the calendar
   # launcher. Keep its event links on the Dotfiles-managed script instead.
@@ -40,7 +56,7 @@ run() {
   # Keep the local plugin forks in sync with the versioned copies. Plugin code
   # must be copied: Omarchy does not load plugin directories through symlinks.
   local fork source target
-  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise xonha.next-event xonha.notifications xonha.fingerprint; do
+  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise xonha.next-event xonha.notifications xonha.fingerprint xonha.lg-pl5; do
     source="$OMARCHY_ROOT/plugins/$fork"
     target="$HOME/.config/omarchy/plugins/$fork"
     if [[ -L $target ]]; then

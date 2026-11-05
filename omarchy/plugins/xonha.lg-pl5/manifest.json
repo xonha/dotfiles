@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.lg-pl5",
+  "name": "LG PL5",
+  "version": "1.0.0",
+  "author": "xonha",
+  "license": "MIT",
+  "description": "Shows the connected LG PL5 speaker and its battery in the Omarchy bar.",
+  "kinds": ["bar-widget"],
+  "entryPoints": { "barWidget": "Panel.qml" },
+  "barWidget": {
+    "displayName": "LG PL5",
+    "description": "Speaker status and battery level",
+    "category": "Audio",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}

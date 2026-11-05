@@ -1,21 +1,17 @@
 # Browser routing for calendar links
 
-Calendar events are opened in different browsers according to their calendar
-source. Brave profiles are not used for this routing.
+Calendar events and meeting links from both Omarchy widgets open in Brave,
+regardless of their calendar source.
 
-## Canonical browser mapping
+## Browser launcher
 
 The launcher is `.config/scripts/calendar-browser.sh`:
 
-- `MaisTodos` → `google-chrome-stable --profile-directory=Default`
-- `Devbot` → `microsoft-edge-stable --profile-directory=Default`
-- `Personal` → `brave-origin --profile-directory=Default`
+All calendars use `brave-origin --profile-directory=Default`.
 
-The `promaa.clock` plugin passes the calendar name as the second argument to
-the launcher, which is used to select the browser.
+The `promaa.clock` and `xonha.next-event` plugins pass the calendar name as
+the second argument. The launcher accepts it for compatibility.
 
 ## Plugin notes
 
-Calendar-aware routing requires `promaa.clock` to pass the source calendar to
-the launcher. A URL-only browser router cannot distinguish `MaisTodos` from
-`Devbot` when both contain the same Meet or Teams domain.
+Both plugins use the same launcher for Meet, Teams, and calendar URLs.

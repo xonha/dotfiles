@@ -26,7 +26,7 @@ end
 -- On the Samsung, shortcut-managed apps stay on the visible tiled workspace.
 local left_monitor = "Shenzhen KTC Technology Group SFPCCB24180 000000000000"
 if monitor_connected(left_monitor) then
-  o.window("^(brave-(origin-.+|.+-Default)|google-chrome(-maistodos)?|microsoft-edge-devbot)$", {
+  o.window("^(brave-(origin-.+|.+-Default)|google-chrome(-maistodos)?)$", {
     monitor = "desc:" .. left_monitor,
     workspace = "emptym",
   })

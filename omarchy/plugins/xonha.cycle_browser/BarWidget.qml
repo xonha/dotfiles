@@ -20,7 +20,6 @@ BarWidget {
     var value = profile.toLowerCase()
     if (value === "main" || value === "pessoal") return "Brave"
     if (value === "maistodos") return "Chrome"
-    if (value === "devbot") return "Edge"
     return "Desconhecido"
   }
   readonly property color profileColor: {

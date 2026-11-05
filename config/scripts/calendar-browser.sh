@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-label="${2:-${CALENDAR_FEED_LABEL:-Personal}}"
-label="${label//[[:space:]]/}"
-label="${label,,}"
 url="${1:-}"
 
 if [[ -z "$url" ]]; then
@@ -11,24 +8,6 @@ if [[ -z "$url" ]]; then
   exit 2
 fi
 
-# Calendar routing is browser-based, not Brave-profile-based:
-#   MaisTodos -> Google Chrome
-#   Devbot    -> Microsoft Edge
-#   Personal  -> Brave
-case "$label" in
-  maistodos|maistodoswork|work)
-    exec google-chrome-stable \
-      --profile-directory=Default \
-      --class=google-chrome-maistodos \
-      "$url"
-    ;;
-  devbot|devbotwork)
-    exec microsoft-edge-stable \
-      --profile-directory=Default \
-      --class=microsoft-edge-devbot \
-      "$url"
-    ;;
-  personal|*)
-    exec brave-origin --profile-directory=Default "$url"
-    ;;
-esac
+# Both calendar widgets pass the source calendar as an optional second argument.
+# Open every calendar and meeting link in Brave, regardless of its source.
+exec brave-origin --profile-directory=Default "$url"

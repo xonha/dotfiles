@@ -1,0 +1,85 @@
+--- a/Panel.qml
++++ b/Panel.qml
+@@ -383,7 +383,7 @@
+   }
+   onSettingsChanged: pendingBatteryDisplay = -1
+ 
+-  visible: !hideWhenDisconnected || pods.hasEarbuds || pods.cliMissing || pods.registeredMissing || pods.statusStale || pods.availableDevices.length > 0
++  visible: !hideWhenDisconnected || pods.hasEarbuds
+   implicitWidth: button.implicitWidth
+   implicitHeight: button.implicitHeight
+ 
+@@ -434,70 +434,10 @@
+     id: button
+     anchors.fill: parent
+     bar: root.bar
+-    slotSize: root.barBatteryVisible ? (bar && bar.vertical ? Style.space(root.batteryDisplayMode === 2 ? 112 : 42) : batteryTextMetrics.width + Style.space(root.batteryDisplayMode === 2 ? 82 : 30)) : Style.bar.iconSlot
+-    opticalSize: slotSize
++    text: "󱡏"
++    foreground: root.barForeground
+     tooltipText: ""
+-    iconComponent: Component {
+-      Item {
+-        GridLayout {
+-          anchors.centerIn: parent
+-          columns: bar && bar.vertical ? 1 : 2
+-          rowSpacing: Style.space(4)
+-          columnSpacing: Style.space(4)
+-          SoundcoreIcon {
+-            visible: !root.barBatteryVisible || root.batteryDisplayMode !== 2
+-            Layout.alignment: Qt.AlignCenter
+-            // Align the drawing with the visible digits rather than the font's line box.
+-            transform: Translate { y: root.barBatteryVisible && root.batteryDisplayMode === 1 ? -Style.space(1) : 0 }
+-            iconSize: Style.space(12)
+-            color: root.barIconColor
+-          }
+-          Text {
+-            visible: root.barBatteryVisible && root.batteryDisplayMode === 1
+-            Layout.alignment: Qt.AlignCenter
+-            text: root.barBatteryText
+-            color: root.barIconColor
+-            font.family: root.fontFamily
+-            font.pixelSize: Style.font.caption
+-          }
+-          GridLayout {
+-            visible: root.barBatteryVisible && root.batteryDisplayMode === 2
+-            Layout.alignment: Qt.AlignCenter
+-            columns: bar && bar.vertical ? 1 : 3
+-            columnSpacing: Style.space(8)
+-            rowSpacing: Style.space(4)
+-            Repeater {
+-              model: [{kind: "left", level: pods.leftLevel}, {kind: "right", level: pods.rightLevel}, {kind: "case", level: pods.caseLevel}]
+-              GridLayout {
+-                required property var modelData
+-                Layout.alignment: Qt.AlignCenter
+-                columns: bar && bar.vertical ? 1 : 2
+-                columnSpacing: Style.space(3)
+-                rowSpacing: Style.space(2)
+-                ControlIcon {
+-                  Layout.alignment: Qt.AlignVCenter
+-                  Layout.preferredWidth: Style.space(16)
+-                  Layout.preferredHeight: Style.space(16)
+-                  kind: modelData.kind
+-                  ink: root.barIconColor
+-                }
+-                Text {
+-                  Layout.alignment: Qt.AlignVCenter
+-                  text: modelData.level < 0 ? "—" : modelData.level + "%"
+-                  color: root.barIconColor
+-                  font.family: root.fontFamily
+-                  font.pixelSize: Style.font.caption
+-                }
+-              }
+-            }
+-          }
+-        }
+-      }
+-    }
+-    onPressed: function (buttonCode) {
+-      if (buttonCode === Qt.RightButton) root.cycleBatteryDisplay()
+-      else root.toggle()
+-    }
++    onPressed: root.toggle()
+   }
+ 
+   KeyboardPanel {

@@ -29,7 +29,7 @@ meeting_status() {
       | select(.type == "PipeWire:Interface:Node")
       | .info.props as $p
       | (($p["application.name"] // "") + " " + ($p["node.name"] // "") + " " + ($p["media.name"] // "")) as $n
-      | select($n | test("Brave|brave|Google Chrome|google-chrome|Chromium|chromium|Microsoft Edge|microsoft-edge|Edge|edge"))
+      | select($n | test("Brave|brave|Google Chrome|google-chrome|Chromium|chromium"))
       | select(($p["media.class"] // "") | test("Stream/Input/Audio|Audio/Source|Audio/Duplex"))
     ' >/dev/null; then
       capture=1
@@ -57,7 +57,7 @@ browser_source_outputs() {
     /^Source Output #[0-9]+/ { id=$3; sub("#", "", id); app="" }
     /application.name =/ { app=$0 }
     /^$/ {
-      if (app ~ /Brave input|Google Chrome input|Chromium input|Microsoft Edge input|Edge input/) print id
+      if (app ~ /Brave input|Google Chrome input|Chromium input/) print id
       id=""; app=""
     }
   '

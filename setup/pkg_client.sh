@@ -15,7 +15,6 @@ PKG_CLIENT_EXTRA=(
   tailscale
   docker-buildx
   google-chrome
-  microsoft-edge-stable-bin
   transmission-gtk
   bambustudio-bin
 )

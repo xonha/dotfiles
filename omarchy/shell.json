@@ -105,6 +105,14 @@
           "id": "omarchy.bluetooth"
         },
         {
+          "id": "io.github.birajdotdev.omacore",
+          "batteryDisplayMode": 0,
+          "hideWhenDisconnected": true
+        },
+        {
+          "id": "xonha.lg-pl5"
+        },
+        {
           "id": "omarchy.network"
         },
         {
