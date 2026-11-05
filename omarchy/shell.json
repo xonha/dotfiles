@@ -120,6 +120,9 @@
           "weekStartDay": "monday"
         },
         {
+          "id": "omarchy.elsewhen"
+        },
+        {
           "id": "xonha.notifications"
         }
       ]

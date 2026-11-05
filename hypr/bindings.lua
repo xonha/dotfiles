@@ -358,3 +358,9 @@ o.bind("SUPER + SHIFT + ALT + 0", "Reset zoom", function()
 	hl.config({ cursor = { zoom_factor = 1 } })
 end)
 o.bind("SUPER + ALT + L", "Lock system", "omarchy-system-lock")
+
+-- Dictation keys from before Alt + Space and Right Alt became the defaults.
+-- Remove these lines to give the keys back to applications.
+if o.dictation_installed and o.dictation_installed() then
+  o.bind_hold("F9", "Start dictation (push-to-talk)", "omarchy-dictation start", "Stop dictation (push-to-talk)", "omarchy-dictation stop")
+end
