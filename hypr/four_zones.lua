@@ -342,7 +342,12 @@ return {
         end
       end
       if workspace then
-        show_window(window, preferred_zone_by_class[window.class] or default_zone)
+        local zone = preferred_zone_by_class[window.class] or default_zone
+        if window.class == "foot-local" or window.class:match("^brave%-") or
+            window.class:match("^google%-chrome") then
+          zone = assigned_zone(window) or zone
+        end
+        show_window(window, zone)
       else
         if stashed_zone(window) then
           local active_workspace = hl.get_active_workspace()
