@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Google Meet
-Comment=Abrir chamadas de vídeo no Jarvis
-Exec=firefox --new-window https://meet.google.com/
-Icon=video-display
-Terminal=false
-Categories=Network;VideoConference;

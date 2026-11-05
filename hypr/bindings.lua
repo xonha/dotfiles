@@ -2,20 +2,24 @@
 local four_zones = require("hypr.four_zones")
 local brave_flags = "--max-unused-resource-memory-usage-mb=128 --disk-cache-size=67108864"
 local function brave_app(id)
-  return ("brave-origin --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
+	return ("brave-origin --profile-directory=Default --app-id=%s %s"):format(id, brave_flags)
 end
 local function browser_profile(browser, class_name)
-  return ("%s --profile-directory=Default --class=%s"):format(browser, class_name)
+	return ("%s --profile-directory=Default --class=%s"):format(browser, class_name)
 end
 local function match_classes(...)
-  local classes = {}
-  for _, class in ipairs({ ... }) do classes[class] = true end
-  return function(window) return classes[window.class] == true end
+	local classes = {}
+	for _, class in ipairs({ ... }) do
+		classes[class] = true
+	end
+	return function(window)
+		return classes[window.class] == true
+	end
 end
 local function grid_app(classes, command, default_zone)
-  return function()
-    four_zones.launch_or_focus(classes, o.launch(command), default_zone)
-  end
+	return function()
+		four_zones.launch_or_focus(classes, o.launch(command), default_zone)
+	end
 end
 hl.unbind("SUPER + V")
 hl.unbind("SUPER + D")
@@ -26,21 +30,47 @@ hl.unbind("SUPER + T")
 hl.unbind("SUPER + G")
 hl.unbind("SUPER + R")
 hl.unbind("SUPER + S")
-o.bind("SUPER + S", "Foot + tmux",
-  grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main"))
-o.bind("SUPER + F", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
+o.bind(
+	"SUPER + F",
+	"Foot + tmux",
+	grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main")
+)
+o.bind("SUPER + D", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
-o.bind("SUPER + R", "WhatsApp",
-  grid_app(match_classes("brave-web.whatsapp.com__-Default"),
-    "brave-origin --profile-directory=Default --app=https://web.whatsapp.com/"))
+o.bind(
+	"SUPER + R",
+	"WhatsApp",
+	grid_app(
+		match_classes("brave-web.whatsapp.com__-Default"),
+		"brave-origin --profile-directory=Default --app=https://web.whatsapp.com/"
+	)
+)
 o.bind("SUPER + W", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
-o.bind("SUPER + T", "Todoist",
-  grid_app(match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"), brave_app("dlgohinmglaoopaiplliaecdpmnepmga")))
-o.bind("SUPER + E", "YouTube Music",
-  grid_app(match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"), brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"), 4))
-o.bind("SUPER + D", "Mais Todos",
-  grid_app(match_classes("google-chrome-maistodos", "google-chrome"),
-    browser_profile("google-chrome-stable", "google-chrome-maistodos")))
+o.bind(
+	"SUPER + T",
+	"Todoist",
+	grid_app(
+		match_classes("brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"),
+		brave_app("dlgohinmglaoopaiplliaecdpmnepmga")
+	)
+)
+o.bind(
+	"SUPER + E",
+	"YouTube Music",
+	grid_app(
+		match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"),
+		brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"),
+		4
+	)
+)
+o.bind(
+	"SUPER + S",
+	"Mais Todos",
+	grid_app(
+		match_classes("google-chrome-maistodos", "google-chrome"),
+		browser_profile("google-chrome-stable", "google-chrome-maistodos")
+	)
+)
 o.bind("SUPER + A", "Editor", grid_app(match_classes("code"), "code"))
 -- Windows
 o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
@@ -82,34 +112,34 @@ hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
 -- Clipboard
 local function send_shortcut_once(mods, key)
-  return function()
-    hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
+	return function()
+		hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
 
-    hl.timer(function()
-      hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
-    end, { timeout = 50, type = "oneshot" })
-  end
+		hl.timer(function()
+			hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
+		end, { timeout = 50, type = "oneshot" })
+	end
 end
 local function active_window_is_terminal()
-  local window = hl.get_active_window()
-  if not window then
-    return false
-  end
-  for _, tag in ipairs(window.tags or {}) do
-    if tag:gsub("%*$", "") == "terminal" then
-      return true
-    end
-  end
-  return false
+	local window = hl.get_active_window()
+	if not window then
+		return false
+	end
+	for _, tag in ipairs(window.tags or {}) do
+		if tag:gsub("%*$", "") == "terminal" then
+			return true
+		end
+	end
+	return false
 end
 local function universal_clipboard_shortcut(default_mods, default_key, terminal_mods, terminal_key)
-  return function()
-    if active_window_is_terminal() then
-      send_shortcut_once(terminal_mods, terminal_key)()
-    else
-      send_shortcut_once(default_mods, default_key)()
-    end
-  end
+	return function()
+		if active_window_is_terminal() then
+			send_shortcut_once(terminal_mods, terminal_key)()
+		else
+			send_shortcut_once(default_mods, default_key)()
+		end
+	end
 end
 -- System shortcuts
 hl.unbind("SUPER + BACKSPACE")
@@ -124,8 +154,11 @@ hl.unbind("SUPER + K")
 o.bind("SUPER + BACKSPACE", "Menu de sessão", "omarchy-menu toggle system")
 o.bind("SUPER + P", "Selecionar cor da tela", "hyprpicker --autocopy --notify")
 o.bind("SUPER + G", "Ativar/silenciar microfone", "~/.config/scripts/mute-microphone.sh")
-o.bind("SUPER + SHIFT + M", "Reativar tela interna",
-  [[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']])
+o.bind(
+	"SUPER + SHIFT + M",
+	"Reativar tela interna",
+	[[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']]
+)
 o.bind("SUPER + SHIFT + B", "Toggle maximized window", hl.dsp.window.fullscreen({ mode = "maximized" }))
 o.bind("SUPER + SHIFT + RETURN", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
@@ -154,33 +187,35 @@ o.bind("SUPER + ALT + R", "Show reminders", "omarchy-reminder show")
 o.bind("SUPER + ALT + D", "Display", "omarchy-shell shell toggle omarchy.monitor")
 o.bind("SUPER + ALT + C", "Control center", "omarchy-menu toggle system")
 local window_zone_shortcuts_4k = {
-  { key = "W", zone = 4, name = "upper left" },
-  { key = "F", zone = 5, name = "upper center" },
-  { key = "T", zone = 6, name = "upper right" },
-  { key = "S", zone = 1, name = "lower left" },
-  { key = "D", zone = 2, name = "lower center" },
-  { key = "G", zone = 3, name = "lower right" },
+	{ key = "W", zone = 4, name = "upper left" },
+	{ key = "F", zone = 5, name = "upper center" },
+	{ key = "T", zone = 6, name = "upper right" },
+	{ key = "S", zone = 1, name = "lower left" },
+	{ key = "D", zone = 2, name = "lower center" },
+	{ key = "G", zone = 3, name = "lower right" },
 }
 
 hl.unbind("SUPER + SHIFT + E")
 hl.unbind("SUPER + SHIFT + R")
 o.bind("SUPER + SHIFT + E", "Toggle floating window", function()
-  local window = hl.get_active_window()
-  if not window then return end
-  local was_floating = window.floating
-  hl.dispatch(hl.dsp.window.float({ window = window, action = "toggle" }))
-  if not was_floating then
-    hl.dispatch(hl.dsp.window.resize({ window = window, x = 1920, y = 1080, relative = false }))
-    hl.dispatch(hl.dsp.window.center({ window = window }))
-  end
+	local window = hl.get_active_window()
+	if not window then
+		return
+	end
+	local was_floating = window.floating
+	hl.dispatch(hl.dsp.window.float({ window = window, action = "toggle" }))
+	if not was_floating then
+		hl.dispatch(hl.dsp.window.resize({ window = window, x = 1920, y = 1080, relative = false }))
+		hl.dispatch(hl.dsp.window.center({ window = window }))
+	end
 end)
 o.bind("SUPER + SHIFT + R", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 for _, shortcut in ipairs(window_zone_shortcuts_4k) do
-  local key = "SUPER + SHIFT + " .. shortcut.key
-  hl.unbind(key)
-  o.bind(key, "4K zone " .. shortcut.name, function()
-    four_zones.move_active(shortcut.zone)
-  end)
+	local key = "SUPER + SHIFT + " .. shortcut.key
+	hl.unbind(key)
+	o.bind(key, "4K zone " .. shortcut.name, function()
+		four_zones.move_active(shortcut.zone)
+	end)
 end
 -- Ctrl-free Omarchy remapping.
 -- Applications
@@ -211,10 +246,16 @@ o.bind("SUPER + SHIFT + ALT + N", "File manager (cwd)", { omarchy = "nautilus-cw
 o.bind("SUPER + SHIFT + ALT + TAB", "Former workspace", hl.dsp.focus({ workspace = "previous" }))
 o.bind("SUPER + ALT + PAGE_DOWN", "Next window in group", hl.dsp.group.next())
 o.bind("SUPER + ALT + PAGE_UP", "Previous window in group", hl.dsp.group.prev())
-o.bind("SUPER + SHIFT + ALT + code:20", "Expand window left a lot",
-  hl.dsp.window.resize({ x = -300, y = 0, relative = true }))
-o.bind("SUPER + SHIFT + ALT + code:21", "Shrink window left a lot",
-  hl.dsp.window.resize({ x = 300, y = 0, relative = true }))
+o.bind(
+	"SUPER + SHIFT + ALT + code:20",
+	"Expand window left a lot",
+	hl.dsp.window.resize({ x = -300, y = 0, relative = true })
+)
+o.bind(
+	"SUPER + SHIFT + ALT + code:21",
+	"Shrink window left a lot",
+	hl.dsp.window.resize({ x = 300, y = 0, relative = true })
+)
 o.bind("SUPER + ALT + code:20", "Shrink window up a lot", hl.dsp.window.resize({ x = 0, y = -300, relative = true }))
 o.bind("SUPER + ALT + code:21", "Expand window down a lot", hl.dsp.window.resize({ x = 0, y = 300, relative = true }))
 -- Global controls
@@ -267,14 +308,16 @@ o.bind("SUPER + SHIFT + ALT + H", "Hardware menu", "omarchy-menu toggle hardware
 o.bind("SUPER + SHIFT + ALT + K", "Herdr keybindings", "omarchy-menu-herdr-keybindings")
 o.bind("SUPER + ALT + Q", "Calculator", "omacalc")
 o.bind("SUPER + ALT + SPACE", "Background switcher", "omarchy-menu toggle background")
-o.bind("SUPER + ALT + BACKSPACE", "Toggle single-window square aspect",
-  "omarchy-hyprland-window-single-square-aspect-toggle")
+o.bind(
+	"SUPER + ALT + BACKSPACE",
+	"Toggle single-window square aspect",
+	"omarchy-hyprland-window-single-square-aspect-toggle"
+)
 o.bind_toggle("SUPER + ALT + comma", "Toggle silencing notifications", "notification-silencing")
 o.bind_toggle("SUPER + ALT + I", "Toggle locking on idle", "idle")
 o.bind_toggle("SUPER + ALT + N", "Toggle nightlight", "nightlight")
 o.bind("SUPER + ALT + Delete", "Toggle laptop display", "omarchy-hyprland-monitor-internal toggle")
-o.bind("SUPER + ALT + 0", "Toggle laptop display mirroring",
-  "omarchy-hyprland-monitor-internal-mirror toggle")
+o.bind("SUPER + ALT + 0", "Toggle laptop display mirroring", "omarchy-hyprland-monitor-internal-mirror toggle")
 o.bind("SUPER + ALT + PRINT", "Extract text (OCR) from screenshot", "omarchy-capture-text")
 o.bind("SUPER + SHIFT + ALT + S", "Share", "omarchy-menu toggle share")
 o.bind("SUPER + ALT + PERIOD", "Transcode", "omarchy-transcode")
@@ -292,26 +335,26 @@ o.bind("SUPER + ALT + T", "Activity", { tui = "btop" })
 
 -- Bar panels
 for panel = 1, 9 do
-  hl.unbind("SUPER + CTRL + code:" .. tostring(panel + 9))
-  hl.unbind("SUPER + SHIFT + ALT + code:" .. tostring(panel + 9))
+	hl.unbind("SUPER + CTRL + code:" .. tostring(panel + 9))
+	hl.unbind("SUPER + SHIFT + ALT + code:" .. tostring(panel + 9))
 end
 
 for panel = 1, 9 do
-  o.bind(
-    "SUPER + SHIFT + ALT + code:" .. tostring(panel + 9),
-    "Bar panel " .. panel,
-    "omarchy-shell -q shell togglePanelAt right " .. panel
-  )
+	o.bind(
+		"SUPER + SHIFT + ALT + code:" .. tostring(panel + 9),
+		"Bar panel " .. panel,
+		"omarchy-shell -q shell togglePanelAt right " .. panel
+	)
 end
 -- Zoom and lock
 hl.unbind("SUPER + CTRL + Z")
 hl.unbind("SUPER + CTRL + ALT + Z")
 hl.unbind("SUPER + CTRL + L")
 o.bind("SUPER + SHIFT + ALT + Z", "Zoom in", function()
-  local zoom = hl.get_config("cursor.zoom_factor") or 1
-  hl.config({ cursor = { zoom_factor = zoom + 1 } })
+	local zoom = hl.get_config("cursor.zoom_factor") or 1
+	hl.config({ cursor = { zoom_factor = zoom + 1 } })
 end)
 o.bind("SUPER + SHIFT + ALT + 0", "Reset zoom", function()
-  hl.config({ cursor = { zoom_factor = 1 } })
+	hl.config({ cursor = { zoom_factor = 1 } })
 end)
 o.bind("SUPER + ALT + L", "Lock system", "omarchy-system-lock")
