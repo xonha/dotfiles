@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "xonha.overview",
+  "name": "Overview",
+  "version": "0.1.0",
+  "author": "xonha",
+  "license": "MIT",
+  "description": "Calendar, next event, notifications and world clocks in one panel",
+  "kinds": [
+    "bar-widget"
+  ],
+  "omarchy": {
+    "clonedFrom": "promaa.clock"
+  },
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Overview",
+    "description": "Calendar and next event in the bar; combined dashboard on click",
+    "category": "Productivity",
+    "allowMultiple": false,
+    "defaultSection": "center",
+    "semanticCapabilities": [
+      "clock"
+    ]
+  }
+}

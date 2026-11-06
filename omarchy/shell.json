@@ -5,6 +5,37 @@
       "center": [
         {
           "id": "intelligentwolf.taskbar"
+        },
+        {
+          "id": "xonha.overview",
+          "birthYear": 1998,
+          "format": "ddd, MMM dd HH:mm",
+          "formatAlt": "ddd, MMM dd HH:mm",
+          "lifeExpectancy": 101,
+          "showNextEvent": true,
+          "weekStartDay": "sunday",
+          "cities": [
+            {
+              "name": "Sao Paulo",
+              "zone": "America/Sao_Paulo"
+            },
+            {
+              "name": "London",
+              "zone": "Europe/London"
+            },
+            {
+              "name": "Dubai",
+              "zone": "Asia/Dubai"
+            },
+            {
+              "name": "Tokyo",
+              "zone": "Asia/Tokyo"
+            },
+            {
+              "name": "Los Angeles",
+              "zone": "America/Los_Angeles"
+            }
+          ]
         }
       ],
       "left": [
@@ -28,16 +59,6 @@
             "disk",
             "bat"
           ]
-        },
-        {
-          "id": "xonha.next-event",
-          "colorOnBar": true,
-          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
-          "showCalendarLabel": true,
-          "showDaysAhead": 0,
-          "sourceMode": "json",
-          "timeFormat": "24",
-          "useCalendarColors": true
         },
         {
           "id": "xonha.tray",
@@ -117,21 +138,6 @@
         },
         {
           "id": "omarchy.power"
-        },
-        {
-          "id": "promaa.clock",
-          "birthYear": 1998,
-          "format": "ddd, MMM dd HH:mm",
-          "formatAlt": "ddd, MMM dd HH:mm",
-          "lifeExpectancy": 101,
-          "showNextEvent": true,
-          "weekStartDay": "monday"
-        },
-        {
-          "id": "omarchy.elsewhen"
-        },
-        {
-          "id": "xonha.notifications"
         }
       ]
     },
