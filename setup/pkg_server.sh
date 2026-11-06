@@ -25,6 +25,7 @@ PKG_SERVER_EXTRA=(
   starship
   jq
   aria2
+  openai-codex
 )
 
 PKG_SERVER_AUR=(
