@@ -484,6 +484,7 @@ Item {
     // focus their window. Fall back to focusing the sending app by class so
     // that click-to-jump actually works.
     if (!invoked) focusApp(entry)
+    else focusAfterActionTimer.restart()
     dismissPopup(index)
   }
 
@@ -492,13 +493,21 @@ Item {
   function focusApp(entry) {
     if (!entry || !entry.app) return
     focusAppProc.command = [
-      service.omarchyPath + "/bin/omarchy-hyprland-focus-app",
+      service.home + "/.config/scripts/focus-notification-app.sh",
       String(entry.app)
     ]
     focusAppProc.running = true
   }
 
   Process { id: focusAppProc; running: false }
+
+  Timer {
+    id: focusAfterActionTimer
+    interval: 250
+    repeat: false
+    onTriggered: Quickshell.execDetached(["hyprctl", "eval",
+      "require('hypr.four_zones').focus_active_if_stashed()"])
+  }
 
   Process {
     id: ensureDirsProc

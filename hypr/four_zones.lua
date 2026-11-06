@@ -284,6 +284,10 @@ return {
       hl.dispatch(hl.dsp.focus({ window = window }))
     end
   end,
+  focus_active_if_stashed = function()
+    local window = hl.get_active_window()
+    if window and stashed_zone(window) then show_window(window) end
+  end,
   move_active = function(zone)
     local window = hl.get_active_window()
     if window then span_mode_by_window[tostring(window.stable_id)] = nil end

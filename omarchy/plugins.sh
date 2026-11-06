@@ -68,6 +68,8 @@ run() {
   done
   install -m 0644 "$OMARCHY_ROOT/plugins/intelligentwolf.taskbar/Taskbar.qml" \
     "$HOME/.config/omarchy/plugins/intelligentwolf.taskbar/Taskbar.qml"
+  install -m 0644 "$OMARCHY_ROOT/plugins/rtome85.audio-plus/Panel.qml" \
+    "$HOME/.config/omarchy/plugins/rtome85.audio-plus/Panel.qml"
   local fingerprint_helper="$HOME/.config/omarchy/plugins/xonha.fingerprint/bin/fingerprint_device.py"
   mkdir -p "$(dirname "$fingerprint_helper")"
   install -m 0755 "$DOTFILES_ROOT/setup/fingerprint/fingerprint_device.py" "$fingerprint_helper"
