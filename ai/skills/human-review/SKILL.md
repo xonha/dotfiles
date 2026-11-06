@@ -1,6 +1,6 @@
 ---
 name: human-review
-description: Revisa um PR e posta como GitHub review com comentarios inline (um por achado, ancorados em linhas de codigo), em tom humano e informal PT-BR sem acentos. Use quando o usuario pedir review de PR nesse estilo, code review humanizado, ou comentarios nas linhas ao inves de um comentario solto no corpo do PR.
+description: Revisa um PR (ou, sem argumento, a fila de PRs de Banking que faltam aprovacao) e posta como GitHub review com comentarios inline (um por achado, ancorados em linhas de codigo), em tom humano e informal PT-BR sem acentos. Use quando o usuario pedir review de PR nesse estilo, code review humanizado, ou comentarios nas linhas ao inves de um comentario solto no corpo do PR.
 ---
 
 # Human Review
@@ -12,6 +12,48 @@ Skill pra revisar Pull Requests e publicar o review com comentarios **inline**
 
 - Pedido de review de PR ("revisa o PR X", "code review humano").
 - Usuario quer comentarios nas linhas, nao um texto solto no corpo do PR.
+- Sem argumento (`/human-review` puro): revisa a fila de PRs de Banking que ainda faltam
+  aprovacao (ver **Sem argumento** abaixo).
+
+## Sem argumento
+
+Monta a fila com [`list_pending.py`](list_pending.py), nao na mao:
+
+```bash
+python3 ~/.claude/skills/human-review/list_pending.py   # ou --json
+```
+
+O script aplica estas regras:
+
+- **Escopo**: org `MaisTodos`, PR aberto e nao draft, repo com nome comecando em `banking`
+  (`banking.*`, `banking-*`, `BankingAPI`), menos `banking-playwright` (repo de QA). PR
+  do proprio usuario fica fora.
+- **Falta aprovacao**: `reviewDecision` APPROVED sai. O GitHub devolve `null` em boa parte
+  dos repos (o ruleset nao preenche o campo), entao o script conta aprovacoes (ultimo review
+  de cada pessoa = APPROVED) contra o minimo: 2 em `develop`/`main`, 1 no atlas e em branch
+  de epico.
+- **Ja fiz minha parte**: meu ultimo review e APPROVED, ou ja revisei o head atual -> sai.
+- **Pular PR que o time ja ta revisando**: tem thread em aberto de outro membro -> sai. Quem
+  ta revisando e o autor que se resolvam.
+- **Reviews ignorados**: `guilhermeadsferreira` nao conta nem como review nem como thread
+  em aberto. Os reviews dele sao de IA automatizada, nao de um membro do time olhando o PR.
+
+A ordem da fila:
+
+1. **Fila 1**: PR sem review nenhum de outra pessoa. Mais antigo primeiro.
+2. **Fila 2**: PR que ja teve review, mas todas as threads foram resolvidas (inclusive as
+   minhas). Le o que entrou desde o ultimo review antes de comentar de novo.
+
+Repos de approve direto (atlas e frontend) entram na fila com acao `approve`, sem analise
+(ver **Filtro por repo e estado**).
+
+Fluxo:
+
+1. Mostra a fila pro usuario (fila, acao, repo#N, autor, base, aprovacoes, titulo) e
+   confirma o escopo antes de gastar analise: todos, so a fila 1, ou uma escolha.
+2. Roda o **Processo** em cada PR de `review`. Pode juntar o preview de varios PRs numa
+   mensagem so, separado por PR.
+3. Posta so com ok, PR a PR ou tudo junto, sempre passando por **Antes de postar**.
 
 ## Filtro por repo e estado (antes de revisar)
 
@@ -20,11 +62,11 @@ Vale pra review avulso e pra lote. Filtra **antes** de gastar analise:
 | Caso | O que fazer |
 |---|---|
 | PR mergeado | **Nunca comenta.** Se ja tinha comentario postado quando o merge aconteceu, apaga. |
-| `banking-pj-app` | **So approve, sem comentario inline.** Se ja comentou, apaga e aprova. |
+| Frontend (`banking-pj-app`, `banking-pj-web`, `banking-frontend-core`) | **So approve, sem comentario inline.** Se ja comentou, apaga e aprova. |
 | `banking.atlas` | **Approve direto, sem review.** |
 | Qualquer outro repo | Segue o Processo abaixo. |
 
-**Por que:** comentario em PR ja mergeado ou desatualizado e ruido pro autor. pj-app e
+**Por que:** comentario em PR ja mergeado ou desatualizado e ruido pro autor. Frontend e
 atlas sao revisados por outras pessoas ou sao baixo risco pro usuario (20/10/2026: 3
 comentarios apagados no pj-app#1049 a pedido dele, trocados por approve simples).
 
