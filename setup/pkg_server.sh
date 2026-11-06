@@ -26,6 +26,7 @@ PKG_SERVER_EXTRA=(
   jq
   aria2
   openai-codex
+  openai-codex-voice
 )
 
 PKG_SERVER_AUR=(
