@@ -20,6 +20,7 @@ local preferred_zone_by_class = {
   ["google-chrome"] = 2,
   ["foot-local"] = 2,
   ["foot-maistodos-ssh"] = 5,
+  ["BambuStudio"] = 5,
 }
 local pending_launches = {}
 
@@ -195,36 +196,6 @@ local function show_window(window, zone)
   hl.dispatch(hl.dsp.focus({ window = window }))
 end
 
-local function reconcile_visible_zones()
-  local workspace = samsung_workspace()
-  if not workspace then return end
-
-  local active = hl.get_active_window()
-  for zone = 1, 6 do
-    local occupants = {}
-    local keep
-    for _, window in ipairs(hl.get_windows()) do
-      if window.workspace and window.workspace.id == workspace.id and
-          not window.floating and assigned_zone(window) == zone then
-        table.insert(occupants, window)
-        if not keep or (active and active.stable_id == window.stable_id) then
-          keep = window
-        end
-      end
-    end
-    for _, window in ipairs(occupants) do
-      if window.stable_id ~= keep.stable_id then
-        hl.dispatch(hl.dsp.window.move({ window = window,
-          workspace = stash_prefix .. zone, follow = false }))
-      end
-    end
-  end
-end
-
-local function schedule_reconcile()
-  hl.timer(reconcile_visible_zones, { timeout = 100, type = "oneshot" })
-end
-
 hl.on("window.active", function()
   hl.timer(function()
     local workspace = samsung_workspace()
@@ -236,12 +207,7 @@ hl.on("window.active", function()
   end, { timeout = 10, type = "oneshot" })
 end)
 
-hl.on("config.reloaded", schedule_reconcile)
-hl.on("workspace.active", schedule_reconcile)
-hl.on("window.move_to_workspace", schedule_reconcile)
-
 hl.on("window.open", function(window)
-  schedule_reconcile()
   for index, pending in ipairs(pending_launches) do
     if pending.match(window) then
       table.remove(pending_launches, index)
@@ -251,7 +217,7 @@ hl.on("window.open", function(window)
   end
   local workspace = samsung_workspace()
   if workspace and window.workspace and window.workspace.id == workspace.id and
-      not window.floating then show_window(window) end
+      (not window.floating or window.class == "BambuStudio") then show_window(window) end
 end)
 
 hl.on("window.title", function(window)
@@ -308,6 +274,16 @@ local function toggle_span(mode)
 end
 
 return {
+  focus_window = function(address)
+    local window = hl.get_window("address:" .. address)
+    if not window then return end
+    if samsung_workspace() and window.monitor and
+        window.monitor.name == samsung_monitor().name then
+      show_window(window)
+    else
+      hl.dispatch(hl.dsp.focus({ window = window }))
+    end
+  end,
   move_active = function(zone)
     local window = hl.get_active_window()
     if window then span_mode_by_window[tostring(window.stable_id)] = nil end

@@ -66,6 +66,8 @@ run() {
     mkdir -p "$target"
     cp -aL "$source/." "$target/"
   done
+  install -m 0644 "$OMARCHY_ROOT/plugins/intelligentwolf.taskbar/Taskbar.qml" \
+    "$HOME/.config/omarchy/plugins/intelligentwolf.taskbar/Taskbar.qml"
   local fingerprint_helper="$HOME/.config/omarchy/plugins/xonha.fingerprint/bin/fingerprint_device.py"
   mkdir -p "$(dirname "$fingerprint_helper")"
   install -m 0755 "$DOTFILES_ROOT/setup/fingerprint/fingerprint_device.py" "$fingerprint_helper"
