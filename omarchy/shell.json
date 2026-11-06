@@ -20,20 +20,8 @@
               "zone": "America/Sao_Paulo"
             },
             {
-              "name": "London",
-              "zone": "Europe/London"
-            },
-            {
-              "name": "Dubai",
-              "zone": "Asia/Dubai"
-            },
-            {
-              "name": "Tokyo",
-              "zone": "Asia/Tokyo"
-            },
-            {
-              "name": "Los Angeles",
-              "zone": "America/Los_Angeles"
+              "name": "Ushuaia",
+              "zone": "America/Argentina/Ushuaia"
             }
           ]
         }
@@ -138,6 +126,19 @@
         },
         {
           "id": "omarchy.power"
+        },
+        {
+          "id": "omarchy.elsewhen",
+          "cities": [
+            {
+              "name": "Sao Paulo",
+              "zone": "America/Sao_Paulo"
+            },
+            {
+              "name": "Ushuaia",
+              "zone": "America/Argentina/Ushuaia"
+            }
+          ]
         }
       ]
     },

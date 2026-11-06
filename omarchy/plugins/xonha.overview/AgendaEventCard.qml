@@ -120,12 +120,12 @@ Rectangle {
 
                     // One-Click Join Meeting Link
                     Row {
-                      visible: panel.enableMeetingLinks && Boolean(eventData.meetingUrl && eventData.meetingUrl.length > 0)
                       spacing: Style.space(6)
                       topPadding: Style.space(3)
 
                       Rectangle {
                         id: joinBtn
+                        visible: panel.enableMeetingLinks && Boolean(eventData.meetingUrl && eventData.meetingUrl.length > 0)
                         width: joinRow.implicitWidth + Style.space(16)
                         height: Style.space(22)
                         radius: Style.cornerRadius > 0 ? 4 : 0
@@ -150,7 +150,9 @@ Rectangle {
                           Text {
                             textFormat: Text.PlainText
                             anchors.verticalCenter: parent.verticalCenter
-                            text: eventData.meetingProvider ? "Join " + eventData.meetingProvider : "Join Meeting"
+                            text: eventData.meetingProvider === "Google Meet"
+                              ? "Join Meet"
+                              : (eventData.meetingProvider ? "Join " + eventData.meetingProvider : "Join Meeting")
                             color: joinMouse.containsMouse ? Color.background : panel.contentForeground
                             font.family: panel.contentFontFamily
                             font.pixelSize: Style.font.caption
@@ -172,6 +174,51 @@ Rectangle {
                         PanelToolTip {
                           text: eventData.meetingUrl
                           fontFamily: panel.contentFontFamily
+                        }
+                      }
+
+                      Rectangle {
+                        width: openCalendarRow.implicitWidth + Style.space(16)
+                        height: Style.space(22)
+                        radius: Style.cornerRadius > 0 ? 4 : 0
+                        color: openCalendarMouse.containsMouse ? Color.accent : "transparent"
+                        border.width: 1
+                        border.color: Qt.darker(panel.contentForeground, 1.5)
+
+                        Row {
+                          id: openCalendarRow
+                          anchors.centerIn: parent
+                          spacing: Style.space(5)
+
+                          Text {
+                            textFormat: Text.PlainText
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: "󰃭"
+                            color: openCalendarMouse.containsMouse ? Color.background : panel.contentForeground
+                            font.family: panel.contentFontFamily
+                            font.pixelSize: Style.font.caption
+                          }
+
+                          Text {
+                            textFormat: Text.PlainText
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: "Open Calendar"
+                            color: openCalendarMouse.containsMouse ? Color.background : panel.contentForeground
+                            font.family: panel.contentFontFamily
+                            font.pixelSize: Style.font.caption
+                            font.bold: true
+                          }
+                        }
+
+                        MouseArea {
+                          id: openCalendarMouse
+                          anchors.fill: parent
+                          hoverEnabled: true
+                          cursorShape: Qt.PointingHandCursor
+                          onClicked: {
+                            panel.openExternalUrl("https://calendar.google.com", eventData.calendar)
+                            panel.close()
+                          }
                         }
                       }
                     }

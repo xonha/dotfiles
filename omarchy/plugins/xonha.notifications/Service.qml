@@ -1009,6 +1009,42 @@ Item {
       return "ok"
     }
 
+    function clearAll(): string {
+      service.clearAllNotifications()
+      return "ok"
+    }
+
+    function removeHistory(key: string): string {
+      var value = String(key || "")
+      var match = /^(\d{1,16})-(\d{1,10})$/.exec(value)
+      if (!match) return "invalid"
+      var entry = { timestamp: Number(match[1]), originalId: Number(match[2]) }
+      if (String(entry.timestamp) + "-" + String(entry.originalId) !== value) return "invalid"
+      var command = NotificationLogic.historyRemovalCommand(entry, service.historyDir, service.imagesDir)
+      if (!command) return "invalid"
+      service.enqueuePopupFileJob(command)
+      return "ok"
+    }
+
+    function removeHistoryMany(keys: string): string {
+      var values = String(keys || "").split("|")
+      if (values.length < 1 || values.length > 100) return "invalid"
+      var commands = []
+      for (var i = 0; i < values.length; i++) {
+        var value = values[i]
+        if (typeof value !== "string") return "invalid"
+        var match = /^(\d{1,16})-(\d{1,10})$/.exec(value)
+        if (!match) return "invalid"
+        var entry = { timestamp: Number(match[1]), originalId: Number(match[2]) }
+        if (String(entry.timestamp) + "-" + String(entry.originalId) !== value) return "invalid"
+        var command = NotificationLogic.historyRemovalCommand(entry, service.historyDir, service.imagesDir)
+        if (!command) return "invalid"
+        commands.push(command)
+      }
+      for (var j = 0; j < commands.length; j++) service.enqueuePopupFileJob(commands[j])
+      return "ok"
+    }
+
     function dismissAll(): string {
       service.clearPopups()
       return "ok"

@@ -26,6 +26,37 @@ Panel {
 
   property var anchorItem: null
   property var dashboard: ({ notifications: [] })
+  property var expandedNotificationGroups: ({})
+  readonly property var notificationGroups: {
+    var groups = []
+    var entries = dashboard.notifications || []
+    for (var i = 0; i < entries.length; i++) {
+      var source = notificationSource(entries[i])
+      var group = null
+      for (var j = 0; j < groups.length; j++) {
+        if (groups[j].source === source) { group = groups[j]; break }
+      }
+      if (!group) {
+        group = { source: source, entries: [] }
+        groups.push(group)
+      }
+      group.entries.push(entries[i])
+    }
+    return groups
+  }
+
+  function groupExpanded(group) {
+    var key = "group:" + group.source
+    return expandedNotificationGroups[key] === undefined
+      ? group.entries.length === 1 : expandedNotificationGroups[key]
+  }
+
+  function toggleNotificationGroup(group) {
+    var next = {}
+    for (var key in expandedNotificationGroups) next[key] = expandedNotificationGroups[key]
+    next["group:" + group.source] = !groupExpanded(group)
+    expandedNotificationGroups = next
+  }
 
   function refreshDashboard() {
     if (!dashboardProcess.running) dashboardProcess.running = true
@@ -44,10 +75,74 @@ Panel {
   }
 
   Timer {
+    id: dashboardRefreshTimer
+    interval: 700
+    onTriggered: root.refreshDashboard()
+  }
+
+  Timer {
     interval: 60000
     repeat: true
     running: root.opened
     onTriggered: root.refreshDashboard()
+  }
+
+  function notificationText(value) {
+    return String(value || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim()
+  }
+
+  function notificationSource(entry) {
+    var app = String(entry && entry.app || "").trim()
+    var source = notificationText(String(entry && entry.body || "").split(/\r?\n/)[0])
+    if (source === "app.slack.com") return "Slack"
+    if (source === "web.whatsapp.com") return "WhatsApp"
+    if (app && app !== "Aplicativo") return app
+    return source || "Aplicativo"
+  }
+
+  function notificationBody(entry) {
+    var body = String(entry && entry.body || "")
+    var app = String(entry && entry.app || "").trim()
+    if (!app || app === "Aplicativo") body = body.replace(/^[^\r\n]*\r?\n\s*/, "")
+    return notificationText(body)
+  }
+
+  function focusNotification(entry) {
+    if (!entry) return
+    var app = String(entry.app || "").trim()
+    var source = String(entry.body || "").split(/\r?\n/)[0].trim()
+    var target = app && app !== "Aplicativo" ? app : (source || String(entry.summary || "").trim())
+    if (!target) return
+    Quickshell.execDetached([Quickshell.env("HOME") + "/.config/scripts/focus-notification-app.sh", target])
+    root.close()
+  }
+
+  function removeNotification(entry) {
+    if (!entry || !/^\d+-\d+$/.test(String(entry.key || ""))) return
+    Quickshell.execDetached(["omarchy-shell", "notifications", "removeHistory", entry.key])
+    root.dashboard = { notifications: (root.dashboard.notifications || []).filter(function(row) { return row.key !== entry.key }) }
+    dashboardRefreshTimer.restart()
+  }
+
+  function clearNotificationGroup(group) {
+    if (!group || !group.entries || group.entries.length === 0) return
+    var keys = []
+    for (var i = 0; i < group.entries.length; i++) {
+      var key = String(group.entries[i].key || "")
+      if (!/^\d+-\d+$/.test(key)) return
+      keys.push(key)
+    }
+    Quickshell.execDetached(["omarchy-shell", "notifications", "removeHistoryMany", keys.join("|")])
+    root.dashboard = { notifications: (root.dashboard.notifications || []).filter(function(row) {
+      return keys.indexOf(row.key) < 0
+    }) }
+    dashboardRefreshTimer.restart()
+  }
+
+  function clearNotifications() {
+    Quickshell.execDetached(["omarchy-shell", "notifications", "clearAll"])
+    root.dashboard = { notifications: [] }
+    dashboardRefreshTimer.restart()
   }
 
   // The bar tracks the widget mounted in its slot, BarWidget.qml, not this
@@ -80,11 +175,45 @@ Panel {
   readonly property var notifyMinutesBefore: root.setting("notifyMinutesBefore", "staged")
   readonly property int syncIntervalMinutes: root.setting("syncIntervalMinutes", 15)
   readonly property bool enableMeetingLinks: root.setting("enableMeetingLinks", true)
+  readonly property var worldCities: root.setting("cities", [
+    { name: "Sao Paulo", zone: "America/Sao_Paulo" },
+    { name: "Ushuaia", zone: "America/Argentina/Ushuaia" }
+  ])
+  property var worldClockSnapshot: ({})
   readonly property int clockHourCycle: Model.normalizedHourCycle(root.setting(
     "clockHourCycle",
     Model.hourCycleForClockFormat(root.setting("format", "dddd HH:mm"), 24)
   ))
   property var notifiedEventKeys: ({})
+
+  function worldClockTime(city) {
+    var row = root.worldClockSnapshot[String(city.zone || "")]
+    return row ? row.time : "--:--"
+  }
+
+  function worldClockDate(city) {
+    var row = root.worldClockSnapshot[String(city.zone || "")]
+    return row ? row.date : "--/--"
+  }
+
+  function refreshWorldClocks() {
+    if (!worldClockProbe.running) worldClockProbe.running = true
+  }
+
+  Process {
+    id: worldClockProbe
+    command: ["python3", "-c", "import json,sys; from datetime import datetime; from zoneinfo import ZoneInfo; out={}; now=datetime.now().astimezone();\nfor zone in json.loads(sys.argv[1]):\n try:\n  local=now.astimezone(ZoneInfo(zone)); delta=int((local.utcoffset()-now.utcoffset()).total_seconds()/3600); out[zone]={'time':local.strftime('%-I:%M'),'period':local.strftime('%p'),'date':local.strftime('%a %b %-d'),'hour':local.hour+local.minute/60,'offset':('%+dh'%delta) if delta else 'here'}\n except (KeyError, ValueError): pass\nprint(json.dumps(out))", JSON.stringify(root.worldCities.map(function(city) { return String(city.zone || "") }))]
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: {
+        try { root.worldClockSnapshot = JSON.parse(text) }
+        catch (e) { console.warn("World clock probe failed:", e) }
+      }
+    }
+  }
+
+  onWorldCitiesChanged: refreshWorldClocks()
+  onOpenedChanged: if (opened) refreshWorldClocks()
 
   // ---- Calendar Filtering & Agenda Markdown Copy
   property string activeCalendarFilter: "all"
@@ -94,6 +223,8 @@ Panel {
     if (root.activeCalendarFilter === "all" || !root.activeCalendarFilter) return list
     return list.filter(function(e) { return e.calendar === root.activeCalendarFilter })
   }
+  readonly property bool showEventsColumn: !root.showingSettings && (root.displayedEvents.length > 0 || root.addingEvent)
+  readonly property bool showNotificationsColumn: (root.dashboard.notifications || []).length > 0
   property bool agendaCopied: false
 
   // ---- Event Creation & Management State
@@ -740,6 +871,7 @@ Panel {
     precision: SystemClock.Minutes
     onDateChanged: {
       root.currentTime = clock.date
+      root.refreshWorldClocks()
       root.checkUpcomingNotifications()
       if (Model.keyForDate(clock.date) === String(root.todayKey)) return
       var followToday = root.viewingCurrentMonth
@@ -756,8 +888,13 @@ Panel {
     open: root.opened
     centerOnBar: false
     focusTarget: keyCatcher
-    contentWidth: panel.fittedContentWidth(Style.space(900))
-    contentHeight: panel.fittedContentHeight(Math.max(calendarColumn.height, notificationColumn.height))
+    contentWidth: panel.fittedContentWidth(Style.space(520)
+      + (root.showEventsColumn ? Style.space(296) : 0)
+      + (root.showNotificationsColumn ? Style.space(354) : 0))
+    contentHeight: panel.fittedContentHeight(Math.max(
+      root.showEventsColumn ? eventsColumn.height : 0,
+      calendarColumn.height,
+      root.showNotificationsColumn ? notificationColumn.height : 0))
 
     PanelKeyCatcher {
       id: keyCatcher
@@ -797,11 +934,34 @@ Panel {
 
 
       Flickable {
-        id: calendarScroll
+        id: eventsScroll
+        visible: root.showEventsColumn
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        width: Math.min(Style.space(560), Math.round(parent.width * 0.62))
+        width: visible ? Style.space(280) : 0
+        contentWidth: width
+        contentHeight: eventsColumn.height
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
+        interactive: contentHeight > height
+
+        Column {
+          id: eventsColumn
+          width: eventsScroll.width
+          height: childrenRect.height
+        }
+      }
+
+      Flickable {
+        id: calendarScroll
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: root.showEventsColumn ? eventsScroll.right : parent.left
+        anchors.leftMargin: root.showEventsColumn ? Style.space(16) : 0
+        width: Math.min(Style.space(520), parent.width
+          - (root.showEventsColumn ? Style.space(296) : 0)
+          - (root.showNotificationsColumn ? Style.space(354) : 0))
         contentWidth: calendarColumn.width
         contentHeight: calendarColumn.height
         clip: true
@@ -812,31 +972,6 @@ Panel {
           id: calendarColumn
           width: Math.max(calendarScroll.width, gridColumn.width)
           spacing: Style.space(8)
-
-          Column {
-            visible: !root.showingSettings && root.nextTodayEvent !== null
-            width: gridColumn.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: Style.space(6)
-
-            Text {
-              textFormat: Text.PlainText
-              text: "Evento de hoje"
-              color: root.contentForeground
-              font.family: root.contentFontFamily
-              font.pixelSize: Style.font.bodySmall
-              font.bold: true
-            }
-            Repeater {
-              model: root.nextTodayEvent ? [root.nextTodayEvent] : []
-              AgendaEventCard {
-                required property var modelData
-                eventData: modelData
-                panel: root
-                width: parent.width
-              }
-            }
-          }
 
           Column {
             id: mainCalendarSection
@@ -1362,20 +1497,12 @@ Panel {
             }
           }
 
-          // ---- Divider between Calendar grid and Agenda
-          Rectangle {
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: gridColumn.width
-            height: Style.spacing.hairline
-            color: root.contentForeground
-            opacity: 0.12
-          }
-
           // ---- Agenda / Selected Date Events View
           Column {
             id: agendaSection
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: gridColumn.width
+            parent: eventsColumn
+            visible: !root.showingSettings
+            width: eventsColumn.width
             spacing: Style.space(8)
 
             // Agenda Header: Selected date title + Sync button + Event count
@@ -3176,12 +3303,134 @@ Panel {
       }
 
       Flickable {
+        id: worldClockScroll
+        parent: calendarColumn
+        width: calendarColumn.width
+        height: worldClockColumn.height
+        contentWidth: width
+        contentHeight: worldClockColumn.height
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
+        interactive: false
+
+        Column {
+          id: worldClockColumn
+          width: worldClockScroll.width
+          height: childrenRect.height
+          spacing: Style.space(10)
+
+          Text {
+            textFormat: Text.PlainText
+            text: "Relógios mundiais"
+            color: root.contentForeground
+            font.family: root.contentFontFamily
+            font.pixelSize: Style.font.body
+            font.bold: true
+          }
+
+          Repeater {
+            model: root.worldCities
+            delegate: Rectangle {
+              id: cityCard
+              required property var modelData
+              width: worldClockColumn.width
+              height: Style.space(86)
+              radius: Style.cornerRadius
+              readonly property var reading: root.worldClockSnapshot[String(modelData.zone || "")] || ({})
+              readonly property real hour: reading.hour === undefined ? 12 : reading.hour
+              color: Style.hoverFillFor(root.contentForeground, root.contentForeground)
+
+              Text {
+                textFormat: Text.PlainText
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.margins: Style.space(12)
+                width: parent.width - timeLabel.width - Style.space(30)
+                text: cityCard.modelData.name || ""
+                color: root.contentForeground
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.subtitle
+                font.bold: true
+                elide: Text.ElideRight
+              }
+
+              Text {
+                id: timeLabel
+                textFormat: Text.PlainText
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.margins: Style.space(10)
+                text: root.worldClockTime(cityCard.modelData) + " " + (cityCard.reading.period || "")
+                color: root.contentForeground
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.body
+                font.bold: true
+              }
+
+              Text {
+                textFormat: Text.PlainText
+                anchors.left: parent.left
+                anchors.bottom: daylightTrack.top
+                anchors.leftMargin: Style.space(12)
+                anchors.bottomMargin: Style.space(6)
+                text: root.worldClockDate(cityCard.modelData)
+                color: Qt.darker(root.contentForeground, 1.5)
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.caption
+              }
+
+              Text {
+                textFormat: Text.PlainText
+                anchors.right: parent.right
+                anchors.bottom: daylightTrack.top
+                anchors.rightMargin: Style.space(12)
+                anchors.bottomMargin: Style.space(6)
+                text: cityCard.reading.offset || ""
+                color: Qt.darker(root.contentForeground, 1.7)
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.caption
+              }
+
+              Rectangle {
+                id: daylightTrack
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: Style.space(12)
+                height: Style.space(5)
+                radius: height / 2
+                color: Qt.rgba(root.contentForeground.r, root.contentForeground.g, root.contentForeground.b, 0.12)
+
+                Rectangle {
+                  x: parent.width * 0.25
+                  width: parent.width * 0.5
+                  height: parent.height
+                  radius: parent.radius
+                  color: Qt.rgba(229 / 255, 199 / 255, 54 / 255, 0.55)
+                }
+
+                Rectangle {
+                  x: Math.max(0, Math.min(parent.width - width, parent.width * cityCard.hour / 24 - width / 2))
+                  anchors.verticalCenter: parent.verticalCenter
+                  width: Style.space(6)
+                  height: Style.space(9)
+                  radius: width / 2
+                  color: "#E5C736"
+                }
+              }
+            }
+          }
+        }
+      }
+
+      Flickable {
         id: notificationsScroll
+        visible: root.showNotificationsColumn
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.left: calendarScroll.right
         anchors.right: parent.right
-        anchors.leftMargin: Style.space(16)
+        anchors.leftMargin: visible ? Style.space(16) : 0
         contentWidth: width
         contentHeight: notificationColumn.height
         clip: true
@@ -3191,49 +3440,234 @@ Panel {
         Column {
           id: notificationColumn
           width: notificationsScroll.width
-          spacing: Style.space(10)
+          spacing: Style.space(8)
+
+          Item {
+            width: parent.width
+            height: Style.space(26)
+
+            Row {
+              anchors.left: parent.left
+              anchors.verticalCenter: parent.verticalCenter
+              spacing: Style.space(8)
+
+              Text {
+                textFormat: Text.PlainText
+                text: "Notificações"
+                color: root.contentForeground
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.body
+                font.bold: true
+              }
+              Text {
+                textFormat: Text.PlainText
+                text: String(root.dashboard.notifications.length)
+                color: Qt.darker(root.contentForeground, 1.5)
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.caption
+              }
+            }
+
+            Rectangle {
+              visible: root.dashboard.notifications.length > 0
+              anchors.right: parent.right
+              anchors.verticalCenter: parent.verticalCenter
+              width: clearText.implicitWidth + Style.space(16)
+              height: Style.space(24)
+              radius: Style.cornerRadius
+              color: clearMouse.containsMouse
+                ? Style.hoverFillFor(root.contentForeground, Color.accent)
+                : "transparent"
+              border.width: 1
+              border.color: Qt.darker(root.contentForeground, 1.8)
+
+              Text {
+                id: clearText
+                textFormat: Text.PlainText
+                anchors.centerIn: parent
+                text: "Limpar todas"
+                color: root.contentForeground
+                font.family: root.contentFontFamily
+                font.pixelSize: Style.font.caption
+              }
+              MouseArea {
+                id: clearMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.clearNotifications()
+              }
+            }
+          }
 
           Text {
             textFormat: Text.PlainText
-            text: "Notificações recentes"
-            color: root.contentForeground
-            font.family: root.contentFontFamily
-            font.pixelSize: Style.font.body
-            font.bold: true
-          }
-          Text {
-            textFormat: Text.PlainText
-            visible: (root.dashboard.notifications || []).length === 0
+            visible: root.dashboard.notifications.length === 0
             text: "Nenhuma notificação recente"
             color: root.contentForeground
             font.family: root.contentFontFamily
             font.pixelSize: Style.font.bodySmall
           }
           Repeater {
-            model: root.dashboard.notifications || []
+            model: root.notificationGroups
             delegate: Column {
+              id: notificationGroup
               required property var modelData
               width: notificationColumn.width
-              spacing: Style.space(3)
-              Text {
-                textFormat: Text.PlainText
+              spacing: Style.space(4)
+
+              Rectangle {
                 width: parent.width
-                wrapMode: Text.WordWrap
-                text: modelData.app + ": " + modelData.summary
-                color: root.contentForeground
-                font.family: root.contentFontFamily
-                font.pixelSize: Style.font.bodySmall
-                font.bold: true
+                height: Style.space(34)
+                radius: Style.cornerRadius
+                color: groupMouse.containsMouse
+                  ? Style.hoverFillFor(root.contentForeground, Color.accent)
+                  : Style.hoverFillFor(root.contentForeground, root.contentForeground)
+
+                Row {
+                  anchors.left: parent.left
+                  anchors.right: groupClearButton.left
+                  anchors.rightMargin: Style.space(6)
+                  anchors.verticalCenter: parent.verticalCenter
+                  anchors.margins: Style.space(9)
+                  spacing: Style.space(7)
+
+                  Text {
+                    textFormat: Text.PlainText
+                    text: root.groupExpanded(notificationGroup.modelData) ? "󰅀" : "󰅂"
+                    color: root.contentForeground
+                    font.family: root.contentFontFamily
+                    font.pixelSize: Style.font.bodySmall
+                  }
+                  Text {
+                    textFormat: Text.PlainText
+                    width: parent.width - Style.space(26)
+                    text: notificationGroup.modelData.source + "  ·  " + notificationGroup.modelData.entries.length
+                    color: root.contentForeground
+                    font.family: root.contentFontFamily
+                    font.pixelSize: Style.font.bodySmall
+                    font.bold: true
+                    elide: Text.ElideRight
+                  }
+                }
+                MouseArea {
+                  id: groupMouse
+                  anchors.fill: parent
+                  hoverEnabled: true
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: root.toggleNotificationGroup(notificationGroup.modelData)
+                }
+                Rectangle {
+                  id: groupClearButton
+                  anchors.right: parent.right
+                  anchors.rightMargin: Style.space(6)
+                  anchors.verticalCenter: parent.verticalCenter
+                  width: groupClearText.implicitWidth + Style.space(12)
+                  height: Style.space(22)
+                  radius: Style.cornerRadius
+                  color: groupClearMouse.containsMouse
+                    ? Style.hoverFillFor(root.contentForeground, Color.accent) : "transparent"
+                  border.width: 1
+                  border.color: Qt.darker(root.contentForeground, 1.8)
+
+                  Text {
+                    id: groupClearText
+                    textFormat: Text.PlainText
+                    anchors.centerIn: parent
+                    text: "Limpar"
+                    color: root.contentForeground
+                    font.family: root.contentFontFamily
+                    font.pixelSize: Style.font.caption
+                  }
+                  MouseArea {
+                    id: groupClearMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.clearNotificationGroup(notificationGroup.modelData)
+                  }
+                }
               }
-              Text {
-                textFormat: Text.PlainText
-                width: parent.width
-                wrapMode: Text.WordWrap
-                text: modelData.body
-                visible: text !== ""
-                color: root.contentForeground
-                font.family: root.contentFontFamily
-                font.pixelSize: Style.font.caption
+
+              Repeater {
+                model: root.groupExpanded(notificationGroup.modelData) ? notificationGroup.modelData.entries : []
+                delegate: Rectangle {
+              id: notificationCard
+              required property var modelData
+              width: notificationGroup.width
+              height: cardContent.implicitHeight + Style.space(18)
+              radius: Style.cornerRadius
+              color: cardMouse.containsMouse
+                ? Style.hoverFillFor(root.contentForeground, Color.accent)
+                : Style.hoverFillFor(root.contentForeground, root.contentForeground)
+
+              MouseArea {
+                id: cardMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.focusNotification(notificationCard.modelData)
+              }
+
+              Column {
+                id: cardContent
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.margins: Style.space(9)
+                spacing: Style.space(4)
+
+                Row {
+                  width: parent.width
+                  spacing: Style.space(6)
+
+                  Text {
+                    textFormat: Text.PlainText
+                    width: parent.width - dismissButton.width - Style.space(6)
+                    text: root.notificationSource(notificationCard.modelData) + " · "
+                      + Qt.formatDateTime(new Date(notificationCard.modelData.timestamp), "dd/MM HH:mm")
+                    color: Qt.darker(root.contentForeground, 1.4)
+                    font.family: root.contentFontFamily
+                    font.pixelSize: Style.font.caption
+                    elide: Text.ElideRight
+                  }
+                  PanelActionButton {
+                    id: dismissButton
+                    iconText: "󰆴"
+                    tooltipText: "Dispensar notificação"
+                    foreground: root.contentForeground
+                    hoverColor: Color.urgent
+                    fontFamily: root.contentFontFamily
+                    fontSize: Style.font.caption
+                    onClicked: root.removeNotification(notificationCard.modelData)
+                  }
+                }
+                Text {
+                  textFormat: Text.PlainText
+                  width: parent.width
+                  text: root.notificationText(notificationCard.modelData.summary)
+                  color: root.contentForeground
+                  font.family: root.contentFontFamily
+                  font.pixelSize: Style.font.bodySmall
+                  font.bold: true
+                  wrapMode: Text.WordWrap
+                  maximumLineCount: 2
+                  elide: Text.ElideRight
+                }
+                Text {
+                  textFormat: Text.PlainText
+                  width: parent.width
+                  text: root.notificationBody(notificationCard.modelData)
+                  visible: text !== ""
+                  color: Qt.darker(root.contentForeground, 1.3)
+                  font.family: root.contentFontFamily
+                  font.pixelSize: Style.font.caption
+                  wrapMode: Text.WordWrap
+                  maximumLineCount: 2
+                  elide: Text.ElideRight
+                }
+              }
+            }
               }
             }
           }
