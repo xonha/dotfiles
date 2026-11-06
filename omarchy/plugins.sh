@@ -34,6 +34,16 @@ run() {
     omarchy plugin add "$repo" --enable --yes
   done
 
+  # The notification center reads history from Omarchy's built-in
+  # notification service; it replaces the older xonha.notifications widget.
+  local notification_center="$HOME/.config/omarchy/plugins/apach.notifications"
+  if [[ -d $notification_center ]]; then
+    omarchy plugin enable apach.notifications
+  else
+    omarchy plugin add https://github.com/ApachaiZ/omarchy-notification-center.git --enable --yes
+  fi
+  omarchy bar move apach.notifications --section right
+
   # Use a plain bar-colored earbud glyph and hide it when disconnected.
   local omacore_dir="$HOME/.config/omarchy/plugins/io.github.birajdotdev.omacore"
   local omacore_patch="$OMARCHY_ROOT/patches/omacore_panel.patch"
@@ -56,7 +66,7 @@ run() {
   # Keep the local plugin forks in sync with the versioned copies. Plugin code
   # must be copied: Omarchy does not load plugin directories through symlinks.
   local fork source target
-  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise xonha.next-event xonha.notifications xonha.overview xonha.fingerprint xonha.lg-pl5; do
+  for fork in xonha.bar xonha.omavoice xonha.microphone-rnnoise xonha.next-event xonha.fingerprint xonha.lg-pl5; do
     source="$OMARCHY_ROOT/plugins/$fork"
     target="$HOME/.config/omarchy/plugins/$fork"
     if [[ -L $target ]]; then

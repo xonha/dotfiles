@@ -4,16 +4,7 @@
     "layout": {
       "center": [
         {
-          "id": "intelligentwolf.taskbar"
-        },
-        {
-          "id": "xonha.overview",
-          "birthYear": 1998,
-          "format": "ddd, MMM dd HH:mm",
-          "formatAlt": "ddd, MMM dd HH:mm",
-          "lifeExpectancy": 101,
-          "showNextEvent": true,
-          "weekStartDay": "sunday",
+          "id": "omarchy.elsewhen",
           "cities": [
             {
               "name": "Sao Paulo",
@@ -24,11 +15,42 @@
               "zone": "America/Argentina/Ushuaia"
             }
           ]
+        },
+        {
+          "id": "promaa.clock",
+          "birthYear": 1998,
+          "format": "ddd, MMM dd HH:mm",
+          "formatAlt": "ddd, MMM dd HH:mm",
+          "lifeExpectancy": 101,
+          "showNextEvent": true,
+          "weekStartDay": "monday"
+        },
+        {
+          "id": "xonha.next-event",
+          "colorOnBar": true,
+          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
+          "showCalendarLabel": true,
+          "showDaysAhead": 0,
+          "sourceMode": "json",
+          "timeFormat": "24",
+          "useCalendarColors": true
+        },
+        {
+          "id": "apach.notifications"
         }
       ],
       "left": [
         {
           "id": "omarchy.menu"
+        },
+        {
+          "id": "xonha.tray",
+          "reverse": true,
+          "pinned": [],
+          "hidden": []
+        },
+        {
+          "id": "intelligentwolf.taskbar"
         },
         {
           "id": "io.github.diegopluna.argus",
@@ -47,15 +69,6 @@
             "disk",
             "bat"
           ]
-        },
-        {
-          "id": "xonha.tray",
-          "reverse": true,
-          "pinned": [],
-          "hidden": []
-        },
-        {
-          "id": "io.github.emdmed.omantra"
         }
       ],
       "right": [
@@ -76,6 +89,9 @@
           "showNum": false,
           "showScroll": false,
           "showNotifications": false
+        },
+        {
+          "id": "io.github.emdmed.omantra"
         },
         {
           "id": "robzolkos.github",
@@ -126,19 +142,6 @@
         },
         {
           "id": "omarchy.power"
-        },
-        {
-          "id": "omarchy.elsewhen",
-          "cities": [
-            {
-              "name": "Sao Paulo",
-              "zone": "America/Sao_Paulo"
-            },
-            {
-              "name": "Ushuaia",
-              "zone": "America/Argentina/Ushuaia"
-            }
-          ]
         }
       ]
     },
@@ -151,16 +154,6 @@
     "lock": 300,
     "screensaver": 150
   },
-  "plugins": [
-    {
-      "id": "xonha.notifications"
-    }
-  ],
   "version": 1,
-  "disabledPlugins": [
-    "omarchy.notifications"
-  ],
-  "cloneSourceRestores": [
-    "xonha.notifications"
-  ]
+  "plugins": []
 }
