@@ -1,8 +1,35 @@
 {
+  "version": 1,
+  "idle": {
+    "screensaver": 150,
+    "lock": 300
+  },
   "bar": {
-    "centerAnchor": "",
+    "position": "top",
+    "background": "opaque",
     "layout": {
+      "left": [
+        {
+          "id": "omarchy.menu"
+        },
+        {
+          "id": "omarchy.workspaces"
+        }
+      ],
+      "centerBegin": [
+        {
+          "id": "omarchy.indicators"
+        }
+      ],
       "center": [
+        {
+          "id": "omarchy.clock",
+          "format": "dddd HH:mm",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "verticalFormat": "HH\n—\nmm"
+        }
+      ],
+      "centerEnd": [
         {
           "id": "omarchy.elsewhen",
           "cities": [
@@ -11,152 +38,69 @@
               "zone": "America/Sao_Paulo"
             },
             {
-              "name": "Ushuaia",
-              "zone": "America/Argentina/Ushuaia",
-              "lat": -54.81084,
-              "lon": -68.31591,
-              "region": "Tierra del Fuego, AR"
+              "name": "London",
+              "zone": "Europe/London"
+            },
+            {
+              "name": "Dubai",
+              "zone": "Asia/Dubai"
+            },
+            {
+              "name": "Tokyo",
+              "zone": "Asia/Tokyo"
+            },
+            {
+              "name": "Los Angeles",
+              "zone": "America/Los_Angeles"
             }
           ]
         },
         {
-          "id": "promaa.clock",
-          "birthYear": 1998,
-          "format": "ddd, MMM dd HH:mm",
-          "formatAlt": "ddd, MMM dd HH:mm",
-          "lifeExpectancy": 101,
-          "showNextEvent": true,
-          "weekStartDay": "monday"
+          "id": "omarchy.weather"
         },
         {
-          "id": "xonha.next-event",
-          "colorOnBar": true,
-          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
-          "showCalendarLabel": true,
-          "showDaysAhead": 0,
-          "sourceMode": "json",
-          "timeFormat": "24",
-          "useCalendarColors": true
-        },
-        {
-          "id": "apach.notifications"
-        }
-      ],
-      "left": [
-        {
-          "id": "omarchy.menu"
-        },
-        {
-          "id": "xonha.tray",
-          "reverse": true,
-          "pinned": [],
-          "hidden": []
-        },
-        {
-          "id": "intelligentwolf.taskbar"
-        },
-        {
-          "id": "io.github.diegopluna.argus",
-          "intervalSec": 3,
-          "show": [
-            "cpu",
-            "cputemp",
-            "ram",
-            "disk"
-          ],
-          "homeTiles": [
-            "cpu",
-            "ram",
-            "net",
-            "io",
-            "disk",
-            "bat"
-          ]
+          "id": "omarchy.system-update"
         }
       ],
       "right": [
         {
-          "id": "omarchy.indicators"
-        },
-        {
-          "id": "omarchy.system-update"
+          "id": "omarchy.tray"
         },
         {
           "id": "omarchy.keyboard-layout"
         },
         {
-          "id": "dorneles.lock-keys",
-          "style": "icons",
-          "badgeStyle": "flat",
-          "mode": "active-only",
-          "showNum": false,
-          "showScroll": false,
-          "showNotifications": false
-        },
-        {
-          "id": "io.github.emdmed.omantra"
-        },
-        {
-          "id": "robzolkos.github",
-          "includeContributions": false,
-          "linkBehavior": "Browser tab",
-          "repositoryScope": "Owned and organizations",
-          "refreshIntervalSec": 1800,
-          "iconAlwaysUnlit": true
-        },
-        {
-          "id": "xonha.cycle_browser",
-          "scriptPath": "/home/henrique/.config/scripts/cycle-browser-profile.sh"
-        },
-        {
           "id": "omarchy.agents"
-        },
-        {
-          "id": "xonha.fingerprint"
-        },
-        {
-          "id": "crmne.hyprmoncfg"
-        },
-        {
-          "id": "omarchy.tailscale"
-        },
-        {
-          "id": "omaconnect"
-        },
-        {
-          "id": "xonha.microphone-rnnoise"
-        },
-        {
-          "id": "rtome85.audio-plus"
         },
         {
           "id": "omarchy.bluetooth"
         },
         {
-          "id": "io.github.birajdotdev.omacore",
-          "batteryDisplayMode": 0,
-          "hideWhenDisconnected": true
-        },
-        {
-          "id": "xonha.lg-pl5"
-        },
-        {
           "id": "omarchy.network"
+        },
+        {
+          "id": "omarchy.audio"
+        },
+        {
+          "id": "omarchy.monitor"
         },
         {
           "id": "omarchy.power"
         }
       ]
-    },
-    "position": "top",
-    "transparent": false,
-    "transparencyToggle": false,
-    "id": "xonha.bar"
+    }
   },
-  "idle": {
-    "lock": 300,
-    "screensaver": 150
+  "dock": {
+    "position": "bottom",
+    "pinned": [
+      "org.gnome.Nautilus",
+      "chromium",
+      "foot",
+      "omacalc",
+      "omawrite",
+      "X",
+      "YouTube"
+    ]
   },
-  "version": 1,
   "plugins": []
 }
