@@ -12,7 +12,10 @@
             },
             {
               "name": "Ushuaia",
-              "zone": "America/Argentina/Ushuaia"
+              "zone": "America/Argentina/Ushuaia",
+              "lat": -54.81084,
+              "lon": -68.31591,
+              "region": "Tierra del Fuego, AR"
             }
           ]
         },
