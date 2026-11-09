@@ -44,6 +44,14 @@ run() {
   fi
   omarchy bar move apach.notifications --section right
 
+  # The optional engine lets the notification center control toast placement.
+  local notification_engine="$HOME/.config/omarchy/plugins/apach.notification-engine"
+  if [[ -d $notification_engine ]]; then
+    omarchy plugin enable apach.notification-engine
+  else
+    omarchy plugin add https://github.com/ApachaiZ/omarchy-notification-engine.git --enable --yes
+  fi
+
   # Use a plain bar-colored earbud glyph and hide it when disconnected.
   local omacore_dir="$HOME/.config/omarchy/plugins/io.github.birajdotdev.omacore"
   local omacore_patch="$OMARCHY_ROOT/patches/omacore_panel.patch"
