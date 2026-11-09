@@ -4,6 +4,9 @@
     "layout": {
       "center": [
         {
+          "id": "apach.notifications"
+        },
+        {
           "id": "promaa.clock",
           "birthYear": 1998,
           "format": "ddd, MMM dd HH:mm",
@@ -21,9 +24,6 @@
           "sourceMode": "json",
           "timeFormat": "24",
           "useCalendarColors": true
-        },
-        {
-          "id": "apach.notifications"
         }
       ],
       "left": [
