@@ -31,9 +31,9 @@ hl.unbind("SUPER + G")
 hl.unbind("SUPER + R")
 hl.unbind("SUPER + S")
 o.bind(
-	"SUPER + F",
+	"SUPER + V",
 	"Foot + tmux",
-	grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main")
+	grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main", 2)
 )
 o.bind("SUPER + D", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
@@ -110,6 +110,11 @@ o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 -- Remove default remote shortcut bindings
 hl.unbind("SUPER + X")
 hl.unbind("SUPER + C")
+o.bind(
+	"SUPER + C",
+	"Foot + tmux (position 5)",
+	grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main", 5)
+)
 -- Clipboard
 local function send_shortcut_once(mods, key)
 	return function()

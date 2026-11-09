@@ -211,7 +211,7 @@ hl.on("window.open", function(window)
   for index, pending in ipairs(pending_launches) do
     if pending.match(window) then
       table.remove(pending_launches, index)
-      show_window(window, preferred_zone_by_class[window.class] or pending.zone)
+      show_window(window, pending.zone or preferred_zone_by_class[window.class])
       return
     end
   end
@@ -224,7 +224,7 @@ hl.on("window.title", function(window)
   for index, pending in ipairs(pending_launches) do
     if pending.match(window) then
       table.remove(pending_launches, index)
-      show_window(window, preferred_zone_by_class[window.class] or pending.zone)
+      show_window(window, pending.zone or preferred_zone_by_class[window.class])
       return
     end
   end
@@ -322,9 +322,9 @@ return {
         end
       end
       if workspace then
-        local zone = preferred_zone_by_class[window.class] or default_zone
-        if window.class == "foot-local" or window.class:match("^brave%-") or
-            window.class:match("^google%-chrome") then
+        local zone = default_zone or preferred_zone_by_class[window.class]
+        if not default_zone and (window.class == "foot-local" or window.class:match("^brave%-") or
+            window.class:match("^google%-chrome")) then
           zone = assigned_zone(window) or zone
         end
         show_window(window, zone)
@@ -348,7 +348,10 @@ return {
 
     -- Repeated shortcuts while an app is starting should share the first launch.
     for _, pending in ipairs(pending_launches) do
-      if pending.command == command then return end
+      if pending.command == command then
+        pending.zone = default_zone
+        return
+      end
     end
 
     local pending = { match = match, command = command, zone = default_zone }
