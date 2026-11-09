@@ -4,7 +4,14 @@
     "layout": {
       "center": [
         {
-          "id": "apach.notifications"
+          "id": "xonha.next-event",
+          "colorOnBar": true,
+          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
+          "showCalendarLabel": true,
+          "showDaysAhead": 0,
+          "sourceMode": "json",
+          "timeFormat": "24",
+          "useCalendarColors": true
         },
         {
           "id": "promaa.clock",
@@ -16,14 +23,7 @@
           "weekStartDay": "monday"
         },
         {
-          "id": "xonha.next-event",
-          "colorOnBar": true,
-          "eventsJsonPath": "/home/henrique/.local/state/omarchy/calendar-events.json",
-          "showCalendarLabel": true,
-          "showDaysAhead": 0,
-          "sourceMode": "json",
-          "timeFormat": "24",
-          "useCalendarColors": true
+          "id": "apach.notifications"
         }
       ],
       "left": [
