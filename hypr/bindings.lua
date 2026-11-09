@@ -35,7 +35,7 @@ o.bind(
 	"Foot + tmux",
 	grid_app(match_classes("foot-local"), "foot --app-id=foot-local -e tmux new-session -A -s main", 2)
 )
-o.bind("SUPER + D", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
+o.bind("SUPER + F", "Brave Origin", grid_app(match_classes("brave-origin"), "brave-origin"))
 o.bind("SUPER + Q", "Close window", hl.dsp.window.close())
 o.bind(
 	"SUPER + R",
@@ -64,7 +64,7 @@ o.bind(
 	)
 )
 o.bind(
-	"SUPER + S",
+	"SUPER + D",
 	"Mais Todos",
 	grid_app(
 		match_classes("google-chrome-maistodos", "google-chrome"),
