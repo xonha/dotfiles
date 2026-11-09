@@ -130,7 +130,10 @@
         {
           "id": "omarchy.power"
         }
-      ]
+      ],
+      "centerBegin": [],
+      "centerEnd": [],
+      "tray": []
     },
     "position": "top",
     "transparent": false,
@@ -142,5 +145,15 @@
     "screensaver": 150
   },
   "version": 1,
-  "plugins": []
+  "plugins": [
+    {
+      "id": "apach.notification-engine"
+    }
+  ],
+  "disabledPlugins": [
+    "omarchy.notifications"
+  ],
+  "cloneSourceRestores": [
+    "apach.notification-engine"
+  ]
 }
