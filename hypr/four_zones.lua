@@ -170,6 +170,8 @@ local function show_window(window, zone)
   local workspace = samsung_workspace()
   if not window or not workspace then return end
   local id = tostring(window.stable_id)
+  local previous_zone = window.workspace and window.workspace.id == workspace.id
+      and assigned_zone(window) or nil
   zone = zone or assigned_zone(window) or first_available_zone(workspace)
 
   -- Keep only the selected window on this zone's visible workspace. A named
@@ -189,6 +191,27 @@ local function show_window(window, zone)
   hl.dispatch(hl.dsp.window.fullscreen({ window = window, action = "unset" }))
   hl.dispatch(hl.dsp.window.float({ window = window, action = "disable" }))
   zone_by_window[id] = zone
+
+  -- When a window changes zones, reveal one waiting window in its old zone.
+  if previous_zone and previous_zone ~= zone then
+    local occupied = false
+    local waiting
+    for _, candidate in ipairs(hl.get_windows()) do
+      if candidate.stable_id ~= window.stable_id and candidate.workspace and
+          assigned_zone(candidate) == previous_zone then
+        if candidate.workspace.id == workspace.id and not candidate.floating then
+          occupied = true
+          break
+        elseif stashed_zone(candidate) == previous_zone then
+          waiting = waiting or candidate
+        end
+      end
+    end
+    if not occupied and waiting then
+      hl.dispatch(hl.dsp.window.move({ window = waiting,
+        workspace = workspace.name, follow = false }))
+    end
+  end
 
   -- Avoid Hyprland groups here: group:add crashed the compositor on window events.
   hl.dispatch(hl.dsp.focus({ workspace = workspace.name }))
