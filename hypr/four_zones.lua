@@ -240,7 +240,7 @@ hl.on("window.open", function(window)
   end
   local workspace = samsung_workspace()
   if workspace and window.workspace and window.workspace.id == workspace.id and
-      (not window.floating or window.class == "BambuStudio") then show_window(window) end
+      not window.floating then show_window(window) end
 end)
 
 hl.on("window.title", function(window)
