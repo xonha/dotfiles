@@ -40,8 +40,18 @@ disponível como alternativa.
 
 O serviço escuta somente em loopback; o Caddy e o Tailscale Serve fornecem
 HTTPS apenas para o tailnet. Os redirecionamentos de OAuth usam
-`BETTER_AUTH_URL`, então cadastre `https://keeper.plu.nz` como origem e
-endereço de retorno nas credenciais do Google/Outlook. Para Google/Outlook, configure as credenciais OAuth próprias.
+`BETTER_AUTH_URL`. No cliente OAuth do Google usado por `GOOGLE_CLIENT_ID`, cadastre
+`https://keeper.plu.nz` em **Origens JavaScript autorizadas** e estes dois
+endereços em **URIs de redirecionamento autorizados**:
+
+- `https://keeper.plu.nz/api/auth/callback/google` (login com Google);
+- `https://keeper.plu.nz/api/sources/callback/google` (conexão do calendário).
+
+O domínio sozinho não é um URI de redirecionamento válido: esquema, host e
+caminho precisam coincidir exatamente. Para Outlook, cadastre
+`https://keeper.plu.nz/api/auth/callback/microsoft` e
+`https://keeper.plu.nz/api/sources/callback/microsoft` no aplicativo Microsoft.
+Configure credenciais OAuth próprias para cada provedor.
 `WEBHOOK_PUBLIC_URL` só deve ser configurada quando existir uma URL HTTPS
 pública alcançável pelos provedores.
 

@@ -38,24 +38,6 @@
         },
         {
           "id": "intelligentwolf.taskbar"
-        },
-        {
-          "id": "io.github.diegopluna.argus",
-          "intervalSec": 3,
-          "show": [
-            "cpu",
-            "cputemp",
-            "ram",
-            "disk"
-          ],
-          "homeTiles": [
-            "cpu",
-            "ram",
-            "net",
-            "io",
-            "disk",
-            "bat"
-          ]
         }
       ],
       "right": [
@@ -129,6 +111,19 @@
         },
         {
           "id": "omarchy.power"
+        },
+        {
+          "id": "io.github.diegopluna.argus",
+          "homeTiles": [
+            "cpu",
+            "ram",
+            "net",
+            "io",
+            "disk",
+            "bat"
+          ],
+          "intervalSec": 3,
+          "show": []
         }
       ],
       "centerBegin": [],
