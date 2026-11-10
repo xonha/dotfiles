@@ -17,6 +17,7 @@ PKG_CLIENT_EXTRA=(
   google-chrome
   transmission-gtk
   bambustudio-bin
+  bitwarden
 )
 
 PKG_CLIENT_AUR=(
