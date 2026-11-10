@@ -214,7 +214,9 @@ o.bind("SUPER + SHIFT + E", "Toggle floating window", function()
 		hl.dispatch(hl.dsp.window.center({ window = window }))
 	end
 end)
-o.bind("SUPER + SHIFT + R", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+o.bind("SUPER + SHIFT + R", "Toggle 4K center column", function()
+	four_zones.toggle_center_tall()
+end)
 for _, shortcut in ipairs(window_zone_shortcuts_4k) do
 	local key = "SUPER + SHIFT + " .. shortcut.key
 	hl.unbind(key)

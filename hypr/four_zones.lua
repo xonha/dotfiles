@@ -5,6 +5,8 @@ local stash_prefix = "special:four-zones-"
 local zone_priority = { 5, 2, 4, 6, 1, 3 }
 local zone_by_window = {}
 local span_mode_by_window = {}
+local covered_center_windows = {}
+local center_span_window_id
 local fixed_size_on_focus_classes = {
   ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = true,
   ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = true,
@@ -97,6 +99,22 @@ hl.layout.register("four_zones", {
       end
     end
     local boxes = zone_boxes(ctx.area)
+    if active and span_mode_by_window[tostring(active.stable_id)] == "center" then
+      local center = boxes[5]
+      for _, target in ipairs(ctx.targets) do
+        if target.window and target.window.stable_id == active.stable_id then
+          focused_target = target
+          focused_zone = nil
+          break
+        end
+      end
+      if focused_target then
+        for zone, box in ipairs(boxes) do place_full(buckets[zone], box) end
+        focused_target:place({ x = center.x, y = center.y,
+          w = center.w, h = boxes[2].y + boxes[2].h - center.y })
+        return
+      end
+    end
     if focused_target then
       local side_box = boxes[focused_zone]
       local center_box = boxes[focused_zone <= 3 and 2 or 5]
@@ -166,9 +184,25 @@ local function first_available_zone(workspace)
   return least_populated_zone(function(zone) return counts[zone] end)
 end
 
+local function restore_covered_center_windows(workspace)
+  if not center_span_window_id then return end
+  span_mode_by_window[center_span_window_id] = nil
+  center_span_window_id = nil
+  for _, covered in ipairs(covered_center_windows) do
+    if stashed_zone(covered.window) == covered.zone then
+      hl.dispatch(hl.dsp.window.move({ window = covered.window,
+        workspace = workspace.name, follow = false }))
+    end
+  end
+  covered_center_windows = {}
+end
+
 local function show_window(window, zone)
   local workspace = samsung_workspace()
   if not window or not workspace then return end
+  if center_span_window_id and tostring(window.stable_id) ~= center_span_window_id then
+    restore_covered_center_windows(workspace)
+  end
   local id = tostring(window.stable_id)
   local previous_zone = window.workspace and window.workspace.id == workspace.id
       and assigned_zone(window) or nil
@@ -255,6 +289,9 @@ end)
 
 local function restore_stashed_without_samsung()
   if samsung_workspace() then return end
+  if center_span_window_id then span_mode_by_window[center_span_window_id] = nil end
+  center_span_window_id = nil
+  covered_center_windows = {}
   local workspace
   for _, monitor in ipairs(hl.get_monitors()) do
     if monitor.name ~= "FALLBACK" and monitor.active_workspace then
@@ -283,12 +320,29 @@ local function toggle_span(mode)
 
   local id = tostring(window.stable_id)
   local previous_mode = span_mode_by_window[id]
+  restore_covered_center_windows(workspace)
   for _, candidate in ipairs(hl.get_windows()) do
     if candidate.workspace and candidate.workspace.id == workspace.id then
       span_mode_by_window[tostring(candidate.stable_id)] = nil
     end
   end
-  if previous_mode ~= mode then span_mode_by_window[id] = mode end
+  if previous_mode ~= mode then
+    span_mode_by_window[id] = mode
+    if mode == "center" then
+      center_span_window_id = id
+      for _, candidate in ipairs(hl.get_windows()) do
+        if candidate.stable_id ~= window.stable_id and candidate.workspace and
+            candidate.workspace.id == workspace.id and not candidate.floating then
+          local zone = assigned_zone(candidate)
+          if zone == 2 or zone == 5 then
+            table.insert(covered_center_windows, { window = candidate, zone = zone })
+            hl.dispatch(hl.dsp.window.move({ window = candidate,
+              workspace = stash_prefix .. zone, follow = false }))
+          end
+        end
+      end
+    end
+  end
 
   hl.dispatch(hl.dsp.window.fullscreen({ window = window, action = "unset" }))
   hl.dispatch(hl.dsp.window.float({ window = window, action = "disable" }))
@@ -313,6 +367,10 @@ return {
   end,
   move_active = function(zone)
     local window = hl.get_active_window()
+    local workspace = samsung_workspace()
+    if window and workspace and tostring(window.stable_id) == center_span_window_id then
+      restore_covered_center_windows(workspace)
+    end
     if window then span_mode_by_window[tostring(window.stable_id)] = nil end
     show_window(window, zone)
   end,
@@ -323,6 +381,10 @@ return {
 
   toggle_column_tall = function()
     toggle_span("column")
+  end,
+
+  toggle_center_tall = function()
+    toggle_span("center")
   end,
 
   toggle_half_cell = function()
