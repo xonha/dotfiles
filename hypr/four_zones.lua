@@ -8,6 +8,7 @@ local span_mode_by_window = {}
 local covered_center_windows = {}
 local center_span_window_id
 local fixed_size_on_focus_classes = {
+  ["brave-web.whatsapp.com__-Default"] = true,
   ["brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"] = true,
   ["brave-dlgohinmglaoopaiplliaecdpmnepmga-Default"] = true,
   ["org.gnome.Nautilus"] = true,
