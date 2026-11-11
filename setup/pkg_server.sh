@@ -27,6 +27,7 @@ PKG_SERVER_EXTRA=(
   aria2
   openai-codex
   openai-codex-voice
+  pass
 )
 
 PKG_SERVER_AUR=(
