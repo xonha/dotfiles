@@ -32,14 +32,18 @@ systemctl --user daemon-reload
 systemctl --user start keeper.service
 ```
 
-Abra `https://keeper.plu.nz` a partir de outro computador conectado ao
-Tailscale. O nome aponta para o IP do bazzite na tailnet e o HTTPS vem do
-Caddy (veja [../caddy/README.md](../caddy/README.md)); fora da tailnet ele não
-conecta. O endereço `https://bazzite.tail9319fe.ts.net:8444` continua
-disponível como alternativa.
+Abra `https://keeper.plu.nz` pela internet. O DNS é um CNAME com proxy
+para o Cloudflare Tunnel `bazzite-immich`, cuja rota encaminha para
+`http://127.0.0.1:8088`. O endpoint público redireciona visitantes sem sessão
+para `/login`. O backend continua escutando somente em loopback.
+O acesso pela tailnet em `https://bazzite.tail9319fe.ts.net:8444` permanece.
 
-O serviço escuta somente em loopback; o Caddy e o Tailscale Serve fornecem
-HTTPS apenas para o tailnet. Os redirecionamentos de OAuth usam
+Foi solicitado um monitor externo gratuito do UptimeRobot para
+`https://keeper.plu.nz/`, com destinatário `henriquecastro1198@gmail.com`.
+A ativação depende do link e da confirmação enviados por e-mail. Ele verifica
+a disponibilidade HTTP da página de login, sem validar sincronização de agendas.
+
+Os redirecionamentos de OAuth usam
 `BETTER_AUTH_URL`. No cliente OAuth do Google usado por `GOOGLE_CLIENT_ID`, cadastre
 `https://keeper.plu.nz` em **Origens JavaScript autorizadas** e estes dois
 endereços em **URIs de redirecionamento autorizados**:

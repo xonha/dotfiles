@@ -20,6 +20,8 @@ check samba:tcp timeout 5 bash -c 'exec 3<>/dev/tcp/100.120.120.71/445'
 check postgres:ready podman exec immich_postgres pg_isready
 check redis:ping podman exec immich_redis redis-cli ping
 check machine-learning:http podman exec immich_machine_learning python -c 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:3003/ping",timeout=5)'
+mkdir -p "${XDG_RUNTIME_DIR:?}/bazzite-monitoring"
+date +%s > "${XDG_RUNTIME_DIR}/bazzite-monitoring/last-run"
 if [[ -n ${HEALTHCHECKS_URL:-} ]]; then
  suffix=''; (( failed )) && suffix=/fail
  check heartbeat curl -fsS --max-time 10 "${HEALTHCHECKS_URL%/}$suffix"

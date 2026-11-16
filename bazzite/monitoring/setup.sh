@@ -4,6 +4,7 @@ root=$(cd "$(dirname "$0")" && pwd)
 host=${BAZZITE_SSH_HOST:-bazzite}
 ssh "$host" 'mkdir -p ~/.local/libexec ~/.config/systemd/user ~/.config/bazzite-monitoring; chmod 700 ~/.config/bazzite-monitoring'
 scp -q "$root/check.sh" "$host:.local/libexec/bazzite-healthcheck.sh"
+scp -q "$root/health_server.py" "$host:.local/libexec/bazzite-health-server.py"
 scp -q "$root/"*.service "$root/"*.timer "$host:.config/systemd/user/"
 # Apply only restart policy overrides: no container recreation or session loss.
 ssh "$host" 'bash -s' <<'REMOTE'
@@ -15,5 +16,6 @@ done
 chmod 755 ~/.local/libexec/bazzite-healthcheck.sh
 systemctl --user daemon-reload
 systemctl --user enable --now bazzite-healthcheck.timer
+systemctl --user enable --now bazzite-health-endpoint.service
 systemctl --user reset-failed podman-restart.service
 REMOTE

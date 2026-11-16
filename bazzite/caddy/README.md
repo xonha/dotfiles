@@ -1,10 +1,11 @@
 # Caddy (HTTPS privado em plu.nz)
 
-O Caddy dá HTTPS com nome próprio (`https://keeper.plu.nz`) aos serviços
-privados do bazzite, sem abri-los para a internet:
+O Caddy dá HTTPS com nome próprio aos serviços privados do bazzite na
+tailnet. O Keeper usa atualmente o Cloudflare Tunnel público; a rota abaixo
+descreve o antigo caminho privado, mantido como fallback:
 
 ```
-keeper.plu.nz ──DNS only (Cloudflare)──▶ 100.120.120.71 (bazzite na tailnet)
+keeper.plu.nz ──DNS only (configuração anterior)──▶ 100.120.120.71
                                           │ tailscale serve --tcp=443
                                           ▼
                               Caddy em 127.0.0.1:8453 ──▶ 127.0.0.1:8088 (keeper)
@@ -27,7 +28,9 @@ keeper.plu.nz ──DNS only (Cloudflare)──▶ 100.120.120.71 (bazzite na ta
 | `crafty.plu.nz` | `https://127.0.0.1:8443` | Crafty; certificado autoassinado no backend |
 | `sunshine.plu.nz` | `https://127.0.0.1:47990` | Sunshine (Flatpak, fora do repositório); certificado autoassinado no backend |
 
-Os registros públicos com proxy (`jellyfin.plu.nz`, `mediarium.plu.nz`) usam o
+O Keeper foi migrado para o Cloudflare Tunnel; a rota local no Caddy permanece
+como configuração de fallback. Os registros públicos com proxy
+(`keeper.plu.nz`, `jellyfin.plu.nz`, `mediarium.plu.nz`) usam o
 Cloudflare Tunnel e não passam por aqui.
 
 Em produção desde 2026-11-03: certificado `*.plu.nz` emitido pelo Let's
