@@ -2,13 +2,17 @@
 Description=Start Immich server
 RequiresMountsFor=/run/media/system/hd
 Wants=network-online.target
-After=network-online.target
+After=network-online.target podman-restart.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=%h/immich
-ExecStart=/home/henrique/.local/bin/podman-compose up -d immich-server
+ExecStart=%h/.local/libexec/immich-healthcheck.sh
+TimeoutStartSec=180
+Restart=on-failure
+RestartSec=60s
+KillMode=process
 
 [Install]
 WantedBy=default.target

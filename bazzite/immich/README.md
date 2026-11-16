@@ -187,3 +187,12 @@ Não aponte o staging para os caminhos de `UPLOAD_LOCATION` ou
 - [Immich — Docker Compose](https://docs.immich.app/install/docker-compose/)
 - [Immich — Sharing](https://docs.immich.app/features/sharing/)
 - [Tailscale — Funnel](https://tailscale.com/docs/features/tailscale-funnel)
+
+### Recuperação automática
+
+`immich-start.service` aguarda o término de `podman-restart.service` e usa o
+mesmo script do healthcheck para validar o disco e recuperar o servidor.
+Falhas na inicialização são repetidas após 60 segundos. O timer verifica a
+cada cinco minutos; suas falhas ficam no journal, sem um loop a cada 15 segundos.
+O script também recupera um servidor que esteja rodando sem responder ao ping,
+aguardando a aplicação ficar pronta. Nenhuma recuperação remove volumes ou dados.
