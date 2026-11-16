@@ -46,12 +46,6 @@ o.bind(
 	)
 )
 o.bind("SUPER + W", "Passport", grid_app(match_classes("nz.plu.passport"), "passport"))
--- Development Passport window from `pnpm dev:desktop` (hot reload); starts it when closed.
-o.bind(
-	"SUPER + S",
-	"Passport (dev)",
-	grid_app(match_classes("nz.plu.passport.dev"), "sh -c 'cd ~/Projects/plunz/repos/mono.passport && exec pnpm dev:desktop'")
-)
 o.bind(
 	"SUPER + T",
 	"Todoist",
@@ -79,7 +73,7 @@ o.bind(
 )
 o.bind("SUPER + A", "Editor", grid_app(match_classes("code"), "code"))
 -- Windows
-o.bind("SUPER + B", "Move window to empty workspace", hl.dsp.window.move({ workspace = "empty" }))
+hl.unbind("SUPER + B")
 o.bind("SUPER + H", "Focus left", hl.dsp.focus({ direction = "l" }))
 o.bind("SUPER + ALT + H", "Move window left", hl.dsp.window.move({ direction = "l" }))
 o.bind("SUPER + ALT + L", "Move window right", hl.dsp.window.move({ direction = "r" }))
@@ -115,7 +109,8 @@ o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 -- Remove default remote shortcut bindings
 hl.unbind("SUPER + X")
-o.bind("SUPER + X", "Files", { omarchy = "nautilus" })
+hl.unbind("SUPER + S")
+o.bind("SUPER + S", "Files", grid_app(match_classes("org.gnome.Nautilus"), "nautilus"))
 hl.unbind("SUPER + C")
 o.bind(
 	"SUPER + C",
@@ -183,10 +178,10 @@ o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 -- o.bind("SUPER + SHIFT + D", "Docker", { tui = "omarchy-launch-docker-tui" }) -- Omarchy default
 -- Omarchy's older SUPER + SHIFT + C action was Calendar (https://app.hey.com/calendar/weeks/).
 
--- Keep universal copy and paste on SUPER + SHIFT + C/V.
+-- Keep universal copy on SUPER + SHIFT + C.
 hl.unbind("SUPER + SHIFT + C")
 o.bind("SUPER + SHIFT + C", "Universal copy", universal_clipboard_shortcut("CTRL", "C", "CTRL", "Insert"))
-o.bind("SUPER + SHIFT + V", "Universal paste", universal_clipboard_shortcut("CTRL", "V", "SHIFT", "Insert"))
+o.bind("SUPER + SHIFT + V", "Toggle simulated fullscreen", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
 
 -- Restore the SUPER + ALT actions replaced by the former zone shortcuts.
 hl.unbind("SUPER + ALT + E")
