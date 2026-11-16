@@ -1,0 +1,7 @@
+[Unit]
+Description=Bazzite service health checks
+[Service]
+Type=oneshot
+EnvironmentFile=-%h/.config/bazzite-monitoring/health.env
+ExecStart=%h/.local/libexec/bazzite-healthcheck.sh
+TimeoutStartSec=180

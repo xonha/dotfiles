@@ -1,4 +1,5 @@
 [Unit]
+StartLimitIntervalSec=0
 Description=SongMirror — self-hosted music playlist sync
 After=network-online.target
 Wants=network-online.target
@@ -33,6 +34,7 @@ Environment=SPOTIFY_OAUTH_OPEN_BROWSER=0
 
 [Service]
 Restart=on-failure
+RestartSec=30
 TimeoutStartSec=300
 
 [Install]

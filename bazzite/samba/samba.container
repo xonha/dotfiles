@@ -1,4 +1,5 @@
 [Unit]
+StartLimitIntervalSec=0
 Description=Samba — HD de 1TB exposto no tailnet
 After=network-online.target
 Wants=network-online.target
@@ -41,6 +42,7 @@ EnvironmentFile=%h/.config/containers/systemd/samba.env
 
 [Service]
 Restart=on-failure
+RestartSec=30
 TimeoutStartSec=120
 
 [Install]

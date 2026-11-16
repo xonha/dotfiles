@@ -1,4 +1,5 @@
 [Unit]
+StartLimitIntervalSec=0
 Description=Lab — Arch Linux development environment
 After=network-online.target
 Wants=network-online.target
@@ -42,6 +43,7 @@ Environment=LC_ALL=C.UTF-8
 
 [Service]
 Restart=on-failure
+RestartSec=30
 TimeoutStartSec=300
 
 [Install]
