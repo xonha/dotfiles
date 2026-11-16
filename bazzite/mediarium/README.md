@@ -24,8 +24,9 @@ ssh bazzite podman logs mediarium
 ssh bazzite systemctl --user restart mediarium.service
 ```
 
-Para atualizar: `ssh bazzite podman pull ghcr.io/rdborg/mediarium:latest` e
-reinicie o serviço. Não remova o diretório de configuração ou a mídia ao
-atualizar. O container executa como root dentro do namespace rootless, mapeado
+Para atualizar, altere a versão fixada em `mediarium.container`, faça backup de
+`config/`, baixe a nova imagem e reinstale o Quadlet antes de reiniciar o
+serviço. Não remova o diretório de configuração ou a mídia ao atualizar. O
+container executa como root dentro do namespace rootless, mapeado
 para o usuário do host; o SELinux é desativado apenas para este container para
 não alterar os rótulos do HD compartilhado.

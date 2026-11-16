@@ -33,9 +33,10 @@ tailscale serve status
 
 Faça backup de `~/.local/share/songmirror/data` para preservar credenciais,
 cache de correspondências, arquivo de músicas e snapshots agendados. Para
-atualizar a imagem publicada:
+atualizar, verifique o novo digest, altere `songmirror.container`, instale o
+Quadlet e reinicie o serviço. A versão está fixada por digest para manter a
+mesma imagem após reinicializações. Para baixar uma nova imagem na preparação:
 
 ```bash
 podman pull ghcr.io/ahnafnafee/songmirror:latest
-systemctl --user restart songmirror.service
 ```

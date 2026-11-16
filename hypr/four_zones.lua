@@ -1,6 +1,8 @@
 -- Tiled 4K workspace: zones 4 5 6 above zones 1 2 3.
 -- The navbar is on the top edge, so the rows use the normal Hyprland gap.
 local middle_bar_height = 0
+-- Set to true to widen a focused peripheral zone into the center zone.
+local expand_peripheral_on_focus = false
 local stash_prefix = "special:four-zones-"
 local zone_priority = { 5, 2, 4, 6, 1, 3 }
 local zone_by_window = {}
@@ -94,7 +96,7 @@ hl.layout.register("four_zones", {
       end
       zone_by_window[id] = zone
       table.insert(buckets[zone], target)
-      if active and target.window and target.window.stable_id == active.stable_id and
+      if expand_peripheral_on_focus and active and target.window and target.window.stable_id == active.stable_id and
           zone ~= 2 and zone ~= 5 and not fixed_size_on_focus_classes[target.window.class] then
         focused_target, focused_zone = target, zone
       end

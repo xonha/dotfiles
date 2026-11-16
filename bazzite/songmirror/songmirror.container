@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-Image=ghcr.io/ahnafnafee/songmirror:latest
+Image=ghcr.io/ahnafnafee/songmirror@sha256:ca7757aa43922c676e3598c69ce3d606a716da58658652a7e0afcbbbff55e041
 ContainerName=songmirror
 Volume=%h/.local/share/songmirror/data:/data:Z
 PublishPort=127.0.0.1:8888:8080

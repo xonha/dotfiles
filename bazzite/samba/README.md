@@ -14,7 +14,7 @@ IP — never on the LAN or the internet.
 | Host mount | `/run/media/system/hd`, mounted by `ublue-os-media-automount.service` |
 | Container | `ghcr.io/servercontainers/samba:latest`, rootless, user `henrique` |
 | Share name | `Storage` → `smb://bazzite/storage` |
-| Listen address | `100.120.120.72:445` (Tailscale IP only) |
+| Listen address | `100.120.120.71:445` (Tailscale IP only) |
 | Quadlet unit | `.config/containers/systemd/samba.container` in this repo |
 | Credentials | `~/.config/containers/systemd/samba.env` (mode 600, gitignored) |
 
@@ -220,7 +220,7 @@ ls /run/media/system/hd
 Check the listener is bound to the Tailscale IP and the firewall rule exists:
 
 ```bash
-ss -tln | grep 445        # expect 100.120.120.72:445
+ss -tln | grep 445        # expect 100.120.120.71:445
 sudo firewall-cmd --list-rich-rules
 ```
 

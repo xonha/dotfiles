@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-Image=registry.gitlab.com/crafty-controller/crafty-4:latest
+Image=registry.gitlab.com/crafty-controller/crafty-4:4.11.0
 ContainerName=crafty
 
 # Crafty runs as uid 1000 (crafty), gid 0 — host dirs must be chowned to 1000:0

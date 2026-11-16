@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-Image=docker.io/cloudflare/cloudflared:latest
+Image=docker.io/cloudflare/cloudflared:2026.11.0
 ContainerName=cloudflared-immich
 Network=host
 EnvironmentFile=%h/.config/cloudflared/immich.env

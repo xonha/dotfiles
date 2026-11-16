@@ -5,7 +5,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Container]
-Image=ghcr.io/rdborg/mediarium:latest
+Image=ghcr.io/rdborg/mediarium:4.0.7
 ContainerName=mediarium
 PublishPort=127.0.0.1:8264:8264
 Volume=%h/.local/share/mediarium/config:/config:Z

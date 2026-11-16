@@ -22,7 +22,6 @@ PKG_CLIENT_EXTRA=(
 
 PKG_CLIENT_AUR=(
   aur/hyprmoncfg-bin # Used by the crmne.hyprmoncfg shell plugin.
-  aur/photocraft-bin
 )
 
 run() {

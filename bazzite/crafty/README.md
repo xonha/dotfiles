@@ -11,12 +11,16 @@ internet and no router port-forwarding is involved.
 
 | Component | Image | Port | Purpose |
 |-----------|-------|------|---------|
-| `crafty` | `registry.gitlab.com/crafty-controller/crafty-4:latest` | 8443 | Web panel (HTTPS) |
+| `crafty` | `registry.gitlab.com/crafty-controller/crafty-4:4.11.0` | 8443 | Web panel (HTTPS) |
 | Minecraft server | managed by Crafty | 25565 | The game server itself |
 
 The Quadlet unit lives at `bazzite/crafty/crafty.container` in this
 repo. Crafty runs the Minecraft server as a child process inside its own
 container — there is no separate Minecraft container.
+
+As of 2026-11-14, the running server uses Minecraft 26.2 and directory
+`servers/1e9f95b5-c01c-4b3e-8cfc-709f21c255e1`. The Aether 1.21.1 server
+details below describe an older setup and must be rechecked before use.
 
 For a new host, run `./bazzite/setup.sh crafty` from a client with this
 repository and SSH access. It deploys the Quadlet, prepares the data
@@ -277,7 +281,7 @@ default allow-all policy with:
 ```jsonc
 {
   "hosts": {
-    "minecraft": "100.120.120.72"   // bazzite's Tailscale IP
+    "minecraft": "100.120.120.71"   // bazzite's Tailscale IP
   },
 
   "tagOwners": {
@@ -346,7 +350,7 @@ Install Tailscale, then once:
 tailscale up --auth-key=tskey-auth-XXXXXXXX
 ```
 
-Then connect in Minecraft to `bazzite:25565` (or `100.120.120.72:25565` if
+Then connect in Minecraft to `bazzite:25565` (or `100.120.120.71:25565` if
 MagicDNS doesn't resolve for them).
 
 ### Revoking access
@@ -426,7 +430,7 @@ First boot generates the SQLite DB and a self-signed cert and can take a minute.
 1. Confirm their device appears in the admin bazzite tagged `tag:gamer`.
 2. Confirm the ACL still has the `tag:gamer → minecraft:25565` rule and that
    the default allow-all was removed rather than left alongside it.
-3. Have them try the raw IP `100.120.120.72:25565` — a working connection there
+3. Have them try the raw IP `100.120.120.71:25565` — a working connection there
    but not on `bazzite:25565` is a MagicDNS problem, not an ACL one.
 
 ### Server won't start after a Crafty update

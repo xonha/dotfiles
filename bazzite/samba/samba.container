@@ -23,7 +23,7 @@ SecurityLabelDisable=true
 # Escuta só no IP do tailnet — nunca na LAN nem na internet.
 # 445 é porta privilegiada: exige net.ipv4.ip_unprivileged_port_start <= 445,
 # ver /etc/sysctl.d/99-unprivileged-smb.conf.
-PublishPort=100.120.120.72:445:445
+PublishPort=100.120.120.71:445:445
 
 # force user = root: em podman rootless o uid 0 do container mapeia pro henrique
 # (uid 1000) no host, que é o dono do disco. Sem isso o smbd escreveria como uid

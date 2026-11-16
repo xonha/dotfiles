@@ -54,6 +54,9 @@ Item {
   })
   property var layoutConfig: fallbackBarConfig.layout
   property string centerAnchor: ""
+  // Peripheral sections remain at their intrinsic size unless explicitly
+  // expanded in bar configuration.
+  property bool expandPeripheralSections: false
   property bool requestedTransparent: false
   property bool useTransparentForeground: false
   property bool transparent: false
@@ -586,6 +589,7 @@ Item {
     var config = Util.isPlainObject(barConfig) ? barConfig : fallbackBarConfig
 
     position = normalizePosition(config.position)
+    expandPeripheralSections = config.expandPeripheralSections === true
     setRequestedTransparency(config.transparent === true)
     centerAnchor = Util.canonicalWidgetId(config.centerAnchor || "")
 
@@ -1443,6 +1447,8 @@ Item {
 
         LeftModules {
           id: leftModules
+          expandToCenter: root.expandPeripheralSections
+          expandedWidth: Math.max(0, (parent.width - centerModules.horizontalContentWidth) / 2 - Style.space(8))
           anchors.left: parent.left
           anchors.leftMargin: Style.space(8)
           anchors.verticalCenter: parent.verticalCenter
@@ -1450,6 +1456,8 @@ Item {
 
         RightModules {
           id: rightModules
+          expandToCenter: root.expandPeripheralSections
+          expandedWidth: Math.max(0, (parent.width - centerModules.horizontalContentWidth) / 2 - Style.space(8))
           anchors.right: parent.right
           anchors.rightMargin: Style.space(8)
           anchors.verticalCenter: parent.verticalCenter
@@ -1623,6 +1631,7 @@ Item {
   component RightModules: ModuleList {
     entries: root.layoutEntries("right")
     region: "right"
+    alignToEnd: true
   }
 
   component CenterModules: Item {
@@ -1824,6 +1833,9 @@ Item {
 
     property var entries: []
     property string region: ""
+    property bool expandToCenter: false
+    property real expandedWidth: 0
+    property bool alignToEnd: false
 
     visible: entries.length > 0
     // A hidden list must not build its modules. The center section declares
@@ -1833,22 +1845,29 @@ Item {
     // ticking, two of every timer and fetch behind them.
     active: visible && entries.length > 0
     sourceComponent: root.vertical ? verticalModuleList : horizontalModuleList
-    width: item ? item.implicitWidth : 0
+    width: item ? (expandToCenter ? Math.max(item.implicitWidth, expandedWidth) : item.implicitWidth) : 0
     height: item ? item.implicitHeight : 0
 
     Component {
       id: horizontalModuleList
 
-      Row {
-        spacing: 0
+      Item {
+        implicitWidth: moduleRow.implicitWidth
+        implicitHeight: moduleRow.implicitHeight
 
-        Repeater {
-          model: moduleListRoot.entries
+        Row {
+          id: moduleRow
+          x: moduleListRoot.alignToEnd ? parent.width - width : 0
+          spacing: 0
 
-          ModuleSlot {
-            required property var modelData
-            entry: modelData
-            region: moduleListRoot.region
+          Repeater {
+            model: moduleListRoot.entries
+
+            ModuleSlot {
+              required property var modelData
+              entry: modelData
+              region: moduleListRoot.region
+            }
           }
         }
       }

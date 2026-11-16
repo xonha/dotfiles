@@ -45,7 +45,13 @@ o.bind(
 		"brave-origin --profile-directory=Default --app=https://web.whatsapp.com/"
 	)
 )
-o.bind("SUPER + W", "Files", grid_app(match_classes("org.gnome.Nautilus"), "omarchy-launch-nautilus"))
+o.bind("SUPER + W", "Passport", grid_app(match_classes("nz.plu.passport"), "passport"))
+-- Development Passport window from `pnpm dev:desktop` (hot reload); starts it when closed.
+o.bind(
+	"SUPER + S",
+	"Passport (dev)",
+	grid_app(match_classes("nz.plu.passport.dev"), "sh -c 'cd ~/Projects/plunz/repos/mono.passport && exec pnpm dev:desktop'")
+)
 o.bind(
 	"SUPER + T",
 	"Todoist",
@@ -98,7 +104,7 @@ o.bind("SUPER + H", "Focus left", hl.dsp.focus({ direction = "l" }))
 o.bind("SUPER + Y", "Reload state", "~/.config/scripts/reload-orchestrator.sh")
 o.bind("SUPER + M", "Keybindings", "omarchy-menu-keybindings")
 o.bind("SUPER + N", "Theme menu", "omarchy-menu toggle theme")
-o.bind("SUPER + Z", "Screenshot region", "omarchy capture screenshot region")
+o.bind("SUPER + Z", "Screenshot region", "omasnap region")
 o.bind("SUPER + ALT + Z", "Settings", "omarchy-menu toggle")
 o.bind("SUPER + DELETE", "Omarchy menu", "omarchy-menu toggle root")
 o.bind("SUPER + RETURN", "Apps menu", "omarchy-menu toggle apps")
@@ -109,6 +115,7 @@ o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 -- Remove default remote shortcut bindings
 hl.unbind("SUPER + X")
+o.bind("SUPER + X", "Files", { omarchy = "nautilus" })
 hl.unbind("SUPER + C")
 o.bind(
 	"SUPER + C",
@@ -276,6 +283,8 @@ o.bind("SUPER + ALT + TAB", "Focus on next monitor", hl.dsp.focus({ monitor = "+
 o.bind("SUPER + SHIFT + ALT + PAGE_UP", "Focus on previous monitor", hl.dsp.focus({ monitor = "-1" }))
 
 -- Utilities
+o.rebind("PRINT", "Screenshot", "omasnap")
+o.rebind("SUPER + CTRL + ALT + C", "Screenshot", "omasnap")
 hl.unbind("SUPER + CTRL + E")
 hl.unbind("SUPER + CTRL + C")
 hl.unbind("SUPER + CTRL + O")
