@@ -62,6 +62,7 @@ Vale pra review avulso e pra lote. Filtra **antes** de gastar analise:
 | Caso | O que fazer |
 |---|---|
 | PR mergeado | **Nunca comenta.** Se ja tinha comentario postado quando o merge aconteceu, apaga. |
+| `banking-playwright` | **Nao revisa.** Repo de QA, fora do escopo, mesmo com o PR passado direto. Avisa o usuario e para. |
 | Frontend (`banking-pj-app`, `banking-pj-web`, `banking-frontend-core`) | **So approve, sem comentario inline.** Se ja comentou, apaga e aprova. |
 | `banking.atlas` | **Approve direto, sem review.** |
 | Qualquer outro repo | Segue o Processo abaixo. |
