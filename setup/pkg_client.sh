@@ -18,6 +18,7 @@ PKG_CLIENT_EXTRA=(
   transmission-gtk
   bambustudio-bin
   bitwarden
+  kodi
 )
 
 PKG_CLIENT_AUR=(
