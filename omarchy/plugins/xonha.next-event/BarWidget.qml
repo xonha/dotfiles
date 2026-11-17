@@ -7,11 +7,9 @@ import "Model.js" as Model
 
 // NextEvent — the next event, right in the bar.
 //
-// Left click opens the meeting list; right click joins the next meeting;
-// middle click refetches the calendar. When there is nothing actionable
-// (no feed configured, or no upcoming meeting) the widget shrinks to a
-// muted camera glyph that still opens the panel — which is where the
-// setup instructions live.
+// Left click on the video icon joins the next meeting; clicking the label
+// opens the agenda. Right click joins; middle click refetches the calendar.
+// Without an upcoming event, the icon opens the panel for setup or details.
 BarWidget {
   id: root
   moduleName: "xonha.next-event"
@@ -91,7 +89,9 @@ BarWidget {
   property string currentFeedColor: ""
   property string feedOutput: ""
 
-  readonly property string label: Model.barLabel(root.configured, root.nextMeeting, root.now, root.maxTitleLength, root.use12Hour)
+  readonly property string label: root.configured && root.nextMeeting
+    ? Model.formatLabel(root.nextMeeting, root.now, root.maxTitleLength, root.use12Hour)
+    : ""
   readonly property bool inMeeting: nextMeeting
     && !nextMeeting.allDay
     && nextMeeting.start && nextMeeting.end
@@ -112,6 +112,17 @@ BarWidget {
 
   function joinMeeting(event) {
     if (event && event.meetUrl) openMeetingUrl(event.meetUrl, event)
+  }
+
+  function handleBarPress(mouseButton, iconPressed) {
+    if (mouseButton === Qt.MiddleButton) {
+      root.refresh()
+    } else if (mouseButton === Qt.RightButton || (iconPressed && root.nextMeeting && root.nextMeeting.meetUrl)) {
+      if (root.nextMeeting && root.nextMeeting.meetUrl) root.joinMeeting(root.nextMeeting)
+      else root.toggle()
+    } else {
+      root.toggle()
+    }
   }
 
   function openCalendar(event) {
@@ -343,12 +354,12 @@ BarWidget {
     if (!target) return
     if ("bar" in target) target.bar = root.bar
     if ("settings" in target) target.settings = root.settings
-    if ("anchorItem" in target) target.anchorItem = button
+    if ("anchorItem" in target) target.anchorItem = buttons
     if ("hostWidget" in target) target.hostWidget = root
   }
 
-  implicitWidth: button.implicitWidth
-  implicitHeight: button.implicitHeight
+  implicitWidth: buttons.implicitWidth
+  implicitHeight: buttons.implicitHeight
 
   onBarChanged: injectPanel()
   onSettingsChanged: {
@@ -472,34 +483,43 @@ BarWidget {
     }
   }
 
-  WidgetButton {
-    id: button
+  Row {
+    id: buttons
     anchors.fill: parent
-    bar: root.bar
-    text: root.label !== "" ? root.label : Model.ICON_CALENDAR_EMPTY
-    foreground: root.useCalendarColors && root.colorOnBar && root.nextMeeting && root.nextMeeting.calendarColor
-      ? root.nextMeeting.calendarColor
-      : (root.bar ? root.bar.barForeground : Color.foreground)
-    labelVisible: true
-    hasVisualContent: true
-    dimmed: root.label === ""
-    active: root.inMeeting || root.browserInMeeting
-    useActiveColor: !(root.useCalendarColors && root.colorOnBar)
-    horizontalMargin: 8.75
-    verticalPadding: 8.75
-    tooltipText: root.tooltipLine
+    spacing: 0
 
-    onPressed: function(b) {
-      if (b === Qt.RightButton) {
-        if (root.nextMeeting && root.nextMeeting.meetUrl) root.joinMeeting(root.nextMeeting)
-        else root.toggle()
-      } else if (b === Qt.MiddleButton) {
-        root.refresh()
-      } else {
-        root.toggle()
-      }
+    WidgetButton {
+      id: iconButton
+      bar: root.bar
+      text: root.nextMeeting
+        ? (root.nextMeeting.meetUrl ? Model.ICON_MEETING_VIDEO : Model.ICON_CALENDAR_EVENT)
+        : Model.ICON_CALENDAR_EMPTY
+      foreground: root.barForeground
+      hasVisualContent: true
+      dimmed: root.label === ""
+      active: root.inMeeting || root.browserInMeeting
+      useActiveColor: !(root.useCalendarColors && root.colorOnBar)
+      tooltipText: root.tooltipLine
+      onPressed: function(b) { root.handleBarPress(b, true) }
+    }
+
+    WidgetButton {
+      id: labelButton
+      bar: root.bar
+      text: root.label
+      foreground: root.barForeground
+      hasVisualContent: root.label !== ""
+      active: root.inMeeting || root.browserInMeeting
+      useActiveColor: !(root.useCalendarColors && root.colorOnBar)
+      horizontalMargin: 0
+      tooltipText: root.tooltipLine
+      onPressed: function(b) { root.handleBarPress(b, false) }
     }
   }
+
+  readonly property color barForeground: root.useCalendarColors && root.colorOnBar && root.nextMeeting && root.nextMeeting.calendarColor
+    ? root.nextMeeting.calendarColor
+    : (root.bar ? root.bar.barForeground : Color.foreground)
 
   readonly property string tooltipLine: Model.tooltipLine(root.configured, root.nextMeeting, root.now, {
     lastFetchFailed: root.lastFetchFailed,

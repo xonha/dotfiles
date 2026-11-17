@@ -79,7 +79,6 @@ o.bind("SUPER + ALT + H", "Move window left", hl.dsp.window.move({ direction = "
 o.bind("SUPER + ALT + L", "Move window right", hl.dsp.window.move({ direction = "r" }))
 o.bind("SUPER + SHIFT + H", "Resize left", hl.dsp.window.resize({ x = -20, y = 0, relative = true }))
 o.bind("SUPER + SHIFT + L", "Resize right", hl.dsp.window.resize({ x = 20, y = 0, relative = true }))
-o.bind("SUPER + ALT + B", "Toggle simulated fullscreen", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
 -- Omarchy menus
 hl.unbind("SUPER + RETURN")
 hl.unbind("SUPER + SHIFT + CTRL + SPACE")
@@ -153,6 +152,7 @@ hl.unbind("SUPER + BACKSPACE")
 hl.unbind("SUPER + P")
 hl.unbind("SUPER + SHIFT + M")
 hl.unbind("SUPER + SHIFT + B")
+hl.unbind("SUPER + SHIFT + X") -- Omarchy default: X
 hl.unbind("SUPER + SHIFT + W") -- Omarchy default: Omawrite
 hl.unbind("SUPER + SHIFT + RETURN")
 hl.unbind("SUPER + L")
@@ -166,7 +166,8 @@ o.bind(
 	"Reativar tela interna",
 	[[hyprctl eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = 1, disabled = false })']]
 )
-o.bind("SUPER + SHIFT + B", "Toggle maximized window", hl.dsp.window.fullscreen({ mode = "maximized" }))
+o.bind("SUPER + SHIFT + B", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+o.bind("SUPER + SHIFT + X", "Toggle simulated fullscreen", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
 o.bind("SUPER + SHIFT + RETURN", "Toggle fullscreen", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 
@@ -181,7 +182,6 @@ o.bind("SUPER + L", "Focus right", hl.dsp.focus({ direction = "r" }))
 -- Keep universal copy on SUPER + SHIFT + C.
 hl.unbind("SUPER + SHIFT + C")
 o.bind("SUPER + SHIFT + C", "Universal copy", universal_clipboard_shortcut("CTRL", "C", "CTRL", "Insert"))
-o.bind("SUPER + SHIFT + V", "Toggle simulated fullscreen", hl.dsp.window.fullscreen_state({ internal = 0, client = 2 }))
 
 -- Restore the SUPER + ALT actions replaced by the former zone shortcuts.
 hl.unbind("SUPER + ALT + E")

@@ -268,6 +268,7 @@ hl.on("window.active", function()
 end)
 
 hl.on("window.open", function(window)
+  if window.class == "Kodi" then return end
   for index, pending in ipairs(pending_launches) do
     if pending.match(window) then
       table.remove(pending_launches, index)
