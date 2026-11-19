@@ -81,10 +81,6 @@ dotfiles:
     src: config/wireplumber/bluetooth-bt50-pro.conf
     dst: ~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf
     link: absolute
-  config_stremio_service:
-    src: config/systemd/user/stremio-service.service
-    dst: ~/.config/systemd/user/stremio-service.service
-    link: absolute
   config_hypr:
     src: hypr
     dst: ~/.config/hypr
@@ -183,7 +179,6 @@ profiles:
       - config_foot
       - config_voxtype
       - config_wireplumber_bluetooth
-      - config_stremio_service
       - config_hypr
       - config_hyprmoncfg
       - config_nvim

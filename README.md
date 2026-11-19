@@ -35,10 +35,6 @@ de aplicar os dotfiles com Dotdrop, execute:
 
 O guia operacional está em [`bazzite/lab/README.md`](bazzite/lab/README.md).
 
-## Stremio TV
-
-`stremio-service.service` inicia o Stremio Service Flatpak com a sessão gráfica para o cliente web de TV reproduzir torrents e formatos que exigem transcodificação. Instale `com.stremio.Service` pelo Flathub, aplique a entrada `config_stremio_service` do Dotdrop e habilite a unidade com `systemctl --user enable --now stremio-service.service`.
-
 ## Keeper.sh
 
 O Keeper.sh roda no Bazzite como serviço Quadlet rootless, na porta local
