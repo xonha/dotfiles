@@ -254,6 +254,10 @@ local function show_window(window, zone)
   hl.dispatch(hl.dsp.focus({ workspace = workspace.name }))
   hl.dispatch(hl.dsp.layout("refresh"))
   hl.dispatch(hl.dsp.focus({ window = window }))
+  -- TV apps, opened from the Nexus panel or a shortcut, stay fullscreen.
+  if window.class == "rocks.shy.VacuumTube" or window.class == "nz.plu.lounge" then
+    hl.dispatch(hl.dsp.window.fullscreen({ window = window, mode = "fullscreen", action = "set" }))
+  end
 end
 
 hl.on("window.active", function()

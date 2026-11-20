@@ -38,7 +38,8 @@
           "hidden": []
         },
         {
-          "id": "intelligentwolf.taskbar"
+          "id": "intelligentwolf.taskbar",
+          "scope": "hidden"
         }
       ],
       "right": [

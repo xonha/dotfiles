@@ -80,7 +80,7 @@ Item {
 
   // The output this particular bar surface is drawn on. QsWindow is the
   // Quickshell attached property the bar itself uses for the same lookup
-  // (Bar.qml:154 targetWindow). Every scope but "all" is anchored to it.
+  // (Bar.qml:154 targetWindow). "all" and "hidden" span every output.
   readonly property string ownScreen: QsWindow.window && QsWindow.window.screen
     ? String(QsWindow.window.screen.name || "") : ""
 
@@ -295,9 +295,8 @@ Item {
     return workspace ? workspace.id : 0
   }
 
-  // Only "all" spans the whole desk, so it is the only scope where a heading
-  // tells you something you could not already see.
-  readonly property bool wantsGroupHeadings: root.scope === "all"
+  // Both desk-wide scopes benefit from a heading for each output.
+  readonly property bool wantsGroupHeadings: root.scope === "all" || root.scope === "hidden"
 
   // Groups, left to right the way the screens are actually laid out. Reading
   // each toplevel's .monitor and .workspace inside this binding is deliberate:
@@ -307,6 +306,19 @@ Item {
   readonly property var groups: {
     var monitors = root.toArray(Hyprland.monitors.values)
     var toplevels = root.toArray(Hyprland.toplevels.values)
+    var visibleWorkspaces = ({})
+
+    if (root.scope === "hidden") {
+      for (var v = 0; v < monitors.length; v++) {
+        var active = monitors[v].activeWorkspace
+        if (active) visibleWorkspaces[active.id] = true
+        // Special workspaces can be shown over the regular workspace. Their
+        // visibility is reported by Hyprland's monitor IPC object.
+        var ipc = monitors[v].lastIpcObject
+        var special = ipc ? ipc.specialWorkspace : null
+        if (special && special.id) visibleWorkspaces[special.id] = true
+      }
+    }
 
     monitors.sort(function(left, right) {
       return (left.x - right.x) || (left.y - right.y)
@@ -319,6 +331,7 @@ Item {
       var monitor = toplevel.monitor
       var workspace = toplevel.workspace
       var workspaceId = workspace ? workspace.id : 0
+      if (root.scope === "hidden" && visibleWorkspaces[workspaceId]) continue
       // "workspace" scope is the visible desktop: a window parked on another
       // workspace of this same output is not on screen, so it is not listed.
       if (root.scope === "workspace" && workspaceId !== root.ownWorkspaceId) continue
@@ -336,7 +349,8 @@ Item {
     for (var m = 0; m < monitors.length; m++) {
       var monitorName = String(monitors[m].name || "")
       var monitorDescription = String(monitors[m].description || "")
-      if (root.scope !== "all" && root.ownScreen && monitorName !== root.ownScreen) continue
+      if (root.scope !== "all" && root.scope !== "hidden"
+          && root.ownScreen && monitorName !== root.ownScreen) continue
 
       var records = buckets[monitorName] || []
       records.sort(root.byWorkspaceThenArrival)
@@ -357,7 +371,7 @@ Item {
                        monitorName: monitorName, monitorDescription: monitorDescription })
           matched = true
         }
-        if (!matched)
+        if (!matched && root.scope !== "hidden")
           items.push({ kind: "launcher", pin: pinned[p],
                        monitorName: monitorName, monitorDescription: monitorDescription })
       }
@@ -377,7 +391,7 @@ Item {
 
     // A window Hyprland has not placed on an output yet still gets a seat.
     // A taskbar that quietly drops windows is worse than no taskbar.
-    if (orphans.length > 0 && root.scope === "all") {
+    if (orphans.length > 0 && (root.scope === "all" || root.scope === "hidden")) {
       orphans.sort(root.byWorkspaceThenArrival)
       var loose = []
       for (var o = 0; o < orphans.length; o++)

@@ -74,6 +74,7 @@ o.bind(
 o.bind("SUPER + A", "Editor", grid_app(match_classes("code"), "code"))
 -- Windows
 hl.unbind("SUPER + B")
+o.bind("SUPER + B", "Move window to new workspace", hl.dsp.window.move({ workspace = "emptynm" }))
 o.bind("SUPER + H", "Focus left", hl.dsp.focus({ direction = "l" }))
 o.bind("SUPER + ALT + H", "Move window left", hl.dsp.window.move({ direction = "l" }))
 o.bind("SUPER + ALT + L", "Move window right", hl.dsp.window.move({ direction = "r" }))
