@@ -28,6 +28,7 @@ PKG_SERVER_EXTRA=(
   openai-codex
   openai-codex-voice
   pass
+  wails
 )
 
 PKG_SERVER_AUR=(
