@@ -19,6 +19,7 @@ PKG_CLIENT_EXTRA=(
   bambustudio-bin
   bitwarden
   kodi
+  xdg-desktop-portal-wlr
 )
 
 PKG_CLIENT_AUR=(
