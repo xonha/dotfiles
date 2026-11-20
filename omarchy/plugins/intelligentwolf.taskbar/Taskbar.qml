@@ -295,8 +295,8 @@ Item {
     return workspace ? workspace.id : 0
   }
 
-  // Both desk-wide scopes benefit from a heading for each output.
-  readonly property bool wantsGroupHeadings: root.scope === "all" || root.scope === "hidden"
+  // The hidden scope is a single list; only "all" labels its monitor groups.
+  readonly property bool wantsGroupHeadings: root.scope === "all"
 
   // Groups, left to right the way the screens are actually laid out. Reading
   // each toplevel's .monitor and .workspace inside this binding is deliberate:
@@ -410,6 +410,10 @@ Item {
     var result = []
     for (var g = 0; g < root.groups.length; g++) {
       var group = root.groups[g]
+      if (root.scope === "hidden") {
+        for (var h = 0; h < group.items.length; h++) result.push(group.items[h])
+        continue
+      }
       result.push({ kind: "group", label: group.label, gap: g === 0 ? 0 : root.groupSpacing })
       if (group.items.length === 0) {
         result.push({ kind: "empty", gap: 0 })
