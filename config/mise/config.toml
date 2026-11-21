@@ -1,0 +1,21 @@
+[tools]
+# Tools that used to come from the AUR, uv tool, cargo install or a download script.
+rtk = "latest"
+"github:lil5/lazypodman" = "latest"
+"pipx:graphifyy" = "latest"
+"pipx:git+https://github.com/github/spec-kit.git" = "latest"
+"cargo:domain-check" = "latest"
+bun = "1.4.5"
+gemini-cli = "latest"
+go = "1.27"
+"go:github.com/wailsapp/wails/v3/cmd/wails3" = "3.1.0"
+node = { version = "26", minimum_release_age = "0s", lazy = true }
+"npm:wrangler" = "4"
+ruby = "3.4"
+rust = "stable"
+vite-plus = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["rust"]
+
+[settings.upgrade]

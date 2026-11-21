@@ -23,7 +23,6 @@
 "~/.config/hyprmoncfg" = "hypr/hyprmoncfg"
 "~/.config/nvim" = "nvim"
 "~/.config/scripts" = "config/scripts"
-"~/.local/bin/update-lazypodman" = "config/scripts/update-lazypodman.sh"
 "~/.config/voxtype/config.toml" = "config/voxtype.toml"
 "~/.config/pipewire/bt-rnnoise.conf" = "config/pipewire/bt-rnnoise.conf"
 "~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf" = "config/wireplumber/bluetooth-bt50-pro.conf"

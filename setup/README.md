@@ -15,7 +15,8 @@ no host.
 |---|---|
 | `yay.sh` | Instala yay de forma idempotente para uso standalone ou como pre-requisito dos estagios que usam AUR. |
 | `rtk.sh` | Instala as integrações globais do RTK para Claude Code, Codex e OpenCode. |
-| `pkg_server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR` e as ferramentas do mise (Node do sistema fora do Omarchy). |
+| `pkg_server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR` e Node do sistema (mise) fora do Omarchy. |
+| `mise_tools.sh` | Roda `mise install` com a config global versionada (`config/mise/config.toml`): go, ruby, rust, node, bun, rtk, lazypodman e demais ferramentas do Omarchy. |
 | `dotfiles.sh` | Aplica os dotfiles de `mise.toml` via `apply_mise_dotfiles.sh` e configura o remote Git. |
 | `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
 | `pkg_client.sh` | Catalogo de apps, ferramentas de monitor e servicos para qualquer cliente Arch-based. |
@@ -30,9 +31,9 @@ Dockerfile. `bazzite/lab/setup.sh` constroi a imagem e reinicia o servico Lab.
 
 O comando `add` consulta os repositorios oficiais antes do registro do mise.
 Quando um nome nao esta nos repositorios oficiais, mas existe no mise, oferece
-mise antes de recorrer ao yay/AUR. Ferramentas mise podem ser registradas em
-`PKG_CLIENT_MISE` ou `PKG_SERVER_MISE`; o setup correspondente as instala.
-Essas entradas ficam como alteracoes locais para revisao, sem commit automatico.
+mise antes de recorrer ao yay/AUR. Ferramentas mise sao gravadas por `mise use -g` em
+`config/mise/config.toml` (ligado a `~/.config/mise/config.toml` no Omarchy),
+entao aparecem no `git diff` para revisao, sem commit automatico.
 Para passar opcoes diretamente ao yay, use `add` com as opcoes desejadas.
 
 ## Login shell safety

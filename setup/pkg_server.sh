@@ -31,10 +31,6 @@ PKG_SERVER_AUR=(
   aur/rtk-bin
 )
 
-# Extra mise tools saved by the add command.
-PKG_SERVER_MISE=(
-)
-
 # Node comes from mise for every user, in place of nvm. The system config and
 # install directory belong to the machine, so a persistent home volume (Lab's
 # lab-home) does not hide them when the image is rebuilt, and `npm install -g`
@@ -50,15 +46,23 @@ install_system_node() {
 }
 
 run() {
-  local -a packages=("${PKG_SERVER_EXTRA[@]}")
+  local -a packages=("${PKG_SERVER_EXTRA[@]}") aur=("${PKG_SERVER_AUR[@]}")
   local package
   if command -v omarchy >/dev/null 2>&1; then
+    # Omarchy installs these through mise (config/mise/config.toml).
     packages=()
     for package in "${PKG_SERVER_EXTRA[@]}"; do
       case "$package" in
         opencode|uv|go) continue ;;
       esac
       packages+=("$package")
+    done
+    aur=()
+    for package in "${PKG_SERVER_AUR[@]}"; do
+      case "$package" in
+        aur/rtk-bin|aur/specify-cli-bin) continue ;;
+      esac
+      aur+=("$package")
     done
   fi
   if ! command -v mise >/dev/null 2>&1; then
@@ -67,24 +71,11 @@ run() {
   header "Install shared CLI packages"
   info "Installing packages from extra and AUR..."
   yay -Syu --needed --noconfirm --removemake \
-    "${packages[@]}" "${PKG_SERVER_AUR[@]}"
-  if command -v omarchy >/dev/null 2>&1; then
-    info "Installing development tools with mise..."
-    mise use -g go@1.27 ruby@3.4 rust@stable npm:wrangler@4
-    # Node supplies npm. Preserve the user's existing release-age and lazy settings.
-    mise use -g --tool-option minimum_release_age=0s --tool-option lazy=true node@26
-    # The Go backend needs the mise-managed Go on PATH in non-interactive shells.
-    mise exec -- mise use -g 'go:github.com/wailsapp/wails/v3/cmd/wails3@3.1.0'
-  else
+    "${packages[@]}" "${aur[@]}"
+  if ! command -v omarchy >/dev/null 2>&1; then
     info "Installing the stable Rust toolchain..."
     rustup default stable
     install_system_node
-  fi
-  if ((${#PKG_SERVER_MISE[@]})); then
-    if ! command -v mise >/dev/null 2>&1; then
-      yay -S --needed --noconfirm mise
-    fi
-    mise exec -- mise use -g "${PKG_SERVER_MISE[@]}"
   fi
   success "Shared CLI packages installed."
 }

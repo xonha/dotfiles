@@ -5,7 +5,10 @@ source "$SETUP_ROOT/_shared.sh"
 run() {
   header "Configure RTK for coding agents"
 
-  ensure_aur_package rtk-bin
+  if ! command -v rtk >/dev/null 2>&1; then
+    error "rtk not found; it is installed by mise_tools.sh."
+    return 1
+  fi
 
   info "Installing the global Claude Code hook and RTK instructions..."
   rtk init -g --auto-patch

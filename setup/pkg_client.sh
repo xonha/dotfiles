@@ -26,21 +26,11 @@ PKG_CLIENT_AUR=(
   aur/hyprmoncfg-bin # Used by the crmne.hyprmoncfg shell plugin.
 )
 
-# Extra mise tools saved by the add command.
-PKG_CLIENT_MISE=(
-)
-
 run() {
   header "Install client packages"
   info "Installing packages from extra and AUR..."
   yay -Syu --needed --noconfirm --removemake \
     "${PKG_CLIENT_EXTRA[@]}" "${PKG_CLIENT_AUR[@]}"
-  if ((${#PKG_CLIENT_MISE[@]})); then
-    if ! command -v mise >/dev/null 2>&1; then
-      yay -S --needed --noconfirm mise
-    fi
-    mise exec -- mise use -g "${PKG_CLIENT_MISE[@]}"
-  fi
   success "Client packages installed."
 }
 

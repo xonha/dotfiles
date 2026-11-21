@@ -34,9 +34,10 @@ run_module() {
 run_module yay.sh
 run_module pkg_server.sh
 
-run_module rtk.sh
-
 run_module dotfiles.sh
+run_module mise_tools.sh
+
+run_module rtk.sh
 
 run_module bash.sh
 

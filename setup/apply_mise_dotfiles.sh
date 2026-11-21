@@ -48,6 +48,9 @@ link_children() {
 shopt -s nullglob dotglob
 {
   echo '[dotfiles]'
+  # Omarchy keeps its tools in the user config; elsewhere /etc/mise owns them
+  # and a user config listing uninstalled tools would only warn.
+  [[ -d /usr/share/omarchy ]] && link "$HOME/.config/mise/config.toml" "$root/config/mise/config.toml"
   link "$HOME/.claude/skills" "$root/ai/skills"
   link "$HOME/.agents/agents" "$root/ai/agents"
   link_children "$root/ai/skills" "$HOME/.agents/skills"
