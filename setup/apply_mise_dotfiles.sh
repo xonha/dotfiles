@@ -63,28 +63,46 @@ run_mise() {
 }
 
 backup_conflicts() {
-  local output target location destination backup_dir
-  local -a conflicts=()
-  # mise lists every path it refuses to replace; nothing to do if it refuses none.
+  local output target parent backup_dir
+  local -a broken=() conflicts=()
+  backup_dir="$HOME/.local/state/dotfiles-backups/$(date +%Y%m%d-%H%M%S-%N)"
+  # A broken directory link left by an older layout (~/.config/pipewire ->
+  # ../Dotfiles/.config/pipewire) is no conflict to mise, but blocks every
+  # link beneath it.
+  while IFS= read -r target; do
+    parent=$(dirname -- "${target/#\~/$HOME}")
+    while [[ $parent == "$HOME"/* ]]; do
+      [[ -L $parent && ! -e $parent ]] && broken+=("$parent")
+      parent=$(dirname -- "$parent")
+    done
+  done < <(run_mise status --json | python3 -c 'import json, sys; [print(f["target"]) for f in json.load(sys.stdin)["files"]]')
+  move_to_backup "$backup_dir" "${broken[@]}" || return
+  # mise lists every path it refuses to replace.
   output="$(run_mise apply --dry-run 2>&1)" && return 0
   mapfile -t conflicts < <(sed -n '/refusing to overwrite existing files/,/^[^ ]/s/^  //p' <<<"$output")
   if ((${#conflicts[@]} == 0)); then
     printf '%s\n' "$output" >&2
     return 1
   fi
-  backup_dir="$HOME/.local/state/dotfiles-backups/$(date +%Y%m%d-%H%M%S-%N)"
-  for target in "${conflicts[@]}"; do
+  move_to_backup "$backup_dir" "${conflicts[@]}"
+}
+
+move_to_backup() {
+  local backup_dir=$1 target location destination
+  shift
+  for target in "$@"; do
     target=${target/#\~/$HOME}
+    [[ -e $target || -L $target ]] || continue # already moved
     location="$(physical "$target")"
     if [[ $target != "$HOME"/* || $location == "$root" || $location == "$root"/* ]]; then
       printf 'Refusing to move %s; resolve this conflict manually.\n' "$target" >&2
       return 1
     fi
     destination="$backup_dir/${target#"$HOME"/}"
+    [[ -d $backup_dir ]] || printf 'Backing up existing dotfiles to %s\n' "$backup_dir"
     mkdir -p -- "$(dirname -- "$destination")"
     mv -- "$target" "$destination"
   done
-  printf 'Existing dotfiles backed up to %s\n' "$backup_dir"
 }
 
 if [[ $command == apply ]] && ((!dry_run)); then
