@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Tinta-Light
+Comment=The Tinta light palette as a Gtk+ theme (PLUNZ)
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Tinta-Light
+MetacityTheme=Tinta-Light
+IconTheme=Tela-circle
+CursorTheme=Catppuccin-cursors
+ButtonLayout=close,minimize,maximize:menu

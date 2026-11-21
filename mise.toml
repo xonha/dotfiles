@@ -28,6 +28,7 @@
 "~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf" = "config/wireplumber/bluetooth-bt50-pro.conf"
 "~/.themes/Darkppuccin" = "config/darkppuccin"
 "~/.themes/Tinta" = "config/tinta"
+"~/.themes/Tinta-Light" = "config/tinta-light"
 "~/.local/share/applications" = { source = "config/shortcuts", mode = "symlink-each", exclude = ["mimeinfo.cache"] }
 "~/.local/share/icons/hicolor/scalable/apps" = { source = "config/icons", mode = "symlink-each" }
 "~/.local/share/nautilus-python/extensions" = { source = "config/nautilus-python", mode = "symlink-each" }
