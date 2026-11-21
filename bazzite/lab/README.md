@@ -81,6 +81,9 @@ O `docker` é o shim do `podman-docker` e o `docker-compose` é o provider do
 
 - `lab.container` repassa `/dev/fuse` e `/dev/net/tun`, desativa o label
   SELinux e usa `Unmask=ALL` para que os containers internos montem `/proc`.
+  `SeccompProfile=unconfined` permite o `sethostname` que o `crun` executa
+  em cada container interno; sem ele, `podman run` falha com
+  `crun: sethostname: Operation not permitted`.
 - O Dockerfile delega ao usuário os IDs `1-999` e `1001-65535` em
   `/etc/subuid`/`/etc/subgid`, os únicos mapeados pelo `keep-id` externo.
 - `containers.conf` (em `/etc/containers/containers.conf.d/10-lab.conf`) usa

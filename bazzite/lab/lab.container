@@ -29,11 +29,13 @@ HealthOnFailure=kill
 
 # Nested rootless Podman: fuse and tun back its storage and pasta networking,
 # SELinux labels would block the inner mounts, and the inner containers need
-# to mount a fresh /proc, which masked paths prevent.
+# to mount a fresh /proc, which masked paths prevent. crun sets each inner
+# container's hostname, and the default seccomp profile denies sethostname.
 AddDevice=/dev/fuse
 AddDevice=/dev/net/tun
 SecurityLabelDisable=true
 Unmask=ALL
+SeccompProfile=unconfined
 
 WorkingDir=/workspace
 Memory=14g
