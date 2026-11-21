@@ -35,6 +35,20 @@ PKG_SERVER_AUR=(
 PKG_SERVER_MISE=(
 )
 
+# Node comes from mise for every user, in place of nvm. The system config and
+# install directory belong to the machine, so a persistent home volume (Lab's
+# lab-home) does not hide them when the image is rebuilt, and `npm install -g`
+# still installs into each user's ~/.local. Callable on its own:
+#   source setup/pkg_server.sh && install_system_node
+install_system_node() {
+  info "Installing Node with mise for all users..."
+  sudo install -d /etc/mise
+  sudo touch /etc/mise/config.toml
+  sudo -H mise config set --file /etc/mise/config.toml tools.node 26
+  sudo -H mise config set --file /etc/mise/config.toml env.NPM_CONFIG_PREFIX '{{ env.HOME }}/.local'
+  sudo -H mise install --system node
+}
+
 run() {
   local -a packages=("${PKG_SERVER_EXTRA[@]}")
   local package
@@ -64,16 +78,7 @@ run() {
   else
     info "Installing the stable Rust toolchain..."
     rustup default stable
-    # Node comes from mise for every user, in place of nvm. The system config
-    # and install directory belong to the machine, so a persistent home volume
-    # (Lab's lab-home) does not hide them when the image is rebuilt, and
-    # `npm install -g` still installs into each user's ~/.local.
-    info "Installing Node with mise for all users..."
-    sudo install -d /etc/mise
-    sudo touch /etc/mise/config.toml
-    sudo -H mise config set --file /etc/mise/config.toml tools.node 26
-    sudo -H mise config set --file /etc/mise/config.toml env.NPM_CONFIG_PREFIX '{{ env.HOME }}/.local'
-    sudo -H mise install --system node
+    install_system_node
   fi
   if ((${#PKG_SERVER_MISE[@]})); then
     if ! command -v mise >/dev/null 2>&1; then
