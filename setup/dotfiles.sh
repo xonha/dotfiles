@@ -5,7 +5,10 @@ source "$SETUP_ROOT/_shared.sh"
 run() {
   header "Dotfiles & user setup"
 
-  ensure_aur_package dotdrop
+  if ! command -v mise >/dev/null 2>&1; then
+    error "mise is required to apply dotfiles."
+    return 1
+  fi
 
   local dotfiles_dir
   dotfiles_dir="$(cd "$SETUP_ROOT/.." && pwd)"
@@ -18,11 +21,12 @@ run() {
     mkdir -p "$HOME/$d"
   done < <(cd "$dotfiles_dir" && find config/systemd -type d -name '*.d' 2>/dev/null)
 
-  info "Applying Dotdrop mappings from $dotfiles_dir..."
-  pushd "$dotfiles_dir" >/dev/null
-  dotdrop install --cfg config/dotdrop.yaml --profile omarchy --no-banner --nodiff
-  popd >/dev/null
-  success "Dotfiles applied with Dotdrop."
+  info "Applying mise dotfile mappings from $dotfiles_dir..."
+  if ! bash "$SETUP_ROOT/apply_mise_dotfiles.sh"; then
+    error "Dotfile application failed; review existing files and retry."
+    return 1
+  fi
+  success "Dotfiles applied with mise."
 
   info "Switching git remote to SSH..."
   local current

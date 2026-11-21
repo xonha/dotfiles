@@ -1,0 +1,180 @@
+[
+  {
+    "source": "ai/agents",
+    "target": ".agents/agents",
+    "children": false
+  },
+  {
+    "source": "ai/skills",
+    "target": ".agents/skills",
+    "children": true
+  },
+  {
+    "source": "ai/skills",
+    "target": ".claude/skills",
+    "children": false
+  },
+  {
+    "source": "config/bash.conf",
+    "target": ".bash_profile",
+    "children": false
+  },
+  {
+    "source": "config/bash.conf",
+    "target": ".bashrc",
+    "children": false
+  },
+  {
+    "source": ".hidden",
+    "target": ".hidden",
+    "children": false
+  },
+  {
+    "source": "config/tmux.conf",
+    "target": ".tmux.conf",
+    "children": false
+  },
+  {
+    "source": "bazzite/crafty/crafty.container",
+    "target": ".config/containers/systemd/crafty.container",
+    "children": false
+  },
+  {
+    "source": "bazzite/keeper/keeper.container",
+    "target": ".config/containers/systemd/keeper.container",
+    "children": false
+  },
+  {
+    "source": "bazzite/songmirror/songmirror.container",
+    "target": ".config/containers/systemd/songmirror.container",
+    "children": false
+  },
+  {
+    "source": "bazzite/lab/lab.container",
+    "target": ".config/containers/systemd/lab.container",
+    "children": false
+  },
+  {
+    "source": "bazzite/lab/lab-home.volume",
+    "target": ".config/containers/systemd/lab-home.volume",
+    "children": false
+  },
+  {
+    "source": "bazzite/samba/samba.container",
+    "target": ".config/containers/systemd/samba.container",
+    "children": false
+  },
+  {
+    "source": "config/containers/compose.conf",
+    "target": ".config/containers/containers.conf.d/10-compose.conf",
+    "children": false
+  },
+  {
+    "source": "config/containers/registries.conf",
+    "target": ".config/containers/registries.conf.d/10-docker-hub.conf",
+    "children": false
+  },
+  {
+    "source": "config/foot.ini",
+    "target": ".config/foot/foot.ini",
+    "children": false
+  },
+  {
+    "source": "config/voxtype.toml",
+    "target": ".config/voxtype/config.toml",
+    "children": false
+  },
+  {
+    "source": "config/wireplumber/bluetooth-bt50-pro.conf",
+    "target": ".config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf",
+    "children": false
+  },
+  {
+    "source": "hypr",
+    "target": ".config/hypr",
+    "children": false
+  },
+  {
+    "source": "hypr/hyprmoncfg",
+    "target": ".config/hyprmoncfg",
+    "children": false
+  },
+  {
+    "source": "nvim",
+    "target": ".config/nvim",
+    "children": false
+  },
+  {
+    "source": "config/scripts",
+    "target": ".config/scripts",
+    "children": false
+  },
+  {
+    "source": "config/pipewire/bt-rnnoise.conf",
+    "target": ".config/pipewire/bt-rnnoise.conf",
+    "children": false
+  },
+  {
+    "source": "config/scripts/toggle-bt-rnnoise.sh",
+    "target": ".config/scripts/toggle-bt-rnnoise.sh",
+    "children": false
+  },
+  {
+    "source": "config/scripts/update-lazypodman.sh",
+    "target": ".local/bin/update-lazypodman",
+    "children": false
+  },
+  {
+    "source": "config/starship.toml",
+    "target": ".config/starship.toml",
+    "children": false
+  },
+  {
+    "source": "omarchy/themes",
+    "target": ".config/omarchy/themes",
+    "children": true
+  },
+  {
+    "source": "omarchy/shell.json",
+    "target": ".config/omarchy/shell.json",
+    "children": false
+  },
+  {
+    "source": "omarchy/hooks/theme-set.d/apply-darkppuccin-gtk",
+    "target": ".config/omarchy/hooks/theme-set.d/apply-darkppuccin-gtk",
+    "children": false
+  },
+  {
+    "source": "omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth",
+    "target": ".config/omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth",
+    "children": false
+  },
+  {
+    "source": "config/shortcuts",
+    "target": ".local/share/applications",
+    "children": true,
+    "exclude": [
+      "mimeinfo.cache"
+    ]
+  },
+  {
+    "source": "config/icons",
+    "target": ".local/share/icons/hicolor/scalable/apps",
+    "children": true
+  },
+  {
+    "source": "config/nautilus-python",
+    "target": ".local/share/nautilus-python/extensions",
+    "children": true
+  },
+  {
+    "source": "config/ssh.conf",
+    "target": ".ssh/config",
+    "children": false
+  },
+  {
+    "source": "config/darkppuccin",
+    "target": ".themes/Darkppuccin",
+    "children": false
+  }
+]

@@ -77,7 +77,7 @@ RUN echo '#!/bin/bash' > /start.sh \
     && echo "if [[ ! -d /home/${USERNAME}/Dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/Dotfiles; fi" >> /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /run/user/${UID}" >> /start.sh \
     && echo "runuser -u ${USERNAME} -- env XDG_RUNTIME_DIR=/run/user/${UID} podman system service --time=0 &" >> /start.sh \
-    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f .bashrc && test -f .bash_profile && test -f .tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && dotdrop install --cfg config/dotdrop.yaml --profile omarchy --no-banner --nodiff'" >> /start.sh \
+    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f config/bash.conf && test -f config/tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && bash setup/apply_mise_dotfiles.sh --backup-conflicts --yes'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo 'exec /usr/sbin/sshd -D -e' >> /start.sh \
     && chmod +x /start.sh

@@ -23,7 +23,7 @@ run() {
   for service in "${SERVICES[@]}"; do
     quadlet="$HOME/.config/containers/systemd/$service.container"
     if [[ ! -f "$quadlet" ]]; then
-      error "Missing $quadlet. Apply the dotfiles with Dotdrop before running this installer."
+      error "Missing $quadlet. Apply the dotfiles with mise before running this installer."
       return 1
     fi
     mkdir -p "$HOME/$service/workspace"

@@ -1,7 +1,7 @@
 # Dotfiles
 
-Arch dotfiles managed with Dotdrop. The installer detects Omarchy and keeps
-Foot and other Omarchy-managed native applications outside Dotdrop. Hyprland and
+Arch dotfiles managed with mise. The installer detects Omarchy and keeps
+Foot and other Omarchy-managed native applications outside the dotfile mappings. Hyprland and
 select Omarchy shell config (bar layout, idle/lock) are tracked here as user
 overrides on top of Omarchy's defaults. Run `./omarchy/setup.sh` for a new
 machine.
@@ -16,10 +16,10 @@ machine.
 - [Keeper.sh](bazzite/keeper/README.md) — calendar sync and MCP server on bazzite, at `keeper.plu.nz` (tailnet only)
 - [Caddy](bazzite/caddy/README.md) — HTTPS for private `*.plu.nz` names on bazzite, reachable only over Tailscale
 - [Setup notes](setup/README.md) — wake-from-suspend, udev rules, hardware quirks
-- [Dotdrop layout](#dotdrop-layout) — directory map for this repo
+- [Dotfile layout](#dotfile-layout) — directory map for this repo
 - [`.config/` vs `.setup/`](#config-vs-setup) — which of the two a new file belongs in
 
-## Dotdrop Layout
+## Dotfile Layout
 
 | Path                          | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
@@ -45,7 +45,7 @@ A file belongs in `config/` only if the program that reads it reads it from
 If the file is instead copied, built, or executed somewhere else (another
 host, a container image), it is a deploy artifact and belongs in
 `setup/<service>/`, together with that service's runbook (`README.md`).
-`setup/` is excluded from Dotdrop, so nothing there ever lands in `$HOME` as a
+`setup/` is excluded from the dotfile mappings, so nothing there ever lands in `$HOME` as a
 dead symlink.
 
 Immich (`bazzite/immich/docker-compose.yml`) and the Keeper env template
@@ -54,7 +54,7 @@ copied into place rather than read from `$HOME`.
 
 ## Adding Dotfiles
 
-Add the mapping to `config/dotdrop.yaml`, then re-run `dotdrop install`.
+Add the mapping to `config/mise_dotfiles.json`, then run `bash setup/apply_mise_dotfiles.sh`.
 
 <!-- SPECKIT START -->
 

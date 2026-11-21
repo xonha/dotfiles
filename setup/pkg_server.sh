@@ -7,7 +7,6 @@ source "$SETUP_ROOT/_shared.sh"
 # `podman compose` and by projects that still call `docker-compose` directly.
 PKG_SERVER_EXTRA=(
   neovim
-  npm
   nvm
   opencode
   uv
@@ -25,26 +24,54 @@ PKG_SERVER_EXTRA=(
   starship
   jq
   aria2
-  openai-codex
-  openai-codex-voice
   pass
-  wails
 )
 
 PKG_SERVER_AUR=(
-  aur/dotdrop
   aur/specify-cli-bin
   aur/rtk-bin
-  aur/vite-plus-bin
+)
+
+# Extra mise tools saved by the add command.
+PKG_SERVER_MISE=(
 )
 
 run() {
+  local -a packages=("${PKG_SERVER_EXTRA[@]}")
+  local package
+  if command -v omarchy >/dev/null 2>&1; then
+    packages=()
+    for package in "${PKG_SERVER_EXTRA[@]}"; do
+      case "$package" in
+        nvm|opencode|uv|go) continue ;;
+      esac
+      packages+=("$package")
+    done
+  fi
+  if ! command -v mise >/dev/null 2>&1; then
+    packages+=(mise)
+  fi
   header "Install shared CLI packages"
   info "Installing packages from extra and AUR..."
   yay -Syu --needed --noconfirm --removemake \
-    "${PKG_SERVER_EXTRA[@]}" "${PKG_SERVER_AUR[@]}"
-  info "Installing the stable Rust toolchain..."
-  rustup default stable
+    "${packages[@]}" "${PKG_SERVER_AUR[@]}"
+  if command -v omarchy >/dev/null 2>&1; then
+    info "Installing development tools with mise..."
+    mise use -g go@1.27 ruby@3.4 rust@stable npm:wrangler@4
+    # Node supplies npm. Preserve the user's existing release-age and lazy settings.
+    mise use -g --tool-option minimum_release_age=0s --tool-option lazy=true node@26
+    # The Go backend needs the mise-managed Go on PATH in non-interactive shells.
+    mise exec -- mise use -g 'go:github.com/wailsapp/wails/v3/cmd/wails3@3.1.0'
+  else
+    info "Installing the stable Rust toolchain..."
+    rustup default stable
+  fi
+  if ((${#PKG_SERVER_MISE[@]})); then
+    if ! command -v mise >/dev/null 2>&1; then
+      yay -S --needed --noconfirm mise
+    fi
+    mise exec -- mise use -g "${PKG_SERVER_MISE[@]}"
+  fi
   success "Shared CLI packages installed."
 }
 

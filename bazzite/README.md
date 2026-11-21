@@ -93,7 +93,7 @@ From a machine with this repository, SSH access to `bazzite`, and `tar`:
 
 Set `BAZZITE_SSH_HOST` to use another SSH alias. The script sends only the
 required setup files to a temporary directory on the host and removes them
-afterward. It does not require Dotdrop or a persistent clone of this repository
+afterward. It does not require mise or a persistent clone of this repository
 on the Bazzite host. Quadlet files are installed under
 `~/.config/containers/systemd/`; Immich's Compose file goes under `~/immich/`.
 The setup enables user linger so the services can start without an active SSH

@@ -7,8 +7,8 @@ host Bazzite ficam em `bazzite/<servico>/`, com instalador, artefatos e runbook
 (`README.md`) lado a lado. `bazzite/setup.sh` os orquestra via SSH a partir de
 um cliente com este repositorio.
 
-Nada em `setup/` e aplicado pelo Dotdrop. Os Quadlets do Bazzite sao copiados
-para o diretorio de unidades do usuario pelo setup remoto, sem exigir Dotdrop
+Nada em `setup/` e aplicado como dotfile. Os Quadlets do Bazzite sao copiados
+para o diretorio de unidades do usuario pelo setup remoto, sem exigir mise no host
 no host.
 
 | Arquivo | Responsabilidade |
@@ -16,7 +16,7 @@ no host.
 | `yay.sh` | Instala yay de forma idempotente para uso standalone ou como pre-requisito dos estagios que usam AUR. |
 | `rtk.sh` | Instala as integrações globais do RTK para Claude Code, Codex e OpenCode. |
 | `pkg_server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
-| `dotfiles.sh` | Aplica o Dotdrop e configura o remote Git. |
+| `dotfiles.sh` | Aplica os dotfiles com mise e configura o remote Git. |
 | `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
 | `pkg_client.sh` | Catalogo de apps, ferramentas de monitor e servicos para qualquer cliente Arch-based. |
 | `services.sh` | Habilita os servicos de sistema disponiveis. |
@@ -27,6 +27,13 @@ no host.
 de pacotes deste diretorio. O Lab usa o primeiro no build de
 `bazzite/lab/Dockerfile`; os pre-requisitos da imagem ficam no proprio
 Dockerfile. `bazzite/lab/setup.sh` constroi a imagem e reinicia o servico Lab.
+
+O comando `add` consulta os repositorios oficiais antes do registro do mise.
+Quando um nome nao esta nos repositorios oficiais, mas existe no mise, oferece
+mise antes de recorrer ao yay/AUR. Ferramentas mise podem ser registradas em
+`PKG_CLIENT_MISE` ou `PKG_SERVER_MISE`; o setup correspondente as instala.
+Essas entradas ficam como alteracoes locais para revisao, sem commit automatico.
+Para passar opcoes diretamente ao yay, use `add` com as opcoes desejadas.
 
 ## Login shell safety
 

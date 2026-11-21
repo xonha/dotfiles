@@ -12,7 +12,7 @@ De um cliente com este repositório e SSH, execute `./bazzite/setup.sh keeper`.
 O script exige `keeper.env` com os segredos configurados e a imagem local
 `localhost/keeper-standalone:meet`; se ela não existir, constrói a imagem a
 partir de `~/.local/src/keeper.sh` no host. Ele instala o Quadlet sem exigir
-Dotdrop ou clone dos dotfiles no Bazzite.
+mise ou clone dos dotfiles no Bazzite.
 
 Como alternativa manual, depois de instalar o Quadlet a partir deste
 repositório:

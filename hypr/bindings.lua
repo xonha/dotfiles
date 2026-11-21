@@ -109,6 +109,8 @@ o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 -- Remove default remote shortcut bindings
 hl.unbind("SUPER + X")
+-- Nexus, the TV panel: the same toggle as the remote's Power button.
+o.bind("SUPER + X", "Nexus", "~/.local/bin/nexus-toggle")
 hl.unbind("SUPER + S")
 o.bind("SUPER + S", "Files", grid_app(match_classes("org.gnome.Nautilus"), "nautilus"))
 hl.unbind("SUPER + C")

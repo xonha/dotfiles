@@ -3,7 +3,7 @@ name: dotfiles
 description: >
   REQUIRED for changes to this user's versioned Linux dotfiles, setup scripts,
   desktop configuration, or development environment. Use when editing files
-  under ~/.config/ or ~/.setup/, shell files, Hyprland, Omarchy, Dotdrop, or
+  under ~/.config/ or ~/.setup/, shell files, Hyprland, Omarchy, mise dotfiles, or
   repository-owned setup and deployment artifacts.
   Excludes unrelated application source development.
 metadata:
@@ -14,7 +14,7 @@ metadata:
 
 Manage this repository as the source of truth for Henrique's personal Linux
 configuration. Configuration changes belong in the repository and are applied
-to the host with Dotdrop or one of the setup entrypoints.
+to the host with mise or one of the setup entrypoints.
 
 ## When this skill must be used
 
@@ -105,7 +105,7 @@ configuration or Omarchy integration. The main entrypoint is:
 ./omarchy/setup.sh
 ```
 
-It installs generic client packages, applies Dotdrop mappings, configures the
+It installs generic client packages, applies mise dotfile mappings, configures the
 login shell, and then applies Omarchy-specific plugins and services.
 
 ### Bazzite services
@@ -114,9 +114,9 @@ For runtime operations, read and use the `bazzite` skill. For repository edits,
 read the matching service runbook and setup script here, then validate the
 versioned artifact and hand off host execution to the `bazzite` workflow.
 
-### Dotdrop and linking
+### Dotfiles and linking
 
-Read [references/dotdrop.md](references/dotdrop.md) before changing mappings,
+Read [references/mise-dotfiles.md](references/mise-dotfiles.md) before changing mappings,
 ignore rules, or files that may conflict with existing host configuration.
 
 ## Decision framework
@@ -130,7 +130,7 @@ ignore rules, or files that may conflict with existing host configuration.
    `setup/<service>/README.md` runbook.
 5. Is it potentially destructive or privileged? Confirm scope, then make the
    smallest reversible change.
-6. Validate with the narrowest useful check: shell syntax, Dotdrop dry-run,
+6. Validate with the narrowest useful check: shell syntax, mise dotfiles dry-run,
    service status, or the relevant application reload. For a recreated system,
    also verify that the expected dotfiles exist in the target and match the
    repository source.
@@ -138,7 +138,7 @@ ignore rules, or files that may conflict with existing host configuration.
 ## Topic references
 
 - [references/setup.md](references/setup.md) — setup stages and validation
-- [references/dotdrop.md](references/dotdrop.md) — mappings, ownership, and conflicts
+- [references/mise-dotfiles.md](references/mise-dotfiles.md) — mappings, ownership, and conflicts
 - [references/omarchy.md](references/omarchy.md) — Omarchy integration boundaries
 - [references/services.md](references/services.md) — repository-owned service configuration
 

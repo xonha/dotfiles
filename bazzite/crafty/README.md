@@ -397,7 +397,7 @@ for the new port and restart the service.
 
 ## Notes
 
-- **`dotdrop` is not required on `bazzite`**. The remote setup copies the
+- **`mise` is not required on `bazzite`**. The remote setup copies the
   Quadlet into the user unit directory; a local manual deployment can use:
   ```bash
   install -m 0644 bazzite/crafty/crafty.container \

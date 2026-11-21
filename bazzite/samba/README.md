@@ -64,7 +64,7 @@ for a local installation.
 
 ```bash
 # From the dotfiles repo root on bazzite:
-dotdrop install --cfg config/dotdrop.yaml --profile omarchy
+bash setup/apply_mise_dotfiles.sh
 
 # Verify the symlink:
 ls -la ~/.config/containers/systemd/samba.container
@@ -142,7 +142,7 @@ echo 'smb://bazzite/storage Storage' >> ~/.config/gtk-3.0/bookmarks
 ```
 
 The bookmark then shows exactly `Storage`. Note this file is local to each
-machine and is **not** managed by Dotdrop (it holds machine-specific paths).
+machine and is **not** managed as a dotfile (it holds machine-specific paths).
 
 An alternative is mounting it via `/etc/fstab` with cifs, which also survives
 without a graphical session:

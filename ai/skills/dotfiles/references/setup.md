@@ -4,7 +4,7 @@ The main setup flow is `omarchy/setup.sh`. It sources these modules in
 order:
 
 1. `pkg_server.sh` — shared CLI packages
-2. `dotfiles.sh` — Dotdrop and Git remote setup
+2. `dotfiles.sh` — mise dotfiles and Git remote setup
 3. `bash.sh` — safe login-shell configuration
 4. `pkg_client.sh` and `omarchy/plugins.sh` — client and Omarchy setup
 5. `services.sh` — system services

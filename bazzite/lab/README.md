@@ -11,14 +11,14 @@ de desenvolvimento definido no repositório.
 A imagem é construída de `bazzite/lab/Dockerfile`. O workspace é uma pasta
 normal no Bazzite e o home persistente fica no volume `lab-home`. Na primeira
 inicialização, o container clona `https://github.com/xonha/dotfiles.git` em
-`~/Dotfiles` e executa `dotdrop install` a partir desse clone.
+`~/Dotfiles` e executa `bash setup/apply_mise_dotfiles.sh --backup-conflicts --yes` a partir desse clone.
 
 ## Instalação e atualização
 
 Para orquestrar a instalação a partir de um cliente com SSH, use
 `./bazzite/setup.sh lab` na raiz deste repositório. Esse fluxo envia os arquivos
 temporariamente, instala o Quadlet e constrói a imagem no Bazzite; o host não
-precisa de Dotdrop nem de um clone persistente dos dotfiles. O clone descrito
+precisa de mise nem de um clone persistente dos dotfiles. O clone descrito
 abaixo é criado dentro do container `lab`.
 
 Se o repositório já estiver no Bazzite, o instalador local também pode ser
@@ -38,7 +38,7 @@ Uma recriação de `lab` só está concluída quando:
 
 - `lab.service` está ativo e `ssh lab` funciona;
 - `~/Dotfiles` existe dentro do `lab` e é um clone limpo do repositório;
-- `dotdrop install` foi executado a partir de `~/Dotfiles`;
+- `bash setup/apply_mise_dotfiles.sh --backup-conflicts --yes` foi executado a partir de `~/Dotfiles`;
 - o login usa Bash;
 - `config/bash.conf`, `bash_profile`, `config/tmux.conf` e `config/starship.toml` estão
   presentes no home do usuário;

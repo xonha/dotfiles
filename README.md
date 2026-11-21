@@ -1,6 +1,6 @@
 # Dotfiles
 
-Configuração pessoal para Arch, instalada com Dotdrop. O instalador detecta
+Configuração pessoal para Arch, instalada com mise. O instalador detecta
 o Omarchy e preserva os componentes que ele administra (shell, Foot, navegador
 e gerenciador de arquivos). As configurações de usuário do Hyprland são
 versionadas neste repositório e aplicadas após os padrões do Omarchy.
@@ -16,7 +16,7 @@ cd "$HOME/dotfiles"
 O instalador configura a base de terminal e permite escolher a instalação do
 desktop. O setup verifica e instala `yay` quando necessário antes dos estágios
 que usam o AUR. No Omarchy, o perfil legado do Kitty
-não é aplicado; os componentes correspondentes ficam fora do manifesto do Dotdrop.
+não é aplicado; os componentes correspondentes ficam fora do manifesto dos dotfiles.
 Os ajustes específicos de hardware ficam fora do fluxo principal.
 
 ## ThinkPad
@@ -27,7 +27,7 @@ documentados em [`setup/README.md`](setup/README.md).
 ## Ambientes de desenvolvimento no Bazzite
 
 `lab` usa uma imagem Arch focada em desenvolvimento no Bazzite. Depois
-de aplicar os dotfiles com Dotdrop, execute:
+de aplicar os dotfiles com mise, execute:
 
 ```bash
 ./bazzite/lab/setup.sh
