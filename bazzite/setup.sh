@@ -57,7 +57,7 @@ trap cleanup EXIT
 tar -cf - \
   setup/_shared.sh setup/yay.sh setup/pkg_server.sh setup/bash.sh \
   bazzite/_shared.sh bazzite/host_setup.sh \
-  bazzite/lab/Dockerfile bazzite/lab/containers.conf bazzite/lab/lab.container bazzite/lab/lab-home.volume bazzite/lab/setup.sh \
+  bazzite/lab/Dockerfile bazzite/lab/containers.conf bazzite/lab/lab.container bazzite/lab/lab-home.volume bazzite/lab/setup.sh bazzite/lab/ssh-healthcheck.sh \
   bazzite/crafty/crafty.container bazzite/crafty/setup.sh \
   bazzite/keeper/keeper.container bazzite/keeper/setup.sh \
   bazzite/caddy/Containerfile bazzite/caddy/Caddyfile bazzite/caddy/caddy.container bazzite/caddy/setup.sh \
