@@ -39,6 +39,8 @@ link() {
 link_children() {
   local child
   for child in "$1"/*; do
+    # Skills that link to Omarchy's own (ai/skills/omarchy) exist only there.
+    [[ -e $child ]] || continue
     link "$2/${child##*/}" "$child"
   done
 }
