@@ -27,6 +27,7 @@
 "~/.config/pipewire/bt-rnnoise.conf" = "config/pipewire/bt-rnnoise.conf"
 "~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf" = "config/wireplumber/bluetooth-bt50-pro.conf"
 "~/.themes/Darkppuccin" = "config/darkppuccin"
+"~/.themes/Tinta" = "config/tinta"
 "~/.local/share/applications" = { source = "config/shortcuts", mode = "symlink-each", exclude = ["mimeinfo.cache"] }
 "~/.local/share/icons/hicolor/scalable/apps" = { source = "config/icons", mode = "symlink-each" }
 "~/.local/share/nautilus-python/extensions" = { source = "config/nautilus-python", mode = "symlink-each" }
@@ -36,6 +37,8 @@
 "~/.config/omarchy/shell.json" = "omarchy/shell.json"
 "~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-gtk" = "omarchy/hooks/theme-set.d/apply-darkppuccin-gtk"
 "~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth" = "omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth"
+"~/.config/omarchy/hooks/theme-set.d/apply-tinta-gtk" = "omarchy/hooks/theme-set.d/apply-tinta-gtk"
+"~/.config/omarchy/hooks/theme-set.d/apply-tinta-plymouth" = "omarchy/hooks/theme-set.d/apply-tinta-plymouth"
 
 # Podman
 "~/.config/containers/containers.conf.d/10-compose.conf" = "config/containers/compose.conf"

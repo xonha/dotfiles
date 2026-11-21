@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Tinta
+Comment=The Tinta palette as a dark Gtk+ theme (PLUNZ), derived from the Darkppuccin build
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Tinta
+MetacityTheme=Tinta
+IconTheme=Tela-circle-Dark
+CursorTheme=Catppuccin-cursors
+ButtonLayout=close,minimize,maximize:menu

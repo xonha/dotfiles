@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Keep the Tinta GTK theme (config/tinta, from plu-nz/web.tinta) in sync after
+# Omarchy's GNOME integration runs.
+[[ ${1:-} == "tinta" ]] || exit 0
+
+gsettings set org.gnome.desktop.interface gtk-theme "Tinta"
+gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
