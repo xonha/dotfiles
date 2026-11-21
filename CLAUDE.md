@@ -54,7 +54,9 @@ copied into place rather than read from `$HOME`.
 
 ## Adding Dotfiles
 
-Add the mapping to `config/mise_dotfiles.json`, then run `bash setup/apply_mise_dotfiles.sh`.
+Add the mapping to `[dotfiles]` in `mise.toml`, then run `mise run dotfiles`
+(or `bash setup/apply_mise_dotfiles.sh`). Skills in `ai/skills` and themes in
+`omarchy/themes` are linked automatically, one directory link per child.
 
 <!-- SPECKIT START -->
 

@@ -1,0 +1,57 @@
+# Dotfiles deployed by mise. Apply them through `mise run dotfiles` (or
+# `bash setup/apply_mise_dotfiles.sh`), which also links the AI agent
+# directories, creates systemd drop-in directories and can back up conflicts.
+# Plain `mise dot apply|status|diff` in this directory covers these entries.
+#
+# String values use the default `symlink` mode. `symlink-each` links each file
+# of a shared directory and leaves files owned by other applications alone.
+# Map files inside `*.d` drop-in directories, never the directory itself:
+# systemd ignores a drop-in directory that is a symlink.
+
+[dotfiles]
+# Shell and terminal
+"~/.bash_profile" = "config/bash.conf"
+"~/.bashrc" = "config/bash.conf"
+"~/.tmux.conf" = "config/tmux.conf"
+"~/.config/starship.toml" = "config/starship.toml"
+"~/.config/foot/foot.ini" = "config/foot.ini"
+"~/.ssh/config" = "config/ssh.conf"
+"~/.hidden" = ".hidden"
+
+# Desktop
+"~/.config/hypr" = "hypr"
+"~/.config/hyprmoncfg" = "hypr/hyprmoncfg"
+"~/.config/nvim" = "nvim"
+"~/.config/scripts" = "config/scripts"
+"~/.local/bin/update-lazypodman" = "config/scripts/update-lazypodman.sh"
+"~/.config/voxtype/config.toml" = "config/voxtype.toml"
+"~/.config/pipewire/bt-rnnoise.conf" = "config/pipewire/bt-rnnoise.conf"
+"~/.config/wireplumber/wireplumber.conf.d/bluetooth-bt50-pro.conf" = "config/wireplumber/bluetooth-bt50-pro.conf"
+"~/.themes/Darkppuccin" = "config/darkppuccin"
+"~/.local/share/applications" = { source = "config/shortcuts", mode = "symlink-each", exclude = ["mimeinfo.cache"] }
+"~/.local/share/icons/hicolor/scalable/apps" = { source = "config/icons", mode = "symlink-each" }
+"~/.local/share/nautilus-python/extensions" = { source = "config/nautilus-python", mode = "symlink-each" }
+
+# Omarchy overrides. Themes are linked one directory per theme by the
+# apply script, next to the themes Omarchy installs.
+"~/.config/omarchy/shell.json" = "omarchy/shell.json"
+"~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-gtk" = "omarchy/hooks/theme-set.d/apply-darkppuccin-gtk"
+"~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth" = "omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth"
+
+# Podman and Bazzite Quadlets
+"~/.config/containers/containers.conf.d/10-compose.conf" = "config/containers/compose.conf"
+"~/.config/containers/registries.conf.d/10-docker-hub.conf" = "config/containers/registries.conf"
+"~/.config/containers/systemd/crafty.container" = "bazzite/crafty/crafty.container"
+"~/.config/containers/systemd/keeper.container" = "bazzite/keeper/keeper.container"
+"~/.config/containers/systemd/songmirror.container" = "bazzite/songmirror/songmirror.container"
+"~/.config/containers/systemd/lab.container" = "bazzite/lab/lab.container"
+"~/.config/containers/systemd/lab-home.volume" = "bazzite/lab/lab-home.volume"
+"~/.config/containers/systemd/samba.container" = "bazzite/samba/samba.container"
+
+[tasks.dotfiles]
+description = "Apply the dotfiles (pass --backup-conflicts to move conflicting files aside)"
+run = "bash setup/apply_mise_dotfiles.sh"
+
+[tasks."dotfiles:status"]
+description = "Show the state of every dotfile, including the generated AI links"
+run = "bash setup/apply_mise_dotfiles.sh status"

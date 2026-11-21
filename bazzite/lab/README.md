@@ -43,6 +43,7 @@ Uma recriação de `lab` só está concluída quando:
 - `config/bash.conf`, `bash_profile`, `config/tmux.conf` e `config/starship.toml` estão
   presentes no home do usuário;
 - `starship` e `tmux` estão disponíveis;
+- `node -v` responde numa sessão interativa com o Node do mise (ver abaixo);
 - `blesh` está instalado pelo AUR (com build upstream como fallback) e uma
   sessão Bash interativa expõe `BLE_VERSION`;
 - os checksums das configurações aplicadas foram comparados com o repositório.
@@ -50,6 +51,17 @@ Uma recriação de `lab` só está concluída quando:
 O Foot fica fora do container: é uma configuração gráfica do host que abre a
 conexão SSH. Portanto, sua validação ocorre no Omarchy/Bazzite host, não dentro
 do `lab`.
+
+## Node
+
+O Node vem do mise, não do nvm. O estágio `setup/pkg_server.sh` declara a
+versão em `/etc/mise/config.toml` e instala em `/usr/local/share/mise` durante
+o build da imagem, fora do volume `lab-home`; assim, cada rebuild atualiza o
+Node mesmo com o home persistente. O `config/bash.conf` ativa o mise nas
+sessões interativas, e `NPM_CONFIG_PREFIX` faz `npm install -g` instalar em
+`~/.local`. Um `~/.config/mise/config.toml` do usuário tem precedência sobre a
+versão do sistema. Instalações antigas do nvm em `~/.nvm` ficam no volume e
+podem ser apagadas manualmente.
 
 ## Acesso
 

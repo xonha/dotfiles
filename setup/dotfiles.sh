@@ -13,13 +13,9 @@ run() {
   local dotfiles_dir
   dotfiles_dir="$(cd "$SETUP_ROOT/.." && pwd)"
 
-  # systemd silently ignores a drop-in directory that is a symlink —
-  # DropInPaths comes back empty, no error — so every *.d must exist as a real
-  # directory before dotfiles are applied, leaving only the .conf symlinked.
-  info "Pre-creating systemd drop-in directories (must not be symlinks)..."
-  while IFS= read -r d; do
-    mkdir -p "$HOME/$d"
-  done < <(cd "$dotfiles_dir" && find config/systemd -type d -name '*.d' 2>/dev/null)
+  # Trust the repository's mise.toml so `mise run dotfiles` and
+  # `mise dot status` also work from the repository.
+  mise trust --quiet "$dotfiles_dir/mise.toml"
 
   info "Applying mise dotfile mappings from $dotfiles_dir..."
   if ! bash "$SETUP_ROOT/apply_mise_dotfiles.sh"; then

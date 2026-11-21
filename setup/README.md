@@ -15,8 +15,8 @@ no host.
 |---|---|
 | `yay.sh` | Instala yay de forma idempotente para uso standalone ou como pre-requisito dos estagios que usam AUR. |
 | `rtk.sh` | Instala as integrações globais do RTK para Claude Code, Codex e OpenCode. |
-| `pkg_server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR`. |
-| `dotfiles.sh` | Aplica os dotfiles com mise e configura o remote Git. |
+| `pkg_server.sh` | Catalogo CLI comum ao Omarchy, Lab e demais maquinas Arch; instala pacotes de `extra` e `AUR` e as ferramentas do mise (Node do sistema fora do Omarchy). |
+| `dotfiles.sh` | Aplica os dotfiles de `mise.toml` via `apply_mise_dotfiles.sh` e configura o remote Git. |
 | `bash.sh` | Configura Bash como shell de login apos validar `/etc/shells`. |
 | `pkg_client.sh` | Catalogo de apps, ferramentas de monitor e servicos para qualquer cliente Arch-based. |
 | `services.sh` | Habilita os servicos de sistema disponiveis. |
