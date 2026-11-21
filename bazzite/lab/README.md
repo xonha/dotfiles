@@ -114,8 +114,11 @@ journalctl --user -u lab.service -f
 
 O container executa o `sshd` em foreground e possui um healthcheck que valida
 o banner SSH a cada 30 segundos. Se o daemon travar depois de abrir a porta,
-o healthcheck marca o container como unhealthy, o Podman o encerra e o
-`lab.service` o reinicia automaticamente.
+após 10 falhas seguidas (cerca de 5 minutos) o healthcheck marca o container
+como unhealthy, o Podman o encerra e o `lab.service` o reinicia
+automaticamente. Com 3 falhas, um build pesado no mesmo host chegou a derrubar
+um Lab que funcionava; por isso o `setup.sh` também constrói a imagem com
+`nice -n 19 ionice -c 3`, cedendo CPU e disco ao Lab e aos demais serviços.
 
 Para recriar completamente a máquina, pare a unidade, remova o container e o
 volume `lab-home`, e execute novamente `./bazzite/lab/setup.sh`. O diretório

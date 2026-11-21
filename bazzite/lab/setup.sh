@@ -30,7 +30,10 @@ run() {
   done
 
   info "Building localhost/lab:latest..."
-  podman build \
+  # The AUR builds saturate every core. Lowest CPU and I/O priority lets them
+  # use only idle capacity, so Lab's SSH health check and the other services
+  # keep responding during the build.
+  nice -n 19 ionice -c 3 podman build \
     --file "$LAB_ROOT/Dockerfile" \
     --tag localhost/lab:latest \
     "$DOTFILES_ROOT"

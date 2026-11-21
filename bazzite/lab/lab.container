@@ -21,10 +21,12 @@ PublishPort=2224:22
 
 # Detect an SSH daemon that is listening but no longer completing the banner
 # handshake. An unhealthy container is killed so systemd can restart it.
+# Ten failures (about five minutes) ride out a heavily loaded host; three
+# killed a working Lab during an image build.
 HealthCmd=/usr/bin/bash -c 'exec 3<>/dev/tcp/127.0.0.1/22; IFS= read -r -t 3 banner <&3; [[ "$banner" == SSH-* ]]'
 HealthInterval=30s
 HealthStartPeriod=60s
-HealthRetries=3
+HealthRetries=10
 HealthOnFailure=kill
 
 # Nested rootless Podman: fuse and tun back its storage and pasta networking,
