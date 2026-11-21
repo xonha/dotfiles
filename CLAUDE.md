@@ -40,8 +40,10 @@ machine.
 ## `config/` vs `setup/`
 
 A file belongs in `config/` only if the program that reads it reads it from
-`$HOME` **on the machine where the repo is stowed** — Quadlet units under
-`bazzite/` qualify, since systemd reads that exact path.
+`$HOME` **on every machine where the dotfiles are applied**. Quadlet units are
+not: they run only on `bazzite`, which receives them by copy from
+`bazzite/setup.sh`, so mapping them would start the services on the laptop
+and in Lab.
 If the file is instead copied, built, or executed somewhere else (another
 host, a container image), it is a deploy artifact and belongs in
 `setup/<service>/`, together with that service's runbook (`README.md`).

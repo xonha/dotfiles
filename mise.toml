@@ -37,15 +37,9 @@
 "~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-gtk" = "omarchy/hooks/theme-set.d/apply-darkppuccin-gtk"
 "~/.config/omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth" = "omarchy/hooks/theme-set.d/apply-darkppuccin-plymouth"
 
-# Podman and Bazzite Quadlets
+# Podman
 "~/.config/containers/containers.conf.d/10-compose.conf" = "config/containers/compose.conf"
 "~/.config/containers/registries.conf.d/10-docker-hub.conf" = "config/containers/registries.conf"
-"~/.config/containers/systemd/crafty.container" = "bazzite/crafty/crafty.container"
-"~/.config/containers/systemd/keeper.container" = "bazzite/keeper/keeper.container"
-"~/.config/containers/systemd/songmirror.container" = "bazzite/songmirror/songmirror.container"
-"~/.config/containers/systemd/lab.container" = "bazzite/lab/lab.container"
-"~/.config/containers/systemd/lab-home.volume" = "bazzite/lab/lab-home.volume"
-"~/.config/containers/systemd/samba.container" = "bazzite/samba/samba.container"
 
 [tasks.dotfiles]
 description = "Apply the dotfiles (pass --backup-conflicts to move conflicting files aside)"
