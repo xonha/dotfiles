@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Keep the Plymouth boot screen aligned with the Tinta palette.
-[[ ${1:-} == "tinta" ]] || exit 0
+[[ ${1:-} == "tinta-dark" ]] || exit 0
 
 # Tinta background and red accent instead of the generic foreground color.
 omarchy-plymouth-set "#0f0f0f" "#f38ba8" \
