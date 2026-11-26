@@ -39,13 +39,6 @@
         },
         {
           "id": "io.github.diegopluna.argus",
-          "alertsOn": [
-            "cpu",
-            "ram",
-            "gpu",
-            "vram",
-            "disk"
-          ],
           "homeTiles": [
             "cpu",
             "ram",
@@ -55,11 +48,14 @@
             "bat"
           ],
           "intervalSec": 3,
-          "urgentDiskPct": 80,
           "show": [
             "cpu",
             "cputemp",
             "ram",
+            "disk"
+          ],
+          "urgentDiskPct": 80,
+          "alertsOn": [
             "disk"
           ]
         },

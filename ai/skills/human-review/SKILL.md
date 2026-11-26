@@ -15,6 +15,11 @@ Skill pra revisar Pull Requests e publicar o review com comentarios **inline**
 - Sem argumento (`/human-review` puro): revisa a fila de PRs de Banking que ainda faltam
   aprovacao (ver **Sem argumento** abaixo).
 
+## Excecao temporaria
+
+Pule PRs de `v1ni-maistodos` na fila automatica e avise sobre a excecao em pedidos
+avulsos. Um pedido explicito para revisar aquele PR pode abrir excecao.
+
 ## Sem argumento
 
 Monta a fila com [`list_pending.py`](list_pending.py), nao na mao:
@@ -26,8 +31,8 @@ python3 ~/.claude/skills/human-review/list_pending.py   # ou --json
 O script aplica estas regras:
 
 - **Escopo**: org `MaisTodos`, PR aberto e nao draft, repo com nome comecando em `banking`
-  (`banking.*`, `banking-*`, `BankingAPI`), menos `banking-playwright` (repo de QA). PR
-  do proprio usuario fica fora.
+  (`banking.*`, `banking-*`, `BankingAPI`), menos `banking-playwright` (repo de QA).
+  PRs do proprio usuario e de autores na excecao temporaria ficam fora.
 - **Falta aprovacao**: `reviewDecision` APPROVED sai. O GitHub devolve `null` em boa parte
   dos repos (o ruleset nao preenche o campo), entao o script conta aprovacoes (ultimo review
   de cada pessoa = APPROVED) contra o minimo: 2 em `develop`/`main`, 1 no atlas e em branch

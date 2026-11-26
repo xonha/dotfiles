@@ -8,7 +8,7 @@ Uso:
 Regras (espelham a secao "Sem argumento" do SKILL.md):
 - Escopo: org MaisTodos, PR aberto, nao draft, repo com nome comecando em "banking"
   (case-insensitive: banking.*, banking-*, BankingAPI), menos EXCLUDED_REPOS.
-  PR do proprio usuario fica fora.
+  PRs do proprio usuario e de autores em TEMPORARILY_EXCLUDED_AUTHORS ficam fora.
 - Falta aprovacao: reviewDecision APPROVED -> fora. Quando o GitHub devolve null (ruleset
   nao preenche o campo), conta aprovacoes (ultimo review de cada pessoa = APPROVED) contra
   o minimo: 2 em develop/main/master dos repos de codigo, 1 no atlas e em branch de epico.
@@ -26,6 +26,7 @@ import subprocess
 import sys
 
 ORG = "MaisTodos"
+TEMPORARILY_EXCLUDED_AUTHORS = {"v1ni-maistodos"}
 IGNORED_REVIEWERS = {"guilhermeadsferreira"}  # reviews dele sao de IA automatizada
 APPROVE_ONLY = {"banking.atlas", "banking-pj-app", "banking-pj-web", "banking-frontend-core"}
 ONE_APPROVAL_REPOS = {"banking.atlas"}
@@ -63,6 +64,9 @@ def search(me):
 def classify(pr, me):
     repo = pr["repository"]["name"]
     author = (pr["author"] or {}).get("login")
+    if author in TEMPORARILY_EXCLUDED_AUTHORS:
+        return None
+
     latest = {}
     for r in pr["reviews"]["nodes"]:
         login = (r["author"] or {}).get("login")

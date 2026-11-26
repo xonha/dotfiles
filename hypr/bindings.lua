@@ -54,15 +54,7 @@ o.bind(
 		brave_app("dlgohinmglaoopaiplliaecdpmnepmga")
 	)
 )
-o.bind(
-	"SUPER + E",
-	"YouTube Music",
-	grid_app(
-		match_classes("brave-cinhimbnkkaeohfgghhklpknlkffjgod-Default"),
-		brave_app("cinhimbnkkaeohfgghhklpknlkffjgod"),
-		4
-	)
-)
+o.bind("SUPER + E", "Metrolist", grid_app(match_classes("Metrolist"), "metrolist", 4))
 o.bind(
 	"SUPER + D",
 	"Mais Todos",
@@ -109,8 +101,10 @@ o.bind("code:196", "Next track", "playerctl next")
 o.bind("SUPER + code:47", "Lock screen", "omarchy system lock")
 -- Remove default remote shortcut bindings
 hl.unbind("SUPER + X")
--- Nexus, the TV panel: the same toggle as the remote's Power button.
+-- Nexus, the TV panel, from the keyboard or the airmouse's Power button.
 o.bind("SUPER + X", "Nexus", "~/.local/bin/nexus-toggle")
+-- The XING WEI receiver sends F19 when the airmouse's Power button is pressed.
+o.bind("F19", "Nexus (airmouse)", "~/.local/bin/nexus-toggle")
 hl.unbind("SUPER + S")
 o.bind("SUPER + S", "Files", grid_app(match_classes("org.gnome.Nautilus"), "nautilus"))
 hl.unbind("SUPER + C")
