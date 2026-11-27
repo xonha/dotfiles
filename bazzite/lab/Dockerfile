@@ -74,10 +74,10 @@ RUN echo '#!/bin/bash' > /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.ssh" >> /start.sh \
     && echo "install -m 600 -o ${USERNAME} -g ${USERNAME} /run/host_ssh_key /home/${USERNAME}/.ssh/authorized_keys" >> /start.sh \
     && echo "install -d -m 755 -o ${USERNAME} -g ${USERNAME} /home/${USERNAME}/.config" >> /start.sh \
-    && echo "if [[ ! -d /home/${USERNAME}/Dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/Dotfiles; fi" >> /start.sh \
+    && echo "if [[ ! -d /home/${USERNAME}/dotfiles/.git ]]; then runuser -u ${USERNAME} -- git clone \"${DOTFILES_REPO}\" /home/${USERNAME}/dotfiles; fi" >> /start.sh \
     && echo "install -d -m 700 -o ${USERNAME} -g ${USERNAME} /run/user/${UID}" >> /start.sh \
     && echo "runuser -u ${USERNAME} -- env XDG_RUNTIME_DIR=/run/user/${UID} podman system service --time=0 &" >> /start.sh \
-    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/Dotfiles && test -f config/bash.conf && test -f config/tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && bash setup/apply_mise_dotfiles.sh --backup-conflicts --yes'" >> /start.sh \
+    && echo "runuser -u ${USERNAME} -- bash -lc 'cd /home/${USERNAME}/dotfiles && test -f config/bash.conf && test -f config/tmux.conf && test -f config/starship.toml && (test -r /usr/share/blesh/ble.sh || test -r /usr/local/share/blesh/ble.sh) && bash setup/apply_mise_dotfiles.sh --backup-conflicts --yes'" >> /start.sh \
     && echo '/usr/bin/ssh-keygen -A' >> /start.sh \
     && echo 'exec /usr/sbin/sshd -D -e' >> /start.sh \
     && chmod +x /start.sh

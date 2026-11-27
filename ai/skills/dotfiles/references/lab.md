@@ -21,7 +21,7 @@ The normal command is:
 When recreating `lab`, the task is complete only when:
 
 - the Arch image is built from the current repository;
-- `https://github.com/xonha/dotfiles.git` is cloned into `~/Dotfiles` inside the
+- `https://github.com/xonha/dotfiles.git` is cloned into `~/dotfiles` inside the
   target machine;
 - `bash setup/apply_mise_dotfiles.sh --backup-conflicts --yes` is executed from that clone;
 - Bash is the login shell;
